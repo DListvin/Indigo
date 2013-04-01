@@ -10,5 +10,8 @@ namespace IndigoEngine
     /// </summary>
     public class Agent
     {
+        int alala;
+        World world;
+        //fkfkff
     }
 }
