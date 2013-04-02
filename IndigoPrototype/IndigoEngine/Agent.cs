@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace AgentClassLibrary
+namespace IndigoEngine
 {
 	abstract class Agent : ITypicalAgent, INamabelObject
 	{

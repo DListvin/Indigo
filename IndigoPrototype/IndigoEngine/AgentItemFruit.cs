@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AgentClassLibrary
+namespace IndigoEngine
 {
 	class AgentItemFruit : Agent
 	{
@@ -18,6 +18,7 @@ namespace AgentClassLibrary
 		public override string ToString()
 		{
 			return "Item fruit: " + Name;
-		}
+		}
+
 	}
 }
