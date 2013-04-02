@@ -6,27 +6,11 @@ using System.Text;
 namespace IndigoEngine
 {
     /// <summary>
-    /// Интерфейс, реализуемый миром, используемый при работе с UI.
+    /// Мир, у него есть агенты и он следит, чтобы они думали и не конфликтовали. Идейное наполнение модели.
     /// </summary>
-    interface IObservableWorld
-    {
-        IEnumerable<Agent> Agents {get;} //Получить список всех агентов в мире.
-        //long ModelIterations { get; } //Получить прошедшее число итераций моделирования.
-        //TimeSpan ModelIterationTick { get; set; } //Настроить промежуток времени между итерациями моделирования.
-
-        void Initialise(); //Инициализирует мир (создаёт карту).
-        void Start(); //Запускает главный цикл.
-        void Stop(); //Приостанавливает гланый цикл.
-    }
-
-    /// <summary>
-    /// Мир - сущность, контролирующая главный цикл, включающий в себя все игровые сущности.
-    /// </summary>
-    public class World : IObservableWorld
+    class World
     {
         List<Agent> agents;
-        long passedModelIterations;
-        TimeSpan modelIterationTick;
 
         public IEnumerable<Agent> Agents
         {
@@ -36,23 +20,22 @@ namespace IndigoEngine
             }
         }
 
+        /// <summary>
+        /// Это главный цикл обработки мира.
+        /// </summary>
+        public void MainLoopIteration()
+        {
+
+        }
+
         public void Initialise()
         {
             agents = new List<Agent>();
-            passedModelIterations = 0;
-            modelIterationTick = TimeSpan.FromSeconds(2);
         }
 
-        public void Start()
+        public World()
         {
-
+            Initialise();
         }
-
-        public void Stop()
-        {
-
-        }
-
-
     }
 }
