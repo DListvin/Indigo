@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IndigoEngine
 {
-	class ItemStorage : ITypicalItemStorage
+	public class ItemStorage : ITypicalItemStorage
 	{
 		private List<Agent> itemList;  //List of items that are in this storage
 		private int storageSize;       //Size of the storage (in number of items)
@@ -48,7 +48,7 @@ namespace IndigoEngine
 						{
 							throw(new Exception(String.Format("Storage Size of {0} is less than count of objects in it: {1}", this, value)));
 						}
-						StorageSize = value;
+						storageSize = value;
 					}
 				}
 
@@ -56,7 +56,7 @@ namespace IndigoEngine
 
 		#endregion
 
-		void AddAgentToStorage(Agent argAgent)
+		public void AddAgentToStorage(Agent argAgent)
 		{
 			if(ItemList.Count + 1 > StorageSize)
 			{
@@ -66,13 +66,13 @@ namespace IndigoEngine
 			ItemList.Add(argAgent);
 		}
 
-		Agent GetAgentFromStorage(Agent argAgent)
+		public Agent GetAgentFromStorage(Agent argAgent)
 		{	
 			ItemList.Remove(argAgent);
 			return argAgent;
 		}
 
-		Agent GetAgentByTypeFromStorage(Type argType)
+		public Agent GetAgentByTypeFromStorage(Type argType)
 		{
 			return GetAgentFromStorage(ItemList.Find(
 			                                           delegate(Agent ag)

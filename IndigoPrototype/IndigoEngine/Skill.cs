@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IndigoEngine
 {
-	class Skill : ITypicalSkill, INamabelObject
+	public class Skill : ITypicalSkill, INamabelObject
 	{
 		private string name;   //Characteristic name
 
