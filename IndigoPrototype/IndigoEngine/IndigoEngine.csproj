@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
     <Compile Include="Agent\Agent.cs" />
     <Compile Include="Agent\AgentCamp.cs" />
     <Compile Include="Agent\AgentIndigo.cs" />
