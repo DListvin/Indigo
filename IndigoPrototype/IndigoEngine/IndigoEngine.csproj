@@ -55,7 +55,7 @@
     <Compile Include="Agent\ITypicalCharacteristic.cs" />
     <Compile Include="Agent\ITypicalItemStorage.cs" />
     <Compile Include="Agent\ITypicalSkill.cs" />
-    <Compile Include="Agent\INameableObject.cs" />
+    <Compile Include="Agent\NameableObject.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Agent\Skill.cs" />

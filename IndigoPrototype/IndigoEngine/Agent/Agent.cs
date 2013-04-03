@@ -6,17 +6,15 @@ using System.Drawing;
 
 namespace IndigoEngine.Agents
 {
-	public abstract class Agent : ITypicalAgent, INameableObject
+	public abstract class Agent : NameableObject, ITypicalAgent 
 	{
-		private string name;   //Agent name
-
 		private Characteristic health;   //Agent health
 		private Point? location;         //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
 		private ItemStorage inventory;   //Agent inventory
 		
 		#region Constructors
 			
-			public Agent()
+			public Agent() : base()
 			{
 				Health = new Characteristic();
 				Health.Name = "Health";
@@ -32,17 +30,6 @@ namespace IndigoEngine.Agents
 
 			#region INamabelObject realisation
 				
-				public string Name
-				{
-					get
-					{
-						return name;
-					}
-					set
-					{
-						name = value;
-					}
-				}
 
 			#endregion
 

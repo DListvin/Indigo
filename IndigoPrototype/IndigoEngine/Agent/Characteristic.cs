@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
-	public class Characteristic : ITypicalCharacteristic, INameableObject
+	public class Characteristic :NameableObject, ITypicalCharacteristic
 	{
 		private string name;   //Characteristic name
 
@@ -15,10 +15,8 @@ namespace IndigoEngine.Agents
 
 		#region Constructors
 
-			public Characteristic()
+			public Characteristic() : base()
 			{
-				Name = "Untitled characteristic";
-				
 				MaxValue = 100;
 				CurrentUnitValue = MaxValue;
 			}
