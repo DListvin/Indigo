@@ -22,7 +22,6 @@ namespace IndigoEngine.Agents
 		#endregion
 
 		private List<Skill> skillsList;  //List of skills that are available to indigo
-		private int rangeOfView;         //Range of view of the indigo
 
 		#region Constructors
 			
@@ -137,18 +136,6 @@ namespace IndigoEngine.Agents
 				set
 				{
 					skillsList = value;
-				}
-			}
-
-			public int RangeOfView
-			{
-				get
-				{
-					return rangeOfView;
-				}
-				set
-				{
-					rangeOfView = value;
 				}
 			}
 

@@ -11,6 +11,7 @@ namespace IndigoEngine.Agents
 		private Characteristic health;   //Agent health
 		private Point? location;         //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
 		private ItemStorage inventory;   //Agent inventory
+		private int rangeOfView;         //Range of view of the agent (in cells around agent, apparently)
 		
 		#region Constructors
 			
@@ -22,17 +23,14 @@ namespace IndigoEngine.Agents
 				Location = new Point(0, 0);
 
 				Inventory = new ItemStorage();
+
+				RangeOfView = 0;
 			}
 
 		#endregion
 
 		#region Properties
-
-			#region INamabelObject realisation
-				
-
-			#endregion
-
+					
 			#region ITypicalAgent realisation
 				
 				public Characteristic Health
@@ -68,6 +66,18 @@ namespace IndigoEngine.Agents
 					set
 					{
 						inventory = value;
+					}
+				}
+
+				public int RangeOfView
+				{
+					get
+					{
+						return rangeOfView;
+					}
+					set
+					{
+						rangeOfView = value;
 					}
 				}
 					

@@ -7,8 +7,6 @@ namespace IndigoEngine.Agents
 {
 	public class Characteristic :NameableObject, ITypicalCharacteristic
 	{
-		private string name;   //Characteristic name
-
 		private int maxValue;           //Maximum value of the characteristic
 		private const int minValue = 0; //Minimum value of the characteristic
 		private int currentValue;       //Current value of the characteristic
@@ -24,23 +22,7 @@ namespace IndigoEngine.Agents
 		#endregion
 
 		#region Properties
-
-			#region INamabelObject realisation
-				
-				public string Name
-				{
-					get
-					{
-						return name;
-					}
-					set
-					{
-						name = value;
-					}
-				}
-
-			#endregion
-
+		
 			#region ITypicalCharacteristic realisation
 
 				public int MaxValue

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
-	abstract class NameableObject
+	public abstract class NameableObject
 	{		
 		private string name;   //Object name
 		
