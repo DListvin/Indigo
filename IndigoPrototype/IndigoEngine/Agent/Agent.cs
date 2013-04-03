@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace IndigoEngine.Agents
 {
-	public abstract class Agent : ITypicalAgent, INamabelObject
+	public abstract class Agent : ITypicalAgent, INameableObject
 	{
 		private string name;   //Agent name
 

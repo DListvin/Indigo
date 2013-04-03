@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
-	interface INamabelObject
+	interface INameableObject
 	{
 		/// <summary>
 		/// Operations with object name
