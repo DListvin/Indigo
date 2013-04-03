@@ -41,24 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agent.cs" />
-    <Compile Include="AgentCamp.cs" />
-    <Compile Include="AgentIndigo.cs" />
-    <Compile Include="AgentItemFruit.cs" />
-    <Compile Include="AgentItemLog.cs" />
-    <Compile Include="AgentPuddle.cs" />
-    <Compile Include="AgentTree.cs" />
-    <Compile Include="Characteristic.cs" />
-    <Compile Include="INamabelObject.cs" />
-    <Compile Include="ItemStorage.cs" />
-    <Compile Include="ITypicalAgent.cs" />
-    <Compile Include="ITypicalCharacteristic.cs" />
-    <Compile Include="ITypicalItemStorage.cs" />
-    <Compile Include="ITypicalSkill.cs" />
+    <Compile Include="Agent\Agent.cs" />
+    <Compile Include="Agent\AgentCamp.cs" />
+    <Compile Include="Agent\AgentIndigo.cs" />
+    <Compile Include="Agent\AgentItemFruit.cs" />
+    <Compile Include="Agent\AgentItemLog.cs" />
+    <Compile Include="Agent\AgentPuddle.cs" />
+    <Compile Include="Agent\AgentTree.cs" />
+    <Compile Include="Agent\Characteristic.cs" />
+    <Compile Include="Agent\INamabelObject.cs" />
+    <Compile Include="Agent\ItemStorage.cs" />
+    <Compile Include="Agent\ITypicalAgent.cs" />
+    <Compile Include="Agent\ITypicalCharacteristic.cs" />
+    <Compile Include="Agent\ITypicalItemStorage.cs" />
+    <Compile Include="Agent\ITypicalSkill.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Skill.cs" />
-    <Compile Include="Skills.cs" />
+    <Compile Include="Agent\Skill.cs" />
+    <Compile Include="Agent\Skills.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
