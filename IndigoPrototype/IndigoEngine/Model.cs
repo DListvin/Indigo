@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
     /// <summary>
     /// Интерфейс, реализуемый моделью, используемый при работе с UI.
     /// </summary>
-    interface IObservableModel
+    public interface IObservableModel
     {
         IEnumerable<Agent> Agents {get;} //Получить список всех агентов в мире.
         ModelState State { get; } //Получить состояние модели
@@ -109,25 +110,34 @@ namespace IndigoEngine
         {
             state = ModelState.Stopping;
             thread.Join(); //Жду счастливого окончания процесса
+            state = ModelState.Initialised;
         }
 
         public void MainLoop()
         {
-            for (; ; )
+            try
             {
-                if (state == ModelState.Stopping)
-                    break;
-                if (state == ModelState.Paused)
-                    continue;
-                if (state == ModelState.Running)
+                for (; ; )
                 {
-                    //There out main loop is running
-                    world.MainLoopIteration();
+                    if (state == ModelState.Stopping)
+                        break;
+                    if (state == ModelState.Paused)
+                        continue;
+                    if (state == ModelState.Running)
+                    {
+                        //There out main loop is running
+                        world.MainLoopIteration();
 
-                    //Обрабатывам конец итерации
-                    ++passedModelIterations;
-                    Thread.Sleep(modelIterationTick);
+                        //Обрабатывам конец итерации
+                        ++passedModelIterations;
+                        Thread.Sleep(modelIterationTick);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                state = ModelState.Error;
             }
         }
 

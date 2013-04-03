@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
@@ -31,6 +32,10 @@ namespace IndigoEngine
         public void Initialise()
         {
             agents = new List<Agent>();
+
+            //Test init
+            agents.Add(new AgentIndigo());
+            agents.Add(new AgentItemLog());
         }
 
         public World()
