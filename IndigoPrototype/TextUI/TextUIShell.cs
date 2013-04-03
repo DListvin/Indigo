@@ -66,27 +66,44 @@ namespace TextUI
         /// </summary>
         static void Initialise()
         {
-            commands.Add(new Command("test", "Writes some test output", name => { Console.WriteLine("Some Test Output"); }));
-            
-            commands.Add(new Command("help", "Prints all possible commands with description", name =>
+            commands.Add(new Command("test", "Writes some test output", args => { Console.WriteLine("Some Test Output"); }));
+
+            commands.Add(new Command("help", "Prints all possible commands with description", args =>
             {
                 foreach (Command c in commands)
                     Console.WriteLine(c.Description);
             }));
 
-            commands.Add(new Command("exit", "Stops the entire UI", name => { isRunning = false; }));
+            commands.Add(new Command("exit", "Stops the entire UI", args =>
+            {
+                if(model.State == ModelState.Running && model.State == ModelState.Paused)
+                Console.WriteLine("Stopping model...");
+                model.Stop();
+                Console.WriteLine("Model stopped...");
+                isRunning = false;
+            }));
 
-            commands.Add(new Command("start", "Starts model", name => { model.Start(); }));
+            commands.Add(new Command("start", "Starts model", args => { model.Start(); }));
 
-            commands.Add(new Command("pause", "Pauses model", name => { model.Pause(); }));
+            commands.Add(new Command("pause", "Pauses model", args => { model.Pause(); }));
 
-            commands.Add(new Command("stop", "Stops model", name => { model.Stop(); }));
+            commands.Add(new Command("stop", "Stops model", args => { model.Stop(); }));
 
-            commands.Add(new Command("resume", "Resumes model from pause", name => { model.Resume(); }));
+            commands.Add(new Command("resume", "Resumes model from pause", args => { model.Resume(); }));
 
-            commands.Add(new Command("state", "Shows model state", name => { Console.WriteLine(model.State.ToString()); }));
+            commands.Add(new Command("state", "Shows model state", args => { Console.WriteLine(model.State.ToString()); }));
 
-            commands.Add(new Command("agents", "Lists all agents in the world", name =>
+            commands.Add(new Command("iteration", "Shows model loop iteration", args => { Console.WriteLine(model.ModelIterations); }));
+
+            commands.Add(new Command("tick", "Shows model loop iteration tick interval", args => { Console.WriteLine(model.ModelIterationTick); }));
+
+            commands.Add(new Command("settick", "Sets model loop iteration in ms (ex: -settick 3000)", args =>
+            {
+                var ms = args[1] as string;
+                model.ModelIterationTick = TimeSpan.FromMilliseconds(Convert.ToInt16(ms));
+            }));
+
+            commands.Add(new Command("agents", "Lists all agents in the world", args =>
             {
                 foreach (Agent agent in model.Agents)
                     Console.WriteLine(agent.ToString());                
