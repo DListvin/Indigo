@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndigoEngine", "IndigoEngine\IndigoEngine.csproj", "{41A0E5A7-0309-4B97-8F23-1ADC1B921448}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextUI", "TextUI\TextUI.csproj", "{3BAF5703-7906-4CE8-B12D-F479694E3FDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicalUI", "GraphicalUI\GraphicalUI.csproj", "{BE1590BF-4EA1-4125-8519-F91FA124B921}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,16 @@ Global
 		{3BAF5703-7906-4CE8-B12D-F479694E3FDB}.Release|Mixed Platforms.Build.0 = Release|x86
 		{3BAF5703-7906-4CE8-B12D-F479694E3FDB}.Release|x86.ActiveCfg = Release|x86
 		{3BAF5703-7906-4CE8-B12D-F479694E3FDB}.Release|x86.Build.0 = Release|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Debug|x86.ActiveCfg = Debug|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Debug|x86.Build.0 = Debug|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Release|Any CPU.ActiveCfg = Release|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Release|x86.ActiveCfg = Release|x86
+		{BE1590BF-4EA1-4125-8519-F91FA124B921}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
