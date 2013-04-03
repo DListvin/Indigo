@@ -25,6 +25,11 @@ namespace IndigoEngine.Agents
 		ItemStorage Inventory{get; set;}
 
 		/// <summary>
+		/// Operations with agent range of view
+		/// </summary>
+		int RangeOfView{get; set;}
+
+		/// <summary>
 		/// Making a decision about action in the current phase
 		/// </summary>
 		void Decide();	

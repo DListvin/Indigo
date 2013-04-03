@@ -5,40 +5,21 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
-	public class Skill : ITypicalSkill, INameableObject
+	public class Skill :NameableObject, ITypicalSkill
 	{
-		private string name;   //Characteristic name
-
 		private int skillQuality;	//Level of skill
 
 		#region Constructors
 
-			public Skill()
+			public Skill() : base()
 			{
-				Name = "Untitled skill";
 				SkillQuality = 0;
 			}
 
 		#endregion
 
 		#region Properties
-
-			#region INamabelObject realisation
-				
-				public string Name
-				{
-					get
-					{
-						return name;
-					}
-					set
-					{
-						name = value;
-					}
-				}
-
-			#endregion
-
+		
 			#region ITypicalSkill realisation
 
 				public int SkillQuality
