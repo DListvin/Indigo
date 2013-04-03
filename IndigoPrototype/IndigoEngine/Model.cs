@@ -8,24 +8,24 @@ using IndigoEngine.Agents;
 namespace IndigoEngine
 {
     /// <summary>
-    /// Интерфейс, реализуемый моделью, используемый при работе с UI.
+    /// Interface for the UI-conversation
     /// </summary>
     public interface IObservableModel
     {
-        IEnumerable<Agent> Agents {get;} //Получить список всех агентов в мире.
-        ModelState State { get; } //Получить состояние модели
-        long ModelIterations { get; } //Получить прошедшее число итераций моделирования.
-        TimeSpan ModelIterationTick { get; set; } //Настроить промежуток времени между итерациями моделирования.
+        IEnumerable<Agent> Agents {get;} //All agents in the world
+        ModelState State { get; } //Model state
+        long ModelIterations { get; } //How many iterations of main loop have passed
+        TimeSpan ModelIterationTick { get; set; } //Specify time interval betwin loop iterations
 
-        void Initialise(); //Инициализирует мир (создаёт карту).
-        void Start(); //Запускает главный цикл.
-        void Pause(); //Приостанавливает гланый цикл.
-        void Resume(); //Убрать с паузы
-        void Stop(); //Выключить модель безопасным способом
+        void Initialise(); //Initialises model's start values
+        void Start(); //Run main loop
+        void Pause(); //Pause main loop
+        void Resume(); //Resume running if paused
+        void Stop(); //Stop main loop and process with safe method
     }
     
     /// <summary>
-    /// Описывает возможные состояния модели
+    /// Describes possible state of model
     /// </summary>
     public enum ModelState
     {
@@ -38,7 +38,7 @@ namespace IndigoEngine
     }
 
     /// <summary>
-    /// Модель - сущность, инкапсулирующая техническую обработку мира (работа с процессом). Имеет мир своим полем.
+    /// Upper existanse, performing technical moments of engine. Contains world for logical moments.
     /// </summary>
     public class Model : IObservableModel
     {
@@ -47,20 +47,20 @@ namespace IndigoEngine
         World world;
         long passedModelIterations;
         TimeSpan modelIterationTick;
-        Thread thread; //Это переменная для контроля за выполнением модели в отдельном процессе
+        Thread thread; //This object controls working model in other process
         ModelState state = ModelState.Uninitialised;
 
         #endregion
 
         #region Properties
 
-        public long ModelIterations { get { return passedModelIterations; } } //Получить прошедшее число итераций моделирования.
+        //Interface realisation
+        public long ModelIterations { get { return passedModelIterations; } } 
 
-        public TimeSpan ModelIterationTick { get { return modelIterationTick; } set { modelIterationTick = value; } } //Настроить промежуток времени между итерациями моделирования.
+        public TimeSpan ModelIterationTick { get { return modelIterationTick; } set { modelIterationTick = value; } } 
 
-        public ModelState State { get { return state; } } //Получить состояние модели
-
-        //Получить агентов из мира
+        public ModelState State { get { return state; } } 
+        
         public IEnumerable<Agent> Agents
         {
             get
@@ -83,7 +83,7 @@ namespace IndigoEngine
             world = new World();
             passedModelIterations = 0;
             modelIterationTick = TimeSpan.FromSeconds(2);
-            thread = new Thread(MainLoop);
+            thread = new Thread(MainLoop); //Specify the function to be performed in other process
             state = ModelState.Initialised;
         }
         
@@ -92,7 +92,7 @@ namespace IndigoEngine
             if (state == ModelState.Initialised)
             {
                 state = ModelState.Running;
-                thread.Start(); //Запустить процесс
+                thread.Start(); //Start process
             }
         }
 
@@ -109,7 +109,7 @@ namespace IndigoEngine
         public void Stop()
         {
             state = ModelState.Stopping;
-            thread.Join(); //Жду счастливого окончания процесса
+            thread.Join(); //Waiting for other process to end
             state = ModelState.Initialised;
         }
 
@@ -128,7 +128,7 @@ namespace IndigoEngine
                         //There out main loop is running
                         world.MainLoopIteration();
 
-                        //Обрабатывам конец итерации
+                        //Work out the end of iteration
                         ++passedModelIterations;
                         Thread.Sleep(modelIterationTick);
                     }

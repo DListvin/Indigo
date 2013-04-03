@@ -7,7 +7,7 @@ using IndigoEngine.Agents;
 namespace IndigoEngine
 {
     /// <summary>
-    /// Мир, у него есть агенты и он следит, чтобы они думали и не конфликтовали. Идейное наполнение модели.
+    /// World - logical moments in model.
     /// </summary>
     class World
     {
@@ -22,13 +22,16 @@ namespace IndigoEngine
         }
 
         /// <summary>
-        /// Это главный цикл обработки мира.
+        /// Here is the main loop
         /// </summary>
         public void MainLoopIteration()
         {
 
         }
 
+        /// <summary>
+        /// Here we basicly create world.
+        /// </summary>
         public void Initialise()
         {
             agents = new List<Agent>();
