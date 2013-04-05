@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using IndigoEngine;
+using IndigoEngine.Agents;
 
 namespace GraphicalUI
 {
@@ -15,7 +17,12 @@ namespace GraphicalUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            IObservableModel model = new Model();
+
+            GraphicalUIShell.Model = model;
+
+            Application.Run(new GrapgicalUIForm());
         }
     }
 }

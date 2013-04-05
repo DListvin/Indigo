@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine;
+using IndigoEngine.Agents;
 
 namespace GraphicalUI
 {
@@ -12,6 +13,16 @@ namespace GraphicalUI
     static class GraphicalUIShell
     {
         //Attached model to observe
-        //static IObservableModel model = null;
+        static IObservableModel model = null;
+
+        #region Properties
+
+        public static IObservableModel Model
+        {
+            get { return model; }
+            set { model = value; }
+        }
+
+        #endregion
     }
 }
