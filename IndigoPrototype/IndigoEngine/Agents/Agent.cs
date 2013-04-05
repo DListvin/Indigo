@@ -85,6 +85,8 @@ namespace IndigoEngine.Agents
         {
         }
 		
+		//bla bla
+
 		/// <summary>
 		/// ITypicalAgent
 		/// </summary>
