@@ -25,11 +25,16 @@ namespace IndigoEngine.Agents
 		private int rangeOfView;         //Range of view of the agent (in cells around agent, apparently)
         private List<Agent> fieldOfView; //Agent's field ov view. Includes all agents, that current agent can see
 
+		private ShortMemory agentsShortMemory;  //Agent's short memory
+		private LongMemory agentsLongMemory;    //Agent's long memory
+
 		#region Constructors
 
 		public AgentLiving()
 			:base()
 		{
+			AgentsShortMemory = new ShortMemory();
+			AgentsLongMemory = new LongMemory();
 		}
 
 		#endregion
@@ -90,6 +95,17 @@ namespace IndigoEngine.Agents
             set { skillsList = value; }
         }		
 
+		public ShortMemory AgentsShortMemory
+		{
+			get { return agentsShortMemory; }
+			set { agentsShortMemory = value; }
+		}		
+
+		public LongMemory AgentsLongMemory
+		{
+			get { return agentsLongMemory; }
+			set { agentsLongMemory = value; }
+		}
         #endregion
 		
         /// <summary>
@@ -142,7 +158,7 @@ namespace IndigoEngine.Agents
         }
 
         /// <summary>
-        /// Calculate one main need of Indigo at this moment
+        /// Calculate one main need of agent at this moment
         /// </summary>
         /// <returns> main need</returns>
         protected virtual Need EstimateMainNeed()
@@ -153,6 +169,8 @@ namespace IndigoEngine.Agents
 		public override void StateRecompute()
 		{
 			base.StateRecompute();
+
+			AgentsLongMemory.StoreShortMemory(AgentsShortMemory);
 		}
 	}
 }

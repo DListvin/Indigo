@@ -84,8 +84,6 @@ namespace IndigoEngine.Agents
         public virtual void StateRecompute()
         {
         }
-		
-		//bla bla
 
 		/// <summary>
 		/// ITypicalAgent

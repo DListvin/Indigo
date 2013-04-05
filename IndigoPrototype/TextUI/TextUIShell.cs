@@ -178,6 +178,30 @@ namespace TextUI
                     Console.WriteLine(agent.ToString());                
 				}
             }));
+
+            ListOfCommands.Add(new Command("showshortmem", "Showing the short memory of the agent (ex: -showshortmem <agent_name>)", args =>
+            {
+                var agentName = args[1] as string;
+                
+                Console.WriteLine(
+					((AgentLiving)(Model.SimulatingWorld.Agents.First(ag => 
+					{
+						return ag.Name == agentName;
+					}
+				))).AgentsShortMemory.ToString());        
+            }));
+
+            ListOfCommands.Add(new Command("showlongmem", "Showing the short memory of the agent (ex: -showshortmem <agent_name>)", args =>
+            {
+                var agentName = args[1] as string;
+                
+                Console.WriteLine(
+					((AgentLiving)(Model.SimulatingWorld.Agents.First(ag => 
+					{
+						return ag.Name == agentName;
+					}
+				))).AgentsLongMemory.ToString());        
+            }));
         }
 
         /// <summary>

@@ -55,6 +55,16 @@ namespace IndigoEngine
 		/// <summary>
 		/// ITypicalAction
 		/// </summary>
-        public virtual void Perform() { }
+        public virtual void Perform() 
+		{
+		}
+
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public virtual NameableObject CharacteristicsOfSubject()
+		{
+			return Subject;
+		}
     }
 }

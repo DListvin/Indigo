@@ -44,6 +44,10 @@ namespace IndigoEngine
                 Object.CurrentActionFeedback = new ActionFeedback(() => 
 				{
 					Object.Health.CurrentUnitValue -= HitPointsToTakeOff; 
+					if(Object is AgentLiving)
+					{
+						((AgentLiving)Object).AgentsShortMemory.StoreAction(Subject, this);
+					}
 				});
 
                 Subject.CurrentActionFeedback = new ActionFeedback(() => 
@@ -55,5 +59,23 @@ namespace IndigoEngine
 				});
             }
         }
+
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public override NameableObject CharacteristicsOfSubject()
+		{
+			if(Object is AgentLivingIndigo && Subject is AgentLivingIndigo)
+			{
+				return ((AgentLivingIndigo)Subject).Aggressiveness; 
+			}
+
+			return base.CharacteristicsOfSubject();
+		}
+
+		public override string ToString()
+		{
+			return "Action: attack; hp: " + HitPointsToTakeOff.ToString();
+		}
     }
 }

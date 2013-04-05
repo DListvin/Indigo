@@ -57,6 +57,10 @@
     <Compile Include="Agents\ITypicalCharacteristic.cs" />
     <Compile Include="Agents\ITypicalItemStorage.cs" />
     <Compile Include="Agents\ITypicalSkill.cs" />
+    <Compile Include="Agents\LongMemory.cs" />
+    <Compile Include="Agents\Memory.cs" />
+    <Compile Include="Agents\ShortMemory.cs" />
+    <Compile Include="Agents\StoredInformation.cs" />
     <Compile Include="IObservableModel.cs" />
     <Compile Include="ITypicalAction.cs" />
     <Compile Include="ITypicalNeed.cs" />

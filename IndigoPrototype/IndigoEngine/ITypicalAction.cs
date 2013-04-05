@@ -30,5 +30,11 @@ namespace IndigoEngine
 		/// Perfoming the action: defines action results for object and subject
 		/// </summary>
         void Perform();
+
+		/// <summary>
+		/// Provides some info, that characterise the subject of the action (necessary to remember subject's characteristics)
+		/// </summary>
+		/// <returns>Info about the subject: some skill, characteristic</returns>
+		NameableObject CharacteristicsOfSubject();
     }
 }
