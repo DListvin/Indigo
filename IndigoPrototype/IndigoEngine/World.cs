@@ -55,7 +55,7 @@ namespace IndigoEngine
 
             SolveActionConflicts();
 
-            foreach (ITypicalAction action in Actions)
+            foreach (Action action in Actions)
 			{
                 action.Perform();
 			}
@@ -78,21 +78,21 @@ namespace IndigoEngine
             Actions = new List<Action>();
 
             //Test init			
-			currentAddingAgent = new AgentIndigo();
+			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.HomeWorld = this;
             currentAddingAgent.Location = new System.Drawing.Point(0, 0);
             currentAddingAgent.Health.MaxValue = 100;
             currentAddingAgent.Health.CurrentUnitValue = 100;
             Agents.Add(currentAddingAgent);			
 			
-			currentAddingAgent = new AgentIndigo();
+			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.HomeWorld = this;
             currentAddingAgent.Location = new System.Drawing.Point(0, 5);
             currentAddingAgent.Health.MaxValue = 100;
             currentAddingAgent.Health.CurrentUnitValue = 100;
             Agents.Add(currentAddingAgent);
 			
-			currentAddingAgent = new AgentIndigo();
+			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.HomeWorld = this;
             currentAddingAgent.Location = new System.Drawing.Point(5, 5);
             currentAddingAgent.Health.MaxValue = 100;
@@ -128,7 +128,7 @@ namespace IndigoEngine
 
         void UpdateAgentFeelings()
         {
-            foreach (AgentIndigo agent in Agents.Where(a => { return a is AgentIndigo; }))
+            foreach (AgentLivingIndigo agent in Agents.Where(a => { return a is AgentLivingIndigo; }))
             {
                 agent.FieldOfView.Clear();
                 /*

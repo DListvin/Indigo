@@ -48,6 +48,7 @@
     <Compile Include="Agents\AgentIndigo.cs" />
     <Compile Include="Agents\AgentItemFruit.cs" />
     <Compile Include="Agents\AgentItemLog.cs" />
+    <Compile Include="Agents\AgentLiving.cs" />
     <Compile Include="Agents\AgentPuddle.cs" />
     <Compile Include="Agents\AgentTree.cs" />
     <Compile Include="Agents\Characteristic.cs" />
