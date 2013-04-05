@@ -7,52 +7,60 @@ namespace IndigoEngine.Agents
 {
 	public static class Skills
 	{
+		/// <summary>
+		/// Default skill of woodcutting
+		/// </summary>
 		public static Skill Woodcutting	
 		{
 			get
 			{
-				//VAR
-					Skill result;	//Default skill of woodcutting
-				//VAR
+				Skill result;	//Result of the function
+
 				result = new Skill();
 				result.Name = "Woodcutting";
 				return result;
 			}
 		}
 
+		/// <summary>
+		/// Default skill of camp constructing
+		/// </summary>
 		public static Skill CampConstructing
 		{
 			get
 			{
-				//VAR
-					Skill result;	//Default skill of camp constructing
-				//VAR
+				Skill result;	//Result of the function
+				
 				result = new Skill();
 				result.Name = "CampConstructing";
 				return result;
 			}
 		}
 
+		/// <summary>
+		/// Default skill of camp gathering
+		/// </summary>
 		public static Skill Gathering
 		{
 			get
 			{
-				//VAR
-					Skill result;	//Default skill of camp gathering
-				//VAR
+				Skill result;	//Result of the function
+
 				result = new Skill();
 				result.Name = "Gathering";
 				return result;
 			}
 		}
 
+		/// <summary>
+		/// Default skill of camp communicationing
+		/// </summary>
 		public static Skill Communicationing
 		{
 			get
 			{
-				//VAR
-					Skill result;	//Default skill of camp communicationing
-				//VAR
+				Skill result;	//Result of the function
+
 				result = new Skill();
 				result.Name = "Communicationing";
 				return result;

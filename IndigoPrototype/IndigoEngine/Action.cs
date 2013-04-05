@@ -6,58 +6,55 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
-    /// <summary>
-    /// An action, suggested by agent and performed by world
-    /// </summary>
-    interface IAction
+    public abstract class Action : ITypicalAction
     {
-        Agent Object { get; set; }
-        Agent Subject { get; set; }
+        Agent obj, subj;            //Object and subject of the action
+        private bool mayBeConflict; //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
 
-        bool MayBeConflict { get; }
+		#region Constructors
 
-        void Perform();
-    }
+		public Action()
+		{
+		}
 
-    abstract public class Action : IAction
-    {
-        Agent obj, subj;
-        protected bool mayBeConflict;
-
-        public Action(Agent obj, Agent subj)
+        public Action(Agent argObj, Agent argSubj) 
+			:this()
         {
-            this.obj = obj;
-            this.subj = subj;
+            Object = argObj;
+            Subject = argSubj;
         }
+
+		#endregion
+
+		#region Properties
+
+		#region ITypicalAgent realisation
 
         public Agent Object
         {
-            get
-            {
-                return obj;
-            }
-            set
-            {
-                obj = value;
-            }
+            get { return obj; }
+            set { obj = value; }
         }
 
         public Agent Subject
         {
-            get
-            {
-                return subj;
-            }
-            set
-            {
-                subj = value;
-            }
+            get { return subj; }
+            set { subj = value; }
         }
 
-        public bool MayBeConflict { get { return mayBeConflict; } }
+        public bool MayBeConflict 
+		{
+			get { return mayBeConflict; } 
+			set { mayBeConflict = value; }
+		}
 
+		#endregion
+
+		#endregion
+
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
         public virtual void Perform() { }
     }
-
-    public delegate void ActionFeedback();
 }

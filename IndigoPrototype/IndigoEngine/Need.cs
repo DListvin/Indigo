@@ -6,112 +6,95 @@ using System.Text;
 namespace IndigoEngine
 {
     /// <summary>
-    /// Main interfase of indigo need 
-    /// </summary>
-    interface ITypicalNeed
-    {
-        int NeedLevel { get; }
-        int NeedSubLevel { get; }
-        List<Action> SatisfyingActionIDs { get; }
-    }
-
-    /// <summary>
     /// Class of need
     /// </summary>
     public class Need : NameableObject, ITypicalNeed
     {
-        string name;
-        int needLevel; // need level like in Maslow's hierarchy of needs 
-        int needSubLevel; // sublevel to more flexible model
-        List<Action> satisfyingActionIDs;
+        int needLevel;                    //Need level like in Maslow's hierarchy of needs 
+        int needSubLevel;                 //Sublevel to more flexible model
+        List<Action> satisfyingActionIDs; //List of actions, that can satisfy the need
 
         #region Constructors
 
+		/// <summary>
+		/// Empty constructor, fills the class with default values
+		/// </summary>
         public Need()
         {
-            name = "Untitled need";
             needLevel = 10;
             needSubLevel = 1;
             satisfyingActionIDs = new List<Action>();
         }
+
         /// <summary>
         /// Need constuctor from one action
         /// </summary>
-        /// <param name="name">name of need</param>
-        /// <param name="needLevel">need level like in Maslow's hierarchy of needs </param>
-        /// <param name="needSubLevel">sublevel to more flexible model</param>
-        /// <param name="satisfyingActionID"> action, that satisfy this need</param>
-        public Need(string name, int needLevel, int needSubLevel, Action satisfyingActionID)
+        /// <param name="argName">name of need</param>
+        /// <param name="argNeedLevel">need level like in Maslow's hierarchy of needs </param>
+        /// <param name="argNeedSubLevel">sublevel to more flexible model</param>
+        /// <param name="argSatisfyingActionID"> action, that satisfy this need</param>
+        public Need(string argName, int argNeedLevel, int argNeedSubLevel, Action argSatisfyingActionID)
         {
-            this.name = name;
-            this.needLevel = needLevel;
-            this.needSubLevel = needSubLevel;
-            this.satisfyingActionIDs = new List<Action>();
-            this.satisfyingActionIDs.Add(satisfyingActionID);
+			Name = argName;
+            NeedLevel = argNeedLevel;
+            NeedSubLevel = argNeedSubLevel;
+            SatisfyingActionIDs = new List<Action>();
+            SatisfyingActionIDs.Add(argSatisfyingActionID);
         }
 
         /// <summary>
         /// Need constuctor from List of action
         /// </summary>
-        /// <param name="name">name of need</param>
-        /// <param name="needLevel">need level like in Maslow's hierarchy of needs</param>
-        /// <param name="needSubLevel">sublevel to more flexible model</param>
-        /// <param name="satisfyingActionIDs">actions, that satisfy this need</param>
-        public Need(string name, int needLevel, int needSubLevel, List<Action> satisfyingActionIDs)
+        /// <param name="argName">name of need</param>
+        /// <param name="argNeedLevel">need level like in Maslow's hierarchy of needs</param>
+        /// <param name="argNeedSubLevel">sublevel to more flexible model</param>
+        /// <param name="argSatisfyingActionIDs">actions, that satisfy this need</param>
+        public Need(string argName, int argNeedLevel, int argNeedSubLevel, List<Action> argSatisfyingActionIDs)
         {
-            this.name = name;
-            this.needLevel = needLevel;
-            this.needSubLevel = needSubLevel;
-            this.satisfyingActionIDs = satisfyingActionIDs;
+            Name = argName;
+            NeedLevel = argNeedLevel;
+            NeedSubLevel = argNeedSubLevel;
+            SatisfyingActionIDs = argSatisfyingActionIDs;
         }
 
-        public Need(string name, int needLevel, List<Action> satisfyingActionIDs)
-        {
-            this.name = name;
-            this.needLevel = needLevel;
-            this.needSubLevel = 0;
-            this.satisfyingActionIDs = satisfyingActionIDs;
-        }
-        #endregion
+		/// <summary>
+		/// Need constuctor without need sublevel
+		/// </summary>
+		/// <param name="argName">name of need</param>
+		/// <param name="argNeedLevel">need level like in Maslow's hierarchy of needs</param>
+		/// <param name="argSatisfyingActionIDs">actions, that satisfy this need</param>
+        public Need(string argName, int argNeedLevel, List<Action> argSatisfyingActionIDs) 
+			: this(argName, argNeedLevel, 0, argSatisfyingActionIDs)
+		{
+		}
 
-        #region ITypicalNeed realisation
+		#endregion
+
+		#region ITypicalNeed realisation
+
         public int NeedLevel
         {
-            get
-            {
-                return needLevel;
-            }
+            get { return needLevel; }
+			set { needLevel = value; }
         }
+
         public int NeedSubLevel
         {
-            get
-            {
-                return needSubLevel;
-            }
+            get { return needSubLevel; }
+			set { needSubLevel = value; }
         }
+
         public List<Action> SatisfyingActionIDs
         {
-            get
-            {
-                return satisfyingActionIDs;
-            }
+            get { return satisfyingActionIDs; }
+			set { satisfyingActionIDs = value; }
         }
+
         #endregion
 
         public override string ToString()
         {
-            return name + ", lvl " + needLevel.ToString() + "," + needSubLevel.ToString();
-        }
-    }
-
-    public static class Needs
-    {
-        public static Need NeedExample
-        {
-            get
-            {
-                return new Need("exmpl", 1, 0, new ActionExample(null, null, 1));
-            }
+            return Name + ", lvl " + NeedLevel.ToString() + "," + NeedSubLevel.ToString();
         }
     }
 }

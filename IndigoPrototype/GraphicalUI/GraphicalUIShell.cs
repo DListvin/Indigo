@@ -12,6 +12,6 @@ namespace GraphicalUI
     static class GraphicalUIShell
     {
         //Attached model to observe
-        static IObservableModel model = null;
+        //static IObservableModel model = null;
     }
 }

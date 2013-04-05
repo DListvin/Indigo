@@ -6,24 +6,53 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
-    class ActionExample : Action
+	/// <summary>
+	/// Example of action. Delete it after you invent some actual actions
+	/// </summary>
+    public class ActionAttack : Action
     {
-        int health;
+        int hitPointsToTakeOff;
 
-        public ActionExample(Agent obj, Agent subj, int health)
-            : base(obj, subj)
+		#region Constructors
+
+		public ActionAttack(Agent argObj, Agent argSubj, int argHitPointsToTakeOff) 
+			: base(argObj, argSubj)
         {
-            this.health = health;
-            this.mayBeConflict = true;
+            HitPointsToTakeOff = argHitPointsToTakeOff;
+            MayBeConflict = true;
         }
 
+		#endregion
+
+		#region Properties
+
+		public int HitPointsToTakeOff
+		{
+			get { return hitPointsToTakeOff; }
+			set { hitPointsToTakeOff = value; }
+		}
+
+		#endregion
+
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
         public override void Perform()
         {
             if (Object.Health.CurrentPercentValue > 60)
             {
-                Object.ActionFeedback = new ActionFeedback(() => { Object.Health.CurrentUnitValue -= health; });
+                Object.CurrentActionFeedback = new ActionFeedback(() => 
+				{
+					Object.Health.CurrentUnitValue -= HitPointsToTakeOff; 
+				});
 
-                Subject.ActionFeedback = new ActionFeedback(() => { if(Subject.Health.CurrentUnitValue + health <= Subject.Health.MaxValue) Subject.Health.CurrentUnitValue += health; });
+                Subject.CurrentActionFeedback = new ActionFeedback(() => 
+				{
+					if(Subject.Health.CurrentUnitValue + HitPointsToTakeOff <= Subject.Health.MaxValue) 
+					{
+						Subject.Health.CurrentUnitValue += HitPointsToTakeOff; 
+					}
+				});
             }
         }
     }

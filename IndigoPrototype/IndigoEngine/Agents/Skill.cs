@@ -5,43 +5,40 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
-	public class Skill :NameableObject, ITypicalSkill
+	public class Skill : NameableObject, ITypicalSkill
 	{
 		private int skillQuality;	//Level of skill
 
 		#region Constructors
 
-			public Skill() : base()
-			{
-				SkillQuality = 0;
-			}
+		public Skill() 
+			: base()
+		{
+			SkillQuality = 0;
+		}
 
 		#endregion
 
 		#region Properties
 		
-			#region ITypicalSkill realisation
+		#region ITypicalSkill realisation
 
-				public int SkillQuality
+		public int SkillQuality
+		{
+			get { return skillQuality; }
+			set
+			{
+				if(value < 0)
 				{
-					get
-					{
-						return skillQuality;
-					}
-					set
-					{
-						if(value < 0)
-						{
-							throw(new Exception(String.Format("Level of skill {0} is less than 0: {1}", this, value)));
-						}
-
-						skillQuality = value;
-					}
+					throw(new Exception(String.Format("Level of skill {0} is less than 0: {1}", this, value)));
 				}
 
-			#endregion
+				skillQuality = value;
+			}
+		}
 
 		#endregion
 
+		#endregion
 	}
 }

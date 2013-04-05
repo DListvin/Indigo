@@ -7,6 +7,6 @@ namespace IndigoEngine.Agents
 {
 	interface ITypicalSkill
 	{
-		int SkillQuality{get; set;}
+		int SkillQuality { get; set; }
 	}
 }

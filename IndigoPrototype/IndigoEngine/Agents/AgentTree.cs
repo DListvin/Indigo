@@ -9,9 +9,10 @@ namespace IndigoEngine.Agents
 	{		
 		#region Constructors
 			
-			public AgentTree() : base()
-			{
-			}
+		public AgentTree() 
+			: base()
+		{
+		}
 
 		#endregion
 

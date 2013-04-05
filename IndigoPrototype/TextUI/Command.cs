@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IndigoEngine;
 
 namespace TextUI
 {
@@ -9,51 +10,60 @@ namespace TextUI
     /// There is an action in command. Haven't tested parameters yet.
     /// </summary>
     /// <param name="p"></param>
-    delegate void CommandBody(params object[] p);
+    public delegate void CommandRealisation(params object[] p);
 
     /// <summary>
     /// A class for one textUI command
     /// </summary>
-    class Command
+    class Command : NameableObject
     {
-        string name;
         string description;
-        CommandBody command;
+        CommandRealisation commandBody;
         //List<Type> parameters;
 
-        public Command(string name, string description, CommandBody command /*, IEnumerable<Type> parameters*/)
+		#region Constructors
+
+        public Command(string argName, string argDescription, CommandRealisation argCommandBody /*, IEnumerable<Type> parameters*/)
+			:base()
         {
-            this.name = name;
-            this.description = description;
-            this.command = command;
+            Name = argName;
+            Description = argDescription;
+            commandBody = argCommandBody;
             //this.parameters = parameters.ToList();
         }
 
+		public Command()
+			:this("New command", "Does nothing", args => {})
+		{
+		}
+
+		#endregion
+
+		#region Properties
+
         public string Description
         {
-            get
-            {
-                return "-" + name + "\n    " + description;
-            }
+            get { return "-" + Name + "\n    " + description; }
+			set { description = value; }
         }
 
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-        }
+		public CommandRealisation CommandBody
+		{
+			get { return commandBody; }
+			set { commandBody = value; }
+		}
+
+		#endregion
 
         public void Execute(params object[] p)
         {
             try
             {
-                command.Invoke(p);
+                CommandBody.Invoke(p);
             }
             catch(Exception e)
             {
-                Console.WriteLine("Error executing command " + name + ":");
+                Console.WriteLine("Error executing command " + Name + ":");
                 Console.WriteLine("    " + e.ToString());
             }
         }

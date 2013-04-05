@@ -6,114 +6,94 @@ using System.Drawing;
 
 namespace IndigoEngine.Agents
 {
+    public delegate void ActionFeedback();
+
 	public abstract class Agent : NameableObject, ITypicalAgent 
 	{
-		private Characteristic health;   //Agent health
-		private Point? location;         //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
-		private ItemStorage inventory;   //Agent inventory
-		private int rangeOfView;         //Range of view of the agent (in cells around agent, apparently)
-        private ActionFeedback actionFeedback; //Action result
+		private Characteristic health;                //Agent health
+		private Point? location;                      //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
+		private ItemStorage inventory;                //Agent inventory
+        private ActionFeedback currentActionFeedback; //Current action result, that is needed to be perform
+        private World homeWorld;                      //Agent's world
 		
 		#region Constructors
 			
-			public Agent() : base()
-			{
-				Health = new Characteristic();
-				Health.Name = "Health";
-				
-				Location = new Point(0, 0);
+		public Agent() 
+			: base()
+		{
+			Health = new Characteristic();
+			Health.Name = "Health";
+			
+			Location = new Point(0, 0);
 
-				Inventory = new ItemStorage();
+			Inventory = new ItemStorage();
 
-				RangeOfView = 0;
-			}
+			HomeWorld = null;
+		}
 
 		#endregion
 
 		#region Properties
 					
-			#region ITypicalAgent realisation
+		#region ITypicalAgent realisation
 				
-				public Characteristic Health
-				{
-					get
-					{
-						return health;
-					}
-					set
-					{
-						health = value;
-					}
-				}
+		public Characteristic Health
+		{
+			get {return health;}
+			set	{health = value;}
+		}
 
-				public Point? Location
-				{
-					get
-					{
-						return location;
-					}
-					set
-					{
-						location = value;
-					}
-				}
+		public Point? Location
+		{
+			get	{return location;}
+			set	{location = value;}
+		}
 
-				public ItemStorage Inventory
-				{
-					get
-					{
-						return inventory;
-					}
-					set
-					{
-						inventory = value;
-					}
-				}
+		public ItemStorage Inventory
+		{
+			get	{return inventory;}
+			set {inventory = value;}
+		}
 
-				public int RangeOfView
-				{
-					get
-					{
-						return rangeOfView;
-					}
-					set
-					{
-						rangeOfView = value;
-					}
-				}
+		public ActionFeedback CurrentActionFeedback
+		{
+			get	{return currentActionFeedback;}
+			set	{currentActionFeedback = value;}
+		}
 
-                public ActionFeedback ActionFeedback
-                {
-                    get
-                    {
-                        return actionFeedback;
-                    }
-                    set
-                    {
-                        actionFeedback = value;
-                    }
-                }
+        public World HomeWorld
+        {
+            get { return homeWorld; }
+            set { homeWorld = value; }
+        }
 					
-			#endregion
+		#endregion
 
 		#endregion
 				
+		/// <summary>
+		/// ITypicalAgent
+		/// </summary>
 		public virtual void Decide()
 		{
 		}
-
-
-        /// <summary>
-        /// Modify it's charecterictics each turn.
-        /// </summary>
+		
+		/// <summary>
+		/// ITypicalAgent
+		/// </summary>
         public virtual void StateRecompute()
         {
         }
-
+		
+		/// <summary>
+		/// ITypicalAgent
+		/// </summary>
         public void PerformFeedback()
         {
-            if (actionFeedback != null)
-                actionFeedback.Invoke();
+            if (CurrentActionFeedback != null)
+			{
+                CurrentActionFeedback.Invoke();
+			}
         }
 	}
 }

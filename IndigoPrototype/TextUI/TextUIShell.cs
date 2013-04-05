@@ -16,8 +16,8 @@ namespace TextUI
         {
         }
 
-        public UnsetModelException(string message)
-            : base(message)
+        public UnsetModelException(string message) 
+			: base(message)
         {
         }
 
@@ -51,79 +51,133 @@ namespace TextUI
     /// Static class, making console UI.
     /// </summary>
     static class TextUIShell
-    {
-        //List of available commands
-        static List<Command> commands = new List<Command>();
+    {        
+        private static List<Command> listOfCommands;        //List of available commands        
+        private static IObservableModel model = null; //Attached model to observe
+		private static bool isRunning = true;         //Exit flag	
 
-        //Attached model to observe
-        static IObservableModel model = null;
+		#region Constructors
 
-        //Exit flag
-        static bool isRunning = true;
-
-        /// <summary>
-        /// Method for commands storage. Add them here.
-        /// </summary>
-        static void Initialise()
+        static TextUIShell()
         {
-            commands.Add(new Command("test", "Writes some test output", args => { Console.WriteLine("Some Test Output"); }));
-
-            commands.Add(new Command("help", "Prints all possible commands with description", args =>
-            {
-                foreach (Command c in commands)
-                    Console.WriteLine(c.Description);
-            }));
-
-            commands.Add(new Command("exit", "Stops the entire UI", args =>
-            {
-                if(model.State == ModelState.Running && model.State == ModelState.Paused)
-                Console.WriteLine("Stopping model...");
-                model.Stop();
-                Console.WriteLine("Model stopped...");
-                isRunning = false;
-            }));
-
-            commands.Add(new Command("start", "Starts model", args => { model.Start(); }));
-
-            commands.Add(new Command("pause", "Pauses model", args => { model.Pause(); }));
-
-            commands.Add(new Command("stop", "Stops model", args => { model.Stop(); }));
-
-            commands.Add(new Command("resume", "Resumes model from pause", args => { model.Resume(); }));
-
-            commands.Add(new Command("state", "Shows model state", args => { Console.WriteLine(model.State.ToString()); }));
-
-            commands.Add(new Command("iteration", "Shows model loop iteration", args => { Console.WriteLine(model.ModelIterations); }));
-
-            commands.Add(new Command("tick", "Shows model loop iteration tick interval", args => { Console.WriteLine(model.ModelIterationTick); }));
-
-            commands.Add(new Command("settick", "Sets model loop iteration in ms (ex: -settick 3000)", args =>
-            {
-                var ms = args[1] as string;
-                model.ModelIterationTick = TimeSpan.FromMilliseconds(Convert.ToInt16(ms));
-            }));
-
-            commands.Add(new Command("agents", "Lists all agents in the world", args =>
-            {
-                foreach (Agent agent in model.Agents)
-                    Console.WriteLine(agent.ToString());                
-            }));
+            Initialise();
         }
+
+		#endregion
+
+		#region Properties
 
         /// <summary>
         /// Property for attaching model. Think i'll modify thir connection somehow later
         /// </summary>
         public static IObservableModel Model
         {
-            set
-            {
-                model = value;
-            }
+			get { return model; }
+            set { model = value; }
         }
 
-        static TextUIShell()
+		public static bool IsRunning
+		{
+			get { return isRunning; }
+			set { isRunning = value; }
+		}
+
+		public static List<Command> ListOfCommands
+		{
+			get { return listOfCommands; }
+			set { listOfCommands = value; }
+		}
+
+		#endregion
+
+        /// <summary>
+        /// Method for commands storage. Add them here.
+        /// </summary>
+        static void Initialise()
         {
-            Initialise();
+			ListOfCommands= new List<Command>();
+
+            ListOfCommands.Add(new Command("test", "Writes some test output", args => 
+			{
+				Console.WriteLine("Some Test Output"); 
+			}));
+
+            ListOfCommands.Add(new Command("help", "Prints all possible commands with description", args =>
+            {
+                foreach (Command c in ListOfCommands)
+				{
+                    Console.WriteLine(c.Description);
+				}
+            }));
+
+            ListOfCommands.Add(new Command("exit", "Stops the entire UI", args =>
+            {
+                if(Model.State == ModelState.Running || Model.State == ModelState.Paused)
+				{
+					Console.WriteLine("Stopping model...");
+					Model.Stop();
+					Console.WriteLine("Model stopped.");
+					IsRunning = false;
+				}
+            }));
+
+            ListOfCommands.Add(new Command("start", "Starts model", args => 
+			{
+				Console.WriteLine("Starting model...");
+				Model.Start(); 
+				Console.WriteLine("Model started.");
+			}));
+
+            ListOfCommands.Add(new Command("pause", "Pauses model", args => 
+			{
+				Console.WriteLine("Pausing model...");
+				Model.Pause(); 
+				Console.WriteLine("Model paused.");
+			}));
+
+            ListOfCommands.Add(new Command("stop", "Stops model", args => 
+			{
+				Console.WriteLine("Stopping model...");
+				Model.Stop(); 
+				Console.WriteLine("Model stopped.");
+			}));
+
+            ListOfCommands.Add(new Command("resume", "Resumes model from pause", args => 
+			{
+				Console.WriteLine("Resuming model...");
+				Model.Resume(); 
+				Console.WriteLine("Model resumed.");
+			}));
+
+            ListOfCommands.Add(new Command("state", "Shows model state", args => 
+			{ 
+				Console.WriteLine("Model state: " + Model.State.ToString()); 
+			}));
+
+            ListOfCommands.Add(new Command("iteration", "Shows model loop iteration", args => 
+			{
+				Console.WriteLine("Current model iteration: " + Model.PassedModelIterations); 
+			}));
+
+            ListOfCommands.Add(new Command("tick", "Shows model loop iteration tick interval", args => 
+			{
+				Console.WriteLine("Current tick interval: " + Model.ModelIterationTick); 
+			}));
+
+            ListOfCommands.Add(new Command("settick", "Sets model loop iteration in ms (ex: -settick 3000)", args =>
+            {
+                var ms = args[1] as string;
+                Model.ModelIterationTick = TimeSpan.FromMilliseconds(Convert.ToInt16(ms));
+				Console.WriteLine("Tick set to: " + Model.ModelIterationTick); 
+            }));
+
+            ListOfCommands.Add(new Command("agents", "Lists all agents in the world", args =>
+            {
+                foreach (Agent agent in Model.SimulatingWorld.Agents)
+				{
+                    Console.WriteLine(agent.ToString());                
+				}
+            }));
         }
 
         /// <summary>
@@ -143,22 +197,21 @@ namespace TextUI
             {
                 try
                 {
-                string input = Console.ReadLine();
+					string input = Console.ReadLine();
 
-                string[] parsedInput = input.Split(' ');
+					string[] parsedInput = input.Split(' ');
 
-                if (parsedInput.Length == 0)
-                    throw new WrongInputException("Empty string in input. Type -help to see available commands.");
+					if (parsedInput.Length == 0)
+						throw new WrongInputException("Empty string in input. Type -help to see available commands.");
 
-                if(!parsedInput[0].StartsWith("-"))
-                    throw new WrongInputException("Each command shoud start with -. Don't know why, actualy.");
+					if(!parsedInput[0].StartsWith("-"))
+						throw new WrongInputException("Each command shoud start with -. Don't know why, actualy.");
 
-                if(!commands.Exists(c => c.Name == parsedInput[0].Substring(1)))
-                    throw new WrongInputException("There in no command with this name. Type -help to see list of available commands.");
+					if(!listOfCommands.Exists(c => c.Name == parsedInput[0].Substring(1)))
+						throw new WrongInputException("There in no command with this name. Type -help to see list of available commands.");
 
-                //Execute typed command
-                commands.First(c => c.Name == parsedInput[0].Substring(1)).Execute(parsedInput);
-
+					//Execute typed command
+					ListOfCommands.First(c => c.Name == parsedInput[0].Substring(1)).Execute(parsedInput);
                 }
                 catch (Exception e)
                 {

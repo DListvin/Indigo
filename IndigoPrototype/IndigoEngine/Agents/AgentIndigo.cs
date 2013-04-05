@@ -7,7 +7,7 @@ namespace IndigoEngine.Agents
 {
     class AgentIndigo : Agent
     {
-        #region Characteristics
+        #region Characteristics variables
 
         private Characteristic strenght;       //Streght, controling by physical activities
         private Characteristic stamina;        //Stamina, controling by physical activities
@@ -22,18 +22,18 @@ namespace IndigoEngine.Agents
         #endregion
 
         private List<Skill> skillsList;  //List of skills that are available to indigo
-        private int rangeOfView;         //Range of view of the indigo
-        private List<Agent> fieldOfView;
-        private World world;
-
+		private int rangeOfView;         //Range of view of the agent (in cells around agent, apparently)
+        private List<Agent> fieldOfView; //Agent's field ov view. Includes all agents, that current agent can see
 
         #region Constructors
 
-        public AgentIndigo(World creator)
-            : base()
+        public AgentIndigo()
+			: base()
         {
-            world = creator;
+			RangeOfView = 0;
             fieldOfView = new List<Agent>();
+
+			#region Characteristics set up
 
             Strenght = new Characteristic();
             Strenght.Name = "Strenght";
@@ -53,6 +53,8 @@ namespace IndigoEngine.Agents
             Aggressiveness = new Characteristic();
             Aggressiveness.Name = "Aggressiveness";
 
+			#endregion
+
             SkillsList = new List<Skill>();
             SkillsList.Add(Skills.Woodcutting);
             SkillsList.Add(Skills.Gathering);
@@ -63,125 +65,59 @@ namespace IndigoEngine.Agents
 
         #region Properties
 
-        public World World
+        public int RangeOfView
         {
-            get
-            {
-                return world;
-            }
-            set
-            {
-                world = value;
-            }
+            get { return rangeOfView; }
+            set { rangeOfView = value; }
         }
 
         public List<Agent> FieldOfView
         {
-            get
-            {
-                return fieldOfView;
-            }
-            set
-            {
-                fieldOfView = value;
-            }
+            get { return fieldOfView; }
+			set { fieldOfView = value; }
         }
 
         public Characteristic Strenght
         {
-            get
-            {
-                return strenght;
-            }
-            set
-            {
-                strenght = value;
-            }
+            get { return strenght; }
+            set { strenght = value; }
         }
 
         public Characteristic Stamina
         {
-            get
-            {
-                return stamina;
-            }
-            set
-            {
-                stamina = value;
-            }
+            get { return stamina; }
+            set { stamina = value; }
         }
 
         public Characteristic Intelegence
         {
-            get
-            {
-                return intelegence;
-            }
-            set
-            {
-                intelegence = value;
-            }
+            get { return intelegence; }
+            set { intelegence = value; }
         }
 
         public Characteristic Hunger
         {
-            get
-            {
-                return hunger;
-            }
-            set
-            {
-                hunger = value;
-            }
+            get { return hunger; }
+            set { hunger = value; }
         }
 
         public Characteristic Thirst
         {
-            get
-            {
-                return thirst;
-            }
-            set
-            {
-                thirst = value;
-            }
+            get { return thirst; }
+            set { thirst = value; }
         }
 
         public Characteristic Aggressiveness
         {
-            get
-            {
-                return aggressiveness;
-            }
-            set
-            {
-                aggressiveness = value;
-            }
+            get { return aggressiveness; }
+            set { aggressiveness = value; }
         }
 
         public List<Skill> SkillsList
         {
-            get
-            {
-                return skillsList;
-            }
-            set
-            {
-                skillsList = value;
-            }
-        }
-
-        public int RangeOfView
-        {
-            get
-            {
-                return rangeOfView;
-            }
-            set
-            {
-                rangeOfView = value;
-            }
-        }
+            get { return skillsList; }
+            set { skillsList = value; }
+        }		
 
         #endregion
 
@@ -222,10 +158,8 @@ namespace IndigoEngine.Agents
             Action act = need.SatisfyingActionIDs[0];
             act.Object = this;
             act.Subject = fieldOfView[0];
-            world.AskWorldForAnAction(act);
+            HomeWorld.AskWorldForAnAction(act);
         }
-
-
 
         public override string ToString()
         {

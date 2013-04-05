@@ -9,37 +9,58 @@ namespace IndigoEngine
     /// <summary>
     /// World - logical moments in model.
     /// </summary>
-    class World
+    public class World
     {
-        List<Agent> agents;
-        List<IAction> actions;
+        private List<Agent> agents;           //List of all agents in the world
+        private List<Action> actions; //List of all actions, that must be performed (refreshing each loop iteration)
+		
+		#region Constructors
 
-        public IEnumerable<Agent> Agents
+        public World()
         {
-            get
-            {
-                return agents;
-            }
+            Initialise();
         }
+	
+		#endregion
+
+		#region Properties
+
+        public List<Agent> Agents
+        {
+            get { return agents; }
+			set { agents = value; }
+        }
+
+        public List<Action> Actions
+        {
+            get { return actions; }
+			set { actions = value; }
+        }
+
+		#endregion
 
         /// <summary>
         /// Here is the main loop
         /// </summary>
         public void MainLoopIteration()
         {
-            actions.Clear();
+            Actions.Clear();
 
             UpdateAgentFeelings();
 
-            foreach (Agent agent in agents)
+            foreach (Agent agent in Agents)
+			{
                 agent.Decide();
+			}
 
             SolveActionConflicts();
 
-            foreach (IAction action in actions)
+            foreach (ITypicalAction action in Actions)
+			{
                 action.Perform();
+			}
 
-            foreach (Agent agent in agents)
+            foreach (Agent agent in Agents)
             {
                 agent.PerformFeedback();
                 agent.StateRecompute();
@@ -51,41 +72,46 @@ namespace IndigoEngine
         /// </summary>
         public void Initialise()
         {
-            agents = new List<Agent>();
-            actions = new List<IAction>();
+			Agent currentAddingAgent; //Agent, that is adding to the world now. This variable is necessary to configure the agent
 
-            //Test init
-            agents.Add(new AgentIndigo(this));
-            agents.Last().Location = new System.Drawing.Point(0, 0);
-            agents.Last().Health.MaxValue = 100;
-            agents.Last().Health.CurrentUnitValue = 100;
+            Agents = new List<Agent>();
+            Actions = new List<Action>();
 
-            agents.Add(new AgentIndigo(this));
-            agents.Last().Location = new System.Drawing.Point(0, 5);
-            agents.Last().Health.MaxValue = 100;
-            agents.Last().Health.CurrentUnitValue = 100;
+            //Test init			
+			currentAddingAgent = new AgentIndigo();
+			currentAddingAgent.HomeWorld = this;
+            currentAddingAgent.Location = new System.Drawing.Point(0, 0);
+            currentAddingAgent.Health.MaxValue = 100;
+            currentAddingAgent.Health.CurrentUnitValue = 100;
+            Agents.Add(currentAddingAgent);			
+			
+			currentAddingAgent = new AgentIndigo();
+			currentAddingAgent.HomeWorld = this;
+            currentAddingAgent.Location = new System.Drawing.Point(0, 5);
+            currentAddingAgent.Health.MaxValue = 100;
+            currentAddingAgent.Health.CurrentUnitValue = 100;
+            Agents.Add(currentAddingAgent);
+			
+			currentAddingAgent = new AgentIndigo();
+			currentAddingAgent.HomeWorld = this;
+            currentAddingAgent.Location = new System.Drawing.Point(5, 5);
+            currentAddingAgent.Health.MaxValue = 100;
+            currentAddingAgent.Health.CurrentUnitValue = 100;
+            Agents.Add(currentAddingAgent);
 
-            agents.Add(new AgentIndigo(this));
-            agents.Last().Location = new System.Drawing.Point(5, 5);
-            agents.Last().Health.MaxValue = 100;
-            agents.Last().Health.CurrentUnitValue = 100;
-
-            agents.Add(new AgentItemLog());
-        }
-
-        public World()
-        {
-            Initialise();
+			currentAddingAgent = new AgentItemLog();
+			currentAddingAgent.HomeWorld = this;
+            Agents.Add(currentAddingAgent);
         }
 
         /// <summary>
-        /// It is for agent for asking world of an action. Positive return mean action is accepted.
+        /// It is for agent for asking world of an action. 
         /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        public bool AskWorldForAnAction(IAction action)
+        /// <param name="action">Action which agent is asking for</param>
+        /// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
+        public bool AskWorldForAnAction(Action action)
         {
-            actions.Add(action);
+            Actions.Add(action);
             return true;
         }
 
@@ -95,11 +121,14 @@ namespace IndigoEngine
         void SolveActionConflicts()
         {
             //kuyvkhguvkty
+			//     ^
+			//     |
+			//We shouldn't delete this, VERY IMPORTANT!
         }
 
         void UpdateAgentFeelings()
         {
-            foreach (AgentIndigo agent in agents.Where(a => { return a is AgentIndigo; }))
+            foreach (AgentIndigo agent in Agents.Where(a => { return a is AgentIndigo; }))
             {
                 agent.FieldOfView.Clear();
                 /*
@@ -111,7 +140,7 @@ namespace IndigoEngine
                             Math.Pow((agent.Location.Value.Y - a.Location.Value.Y), 2)) < agent.RangeOfView;
                     }));
                 }*/
-                agent.FieldOfView.AddRange(agents.Where(a => { return a != agent; }));
+                agent.FieldOfView.AddRange(Agents.Where(ag => { return ag != agent; }));
             }
         }
     }

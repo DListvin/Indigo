@@ -9,9 +9,10 @@ namespace IndigoEngine.Agents
 	{
 		#region Constructors
 			
-			public AgentPuddle() : base()
-			{
-			}
+		public AgentPuddle()
+			: base()
+		{
+		}
 
 		#endregion
 

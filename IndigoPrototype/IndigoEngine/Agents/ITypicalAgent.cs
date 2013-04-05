@@ -12,26 +12,41 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Operations with health characteristic
 		/// </summary>
-		Characteristic Health{get; set;}
+		Characteristic Health { get; set; }
 
 		/// <summary>
 		/// Operations with agent location in the world grid
 		/// </summary>
-		Point? Location{get; set;}
+		Point? Location { get; set; }
 
 		/// <summary>
 		/// Operations with agent inventory
 		/// </summary>
-		ItemStorage Inventory{get; set;}
+		ItemStorage Inventory { get; set; }
+		
+		/// <summary>
+		/// Operations with action feeeback
+		/// </summary>
+		ActionFeedback CurrentActionFeedback { get; set; }
 
 		/// <summary>
-		/// Operations with agent range of view
+		/// Operations with agent's world
 		/// </summary>
-		int RangeOfView{get; set;}
+        World HomeWorld{ get; set; }
 
 		/// <summary>
 		/// Making a decision about action in the current phase
 		/// </summary>
 		void Decide();	
+		
+        /// <summary>
+        /// Modify it's charecterictics each turn.
+        /// </summary>
+        void StateRecompute();
+
+		/// <summary>
+		/// Apply action feedback to agent
+		/// </summary>
+		void PerformFeedback();
 	}
 }

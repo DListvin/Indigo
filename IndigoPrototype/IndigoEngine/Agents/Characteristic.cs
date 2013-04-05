@@ -5,83 +5,80 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
-	public class Characteristic :NameableObject, ITypicalCharacteristic
+	public class Characteristic : NameableObject, ITypicalCharacteristic
 	{
-		private int maxValue;           //Maximum value of the characteristic
-		private const int minValue = 0; //Minimum value of the characteristic
-		private int currentValue;       //Current value of the characteristic
+		private int maxValue = 100;     //Maximum value of the characteristic
+		private int minValue = 0;   //Minimum value of the characteristic
+		private int currentValue;     //Current value of the characteristic
 
 		#region Constructors
 
-			public Characteristic() : base()
-			{
-				MaxValue = 100;
-				CurrentUnitValue = MaxValue;
-			}
+		public Characteristic() 
+			: base()
+		{
+			CurrentUnitValue = MaxValue;
+		}
 
 		#endregion
 
 		#region Properties
 		
-			#region ITypicalCharacteristic realisation
+		#region ITypicalCharacteristic realisation
 
-				public int MaxValue
+		public int MaxValue
+		{
+			get { return maxValue; }
+			set
+			{	
+				if(value <= MinValue)
 				{
-					get
-					{
-						return maxValue;
-					}
-					set
-					{	
-						if(value <= MinValue)
-						{
-							throw(new Exception(String.Format("Maximum value of {0} is less or equal to minimum: {1}!", this, value)));
-						}
-						maxValue = value;
-						if(CurrentUnitValue > MaxValue)
-						{
-							CurrentUnitValue = MaxValue;
-						}
-					}
+					throw(new Exception(String.Format("Maximum value of {0} is less or equal to minimum: {1}!", this, value)));
 				}
+				maxValue = value;
+				if(CurrentUnitValue > MaxValue)
+				{
+					CurrentUnitValue = MaxValue;
+				}
+			}
+		}
 
-				public int MinValue
+		public int MinValue
+		{
+			get	{ return minValue; }
+			set
+			{ 
+				if(value >= MaxValue)
 				{
-					get
-					{
-						return minValue;
-					}
+					throw(new Exception(String.Format("Minimum value of {0} is more or equal to maximum: {1}!", this, value)));
 				}
+				minValue = value;
+				if(CurrentUnitValue < MinValue)
+				{
+					CurrentUnitValue = MinValue;
+				}
+			}
+		}
 			
-				public int CurrentUnitValue
+		public int CurrentUnitValue
+		{
+			get	{ return currentValue; }
+			set
+			{
+				if(value < MinValue || value > MaxValue)
 				{
-					get
-					{
-						return currentValue;
-					}
-					set
-					{
-						if(value < MinValue || value > MaxValue)
-						{
-							throw(new Exception(String.Format("Current value of {0} is out of borders: {1}!", this, value)));						
-						}
-						currentValue = value;
-					}
+					throw(new Exception(String.Format("Current value of {0} is out of borders: {1}!", this, value)));						
 				}
+				currentValue = value;
+			}
+		}
 
-				public int CurrentPercentValue
-				{
-					get
-					{
-						return (int)(((float)CurrentUnitValue / (float)MaxValue) * 100f);
-					}
-					set
-					{
-						CurrentUnitValue = (int)((float)MaxValue * (float)value / 100f);
-					}
-				}
+		public int CurrentPercentValue
+		{
+			get	{ return (int)(((float)CurrentUnitValue / Math.Abs((float)(MaxValue - MinValue))) * 100f); }
+			set	{ CurrentUnitValue = MinValue + (int)(Math.Abs((float)(MaxValue - MinValue)) * (float)value / 100f); }
+		}
 
-			#endregion
+		#endregion
 
 		#endregion
 

@@ -10,12 +10,12 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Operations with item storage content
 		/// </summary>
-		List<Agent> ItemList{get; set;}
+		List<Agent> ItemList { get; set; }
 
 		/// <summary>
 		/// Operations with storage size
 		/// </summary>
-		int StorageSize{get; set;}
+		int StorageSize { get; set; }
 
 		/// <summary>
 		/// Adding a new agent into storage

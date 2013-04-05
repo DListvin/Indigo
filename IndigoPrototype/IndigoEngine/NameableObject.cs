@@ -11,29 +11,30 @@ namespace IndigoEngine
 		
 		#region Constructors
 
-			public NameableObject()
+		public NameableObject()
+		{
+			try
 			{
-				Name = "Untitled " + this.GetType().ToString();
+				Name = "Untitled " + this.GetType().ToString().Split('.').Last();
 			}
+			catch(Exception)
+			{
+				this.GetType();
+			}
+		}
 
 		#endregion
 
 		#region Properties
 
-			/// <summary>
-			/// Operations with object name
-			/// </summary>
-			public string Name
-			{
-				get
-				{
-					return name;
-				}
-				set
-				{
-					name = value;
-				}
-			}
+		/// <summary>
+		/// Operations with object name
+		/// </summary>
+		public string Name
+		{
+			get	{ return name; }
+			set { name = value; }
+		}
 
 		#endregion
 	}
