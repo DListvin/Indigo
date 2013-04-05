@@ -29,6 +29,8 @@ namespace IndigoEngine
         {
             actions.Clear();
 
+            UpdateAgentFeelings();
+
             foreach (Agent agent in agents)
                 agent.Decide();
 
@@ -39,7 +41,8 @@ namespace IndigoEngine
 
             foreach (Agent agent in agents)
             {
-                //do update and action result performing
+                agent.PerformFeedback();
+                agent.StateRecompute();
             }
         }
 
@@ -52,7 +55,21 @@ namespace IndigoEngine
             actions = new List<IAction>();
 
             //Test init
-            agents.Add(new AgentIndigo());
+            agents.Add(new AgentIndigo(this));
+            agents.Last().Location = new System.Drawing.Point(0, 0);
+            agents.Last().Health.MaxValue = 100;
+            agents.Last().Health.CurrentUnitValue = 100;
+
+            agents.Add(new AgentIndigo(this));
+            agents.Last().Location = new System.Drawing.Point(0, 5);
+            agents.Last().Health.MaxValue = 100;
+            agents.Last().Health.CurrentUnitValue = 100;
+
+            agents.Add(new AgentIndigo(this));
+            agents.Last().Location = new System.Drawing.Point(5, 5);
+            agents.Last().Health.MaxValue = 100;
+            agents.Last().Health.CurrentUnitValue = 100;
+
             agents.Add(new AgentItemLog());
         }
 
@@ -68,10 +85,6 @@ namespace IndigoEngine
         /// <returns></returns>
         public bool AskWorldForAnAction(IAction action)
         {
-            throw new NotImplementedException();
-            //Decide wheather to accept or decline action
-
-            //If true,
             actions.Add(action);
             return true;
         }
@@ -81,7 +94,25 @@ namespace IndigoEngine
         /// </summary>
         void SolveActionConflicts()
         {
-            
+            //kuyvkhguvkty
+        }
+
+        void UpdateAgentFeelings()
+        {
+            foreach (AgentIndigo agent in agents.Where(a => { return a is AgentIndigo; }))
+            {
+                agent.FieldOfView.Clear();
+                /*
+                if (agent.Location.HasValue)
+                {
+                    agent.FieldOfView.AddRange(agents.Where(a =>
+                    {
+                        return a != agent && a.Location.HasValue && Math.Sqrt(Math.Pow((agent.Location.Value.X - a.Location.Value.X), 2) +
+                            Math.Pow((agent.Location.Value.Y - a.Location.Value.Y), 2)) < agent.RangeOfView;
+                    }));
+                }*/
+                agent.FieldOfView.AddRange(agents.Where(a => { return a != agent; }));
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ namespace IndigoEngine.Agents
 		private Point? location;         //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
 		private ItemStorage inventory;   //Agent inventory
 		private int rangeOfView;         //Range of view of the agent (in cells around agent, apparently)
+        private ActionFeedback actionFeedback; //Action result
 		
 		#region Constructors
 			
@@ -80,6 +81,18 @@ namespace IndigoEngine.Agents
 						rangeOfView = value;
 					}
 				}
+
+                public ActionFeedback ActionFeedback
+                {
+                    get
+                    {
+                        return actionFeedback;
+                    }
+                    set
+                    {
+                        actionFeedback = value;
+                    }
+                }
 					
 			#endregion
 
@@ -88,5 +101,19 @@ namespace IndigoEngine.Agents
 		public virtual void Decide()
 		{
 		}
+
+
+        /// <summary>
+        /// Modify it's charecterictics each turn.
+        /// </summary>
+        public virtual void StateRecompute()
+        {
+        }
+
+        public void PerformFeedback()
+        {
+            if (actionFeedback != null)
+                actionFeedback.Invoke();
+        }
 	}
 }

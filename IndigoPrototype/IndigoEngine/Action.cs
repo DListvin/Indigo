@@ -11,10 +11,53 @@ namespace IndigoEngine
     /// </summary>
     interface IAction
     {
-        //Object and Subject of action.
-        Agent Object { get; }
-        Agent Subject { set; }
+        Agent Object { get; set; }
+        Agent Subject { get; set; }
+
+        bool MayBeConflict { get; }
 
         void Perform();
     }
+
+    abstract public class Action : IAction
+    {
+        Agent obj, subj;
+        protected bool mayBeConflict;
+
+        public Action(Agent obj, Agent subj)
+        {
+            this.obj = obj;
+            this.subj = subj;
+        }
+
+        public Agent Object
+        {
+            get
+            {
+                return obj;
+            }
+            set
+            {
+                obj = value;
+            }
+        }
+
+        public Agent Subject
+        {
+            get
+            {
+                return subj;
+            }
+            set
+            {
+                subj = value;
+            }
+        }
+
+        public bool MayBeConflict { get { return mayBeConflict; } }
+
+        public virtual void Perform() { }
+    }
+
+    public delegate void ActionFeedback();
 }
