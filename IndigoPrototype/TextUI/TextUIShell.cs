@@ -204,6 +204,27 @@ namespace TextUI
                 listOfSubscribedCommands.Clear();
             }));
 
+            ListOfCommands.Add(new Command("actions", "list of all actions for last n turns (ex: -actions 5)", args =>
+            {
+                int? n;
+                if (args.Length > 1)
+                {
+                    n = Convert.ToInt16(args[1] as string);
+                    if (!n.HasValue)
+                        n = 5;
+                }
+                else
+                    n = 5;
+
+                for (int i = 0; i < n.Value; ++i)
+                {
+                    foreach (var action in Model.Actions[Math.Max(Model.PassedModelIterations - 1 - i, 0)])
+                    {
+                        Console.WriteLine("Iteration: " + (Model.PassedModelIterations - 1 - i).ToString() + "; Action: " + action.Name);
+                    }
+                }
+            }));
+
             ListOfCommands.Add(new Command("showshortmem", "Showing the short memory of the agent (ex: -showshortmem <agent_name>)", args =>
             {
                 var agentName = args[1] as string;
