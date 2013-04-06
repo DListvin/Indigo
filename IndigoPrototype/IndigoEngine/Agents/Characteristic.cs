@@ -11,8 +11,9 @@ namespace IndigoEngine.Agents
 	public class Characteristic : NameableObject, ITypicalCharacteristic
 	{
 		private int maxValue = 100;     //Maximum value of the characteristic
-		private int minValue = 0;   //Minimum value of the characteristic
-		private int currentValue;     //Current value of the characteristic
+		private int minValue = 0;       //Minimum value of the characteristic
+        private int criticalValue = 20; //Minimum value of the satisfied characteristic 
+		private int currentValue;       //Current value of the characteristic
 
 		#region Constructors
 
@@ -74,6 +75,20 @@ namespace IndigoEngine.Agents
 				currentValue = value;
 			}
 		}
+
+        public int CriticalValue
+        {
+            get { return criticalValue; }
+            set
+            {
+                if (value < MinValue || value > MaxValue)
+                {
+                    throw (new Exception(String.Format("Current value of {0} is out of borders: {1}!", this, value)));
+                }
+                criticalValue = value;
+            }
+        }
+
 
 		public int CurrentPercentValue
 		{

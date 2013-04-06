@@ -125,6 +125,7 @@ namespace IndigoEngine.Agents
                 Need mainNeed = EstimateMainNeed();
                 MakeAction(mainNeed);
             }
+            //looking through ShortMemory to find active tasks
 
         }
 		

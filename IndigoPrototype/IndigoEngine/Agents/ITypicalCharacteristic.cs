@@ -22,6 +22,11 @@ namespace IndigoEngine.Agents
 		/// </summary>
 		int CurrentUnitValue { get; set; }
 
+        /// <summary>
+        /// Operations with characteristic critical value in units
+        /// </summary>
+        int CriticalValue { get; set; }
+
 		/// <summary>
 		/// Operations with characteristic value in percents
 		/// </summary>
