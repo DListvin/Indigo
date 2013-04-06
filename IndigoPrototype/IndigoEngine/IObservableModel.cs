@@ -18,6 +18,11 @@ namespace IndigoEngine
         IEnumerable<Agent> Agents { get; }
 
         /// <summary>
+        /// Event, occured on iteration tick.
+        /// </summary>
+        event EventHandler ModelTick;
+
+        /// <summary>
         /// Collection of (iteration, actionCollection). Stores actions for some number of turns.
         /// </summary>
         IDictionary<long, IEnumerable<Action>> Actions { get; }

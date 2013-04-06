@@ -31,6 +31,8 @@ namespace IndigoEngine
         private ModelState state = ModelState.Uninitialised; //Model state from ModelState enum
 				
         private Thread modelThread;  //This object controls working model in other process
+
+        public event EventHandler ModelTick;
 		
 		#region Constructors
 
@@ -155,6 +157,12 @@ namespace IndigoEngine
                         simulatingWorld.MainLoopIteration();
 
                         //Work out the end of iteration
+
+                        //Sending a message
+                        if (ModelTick != null)
+                            ModelTick(this, null);
+
+
                         ManageActionStorage();
                         ++PassedModelIterations;
                         Thread.Sleep(ModelIterationTick);
