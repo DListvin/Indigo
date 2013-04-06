@@ -55,38 +55,41 @@ namespace TextUI
         private static List<Command> listOfCommands;  //List of available commands        
         private static IObservableModel model = null; //Attached model to observe
 		private static bool isRunning = true;         //Exit flag	
+        private static EventHandler Handler = new EventHandler(HandleTick); //Handler for world iteration event
+        private static List<Command> listOfSubscribedCommands; //List of commands run on world tick event.
+        private static bool isHandlingEvent = false;
 
 		#region Constructors
 
-        static TextUIShell()
-        {
-            Initialise();
-        }
+            static TextUIShell()
+            {
+                Initialise();
+            }
 
 		#endregion
 
 		#region Properties
 
-        /// <summary>
-        /// Property for attaching model. Think i'll modify thir connection somehow later
-        /// </summary>
-        public static IObservableModel Model
-        {
-			get { return model; }
-            set { model = value; }
-        }
+            /// <summary>
+            /// Property for attaching model. Think i'll modify thir connection somehow later
+            /// </summary>
+            public static IObservableModel Model
+            {
+			    get { return model; }
+                set { model = value; }
+            }
 
-		public static bool IsRunning
-		{
-			get { return isRunning; }
-			set { isRunning = value; }
-		}
+		    public static bool IsRunning
+		    {
+			    get { return isRunning; }
+			    set { isRunning = value; }
+		    }
 
-		public static List<Command> ListOfCommands
-		{
-			get { return listOfCommands; }
-			set { listOfCommands = value; }
-		}
+		    public static List<Command> ListOfCommands
+		    {
+			    get { return listOfCommands; }
+			    set { listOfCommands = value; }
+		    }
 
 		#endregion
 
@@ -96,6 +99,7 @@ namespace TextUI
         static void Initialise()
         {
 			ListOfCommands= new List<Command>();
+            listOfSubscribedCommands = new List<Command>();
 
             ListOfCommands.Add(new Command("test", "Writes some test output", args => 
 			{
@@ -179,6 +183,27 @@ namespace TextUI
 				}
             }));
 
+            ListOfCommands.Add(new Command("subscribe", "Subscribes commands on model tick (ex: -subscribe iteration agents)", args =>
+            {                
+                foreach(string command in args)
+                {
+                    if(command == "subscribe")
+                        continue;
+                    listOfSubscribedCommands.Add(ListOfCommands.FirstOrDefault(comm => { return comm.Name == command; }));
+                }
+                if(!isHandlingEvent)
+                    Model.ModelTick += Handler;
+
+                isHandlingEvent = true;
+            }));
+
+            ListOfCommands.Add(new Command("unsubscribe", "Unsubscribes all commands form event", args =>
+            {
+                isHandlingEvent = false;
+                Model.ModelTick -= Handler;
+                listOfSubscribedCommands.Clear();
+            }));
+
             ListOfCommands.Add(new Command("showshortmem", "Showing the short memory of the agent (ex: -showshortmem <agent_name>)", args =>
             {
                 var agentName = args[1] as string;
@@ -244,6 +269,12 @@ namespace TextUI
             }
 
             //Stop the model here
+        }
+
+        static void HandleTick(object sender, EventArgs e)
+        {
+            foreach (var c in listOfSubscribedCommands.Where(val => { return val != null; }))
+                c.Execute();
         }
     }
 }
