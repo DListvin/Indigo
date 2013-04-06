@@ -173,7 +173,7 @@ namespace TextUI
 
             ListOfCommands.Add(new Command("agents", "Lists all agents in the world", args =>
             {
-                foreach (Agent agent in Model.SimulatingWorld.Agents)
+                foreach (Agent agent in Model.Agents)
 				{
                     Console.WriteLine(agent.ToString());                
 				}
@@ -184,7 +184,7 @@ namespace TextUI
                 var agentName = args[1] as string;
                 
                 Console.WriteLine(
-					((AgentLiving)(Model.SimulatingWorld.Agents.First(ag => 
+					((AgentLiving)(Model.Agents.First(ag => 
 					{
 						return ag.Name == agentName;
 					}
@@ -196,7 +196,7 @@ namespace TextUI
                 var agentName = args[1] as string;
                 
                 Console.WriteLine(
-					((AgentLiving)(Model.SimulatingWorld.Agents.First(ag => 
+					((AgentLiving)(Model.Agents.First(ag => 
 					{
 						return ag.Name == agentName;
 					}

@@ -63,10 +63,10 @@ namespace IndigoEngine
 			set { state = value; }
 		} 
         
-        public World SimulatingWorld
+        public IEnumerable<Agent> Agents
         {
-            get { return simulatingWorld; }
-			set { simulatingWorld = value; }
+            get { return simulatingWorld.Agents; }
+			private set { simulatingWorld.Agents = value.ToList(); }
         }
 
 		#endregion
@@ -153,7 +153,7 @@ namespace IndigoEngine
                     if (State == ModelState.Running)
                     {
                         //There out main loop is running
-                        SimulatingWorld.MainLoopIteration();
+                        simulatingWorld.MainLoopIteration();
 
                         //Work out the end of iteration
                         ++PassedModelIterations;
