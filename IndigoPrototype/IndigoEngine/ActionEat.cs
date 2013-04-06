@@ -26,18 +26,17 @@ namespace IndigoEngine
 		/// </summary>
         public override void Perform()
         {
-            if (Object.CurrentState.Health.CurrentPercentValue > 60)
-            {
-                Object.CurrentActionFeedback = new ActionFeedback(() => 
-				{
-                    Object.CurrentState.Health.CurrentUnitValue = 0;
-				});
 
-                Subject.CurrentActionFeedback = new ActionFeedback(() => 
-				{
-                    (Subject.CurrentState as StateLiving).Hunger.CurrentPercentValue = 100;
-				});
-            }
+            Object.CurrentActionFeedback = new ActionFeedback(() =>
+            {
+                Object.CurrentState.Health.CurrentUnitValue = 0;
+            });
+
+            Subject.CurrentActionFeedback = new ActionFeedback(() =>
+            {
+                (Subject.CurrentState as StateLiving).Hunger.CurrentPercentValue = 100;
+            });
+
         }
 
 		public override string ToString()

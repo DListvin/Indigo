@@ -54,7 +54,7 @@ namespace IndigoEngine.Agents
 
         public override string ToString()
         {
-            return "Indigo: " + Name + " Health: " + CurrentState.Health.CurrentUnitValue.ToString();
+            return "Indigo: " + Name + " Health: " + CurrentState.Health.CurrentUnitValue.ToString() + (CurrentState as StateLiving).Hunger.ToString();
         }
     }
 }

@@ -105,6 +105,22 @@ namespace IndigoEngine
             (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
             Agents.Add(currentAddingAgent);
 
+            currentAddingAgent = new AgentItemFruit();
+            currentAddingAgent.Name = "Fruit1";
+            currentAddingAgent.HomeWorld = this;
+            currentAddingAgent.Location = new System.Drawing.Point(0, 2);
+            currentAddingAgent.CurrentState.Health.MaxValue = 100;
+            currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
+            Agents.Add(currentAddingAgent);
+
+            currentAddingAgent = new AgentItemFruit();
+            currentAddingAgent.Name = "Fruit2";
+            currentAddingAgent.HomeWorld = this;
+            currentAddingAgent.Location = new System.Drawing.Point(2, 0);
+            currentAddingAgent.CurrentState.Health.MaxValue = 100;
+            currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
+            Agents.Add(currentAddingAgent);
+
 			currentAddingAgent = new AgentItemLog();
 			currentAddingAgent.HomeWorld = this;
 			currentAddingAgent.Name = "Log1";

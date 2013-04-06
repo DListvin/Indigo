@@ -95,7 +95,7 @@ namespace IndigoEngine.Agents
 					{
 						if (value < MinValue || value > MaxValue)
 						{
-							throw (new Exception(String.Format("Current value of {0} is out of borders: {1}!", this, value)));
+							throw (new Exception(String.Format("Critical value of {0} is out of borders: {1}!", this, value)));
 						}
 						criticalValue = value;
 					}

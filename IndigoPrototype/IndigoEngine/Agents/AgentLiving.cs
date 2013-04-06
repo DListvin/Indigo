@@ -60,10 +60,10 @@ namespace IndigoEngine.Agents
 
             foreach (Action act in argNeed.SatisfyingActions)
             {
-                act.Object = this;
+                act.Subject = this;
                 foreach (Agent ag in FieldOfView.Where(val => { return act.AcceptedSubj.Exists( val2 => { return val2 == val.GetType(); }); }))
                 {
-                    act.Subject = ag;
+                    act.Object = ag;
                     worldResponseToAction = HomeWorld.AskWorldForAnAction(act);
                     if (worldResponseToAction)
                         break;
