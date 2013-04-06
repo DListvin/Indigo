@@ -8,7 +8,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Class for storaging characteristics of alive agents
 	/// </summary>
-	class StateLiving : State
+	public class StateLiving : State
 	{
 		#region Constructors
 
@@ -69,11 +69,17 @@ namespace IndigoEngine.Agents
 				return result;
 			}
 
-			public virtual static State operator-(State argState1, State argState2)
+			public static StateLiving operator-(StateLiving argState1, StateLiving argState2)
 			{
-				State result = new State();
+				StateLiving result = new StateLiving();				
 
 				result.Health = argState1.Health - argState2.Health;
+				result.Strenght = argState1.Strenght - argState2.Strenght;
+				result.Stamina = argState1.Stamina - argState2.Stamina;
+				result.Intelegence = argState1.Intelegence - argState2.Intelegence;
+				result.Hunger = argState1.Hunger - argState2.Hunger;
+				result.Thirst = argState1.Thirst - argState2.Thirst;
+				result.Aggressiveness = argState1.Aggressiveness - argState2.Aggressiveness;
 
 				return result;
 			}
