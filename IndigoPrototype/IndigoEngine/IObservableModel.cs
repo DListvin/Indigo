@@ -15,7 +15,7 @@ namespace IndigoEngine
 		/// <summary>
 		/// Operations with the world, that is simulating in the model
 		/// </summary>
-        World SimulatingWorld { get; set; }
+        IEnumerable<Agent> Agents { get; }
 
 		/// <summary>
 		/// Operations with model state
