@@ -45,7 +45,7 @@
     <Compile Include="ActionExample.cs" />
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\AgentCamp.cs" />
-    <Compile Include="Agents\AgentIndigo.cs" />
+    <Compile Include="Agents\AgentLivingIndigo.cs" />
     <Compile Include="Agents\AgentItemFruit.cs" />
     <Compile Include="Agents\AgentItemLog.cs" />
     <Compile Include="Agents\AgentLiving.cs" />
