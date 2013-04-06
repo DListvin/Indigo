@@ -36,7 +36,7 @@ namespace IndigoEngine.Agents
 					
 			#region ITypicalAgent realisation
 				
-				public virtual State CurrentState { get; set; }    //Current state of the agent
+				public State CurrentState { get; set; }    //Current state of the agent
 
 				public Point? Location { get; set; }       //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
 

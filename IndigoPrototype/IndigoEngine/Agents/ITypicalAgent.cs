@@ -12,7 +12,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Operations with health characteristic
 		/// </summary>
-		Characteristic Health { get; set; }
+		State CurrentState { get; set; }
 
 		/// <summary>
 		/// Operations with agent location in the world grid
