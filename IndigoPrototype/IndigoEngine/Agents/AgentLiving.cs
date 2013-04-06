@@ -136,7 +136,7 @@ namespace IndigoEngine.Agents
         /// Calculate the best decision of action to satisfy need
         /// </summary>
         /// <param name="argNeed">need, that must be satisfied</param>
-        protected virtual void MakeAction(Need need)
+        protected virtual void MakeAction(Need argNeed)
         {
            // Type necessaryAgentType = FindNecessaryAgent(need);
             bool worldResponseToAction = false;	//World response if the action is accepted
