@@ -10,7 +10,8 @@ namespace IndigoEngine
     {
         Agent obj, subj;            //Object and subject of the action
         private bool mayBeConflict; //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
-
+        private List<Type> acceptedSubj;
+        private List<Type> acceptedObj;
 		#region Constructors
 
 		public Action()
@@ -22,6 +23,8 @@ namespace IndigoEngine
         {
             Object = argObj;
             Subject = argSubj;
+            acceptedObj = new List<Type>();
+            acceptedSubj = new List<Type>();
         }
 
 		#endregion
@@ -33,7 +36,10 @@ namespace IndigoEngine
         public Agent Object
         {
             get { return obj; }
-            set { obj = value; }
+            set 
+            {
+                obj = value; 
+            }
         }
 
         public Agent Subject
@@ -47,6 +53,18 @@ namespace IndigoEngine
 			get { return mayBeConflict; } 
 			set { mayBeConflict = value; }
 		}
+
+        public List<Type> AcceptedSubj
+        {
+            get { return acceptedSubj; }
+            set { acceptedSubj = value; }
+        }
+
+        public List<Type> AcceptedObj
+        {
+            get { return acceptedObj; }
+            set { acceptedObj = value; }
+        }
 
 		#endregion
 

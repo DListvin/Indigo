@@ -14,6 +14,9 @@ namespace IndigoEngine
 			: base(argObj, argSubj)
         {
             MayBeConflict = true;
+            AcceptedObj.Add( typeof(AgentLiving));
+            AcceptedObj.Add(typeof(AgentLivingIndigo));
+            AcceptedSubj.Add(typeof(AgentItemFruit));
         }
 
 		#endregion

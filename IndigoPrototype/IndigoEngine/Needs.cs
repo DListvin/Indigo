@@ -12,9 +12,15 @@ namespace IndigoEngine
 		/// </summary>
         public static Need NeedExample
         {
-            get { return new Need("exmpl", 1, 0, new ActionAttack(null, null, 1)); }
+            get { return new Need("attack", 1, 0, new ActionAttack(null, null, 1)); }
         }
 
-
+        /// <summary>
+        /// Need to eat
+        /// </summary>
+        public static Need NeedEat
+        {
+            get { return new Need("exmpl", 1, 0, new ActionEat(null, null)); }
+        }
     }
 }

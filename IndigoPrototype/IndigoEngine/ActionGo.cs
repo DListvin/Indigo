@@ -19,6 +19,8 @@ namespace IndigoEngine
             Object = argObj;
             direction = dir;
             MayBeConflict = true;
+            AcceptedObj.Add(typeof(AgentLiving));
+            AcceptedObj.Add(typeof(AgentLivingIndigo));
         }
 
         #endregion

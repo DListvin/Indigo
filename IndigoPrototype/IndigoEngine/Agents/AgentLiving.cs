@@ -123,13 +123,8 @@ namespace IndigoEngine.Agents
 
             //looking through ShortMemory to find active tasks
             //if 1 step requied - complite
-            if (FieldOfView.Count > 0)
-            {
-                Need mainNeed = EstimateMainNeed();
-                MakeAction(mainNeed);
-            }
-           
-
+            Need mainNeed = EstimateMainNeed();
+            MakeAction(mainNeed);
         }
 		
         /// <summary>
@@ -138,30 +133,23 @@ namespace IndigoEngine.Agents
         /// <param name="argNeed">need, that must be satisfied</param>
         protected virtual void MakeAction(Need argNeed)
         {
-           // Type necessaryAgentType = FindNecessaryAgent(need);
             bool worldResponseToAction = false;	//World response if the action is accepted
-			
             if (argNeed.SatisfyingActions.Count == 0)
-			{
                 throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
-			}
-			foreach(Action act in argNeed.SatisfyingActions)
-			{
-				act.Object = this;
-				foreach(Agent ag in FieldOfView.Where( val => { return val is Agent;}))
-				{
-					act.Subject = ag;
-					worldResponseToAction = HomeWorld.AskWorldForAnAction(act);
-					if(worldResponseToAction)
-					{
-						break;
-					}
-				}
-				if(worldResponseToAction)
-				{
-					break;
-				}
-			}
+
+            foreach (Action act in argNeed.SatisfyingActions)
+            {
+                act.Object = this;
+                foreach (Agent ag in FieldOfView.Where(val => { return act.AcceptedSubj.Exists( val2 => { return val2 == val.GetType(); }); }))
+                {
+                    act.Subject = ag;
+                    worldResponseToAction = HomeWorld.AskWorldForAnAction(act);
+                    if (worldResponseToAction)
+                        break;
+                }
+                if (worldResponseToAction)
+                    break;
+            }
         }
 
         /// <summary>
@@ -180,8 +168,16 @@ namespace IndigoEngine.Agents
         /// <returns> main need</returns>
         protected virtual Need EstimateMainNeed()
         {
+            //List<Need> allNeed = new List<Need>();
+            if (hunger.CurrentUnitValue < hunger.CriticalValue)
+            {
+                return Needs.NeedEat;
+            }
+            else
+            {
+                return Needs.NeedExample;
+            }
 
-            return Needs.NeedExample;
         }
 
 		public override void StateRecompute()
@@ -190,6 +186,7 @@ namespace IndigoEngine.Agents
 
 			AgentsLongMemory.StoreShortMemory(AgentsShortMemory);
 			AgentsShortMemory.ForgetAll();
+            Hunger.CurrentUnitValue--;
 		}
 	}
 }
