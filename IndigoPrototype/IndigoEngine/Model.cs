@@ -86,7 +86,7 @@ namespace IndigoEngine
 		/// </summary>
         public void Initialise()
         {
-            SimulatingWorld = new World();
+            simulatingWorld = new World();
             PassedModelIterations = 0;
             ModelIterationTick = TimeSpan.FromSeconds(2);
             ModelThread = new Thread(MainLoop); //Specify the function to be performed in other process
