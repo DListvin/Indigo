@@ -120,29 +120,32 @@ namespace IndigoEngine.Agents
             //Kostya's logick here
             //World must control everything, that I'm trying to do
             //I can try to do everything.
+
+            //looking through ShortMemory to find active tasks
+            //if 1 step requied - complite
             if (FieldOfView.Count > 0)
             {
                 Need mainNeed = EstimateMainNeed();
                 MakeAction(mainNeed);
             }
-            //looking through ShortMemory to find active tasks
+           
 
         }
 		
-
         /// <summary>
         /// Calculate the best decision of action to satisfy need
         /// </summary>
         /// <param name="argNeed">need, that must be satisfied</param>
-        protected virtual void MakeAction(Need argNeed)
+        protected virtual void MakeAction(Need need)
         {
-			bool worldResponseToAction = false;	//Worl response if the action is accepted
+           // Type necessaryAgentType = FindNecessaryAgent(need);
+            bool worldResponseToAction = false;	//World response if the action is accepted
 			
-            if (argNeed.SatisfyingActionIDs.Count == 0)
+            if (argNeed.SatisfyingActions.Count == 0)
 			{
                 throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
 			}
-			foreach(Action act in argNeed.SatisfyingActionIDs)
+			foreach(Action act in argNeed.SatisfyingActions)
 			{
 				act.Object = this;
 				foreach(Agent ag in FieldOfView.Where( val => { return val is Agent;}))
@@ -162,11 +165,22 @@ namespace IndigoEngine.Agents
         }
 
         /// <summary>
+        /// Calclate resourse, which requied for satisfying need  
+        /// </summary>
+        /// <param name="need">need that must be satisfyied</param>
+        /// <returns></returns>
+        protected virtual Type FindNecessaryAgent(Need need)
+        {
+            return typeof(Agent);
+        }
+
+        /// <summary>
         /// Calculate one main need of agent at this moment
         /// </summary>
         /// <returns> main need</returns>
         protected virtual Need EstimateMainNeed()
         {
+
             return Needs.NeedExample;
         }
 

@@ -12,7 +12,7 @@ namespace IndigoEngine
     {
         int needLevel;                    //Need level like in Maslow's hierarchy of needs 
         int needSubLevel;                 //Sublevel to more flexible model
-        List<Action> satisfyingActionIDs; //List of actions, that can satisfy the need
+        List<Action> satisfyingActions; //List of actions, that can satisfy the need
 
         #region Constructors
 
@@ -23,7 +23,7 @@ namespace IndigoEngine
         {
             needLevel = 10;
             needSubLevel = 1;
-            satisfyingActionIDs = new List<Action>();
+            satisfyingActions = new List<Action>();
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace IndigoEngine
 			Name = argName;
             NeedLevel = argNeedLevel;
             NeedSubLevel = argNeedSubLevel;
-            SatisfyingActionIDs = new List<Action>();
-            SatisfyingActionIDs.Add(argSatisfyingActionID);
+            SatisfyingActions = new List<Action>();
+            SatisfyingActions.Add(argSatisfyingActionID);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace IndigoEngine
             Name = argName;
             NeedLevel = argNeedLevel;
             NeedSubLevel = argNeedSubLevel;
-            SatisfyingActionIDs = argSatisfyingActionIDs;
+            SatisfyingActions = argSatisfyingActionIDs;
         }
 
 		/// <summary>
@@ -84,10 +84,10 @@ namespace IndigoEngine
 			set { needSubLevel = value; }
         }
 
-        public List<Action> SatisfyingActionIDs
+        public List<Action> SatisfyingActions
         {
-            get { return satisfyingActionIDs; }
-			set { satisfyingActionIDs = value; }
+            get { return satisfyingActions; }
+			set { satisfyingActions = value; }
         }
 
         #endregion
