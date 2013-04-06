@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Agent for indigo
+	/// </summary>
     class AgentLivingIndigo : AgentLiving
     {
         #region Constructors

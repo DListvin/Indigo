@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 
 namespace IndigoEngine.Agents
-{
+{	
+	/// <summary>
+	/// Basic class for alive agents
+	/// </summary>
 	public abstract class AgentLiving : Agent
 	{
         #region Characteristics variables
@@ -171,6 +174,7 @@ namespace IndigoEngine.Agents
 			base.StateRecompute();
 
 			AgentsLongMemory.StoreShortMemory(AgentsShortMemory);
+			AgentsShortMemory.ForgetAll();
 		}
 	}
 }

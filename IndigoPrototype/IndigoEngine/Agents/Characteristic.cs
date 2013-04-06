@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Class for some characteristic of the agent
+	/// </summary>
 	public class Characteristic : NameableObject, ITypicalCharacteristic
 	{
 		private int maxValue = 100;     //Maximum value of the characteristic

@@ -6,8 +6,14 @@ using System.Drawing;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Delegate for storing feedback from the action
+	/// </summary>
     public delegate void ActionFeedback();
 
+	/// <summary>
+	/// Basic class of the agent. Used for inheritance for other agents
+	/// </summary>
 	public abstract class Agent : NameableObject, ITypicalAgent 
 	{
 		private Characteristic health;                //Agent health

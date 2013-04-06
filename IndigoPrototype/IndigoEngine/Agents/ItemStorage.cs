@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 
 namespace IndigoEngine.Agents
-{
+{	
+	/// <summary>
+	/// Class for inventory of the agent
+	/// </summary>
 	public class ItemStorage : ITypicalItemStorage
 	{
 		private List<Agent> itemList;  //List of items that are in this storage

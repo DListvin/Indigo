@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Agent for puddle
+	/// </summary>
 	class AgentPuddle : Agent
 	{
 		#region Constructors

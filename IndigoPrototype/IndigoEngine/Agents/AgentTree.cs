@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 
 namespace IndigoEngine.Agents
-{
+{	
+	/// <summary>
+	/// Agent for tree
+	/// </summary>
 	class AgentTree : Agent
 	{		
 		#region Constructors

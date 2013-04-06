@@ -52,7 +52,7 @@ namespace TextUI
     /// </summary>
     static class TextUIShell
     {        
-        private static List<Command> listOfCommands;        //List of available commands        
+        private static List<Command> listOfCommands;  //List of available commands        
         private static IObservableModel model = null; //Attached model to observe
 		private static bool isRunning = true;         //Exit flag	
 

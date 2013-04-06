@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Class for some skill of the agent
+	/// </summary>
 	public class Skill : NameableObject, ITypicalSkill
 	{
 		private int skillQuality;	//Level of skill

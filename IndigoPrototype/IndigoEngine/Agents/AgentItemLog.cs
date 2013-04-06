@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Agent for log
+	/// </summary>
 	class AgentItemLog : Agent
 	{
 		#region Constructors

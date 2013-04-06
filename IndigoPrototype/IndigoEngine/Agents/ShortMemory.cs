@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Short memory of the agent: includes dictionary with agnets and their actions
+	/// </summary>
 	public class ShortMemory : Memory
 	{
 		private Dictionary<Agent, Action> storedActions;  //Stored actions about some agents during the iteration. After some time it is translated into long memory.
@@ -43,6 +46,14 @@ namespace IndigoEngine.Agents
 			{
 				StoredActions.Add(argAgentSender, argAction);
 			}
+		}
+		
+		/// <summary>
+		/// Memory class override
+		/// </summary>
+		public override void ForgetAll()
+		{
+			StoredActions.Clear();
 		}
 
 		public override string ToString()

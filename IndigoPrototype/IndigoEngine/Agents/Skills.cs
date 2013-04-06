@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
+	/// <summary>
+	/// Class of all avaliable skills
+	/// </summary>
 	public static class Skills
 	{
 		/// <summary>
