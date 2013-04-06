@@ -149,6 +149,28 @@ namespace IndigoEngine.Agents
 				return result;
 			}
 
+			public static Characteristic operator+(Characteristic argChar1, int argValue)
+			{
+				Characteristic result = new Characteristic();
+				result.MinValue = argChar1.MinValue;
+				result.MaxValue = argChar1.MaxValue;
+				result.Name = argChar1.Name;
+				result.CurrentUnitValue = argChar1.CurrentUnitValue + argValue;
+
+				return result;
+			}
+
+			public static Characteristic operator-(Characteristic argChar1, int argValue)
+			{
+				Characteristic result = new Characteristic();
+				result.MinValue = argChar1.MinValue;
+				result.MaxValue = argChar1.MaxValue;
+				result.Name = argChar1.Name;
+				result.CurrentUnitValue = argChar1.CurrentUnitValue - argValue;
+
+				return result;
+			}
+
 		#endregion
 
 		public override string ToString()
