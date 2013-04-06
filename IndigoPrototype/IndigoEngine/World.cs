@@ -128,6 +128,8 @@ namespace IndigoEngine
 			//     ^
 			//     |
 			//We shouldn't delete this, VERY IMPORTANT!
+            //TODO: Confirm, if it's so.
+            //Will be deleted 06.02.2015
         }
 
         void UpdateAgentFeelings()
