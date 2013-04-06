@@ -10,24 +10,18 @@ namespace IndigoEngine.Agents
 	/// </summary>
 	public class ShortMemory : Memory
 	{
-		private Dictionary<Agent, Action> storedActions;  //Stored actions about some agents during the iteration. After some time it is translated into long memory.
-
 		#region Constructors
 
-		public ShortMemory()
-		{
-			StoredActions = new Dictionary<Agent, Action>();
-		}
+			public ShortMemory()
+			{
+				StoredActions = new Dictionary<Agent, Action>();
+			}
 
 		#endregion
 
 		#region Properties
 
-		public Dictionary<Agent, Action> StoredActions
-		{
-			get { return storedActions; }
-			set { storedActions = value; }
-		}
+			public Dictionary<Agent, Action> StoredActions { get; set; }  //Stored actions about some agents during the iteration. After some time it is translated into long memory.
 
 		#endregion
 

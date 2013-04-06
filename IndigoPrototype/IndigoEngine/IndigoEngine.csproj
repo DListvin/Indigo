@@ -52,6 +52,7 @@
     <Compile Include="Agents\AgentItemLog.cs" />
     <Compile Include="Agents\AgentLiving.cs" />
     <Compile Include="Agents\AgentPuddle.cs" />
+    <Compile Include="Agents\State.cs" />
     <Compile Include="Agents\AgentTree.cs" />
     <Compile Include="Agents\Characteristic.cs" />
     <Compile Include="Agents\ItemStorage.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Agents\LongMemory.cs" />
     <Compile Include="Agents\Memory.cs" />
     <Compile Include="Agents\ShortMemory.cs" />
+    <Compile Include="Agents\StateLiving.cs" />
     <Compile Include="Agents\StoredInformation.cs" />
     <Compile Include="IObservableModel.cs" />
     <Compile Include="ITypicalAction.cs" />

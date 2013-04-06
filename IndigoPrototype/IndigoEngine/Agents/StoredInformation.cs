@@ -10,32 +10,22 @@ namespace IndigoEngine.Agents
 	/// Includes some learned characteristics, skills or the hole agent as info and storing time for solving conflicts between two same characteristics
 	/// </summary>
 	public class StoredInformation
-	{
-		private NameableObject storedInfo;  //Info about agent which is stored. 
-		private DateTime storingTime;             //Time of storing the information
+	{          
 
 		#region Constructors
 
-		public StoredInformation()
-		{	
-			StoringTime = DateTime.Now;
-		}
+			public StoredInformation()
+			{	
+				StoringTime = DateTime.Now;
+			}
 
 		#endregion
 
 		#region Properties
 
-		public NameableObject StoredInfo
-		{
-			get { return storedInfo; }
-			set { storedInfo = value;	}
-		}
+			public NameableObject StoredInfo { get; set; } //Info about agent which is stored.
 
-		public DateTime StoringTime
-		{
-			get { return storingTime; }
-			set { storingTime = value; }
-		}
+			public DateTime StoringTime { get; set; }      //Time of storing the information
 
 		#endregion
 

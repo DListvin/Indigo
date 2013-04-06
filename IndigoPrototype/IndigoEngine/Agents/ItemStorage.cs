@@ -10,43 +10,41 @@ namespace IndigoEngine.Agents
 	/// </summary>
 	public class ItemStorage : ITypicalItemStorage
 	{
-		private List<Agent> itemList;  //List of items that are in this storage
 		private int storageSize;       //Size of the storage (in number of items)
 
 		#region Constructors
 			
-		public ItemStorage()
-		{
-			ItemList = new List<Agent>();
-			StorageSize = 0;
-		}
+			public ItemStorage()
+			{
+				ItemList = new List<Agent>();
+				StorageSize = 0;
+			}
 
 		#endregion
 
 		#region Properties 
 			
-		#region ITypicalItemStorage realisation
+			#region ITypicalItemStorage realisation
 
-		public List<Agent> ItemList
-		{
-			get	{ return itemList; }
-			set	{ itemList = value; }
-		}
+				public List<Agent> ItemList { get; set; } //List of items that are in this storage
 
-		public int StorageSize
-		{
-			get	{ return storageSize; }
-			set
-			{
-				if(value < ItemList.Count)
+				public int StorageSize
 				{
-					throw(new Exception(String.Format("Storage Size of {0} is less than count of objects in it: {1}", this, value)));
+					get	
+					{
+						return storageSize; 
+					}
+					set
+					{
+						if(value < ItemList.Count)
+						{
+							throw(new Exception(String.Format("Storage Size of {0} is less than count of objects in it: {1}", this, value)));
+						}
+						storageSize = value;
+					}
 				}
-				storageSize = value;
-			}
-		}
 
-		#endregion
+			#endregion
 
 		#endregion
 
@@ -82,7 +80,7 @@ namespace IndigoEngine.Agents
 
 		public override string ToString()
 		{
-			return "Storage: " + itemList.Count.ToString() + "/" + StorageSize.ToString();
+			return "Storage: " + ItemList.Count.ToString() + "/" + StorageSize.ToString();
 		}
 	}
 }

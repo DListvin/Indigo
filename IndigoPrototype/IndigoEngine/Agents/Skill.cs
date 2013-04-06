@@ -14,33 +14,36 @@ namespace IndigoEngine.Agents
 
 		#region Constructors
 
-		public Skill() 
-			: base()
-		{
-			SkillQuality = 0;
-		}
+			public Skill() 
+				: base()
+			{
+				SkillQuality = 0;
+			}
 
 		#endregion
 
 		#region Properties
 		
-		#region ITypicalSkill realisation
+			#region ITypicalSkill realisation
 
-		public int SkillQuality
-		{
-			get { return skillQuality; }
-			set
-			{
-				if(value < 0)
+				public int SkillQuality
 				{
-					throw(new Exception(String.Format("Level of skill {0} is less than 0: {1}", this, value)));
+					get
+					{
+						return skillQuality; 
+					}
+					set
+					{
+						if(value < 0)
+						{
+							throw(new Exception(String.Format("Level of skill {0} is less than 0: {1}", this, value)));
+						}
+
+						skillQuality = value;
+					}
 				}
 
-				skillQuality = value;
-			}
-		}
-
-		#endregion
+			#endregion
 
 		#endregion
 	}

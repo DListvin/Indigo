@@ -10,24 +10,19 @@ namespace IndigoEngine.Agents
 	/// </summary>
 	public class LongMemory : Memory
 	{
-		private Dictionary<Agent, List<StoredInformation>> storedAgents;   //Dictionary with memories about other agents: <reference to the agent(id), info about agent>.
 		
 		#region Constructors
 
-		public LongMemory()
-		{
-			StoredAgents = new Dictionary<Agent, List<StoredInformation>>();
-		}
+			public LongMemory()
+			{
+				StoredAgents = new Dictionary<Agent, List<StoredInformation>>();
+			}
 
 		#endregion
 
 		#region Properties
 
-		public Dictionary<Agent, List<StoredInformation>> StoredAgents
-		{
-			get { return storedAgents; }
-			set { storedAgents = value; }
-		}
+			public Dictionary<Agent, List<StoredInformation>> StoredAgents { get; set; } //Dictionary with memories about other agents: <reference to the agent(id), info about agent>.
 
 		#endregion
 		

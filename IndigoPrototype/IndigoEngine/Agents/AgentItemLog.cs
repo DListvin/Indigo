@@ -12,10 +12,10 @@ namespace IndigoEngine.Agents
 	{
 		#region Constructors
 			
-		public AgentItemLog() 
-			: base()
-		{
-		}
+			public AgentItemLog() 
+				: base()
+			{
+			}
 
 		#endregion
 

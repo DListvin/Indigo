@@ -15,65 +15,38 @@ namespace IndigoEngine.Agents
 	/// Basic class of the agent. Used for inheritance for other agents
 	/// </summary>
 	public abstract class Agent : NameableObject, ITypicalAgent 
-	{
-		private Characteristic health;                //Agent health
-		private Point? location;                      //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
-		private ItemStorage inventory;                //Agent inventory
-        private ActionFeedback currentActionFeedback; //Current action result, that is needed to be perform
-        private World homeWorld;                      //Agent's world
-		
+	{                    		
 		#region Constructors
 			
-		public Agent() 
-			: base()
-		{
-			Health = new Characteristic();
-			Health.Name = "Health";
+			public Agent() 
+				: base()
+			{
+				CurrentState = new State();
 			
-			Location = new Point(0, 0);
+				Location = new Point(0, 0);
 
-			Inventory = new ItemStorage();
+				Inventory = new ItemStorage();
 
-			HomeWorld = null;
-		}
+				HomeWorld = null;
+			}
 
 		#endregion
 
 		#region Properties
 					
-		#region ITypicalAgent realisation
+			#region ITypicalAgent realisation
 				
-		public Characteristic Health
-		{
-			get {return health;}
-			set	{health = value;}
-		}
+				public virtual State CurrentState { get; set; }    //Current state of the agent
 
-		public Point? Location
-		{
-			get	{return location;}
-			set	{location = value;}
-		}
+				public Point? Location { get; set; }       //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
 
-		public ItemStorage Inventory
-		{
-			get	{return inventory;}
-			set {inventory = value;}
-		}
+				public ItemStorage Inventory { get; set; } //Agent inventory
 
-		public ActionFeedback CurrentActionFeedback
-		{
-			get	{return currentActionFeedback;}
-			set	{currentActionFeedback = value;}
-		}
+				public ActionFeedback CurrentActionFeedback { get; set; }  //Current action result, that is needed to be perform
 
-        public World HomeWorld
-        {
-            get { return homeWorld; }
-            set { homeWorld = value; }
-        }
-					
-		#endregion
+				public World HomeWorld { get; set; }       //Agent's world
+
+			#endregion
 
 		#endregion
 				

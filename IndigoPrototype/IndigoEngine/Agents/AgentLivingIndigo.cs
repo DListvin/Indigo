@@ -12,39 +12,17 @@ namespace IndigoEngine.Agents
     {
         #region Constructors
 
-        public AgentLivingIndigo()
-			: base()
-        {
-			RangeOfView = 0;
-            FieldOfView = new List<NameableObject>();
+			public AgentLivingIndigo()
+				: base()
+			{
+				RangeOfView = 0;
+				FieldOfView = new List<NameableObject>();
 
-			#region Characteristics set up
-
-            Strenght = new Characteristic();
-            Strenght.Name = "Strenght";
-
-            Stamina = new Characteristic();
-            Stamina.Name = "Stamina";
-
-            Intelegence = new Characteristic();
-            Intelegence.Name = "Intelegence";
-
-            Hunger = new Characteristic();
-            Hunger.Name = "Hunger";
-
-            Thirst = new Characteristic();
-            Thirst.Name = "Thirst";
-
-            Aggressiveness = new Characteristic();
-            Aggressiveness.Name = "Aggressiveness";
-
-			#endregion
-
-            SkillsList = new List<Skill>();
-            SkillsList.Add(Skills.Woodcutting);
-            SkillsList.Add(Skills.Gathering);
-            SkillsList.Add(Skills.Communicationing);
-        }
+				SkillsList = new List<Skill>();
+				SkillsList.Add(Skills.Woodcutting);
+				SkillsList.Add(Skills.Gathering);
+				SkillsList.Add(Skills.Communicationing);
+			}
 
         #endregion
 
@@ -76,7 +54,7 @@ namespace IndigoEngine.Agents
 
         public override string ToString()
         {
-            return "Indigo: " + Name + " Health: " + Health.CurrentUnitValue.ToString();
+            return "Indigo: " + Name + " Health: " + CurrentState.Health.CurrentUnitValue.ToString();
         }
     }
 }

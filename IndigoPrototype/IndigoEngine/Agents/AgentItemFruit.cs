@@ -12,10 +12,10 @@ namespace IndigoEngine.Agents
 	{
 		#region Constructors
 			
-		public AgentItemFruit()
-			: base()
-		{
-		}
+			public AgentItemFruit()
+				: base()
+			{
+			}
 
 		#endregion
 
