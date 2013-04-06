@@ -43,10 +43,10 @@ namespace IndigoEngine
         /// Here is the main loop
         /// </summary>
         public void MainLoopIteration()
-        {
-            Actions.Clear();
-
+        {    
             UpdateAgentFeelings();
+
+            Actions.Clear();
 
             foreach (Agent agent in Agents)
 			{
@@ -84,6 +84,7 @@ namespace IndigoEngine
             currentAddingAgent.Location = new System.Drawing.Point(0, 0);
             currentAddingAgent.Health.MaxValue = 100;
             currentAddingAgent.Health.CurrentUnitValue = 100;
+            (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
             Agents.Add(currentAddingAgent);			
 			
 			currentAddingAgent = new AgentLivingIndigo();
@@ -92,6 +93,7 @@ namespace IndigoEngine
             currentAddingAgent.Location = new System.Drawing.Point(0, 5);
             currentAddingAgent.Health.MaxValue = 100;
             currentAddingAgent.Health.CurrentUnitValue = 100;
+            (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
             Agents.Add(currentAddingAgent);
 			
 			currentAddingAgent = new AgentLivingIndigo();
@@ -100,6 +102,7 @@ namespace IndigoEngine
             currentAddingAgent.Location = new System.Drawing.Point(5, 5);
             currentAddingAgent.Health.MaxValue = 100;
             currentAddingAgent.Health.CurrentUnitValue = 100;
+            (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
             Agents.Add(currentAddingAgent);
 
 			currentAddingAgent = new AgentItemLog();
@@ -132,22 +135,44 @@ namespace IndigoEngine
             //Will be deleted 06.02.2015
         }
 
+        /// <summary>
+        /// Clears agents FieldOfView and than fills it with agents and action within range of view
+        /// </summary>
         void UpdateAgentFeelings()
         {
             foreach (AgentLivingIndigo agent in Agents.Where(a => { return a is AgentLivingIndigo; }))
             {
                 agent.FieldOfView.Clear();
-                /*
+                
                 if (agent.Location.HasValue)
                 {
+                    //Adding agents
                     agent.FieldOfView.AddRange(agents.Where(a =>
                     {
-                        return a != agent && a.Location.HasValue && Math.Sqrt(Math.Pow((agent.Location.Value.X - a.Location.Value.X), 2) +
-                            Math.Pow((agent.Location.Value.Y - a.Location.Value.Y), 2)) < agent.RangeOfView;
+                        return a.Location.HasValue && a != agent && Distance(a, agent) < agent.RangeOfView;
                     }));
-                }*/
-                agent.FieldOfView.AddRange(Agents.Where(ag => { return ag != agent; }));
+                    //Adding actions
+                    agent.FieldOfView.AddRange(actions.Where(a =>
+                    {
+                        return a.Subject.Location.HasValue && Distance(agent, a.Subject) < agent.RangeOfView;
+                    }));
+                }
             }
+        }
+
+        /// <summary>
+        /// Computes distance between two agents (May be we shoud make static class AgentAlgebra? We'll see if there will be more computational funcs with agents)
+        /// </summary>
+        /// <param name="agent1">First agent</param>
+        /// <param name="agent2">Second agent</param>
+        /// <returns>Distance or NaN, if any of agents doesn'n have location</returns>
+        double Distance(Agent agent1, Agent agent2)
+        {
+            if (!agent1.Location.HasValue || !agent2.Location.HasValue)
+            {
+                return Double.NaN;
+            }
+            return Math.Sqrt(Math.Pow(agent1.Location.Value.X - agent2.Location.Value.X, 2) + Math.Pow(agent1.Location.Value.Y - agent2.Location.Value.Y, 2));
         }
     }
 }

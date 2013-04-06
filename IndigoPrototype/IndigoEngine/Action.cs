@@ -6,7 +6,7 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
-    public abstract class Action : ITypicalAction
+    public abstract class Action : NameableObject, ITypicalAction
     {
         Agent obj, subj;            //Object and subject of the action
         private bool mayBeConflict; //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment

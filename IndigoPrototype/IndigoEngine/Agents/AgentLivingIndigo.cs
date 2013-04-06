@@ -16,7 +16,7 @@ namespace IndigoEngine.Agents
 			: base()
         {
 			RangeOfView = 0;
-            FieldOfView = new List<Agent>();
+            FieldOfView = new List<NameableObject>();
 
 			#region Characteristics set up
 

@@ -26,7 +26,7 @@ namespace IndigoEngine.Agents
 
         private List<Skill> skillsList;  //List of skills that are available to agent
 		private int rangeOfView;         //Range of view of the agent (in cells around agent, apparently)
-        private List<Agent> fieldOfView; //Agent's field ov view. Includes all agents, that current agent can see
+        private List<NameableObject> fieldOfView; //Agent's field ov view. Includes all agents & actions, that current agent can see
 
 		private ShortMemory agentsShortMemory;  //Agent's short memory
 		private LongMemory agentsLongMemory;    //Agent's long memory
@@ -50,7 +50,7 @@ namespace IndigoEngine.Agents
             set { rangeOfView = value; }
         }
 
-        public List<Agent> FieldOfView
+        public List<NameableObject> FieldOfView
         {
             get { return fieldOfView; }
 			set { fieldOfView = value; }
@@ -144,7 +144,7 @@ namespace IndigoEngine.Agents
 			foreach(Action act in argNeed.SatisfyingActionIDs)
 			{
 				act.Object = this;
-				foreach(Agent ag in FieldOfView)
+				foreach(Agent ag in FieldOfView.Where( val => { return val is Agent;}))
 				{
 					act.Subject = ag;
 					worldResponseToAction = HomeWorld.AskWorldForAnAction(act);
