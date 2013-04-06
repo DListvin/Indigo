@@ -36,7 +36,7 @@ namespace IndigoEngine.Agents
 		/// </summary>
 		/// <param name="argAgentSender">Agent that sended the action</param>
 		/// <param name="argAction">Action that is storing</param>
-		public void StoreAction(Agent argAgentSender, Action argAction)
+		public override void StoreAction(Agent argAgentSender, Action argAction)
 		{
 			if(StoredActions.ContainsKey(argAgentSender))
 			{

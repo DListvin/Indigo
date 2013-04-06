@@ -237,7 +237,7 @@ namespace TextUI
 				))).AgentsShortMemory.ToString());        
             }));
 
-            ListOfCommands.Add(new Command("showlongmem", "Showing the short memory of the agent (ex: -showshortmem <agent_name>)", args =>
+            ListOfCommands.Add(new Command("showlongmem", "Showing the long memory of the agent (ex: -showlongmem <agent_name>)", args =>
             {
                 var agentName = args[1] as string;
                 

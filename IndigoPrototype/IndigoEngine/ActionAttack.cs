@@ -79,7 +79,7 @@ namespace IndigoEngine
 
 		public override string ToString()
 		{
-			return "Action: attack; hp: " + HitPointsToTakeOff.ToString();
+			return "Action: " + Name + "; hp: " + HitPointsToTakeOff.ToString();
 		}
     }
 }

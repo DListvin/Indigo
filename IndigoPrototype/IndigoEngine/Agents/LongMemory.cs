@@ -30,6 +30,13 @@ namespace IndigoEngine.Agents
 		}
 
 		#endregion
+		
+		public override void StoreAction(Agent argAgentSender, Action argAction)
+		{
+			ShortMemory tmpMemoryToStoreAction = new ShortMemory();  //Memory, wich used to store the action into short memory and than into long
+			tmpMemoryToStoreAction.StoreAction(argAgentSender, argAction);
+			StoreShortMemory(tmpMemoryToStoreAction);
+		}
 
 		/// <summary>
 		/// Storing short memory into long memory(converting actions to info about agents)
@@ -82,6 +89,40 @@ namespace IndigoEngine.Agents
 				lst.Add(st);
 				StoredAgents.Add(argAgentToStore, lst);
 			}
+		}
+
+		/// <summary>
+		/// Finding stored agent by type
+		/// </summary>
+		/// <param name="predicate">Predicate, that declares the type of agent wich is searched</param>
+		/// <returns>Found agent or null reference</returns>
+		public List<NameableObject> FindStoredAgentsOfType<T>()
+		{
+			List<NameableObject> result = new List<NameableObject>();  //Result of the function
+
+			foreach(Agent ag in StoredAgents.Keys)
+			{
+				if(ag is T)
+				{
+					if(StoredAgents[(Agent)ag].First().StoredInfo is T)
+					{
+						result.Add(StoredAgents[(Agent)ag].First().StoredInfo);
+					}					
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Finding some info about the agent(characteristics and skills)
+		/// </summary>
+		/// <param name="argAgentKey">Agent which info is serching for</param>
+		/// <param name="predicate">Predicate that specify the necessary info</param>
+		/// <returns>Found info</returns>
+		public NameableObject FindInfoAboutAgent(Agent argAgentKey, Func<NameableObject, bool> predicate)
+		{
+			return StoredAgents[argAgentKey].Last(info => {return predicate(info.StoredInfo);}).StoredInfo;
 		}
 		
 		/// <summary>

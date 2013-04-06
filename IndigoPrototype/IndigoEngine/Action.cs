@@ -15,6 +15,7 @@ namespace IndigoEngine
 		#region Constructors
 
 		public Action()
+			:base()
 		{
 		}
 
