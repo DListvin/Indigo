@@ -24,5 +24,11 @@ namespace GraphicalUI
         }
 
         #endregion
+
+        #region Methods
+
+
+
+        #endregion
     }
 }

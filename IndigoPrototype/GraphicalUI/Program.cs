@@ -18,10 +18,6 @@ namespace GraphicalUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            IObservableModel model = new Model();
-
-            GraphicalUIShell.Model = model;
-
             Application.Run(new GrapgicalUIForm());
         }
     }
