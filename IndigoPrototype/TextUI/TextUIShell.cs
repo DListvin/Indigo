@@ -116,9 +116,9 @@ namespace TextUI
 				{
 					Console.WriteLine("Stopping model...");
 					Model.Stop();
-					Console.WriteLine("Model stopped.");
-					IsRunning = false;
+					Console.WriteLine("Model stopped.");					
 				}
+                IsRunning = false;
             }));
 
             ListOfCommands.Add(new Command("start", "Starts model", args => 
@@ -223,10 +223,10 @@ namespace TextUI
                 {
 					string input = Console.ReadLine();
 
-					string[] parsedInput = input.Split(' ');
+                    if (input == null || input.Length == 0)
+                        throw new WrongInputException("Empty string in input. Type -help to see available commands.");
 
-					if (parsedInput.Length == 0)
-						throw new WrongInputException("Empty string in input. Type -help to see available commands.");
+					string[] parsedInput = input.Split(' ');					
 
 					if(!parsedInput[0].StartsWith("-"))
 						throw new WrongInputException("Each command shoud start with -. Don't know why, actualy.");
