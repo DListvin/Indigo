@@ -43,96 +43,95 @@ namespace IndigoEngine
 
         #region Properties
 
-        #region IObservableModel realisation
+            #region IObservableModel realisation
 
-        public long PassedModelIterations 
-		{
-			get { return passedModelIterations; } 
-			set { passedModelIterations = value; }
-		} 
+                public int TurnsToStore { get; set; } // For how many turns actions are stored
 
-        public TimeSpan ModelIterationTick 
-		{
-			get { return modelIterationTick; }
-			set { modelIterationTick = value; } 
-		} 
+                public IDictionary<long, IEnumerable<Action>> Actions { get; private set; } // Action storage
 
-        public ModelState State 
-		{
-			get { return state; } 
-			set { state = value; }
-		} 
+                public long PassedModelIterations 
+		        {
+			        get { return passedModelIterations; } 
+			        private set { passedModelIterations = value; }
+		        } 
+
+                public TimeSpan ModelIterationTick 
+		        {
+			        get { return modelIterationTick; }
+			        set { modelIterationTick = value; } 
+		        } 
+
+                public ModelState State 
+		        {
+			        get { return state; } 
+			        private set { state = value; }
+		        } 
         
-        public IEnumerable<Agent> Agents
-        {
-            get { return simulatingWorld.Agents; }
-			private set { simulatingWorld.Agents = value.ToList(); }
-        }
+                public IEnumerable<Agent> Agents
+                {
+                    get { return simulatingWorld.Agents; }
+			        private set { simulatingWorld.Agents = value.ToList(); }
+                }
 
-		#endregion
-
-		public Thread ModelThread
-		{
-			get { return modelThread; }
-			set { modelThread = value; }
-		}
+		    #endregion
 	
         #endregion
 
         #region Model management
 
-		/// <summary>
-		/// IObservableModel
-		/// </summary>
-        public void Initialise()
-        {
-            simulatingWorld = new World();
-            PassedModelIterations = 0;
-            ModelIterationTick = TimeSpan.FromSeconds(2);
-            ModelThread = new Thread(MainLoop); //Specify the function to be performed in other process
-            State = ModelState.Initialised;
-        }
-        
-		/// <summary>
-		/// IObservableModel
-		/// </summary>
-        public void Start()
-        {
-            if (State == ModelState.Initialised)
+		    /// <summary>
+		    /// IObservableModel
+		    /// </summary>
+            public void Initialise()
             {
-                State = ModelState.Running;
-                ModelThread.Start(); //Start process
+                simulatingWorld = new World();
+                PassedModelIterations = 0;
+                TurnsToStore = 100;
+                ModelIterationTick = TimeSpan.FromSeconds(2);
+                modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
+                State = ModelState.Initialised;
             }
-        }
+        
+		    /// <summary>
+		    /// IObservableModel
+		    /// </summary>
+            public void Start()
+            {
+                if (State == ModelState.Initialised)
+                {
+                    State = ModelState.Running;
+                    modelThread.Start(); //Start process
+                }
+            }
 		
-		/// <summary>
-		/// IObservableModel
-		/// </summary>
-        public void Pause()
-        {
-            State = ModelState.Paused;
-        }
+		    /// <summary>
+		    /// IObservableModel
+		    /// </summary>
+            public void Pause()
+            {
+                State = ModelState.Paused;
+            }
 		
-		/// <summary>
-		/// IObservableModel
-		/// </summary>
-        public void Resume()
-        {	
-			if(State == ModelState.Paused)
-			{
-				State = ModelState.Running;
-			}
-        }
+		    /// <summary>
+		    /// IObservableModel
+		    /// </summary>
+            public void Resume()
+            {	
+			    if(State == ModelState.Paused)
+			    {
+				    State = ModelState.Running;
+			    }
+            }
 		
-		/// <summary>
-		/// IObservableModel
-		/// </summary>
-        public void Stop()
-        {
-            State = ModelState.Stopping;
-            ModelThread.Join(); //Waiting for other process to end
-            State = ModelState.Initialised;
-        }
+		    /// <summary>
+		    /// IObservableModel
+		    /// </summary>
+            public void Stop()
+            {
+                State = ModelState.Stopping;
+                modelThread.Join(); //Waiting for other process to end
+                State = ModelState.Initialised;
+            }
 
 		#endregion
 
@@ -156,6 +155,7 @@ namespace IndigoEngine
                         simulatingWorld.MainLoopIteration();
 
                         //Work out the end of iteration
+                        ManageActionStorage();
                         ++PassedModelIterations;
                         Thread.Sleep(ModelIterationTick);
                     }
@@ -166,6 +166,22 @@ namespace IndigoEngine
                 Console.WriteLine(e.Message);
                 State = ModelState.Error;
             }
+        }
+
+        /// <summary>
+        /// Updates action storage each turn
+        /// </summary>
+        void ManageActionStorage()
+        {
+            //Coping container, cause in main loop it will be cleared by reference
+            List<Action> temp = new List<Action>();
+            foreach(Action action in simulatingWorld.Actions)
+                temp.Add(action);
+
+            Actions.Add(PassedModelIterations, temp);
+
+            //Remove old values
+            Actions.Remove(Actions.Where(kvpair => { return kvpair.Key < PassedModelIterations - TurnsToStore; }).First());
         }
     }
 }

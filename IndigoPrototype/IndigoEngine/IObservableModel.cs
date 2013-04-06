@@ -13,19 +13,29 @@ namespace IndigoEngine
     public interface IObservableModel
     {
 		/// <summary>
-		/// Operations with the world, that is simulating in the model
+		/// Get Agents from world
 		/// </summary>
         IEnumerable<Agent> Agents { get; }
+
+        /// <summary>
+        /// Collection of (iteration, actionCollection). Stores actions for some number of turns.
+        /// </summary>
+        IDictionary<long, IEnumerable<Action>> Actions { get; }
+
+        /// <summary>
+        /// How many turns actions should be stored
+        /// </summary>
+        int TurnsToStore { get; set; }
 
 		/// <summary>
 		/// Operations with model state
 		/// </summary>
-        ModelState State { get; set; }
+        ModelState State { get; }
 
 		/// <summary>
 		/// Operations with info about how many iterations of main loop have passed
 		/// </summary>
-        long PassedModelIterations { get; set; }     
+        long PassedModelIterations { get; }     
 		
 		/// <summary>
 		/// Operations with time interval betwin loop iterations
