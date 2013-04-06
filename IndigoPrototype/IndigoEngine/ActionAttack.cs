@@ -43,11 +43,11 @@ namespace IndigoEngine
 		/// </summary>
         public override void Perform()
         {
-            if (Object.Health.CurrentPercentValue > 60)
+            if (Object.CurrentState.Health.CurrentPercentValue > 60)
             {
                 Object.CurrentActionFeedback = new ActionFeedback(() => 
 				{
-					Object.Health.CurrentUnitValue -= HitPointsToTakeOff; 
+					Object.CurrentState.Health.CurrentUnitValue -= HitPointsToTakeOff; 
 					if(Object is AgentLiving)
 					{
 						((AgentLiving)Object).AgentsShortMemory.StoreAction(Subject, this);
@@ -56,9 +56,9 @@ namespace IndigoEngine
 
                 Subject.CurrentActionFeedback = new ActionFeedback(() => 
 				{
-					if(Subject.Health.CurrentUnitValue + HitPointsToTakeOff <= Subject.Health.MaxValue) 
+					if(Subject.CurrentState.Health.CurrentUnitValue + HitPointsToTakeOff <= Subject.CurrentState.Health.MaxValue) 
 					{
-						Subject.Health.CurrentUnitValue += HitPointsToTakeOff; 
+						Subject.CurrentState.Health.CurrentUnitValue += HitPointsToTakeOff; 
 					}
 				});
             }
@@ -71,7 +71,7 @@ namespace IndigoEngine
 		{
 			if(Object is AgentLivingIndigo && Subject is AgentLivingIndigo)
 			{
-				return ((AgentLivingIndigo)Subject).Aggressiveness; 
+				return (Subject.CurrentState as StateLiving).Aggressiveness; 
 			}
 
 			return base.CharacteristicsOfSubject();

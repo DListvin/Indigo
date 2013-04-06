@@ -35,7 +35,7 @@ namespace IndigoEngine
                     direction = Normilize(direction);
                     direction = new Point(Object.Location.Value.X + direction.X, Object.Location.Value.Y + direction.Y);
                     Object.Location = direction;
-                    (Object as AgentLiving).Stamina.CurrentUnitValue--;
+                    (Object.CurrentState as StateLiving).Stamina.CurrentUnitValue--;
                 });
         }
 

@@ -15,6 +15,7 @@ namespace IndigoEngine.Agents
 			public AgentLiving()
 				:base()
 			{
+                CurrentState = new StateLiving();
 				AgentsShortMemory = new ShortMemory();
 				AgentsLongMemory = new LongMemory();
 			}
@@ -89,7 +90,7 @@ namespace IndigoEngine.Agents
         protected virtual Need EstimateMainNeed()
         {
             //List<Need> allNeed = new List<Need>();
-            if (hunger.CurrentUnitValue < hunger.CriticalValue)
+            if ((CurrentState as StateLiving).Hunger.CurrentUnitValue < (CurrentState as StateLiving).Hunger.CriticalValue)
             {
                 return Needs.NeedEat;
             }
@@ -106,7 +107,7 @@ namespace IndigoEngine.Agents
 
 			AgentsLongMemory.StoreShortMemory(AgentsShortMemory);
 			AgentsShortMemory.ForgetAll();
-            Hunger.CurrentUnitValue--;
+            (CurrentState as StateLiving).Hunger.CurrentUnitValue--;
 		}
 	}
 }

@@ -82,8 +82,8 @@ namespace IndigoEngine
 			currentAddingAgent.Name = "Indigo1";
 			currentAddingAgent.HomeWorld = this;
             currentAddingAgent.Location = new System.Drawing.Point(0, 0);
-            currentAddingAgent.Health.MaxValue = 100;
-            currentAddingAgent.Health.CurrentUnitValue = 100;
+            currentAddingAgent.CurrentState.Health.MaxValue = 100;
+            currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
             Agents.Add(currentAddingAgent);			
 			
@@ -91,8 +91,8 @@ namespace IndigoEngine
 			currentAddingAgent.Name = "Indigo2";
 			currentAddingAgent.HomeWorld = this;
             currentAddingAgent.Location = new System.Drawing.Point(0, 5);
-            currentAddingAgent.Health.MaxValue = 100;
-            currentAddingAgent.Health.CurrentUnitValue = 100;
+            currentAddingAgent.CurrentState.Health.MaxValue = 100;
+            currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
             Agents.Add(currentAddingAgent);
 			
@@ -100,8 +100,8 @@ namespace IndigoEngine
 			currentAddingAgent.Name = "Indigo3";
 			currentAddingAgent.HomeWorld = this;
             currentAddingAgent.Location = new System.Drawing.Point(5, 5);
-            currentAddingAgent.Health.MaxValue = 100;
-            currentAddingAgent.Health.CurrentUnitValue = 100;
+            currentAddingAgent.CurrentState.Health.MaxValue = 100;
+            currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
             Agents.Add(currentAddingAgent);
 
