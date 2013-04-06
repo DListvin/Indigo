@@ -17,7 +17,6 @@ namespace GraphicalUI
         Point shiftPoint = new Point();
         Point mouseDownPoint = new Point(0, 0);
         bool leftMouseButtonInMapIsPressed = false;
-        Graphics mapPanelGraphics = null;
 
         public GrapgicalUIForm()
         {
@@ -26,9 +25,6 @@ namespace GraphicalUI
 
         private void GrapgicalUIForm_Load(object sender, EventArgs e)
         {
-            
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             shiftPoint = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
@@ -57,20 +53,20 @@ namespace GraphicalUI
             Image drawedImage = GraphicalUI.Properties.Resources.grass64;
             //Point to draw in
             Point drawPoint = new Point(0, 0);
-            mapPanelGraphics = mapPanel.CreateGraphics();
+            int textureSize = GraphicalUI.Properties.Resources.grass64.Width;
 
             //Testing part (to be deleted later)
             Pen tPen = new Pen(Color.Red, 5);
 
-            for (int i = -64; i < mapHeight; i += 64)
+            for (int i = -textureSize; i < mapHeight; i += textureSize)
             {
-                for (int j = -64; j < mapWidth; j += 64)
+                for (int j = -textureSize; j < mapWidth; j += textureSize)
                 {
-                    mapPanelGraphics.DrawImage(drawedImage, j - shiftPoint.X % 64, i - shiftPoint.Y % 64, 64, 64);
+                    e.Graphics.DrawImage(drawedImage, j - shiftPoint.X % textureSize, i - shiftPoint.Y % textureSize, textureSize, textureSize);
                     tPen.Color = Color.Red;
-                    mapPanelGraphics.DrawEllipse(tPen, j - shiftPoint.X % 64, i - shiftPoint.Y % 64, 5, 5);
+                    e.Graphics.DrawEllipse(tPen, j - shiftPoint.X % textureSize, i - shiftPoint.Y % textureSize, 5, 5);
                     tPen.Color = Color.Blue;
-                    mapPanelGraphics.DrawEllipse(tPen,- shiftPoint.X,- shiftPoint.Y, 5, 5);
+                    e.Graphics.DrawEllipse(tPen,- shiftPoint.X,- shiftPoint.Y, 5, 5);
                 }
             }
         }

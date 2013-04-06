@@ -18,7 +18,28 @@ namespace GraphicalUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new GrapgicalUIForm());
+            Form GUIForm = new GrapgicalUIForm();
+            SetDoubleBuffered(GUIForm);
+            Application.Run(GUIForm);
+        }
+
+        /// <summary>
+        /// Shaitan-magic from Kolya
+        /// </summary>
+        /// <param name="c"></param>
+        public static void SetDoubleBuffered(System.Windows.Forms.Control c)
+        {
+            if (System.Windows.Forms.SystemInformation.TerminalServerSession)
+            {
+                return;
+            }
+            System.Reflection.PropertyInfo aProp =
+               typeof(System.Windows.Forms.Control).GetProperty(
+               "DoubleBuffered",
+               System.Reflection.BindingFlags.NonPublic |
+               System.Reflection.BindingFlags.Instance);
+
+            aProp.SetValue(c, true, null);
         }
     }
 }

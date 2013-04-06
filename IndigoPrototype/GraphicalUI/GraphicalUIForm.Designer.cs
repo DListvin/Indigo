@@ -96,6 +96,7 @@
             this.Controls.Add(this.mapInfoPanel);
             this.Controls.Add(this.modelControlPanel);
             this.Controls.Add(this.mapPanel);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GrapgicalUIForm";
             this.Text = "Indigo";
