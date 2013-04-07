@@ -72,7 +72,7 @@ namespace IndigoEngine.Agents
                     if (!fl)
                         continue;
                     act.Object = ag;
-                    worldResponseToAction = HomeWorld.AskWorldForAnAction(act);
+                    worldResponseToAction = HomeWorld.AskWorldForAction(act);
                     if (worldResponseToAction)
                         break;
                     fl = false;

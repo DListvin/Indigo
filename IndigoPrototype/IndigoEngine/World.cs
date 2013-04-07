@@ -196,7 +196,7 @@ namespace IndigoEngine
             /// </summary>
             /// <param name="action">Action which agent is asking for</param>
             /// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
-            public bool AskWorldForAnAction(Action action)
+            public bool AskWorldForAction(Action action)
             {
                 action.World = this;
                 Actions.Add(action);

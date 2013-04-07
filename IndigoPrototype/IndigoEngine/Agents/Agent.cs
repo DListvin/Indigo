@@ -65,7 +65,6 @@ namespace IndigoEngine.Agents
         public virtual void StateRecompute()
         {
             if (CurrentState.Health.CurrentUnitValue == 0)
-                ;//generate event(delete agent)
         }
 
 		/// <summary>
