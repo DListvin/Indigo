@@ -33,7 +33,12 @@ namespace IndigoEngine
 
         public static Need NeedLog
         {
-            get { return new Need("log", 2, 1, new ActionObtainResourse(null, null, typeof(Agents.AgentItemLog))); }
+            get { return new Need("log", 2, 2, new ActionObtainResourse(null, null, typeof(Agents.AgentItemLog))); }
+        }
+
+        public static Need NeedCamp
+        {
+            get { return new Need("camp", 2, 1, new ActionBreakCamp(null, new System.Drawing.Point())); }
         }
     }
 }
