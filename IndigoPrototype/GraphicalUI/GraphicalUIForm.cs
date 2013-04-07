@@ -25,7 +25,6 @@ namespace GraphicalUI
 
         private void GrapgicalUIForm_Load(object sender, EventArgs e)
         {
-
             shiftPoint = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
             IObservableModel model = new Model();
@@ -53,11 +52,13 @@ namespace GraphicalUI
             Image drawedImage = GraphicalUI.Properties.Resources.grass64;
             //Point to draw in
             Point drawPoint = new Point(0, 0);
+            //Side of the texture
             int textureSize = GraphicalUI.Properties.Resources.grass64.Width;
 
             //Testing part (to be deleted later)
             Pen tPen = new Pen(Color.Red, 5);
 
+            //Points are testing and temporary
             for (int i = -textureSize; i < mapHeight; i += textureSize)
             {
                 for (int j = -textureSize; j < mapWidth; j += textureSize)
@@ -66,7 +67,7 @@ namespace GraphicalUI
                     tPen.Color = Color.Red;
                     e.Graphics.DrawEllipse(tPen, j - shiftPoint.X % textureSize, i - shiftPoint.Y % textureSize, 5, 5);
                     tPen.Color = Color.Blue;
-                    e.Graphics.DrawEllipse(tPen,- shiftPoint.X,- shiftPoint.Y, 5, 5);
+                    e.Graphics.DrawEllipse(tPen, -shiftPoint.X, -shiftPoint.Y, 5, 5);
                 }
             }
         }

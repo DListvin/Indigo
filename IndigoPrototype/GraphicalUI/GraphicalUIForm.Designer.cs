@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GrapgicalUIForm));
-            this.mapPanel = new System.Windows.Forms.Panel();
+            this.mapPanel = new myDoubleBufferedPanel();
             this.modelControlPanel = new System.Windows.Forms.Panel();
             this.mapInfoPanel = new System.Windows.Forms.Panel();
             this.mapInfoPanelScrollBar = new System.Windows.Forms.VScrollBar();
@@ -108,7 +108,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel mapPanel;
+        private myDoubleBufferedPanel mapPanel;
         private System.Windows.Forms.Panel modelControlPanel;
         private System.Windows.Forms.Panel mapInfoPanel;
         private System.Windows.Forms.VScrollBar mapInfoPanelScrollBar;
