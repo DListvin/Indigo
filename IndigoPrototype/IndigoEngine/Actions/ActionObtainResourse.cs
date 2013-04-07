@@ -6,17 +6,17 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
-    class ActionDrink : Action
+    class ActionObtainResourse : Action
     {
         #region Constructors
 
-        public ActionDrink(Agent argObj, Agent argSubj)
+        public ActionObtainResourse(Agent argObj, Agent argSubj)
             : base(argObj, argSubj)
         {
             MayBeConflict = true;
             AcceptedSubj.Add(typeof(AgentLiving));
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
-            AcceptedObj.Add(typeof(AgentPuddle));
+            AcceptedObj.Add(typeof(AgentItemFruit));
         }
 
         #endregion
@@ -29,21 +29,20 @@ namespace IndigoEngine
             base.Perform();
             Object.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                Object.CurrentState.Health.CurrentUnitValue--;
-                if (Object.CurrentState.Health.CurrentUnitValue-- == 0)
-                    World.AskWorldForDeletion(this, Object);
+                Object.CurrentState.Health.CurrentUnitValue = 0;
+                World.AskWorldForDeletion(this, Object);
             });
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                (Subject.CurrentState as StateLiving).Thirst.CurrentPercentValue = 100;
+                (Subject.CurrentState as StateLiving).Hunger.CurrentPercentValue = 100;
             });
 
         }
 
         public override string ToString()
         {
-            return "Action: drink ";
+            return "Action: eat";
         }
     }
 }
