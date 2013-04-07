@@ -6,6 +6,9 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
+    /// <summary>
+    /// Action to drink
+    /// </summary>
     class ActionDrink : Action
     {
         #region Constructors

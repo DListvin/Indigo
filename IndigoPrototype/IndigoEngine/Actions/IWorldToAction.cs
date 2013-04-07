@@ -19,6 +19,12 @@ namespace IndigoEngine
         /// <returns></returns>
         bool AskWorldForDeletion(object sender, Agent obj);
 
-        bool AskWorlForAddition(object sender, Agent obj);
+        /// <summary>
+        /// Ask world for additon obj
+        /// </summary>
+        /// <param name="sender">sender</param>
+        /// <param name="obj"> object to add</param>
+        /// <returns>yes or not</returns>
+        bool AskWorldForAddition(object sender, Agent obj);
     }
 }

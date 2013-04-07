@@ -8,7 +8,7 @@ using System.Drawing;
 namespace IndigoEngine
 {
     /// <summary>
-    /// Example of action. Delete it after you invent some actual actions
+    /// Action to break the camp
     /// </summary>
     public class ActionBreakCamp : Action
     {

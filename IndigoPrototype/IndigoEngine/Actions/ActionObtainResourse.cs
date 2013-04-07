@@ -6,6 +6,9 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
+    /// <summary>
+    /// Action to Obtain Resourse
+    /// </summary>
     class ActionObtainResourse : Action
     {
         Type resourseType;

@@ -222,7 +222,7 @@ namespace IndigoEngine
                 return true;
             }
 
-            public bool AskWorlForAddition(object sender, Agent obj)
+            public bool AskWorldForAddition(object sender, Agent obj)
             {
                 if (sender.GetType().BaseType != typeof(Action))
                     return false;

@@ -7,6 +7,9 @@ using System.Drawing;
 
 namespace IndigoEngine
 {
+    /// <summary>
+    /// Action to go
+    /// </summary>
     class ActionGo : Action
     {
         Point direction;

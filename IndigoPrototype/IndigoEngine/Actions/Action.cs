@@ -6,6 +6,9 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
+    /// <summary>
+    /// basic class for action
+    /// </summary>
     public abstract class Action : NameableObject, ITypicalAction
     {
         Agent obj, subj;            //Object and subject of the action
