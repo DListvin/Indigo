@@ -32,13 +32,12 @@ namespace IndigoEngine
             base.Perform();
             Object.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                Object.CurrentState.Health.CurrentUnitValue = 0;
-                World.AskWorldForDeletion(this, Object);
+                Object.CommitSuicide();
             });
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                (Subject.CurrentState as StateLiving).Hunger.CurrentPercentValue = 100;
+                ((StateLiving)Subject.CurrentState).Hunger.CurrentPercentValue = 100;
             });
 
         }

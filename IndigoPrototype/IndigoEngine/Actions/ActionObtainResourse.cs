@@ -37,7 +37,7 @@ namespace IndigoEngine
                 return;//may be wrong;
             Object.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                Object.Inventory.DeleteAgentByType(resourseType);
+                Object.Inventory.DeleteAgentsByType(resourseType);
             });
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>

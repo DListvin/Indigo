@@ -50,7 +50,13 @@ namespace IndigoEngine.Agents
 
 		#endregion
 
-
+		/// <summary>
+		/// ITypicalAgent
+		/// </summary>
+		public void CommitSuicide()
+		{
+			CurrentState.Health = CurrentState.Health.MinValue;
+		}
 				
 		/// <summary>
 		/// ITypicalAgent
@@ -64,8 +70,10 @@ namespace IndigoEngine.Agents
 		/// </summary>
         public virtual void StateRecompute()
         {
-            if (CurrentState.Health.CurrentUnitValue == 0)
-                ;
+            if (CurrentState.Health.CurrentUnitValue == CurrentState.Health.MinValue)
+			{
+				HomeWorld.AskWorldForDeletion(this);
+			}
         }
 
 		/// <summary>

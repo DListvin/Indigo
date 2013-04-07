@@ -62,26 +62,26 @@ namespace IndigoEngine.Agents
 		}
 
         /// <summary>
-        ///  If ItemList consists Agent with type agentType, it will be removed from list
+        ///  ITypicalItemStorage
         /// </summary>
-        /// <param name="agentType">type of agent</param>
-        public void DeleteAgentByType(Type agentType)
-        {
-            foreach( Agent ag in ItemList)
-            {
-                if(ag.GetType() == agentType)
-                {
-                    ItemList.Remove(ag);
-                    return;
-                }
-            }
+        public void DeleteAgentsByType(Type agentType, int argCountToDelete = 1)
+        {	
+			for(int i = 0; i < argCountToDelete; i++)
+			{
+				foreach(Agent ag in ItemList)
+				{
+					if(ag.GetType() == agentType)
+					{
+						ItemList.Remove(ag);
+						return;
+					}
+				}
+			}
         }
 
-        /// <summary>
-        /// If ItemList consists Agent with type agentType, it will not be removed from list
-         /// </summary>
-        /// <param name="agentType">type of agent</param>
-        /// <returns> agent with type agentType</returns>
+		/// <summary>
+		/// ITypicalItemStorage
+		/// </summary>
         public Agent GetNoDeleteAgentByType(Type agentType)
         {
             return ItemList.Find(ag => { return ag.GetType() == agentType; });
@@ -104,10 +104,30 @@ namespace IndigoEngine.Agents
 			return GetAgentFromStorage(ItemList.Find(ag => { return ag.GetType() == argType; }));
 		}
 
+		/// <summary>
+		/// ITypicalItemStorage
+		/// </summary>
         public bool ExistsAgentByType(Type argType)
         {
             return ItemList.Exists(ag => { return ag.GetType() == argType; });
         }
+		
+		/// <summary>
+		/// ITypicalItemStorage
+		/// </summary>
+		public int CountNumberOfAgentsByType(Type argType)
+		{
+			int result = 0;  //Result of the function
+
+            foreach (Agent ag in ItemList)
+            {
+                if (ag.GetType() == argType)
+				{
+                    result++;
+				}
+            }
+			return result;
+		}
 
         /// <summary>
         /// IEnumerator for foreach

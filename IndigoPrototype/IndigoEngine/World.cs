@@ -15,7 +15,7 @@ namespace IndigoEngine
 
         private List<Agent> agents;           //List of all agents in the world
         private List<Action> actions; //List of all actions, that must be performed (refreshing each loop iteration)
-        private List<Delegate> modificatiors; // List of Delegates, to add or Delete agents at right place in MainLoop
+        private List<modificate> modificatiors; // List of Delegates, to add or Delete agents at right place in MainLoop
 		#region Constructors
 
         public World()
@@ -202,6 +202,19 @@ namespace IndigoEngine
                 Actions.Add(action);
                 return true;
             }
+			
+			public bool AskWorldForDeletion(Agent sender)
+			{
+                if (!agents.Contains(sender))
+				{
+                    return false;
+				}
+                modificatiors.Add(() =>
+                {
+                    agents.Remove(sender);
+                });
+				return true;
+			}
 
         #endregion
 
@@ -210,26 +223,30 @@ namespace IndigoEngine
             public bool AskWorldForDeletion(object sender, Agent obj)
             {
                 if (sender.GetType().BaseType != typeof(Action))
+				{
                     return false;
-                if (obj.CurrentState.Health.CurrentUnitValue != 0)
-                    return false;
+				}
                 if (!agents.Contains(obj))
+				{
                     return false;
-                modificatiors.Add(new modificate(() =>
+				}
+                modificatiors.Add(() =>
                 {
                     agents.Remove(obj);
-                }));
+                });
                 return true;
             }
 
             public bool AskWorldForAddition(object sender, Agent obj)
             {
                 if (sender.GetType().BaseType != typeof(Action))
+				{
                     return false;
-                modificatiors.Add(new modificate(() =>
+				}
+                modificatiors.Add(() =>
                 {
                     agents.Add(obj);
-                }));
+                });
                 
                 return true;
             }

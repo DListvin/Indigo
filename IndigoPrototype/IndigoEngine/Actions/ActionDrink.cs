@@ -33,8 +33,6 @@ namespace IndigoEngine
             Object.CurrentActionFeedback = new ActionFeedback(() =>
             {
                 Object.CurrentState.Health.CurrentUnitValue--;
-                if (Object.CurrentState.Health.CurrentUnitValue-- == 0)
-                    World.AskWorldForDeletion(this, Object);
             });
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>

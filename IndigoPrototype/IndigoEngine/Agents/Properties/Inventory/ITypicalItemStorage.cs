@@ -23,6 +23,19 @@ namespace IndigoEngine.Agents
 		/// <param name="argAgent">Agent to add</param>
 		void AddAgentToStorage(Agent argAgent);
 
+        /// <summary>
+        ///  If ItemList consists Agent with type agentType, it will be removed from list
+        /// </summary>
+        /// <param name="agentType">type of agent</param>
+        public void DeleteAgentsByType(Type agentType, int argCountToDelete);
+
+        /// <summary>
+        /// If ItemList consists Agent with type agentType, it will not be removed from list
+         /// </summary>
+        /// <param name="agentType">type of agent</param>
+        /// <returns> agent with type agentType</returns>
+        Agent GetNoDeleteAgentByType(Type agentType);
+
 		/// <summary>
 		/// Getting the specified agent from the storage
 		/// </summary>
@@ -36,5 +49,19 @@ namespace IndigoEngine.Agents
 		/// <param name="argType">Type of the agent to find</param>
 		/// <returns>Agent, that matches and no more in storage</returns>
 		Agent GetAgentByTypeFromStorage(Type argType);
+				
+		/// <summary>
+		/// Shows, if the agent of type argType exists in the ItemStorage
+		/// </summary>
+		/// <param name="argType">type wich is searching</param>
+		/// <returns>true - if agent exists, false - vice versa</returns>
+        bool ExistsAgentByType(Type argType);
+
+		/// <summary>
+		/// Counting number of agents, that match the type argType
+		/// </summary>
+		/// <param name="argType">type wich is searching</param>
+		/// <returns>Number of matching agents</returns>
+		int CountNumberOfAgentsByType(Type argType);
 	}
 }

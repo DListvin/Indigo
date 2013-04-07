@@ -41,12 +41,9 @@ namespace IndigoEngine
         public override void Perform()
         {
             base.Perform();
-            int k = 0;
-            foreach (Agent ag in Subject.Inventory)
-            {
-                if (ag.GetType() == typeof(AgentItemLog))
-                    k++;
-            }
+
+            int k = Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemLog));      //Number of logs int subject's inventory
+
             if (k < 2)
             {
                 throw (new Exception("Agent " + Object.ToString() + " does not have 2 logs to break Camp"));
@@ -55,29 +52,11 @@ namespace IndigoEngine
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                Subject.Inventory.DeleteAgentByType(typeof(AgentItemLog));
-                Subject.Inventory.DeleteAgentByType(typeof(AgentItemLog));
+                Subject.Inventory.DeleteAgentsByType(typeof(AgentItemLog), 2);
                 //generate event to world to create the camp
 
                 ((AgentLiving)Subject).AgentsShortMemory.StoreAction(Subject, this);
             });
-        }
-
-        /// <summary>
-        /// From direction gives increment to position
-        /// </summary>
-        /// <returns>Point like (0,1) (-1,0) or (1,-1)</returns>
-        private Point Normilize(Point dir)
-        {
-            if (Math.Abs(dir.X) > Math.Abs(dir.Y))
-            {
-                return new Point((dir.X < 0) ? -1 : 1, 0);
-            }
-            if (Math.Abs(dir.Y) > Math.Abs(dir.X))
-            {
-                return new Point(0, (dir.Y < 0) ? -1 : 1);
-            }
-            return new Point((dir.X < 0) ? -1 : 1, (dir.Y < 0) ? -1 : 1);
         }
 
         public override string ToString()

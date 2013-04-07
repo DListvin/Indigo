@@ -35,6 +35,11 @@ namespace IndigoEngine.Agents
         IWorldToAgent HomeWorld{ get; set; }
 
 		/// <summary>
+		/// Killing the agent
+		/// </summary>
+		void CommitSuicide();
+
+		/// <summary>
 		/// Making a decision about action in the current phase
 		/// </summary>
 		void Decide();	
