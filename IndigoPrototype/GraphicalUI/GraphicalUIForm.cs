@@ -59,9 +59,9 @@ namespace GraphicalUI
             Pen tPen = new Pen(Color.Red, 5);
 
             //Points are testing and temporary
-            for (int i = -textureSize; i < mapHeight; i += textureSize)
+            for (int i = -textureSize; i < mapHeight + textureSize; i += textureSize)
             {
-                for (int j = -textureSize; j < mapWidth; j += textureSize)
+                for (int j = -textureSize; j < mapWidth + textureSize; j += textureSize)
                 {
                     e.Graphics.DrawImage(drawedImage, j - shiftPoint.X % textureSize, i - shiftPoint.Y % textureSize, textureSize, textureSize);
                     tPen.Color = Color.Red;
