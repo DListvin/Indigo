@@ -66,7 +66,7 @@ namespace IndigoEngine
 		{
 			if (base.CompareTo(argActionToCompare) == 0)
 			{
-				if(Subject == argActionToCompare.Subject)
+				if(Object == argActionToCompare.Object)
 				{
 					return 0;
 				}

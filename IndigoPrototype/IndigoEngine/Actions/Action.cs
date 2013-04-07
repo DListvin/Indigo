@@ -108,7 +108,7 @@ namespace IndigoEngine
 		/// </summary>
 		/// <param name="argActionToCompare">Action to compare with</param>
 		/// <returns> 0 - actions are equal, 1 - actions are unequal</returns>
-		public int CompareTo(Action argActionToCompare)
+		public virtual int CompareTo(Action argActionToCompare)
 		{
 			if(!MayBeConflict)
 			{

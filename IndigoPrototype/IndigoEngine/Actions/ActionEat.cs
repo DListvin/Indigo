@@ -63,11 +63,11 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public int CompareTo(ActionBreakCamp argActionToCompare)
+		public override int CompareTo(Action argActionToCompare)
 		{
 			if (base.CompareTo(argActionToCompare) == 0)
 			{
-				if(Subject == argActionToCompare.Subject)
+				if(Object == argActionToCompare.Object)
 				{
 					return 0;
 				}

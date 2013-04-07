@@ -62,15 +62,15 @@ namespace IndigoEngine
                 action.Perform();
 			}
 
-            foreach (Delegate del in modificatiors)
-            {
-                del.DynamicInvoke();
-            }
-
             foreach (Agent agent in Agents)
             {
                 agent.PerformFeedback();
                 agent.StateRecompute();
+            }
+
+            foreach (modificate mod in modificatiors)
+            {
+                mod.DynamicInvoke();
             }
         }
 
@@ -204,7 +204,7 @@ namespace IndigoEngine
 				{
 					if(Actions.Any(act => 
 					{
-						if(action == act)
+						if(action.CompareTo(act) == 0)
 						{
 							return true;
 						}
