@@ -9,8 +9,10 @@ namespace IndigoEngine
     public abstract class Action : NameableObject, ITypicalAction
     {
         Agent obj, subj;            //Object and subject of the action
+
         private bool mayBeConflict; //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
-        private List<Type> acceptedSubj;
+
+        private List<Type> acceptedSubj; //Meant to be set in descendant class
         private List<Type> acceptedObj;
 
         #region Constructors
@@ -79,31 +81,13 @@ namespace IndigoEngine
         /// </summary>
         public virtual void Perform()
         {
-            bool ok = false;
-            foreach (Type t in acceptedObj)
-            {
-                if (obj.GetType() == t)
-                {
-                    ok = true;
-                    break;
-                }
-            }
-            if (!ok)
+            if (!acceptedObj.Contains(obj.GetType()))
             {
                 throw (new Exception("Object " + obj.ToString() + "have not the nessesary type. See acceptedObj."));
             }
-            ok = false;
-            foreach (Type t in acceptedSubj)
+            if (!acceptedSubj.Contains(subj.GetType()))
             {
-                if (subj.GetType() == t)
-                {
-                    ok = true;
-                    break;
-                }
-            }
-            if (!ok)
-            {
-                throw (new Exception("Object " + obj.ToString() + "have not the nessesary type. See acceptedObj."));
+                throw (new Exception("Subject " + subj.ToString() + "have not the nessesary type. See acceptedSubj."));
             }
         }
 
