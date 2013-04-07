@@ -41,11 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Action.cs" />
-    <Compile Include="ActionAttack.cs" />
-    <Compile Include="ActionEat.cs" />
-    <Compile Include="ActionGo.cs" />
-    <Compile Include="Agents\ActionBreakCamp.cs" />
+    <Compile Include="Actions\Action.cs" />
+    <Compile Include="Actions\ActionAttack.cs" />
+    <Compile Include="Actions\ActionEat.cs" />
+    <Compile Include="Actions\ActionGo.cs" />
+    <Compile Include="Actions\ActionBreakCamp.cs" />
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\AgentCamp.cs" />
     <Compile Include="Agents\AgentLivingIndigo.cs" />
@@ -53,32 +53,35 @@
     <Compile Include="Agents\AgentItemLog.cs" />
     <Compile Include="Agents\AgentLiving.cs" />
     <Compile Include="Agents\AgentPuddle.cs" />
-    <Compile Include="Agents\State.cs" />
+    <Compile Include="Agents\Properties\State\State.cs" />
     <Compile Include="Agents\AgentTree.cs" />
-    <Compile Include="Agents\Characteristic.cs" />
-    <Compile Include="Agents\ItemStorage.cs" />
+    <Compile Include="Agents\Properties\State\Characteristic.cs" />
+    <Compile Include="Agents\Properties\Inventory\ItemStorage.cs" />
     <Compile Include="Agents\ITypicalAgent.cs" />
-    <Compile Include="Agents\ITypicalCharacteristic.cs" />
-    <Compile Include="Agents\ITypicalItemStorage.cs" />
-    <Compile Include="Agents\ITypicalSkill.cs" />
-    <Compile Include="Agents\LongMemory.cs" />
-    <Compile Include="Agents\Memory.cs" />
-    <Compile Include="Agents\ShortMemory.cs" />
-    <Compile Include="Agents\StateLiving.cs" />
-    <Compile Include="Agents\StoredInformation.cs" />
+    <Compile Include="Agents\Properties\State\ITypicalCharacteristic.cs" />
+    <Compile Include="Agents\Properties\Inventory\ITypicalItemStorage.cs" />
+    <Compile Include="Agents\Properties\Skills\ITypicalSkill.cs" />
+    <Compile Include="Agents\Properties\Memory\LongMemory.cs" />
+    <Compile Include="Agents\Properties\Memory\Memory.cs" />
+    <Compile Include="Agents\Properties\Memory\ShortMemory.cs" />
+    <Compile Include="Agents\Properties\State\StateLiving.cs" />
+    <Compile Include="Agents\Properties\Memory\StoredInformation.cs" />
     <Compile Include="IObservableModel.cs" />
-    <Compile Include="ITypicalAction.cs" />
-    <Compile Include="ITypicalNeed.cs" />
-    <Compile Include="IWorldToAction.cs" />
-    <Compile Include="IWorldToAgent.cs" />
+    <Compile Include="Actions\ITypicalAction.cs" />
+    <Compile Include="Agents\Properties\Needs\ITypicalNeed.cs" />
+    <Compile Include="Actions\IWorldToAction.cs" />
+    <Compile Include="Agents\IWorldToAgent.cs" />
     <Compile Include="NameableObject.cs" />
     <Compile Include="Model.cs" />
-    <Compile Include="Need.cs" />
-    <Compile Include="Needs.cs" />
+    <Compile Include="Agents\Properties\Needs\Need.cs" />
+    <Compile Include="Agents\Properties\Needs\Needs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Agents\Skill.cs" />
-    <Compile Include="Agents\Skills.cs" />
+    <Compile Include="Agents\Properties\Skills\Skill.cs" />
+    <Compile Include="Agents\Properties\Skills\Skills.cs" />
     <Compile Include="World.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
