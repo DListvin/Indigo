@@ -43,6 +43,7 @@ namespace IndigoEngine
 		/// </summary>
         public override void Perform()
         {
+            base.Perform();
             if (Object.CurrentState.Health.CurrentUnitValue > 60)
             {
                 Object.CurrentActionFeedback = new ActionFeedback(() => 

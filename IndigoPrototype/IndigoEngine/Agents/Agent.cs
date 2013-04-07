@@ -49,6 +49,8 @@ namespace IndigoEngine.Agents
 			#endregion
 
 		#endregion
+
+
 				
 		/// <summary>
 		/// ITypicalAgent

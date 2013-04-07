@@ -72,10 +72,36 @@ namespace IndigoEngine
 		#endregion
 
 		/// <summary>
-		/// ITypicalAction
+		/// ITypicalAction here is control for obj and subj types
 		/// </summary>
         public virtual void Perform() 
 		{
+            bool ok = false;
+            foreach (Type t in acceptedObj)
+            {
+                if (obj.GetType() == t)
+                {
+                    ok = true;
+                    break;
+                }
+            }
+            if (!ok)
+            {
+                throw (new Exception("Object " + obj.ToString() + "have not the nessesary type. See acceptedObj."));
+            }
+            ok = false;
+            foreach (Type t in acceptedSubj)
+            {
+                if (subj.GetType() == t)
+                {
+                    ok = true;
+                    break;
+                }
+            }
+            if (!ok)
+            {
+                throw (new Exception("Object " + obj.ToString() + "have not the nessesary type. See acceptedObj."));
+            }
 		}
 
 		/// <summary>

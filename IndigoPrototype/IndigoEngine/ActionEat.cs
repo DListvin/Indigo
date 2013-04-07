@@ -26,7 +26,7 @@ namespace IndigoEngine
 		/// </summary>
         public override void Perform()
         {
-
+            base.Perform();
             Object.CurrentActionFeedback = new ActionFeedback(() =>
             {
                 Object.CurrentState.Health.CurrentUnitValue = 0;

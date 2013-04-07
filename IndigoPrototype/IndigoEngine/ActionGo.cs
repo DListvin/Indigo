@@ -13,11 +13,11 @@ namespace IndigoEngine
 
         #region Constructors
 
-        public ActionGo(Agent argObj, Point dir)
+        public ActionGo(Agent argSubj, Point dir)
             : base()
         {
-            Object = argObj;
-            direction = dir;
+            Subject = argSubj;
+            direction = Normilize(dir);
             MayBeConflict = true;
             AcceptedObj.Add(typeof(AgentLiving));
             AcceptedObj.Add(typeof(AgentLivingIndigo));
@@ -30,19 +30,20 @@ namespace IndigoEngine
         /// </summary>
         public override void Perform()
         {
-            Object.CurrentActionFeedback = new ActionFeedback(() =>
+            base.Perform();
+            Subject.CurrentActionFeedback = new ActionFeedback(() =>
                 {
-                    direction = Normilize(direction);
-                    direction = new Point(Object.Location.Value.X + direction.X, Object.Location.Value.Y + direction.Y);
-                    Object.Location = direction;
-                    (Object.CurrentState as StateLiving).Stamina.CurrentUnitValue--;
+
+                    direction = new Point(Subject.Location.Value.X + direction.X, Subject.Location.Value.Y + direction.Y);
+                    Subject.Location = direction;
+                    (Subject.CurrentState as StateLiving).Stamina.CurrentUnitValue--;
                 });
         }
 
         /// <summary>
         /// From direction gives increment to position
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Point like (0,1) (-1,0) or (1,-1)</returns>
         private Point Normilize( Point dir)
         {
             if (Math.Abs(dir.X) > Math.Abs(dir.Y))
@@ -58,7 +59,7 @@ namespace IndigoEngine
 
         public override string ToString()
         {
-            return "Action: eat";
+            return "Action: go";
         }
     }
 }

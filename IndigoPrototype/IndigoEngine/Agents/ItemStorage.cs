@@ -60,13 +60,32 @@ namespace IndigoEngine.Agents
 			argAgent.Location = null;
 			ItemList.Add(argAgent);
 		}
-		
+
+        /// <summary>
+        ///  If ItemList consists Agent with type agentType, it will be removed from list
+        /// </summary>
+        /// <param name="agentType">type of agent</param>
+        /// <returns>removed agent</returns>
+        public Agent DeleteAgentByType(Type agentType)
+        {
+            foreach( Agent ag in ItemList)
+            {
+                if(ag.GetType() == agentType)
+                {
+                    ItemList.Remove(ag);
+                    return ag;
+                }
+            }
+            return null;
+        }
+
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
 		public Agent GetAgentFromStorage(Agent argAgent)
 		{	
-			ItemList.Remove(argAgent);
+            //This is useless function(Kostya). Ask me why.
+			ItemList.Remove(argAgent); 
 			return argAgent;
 		}
 
@@ -77,6 +96,16 @@ namespace IndigoEngine.Agents
 		{
 			return GetAgentFromStorage(ItemList.Find(ag => { return ag.GetType() == argType; }));
 		}
+
+        /// <summary>
+        /// IEnumerator for foreach
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<Agent> GetEnumerator()
+        {
+            for (int i = 0; i < ItemList.Count; ++i)
+                yield return ItemList[i];
+        }
 
 		public override string ToString()
 		{
