@@ -62,7 +62,7 @@ namespace IndigoEngine.Agents
             {
                 bool fl = false;
                 act.Subject = this;
-                foreach (Agent ag in FieldOfView)
+                foreach (Agent ag in FieldOfView.Where(val => { return val.GetType() == typeof(Agent); }))
                 {
                     foreach (Type t in act.AcceptedObj)
                     {

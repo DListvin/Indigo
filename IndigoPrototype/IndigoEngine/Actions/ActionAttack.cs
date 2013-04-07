@@ -7,7 +7,7 @@ using IndigoEngine.Agents;
 namespace IndigoEngine
 {
 	/// <summary>
-	/// Example of action. Delete it after you invent some actual actions
+	/// Attack action.
 	/// </summary>
     public class ActionAttack : Action
     {
