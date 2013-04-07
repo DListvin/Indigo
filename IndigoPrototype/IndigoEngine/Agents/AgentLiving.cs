@@ -99,7 +99,7 @@ namespace IndigoEngine.Agents
         protected virtual Need EstimateMainNeed()
         {
             //List<Need> allNeed = new List<Need>();
-            if ((CurrentState as StateLiving).Hunger.CurrentUnitValue < (CurrentState as StateLiving).Hunger.CriticalValue)
+            if ((CurrentState as StateLiving).Hunger.CurrentUnitValue < (CurrentState as StateLiving).Hunger.CriticalUnitValue)
             {
                 return Needs.NeedEat;
             }
