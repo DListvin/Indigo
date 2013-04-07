@@ -134,6 +134,7 @@ namespace IndigoEngine
         /// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
         public bool AskWorldForAnAction(Action action)
         {
+            action.World = this;
             Actions.Add(action);
             return true;
         }

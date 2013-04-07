@@ -12,15 +12,16 @@ namespace IndigoEngine
         private bool mayBeConflict; //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
         private List<Type> acceptedSubj;
         private List<Type> acceptedObj;
-		#region Constructors
 
-		public Action()
-			:base()
-		{
-		}
+        #region Constructors
 
-        public Action(Agent argObj, Agent argSubj) 
-			:this()
+        public Action()
+            : base()
+        {
+        }
+
+        public Action(Agent argObj, Agent argSubj)
+            : this()
         {
             Object = argObj;
             Subject = argSubj;
@@ -28,54 +29,56 @@ namespace IndigoEngine
             acceptedSubj = new List<Type>();
         }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		#region ITypicalAgent realisation
+            #region ITypicalAgent realisation
 
-        public Agent Object
+                public Agent Object
+                {
+                    get { return obj; }
+                    set
+                    {
+                        obj = value;
+                    }
+                }
+
+                public Agent Subject
+                {
+                    get { return subj; }
+                    set { subj = value; }
+                }
+
+                public bool MayBeConflict
+                {
+                    get { return mayBeConflict; }
+                    set { mayBeConflict = value; }
+                }
+
+                public List<Type> AcceptedSubj
+                {
+                    get { return acceptedSubj; }
+                    set { acceptedSubj = value; }
+                }
+
+                public List<Type> AcceptedObj
+                {
+                    get { return acceptedObj; }
+                    set { acceptedObj = value; }
+                }
+
+                public IWorldToAction World { get; set; }
+
+            #endregion
+
+        #endregion
+
+        /// <summary>
+        /// ITypicalAction here is control for obj and subj types
+        /// </summary>
+        public virtual void Perform()
         {
-            get { return obj; }
-            set 
-            {
-                obj = value; 
-            }
-        }
-
-        public Agent Subject
-        {
-            get { return subj; }
-            set { subj = value; }
-        }
-
-        public bool MayBeConflict 
-		{
-			get { return mayBeConflict; } 
-			set { mayBeConflict = value; }
-		}
-
-        public List<Type> AcceptedSubj
-        {
-            get { return acceptedSubj; }
-            set { acceptedSubj = value; }
-        }
-
-        public List<Type> AcceptedObj
-        {
-            get { return acceptedObj; }
-            set { acceptedObj = value; }
-        }
-
-		#endregion
-
-		#endregion
-
-		/// <summary>
-		/// ITypicalAction here is control for obj and subj types
-		/// </summary>
-        public virtual void Perform() 
-		{
             bool ok = false;
             foreach (Type t in acceptedObj)
             {
@@ -102,14 +105,14 @@ namespace IndigoEngine
             {
                 throw (new Exception("Object " + obj.ToString() + "have not the nessesary type. See acceptedObj."));
             }
-		}
+        }
 
-		/// <summary>
-		/// ITypicalAction
-		/// </summary>
-		public virtual NameableObject CharacteristicsOfSubject()
-		{
-			return Subject;
-		}
+        /// <summary>
+        /// ITypicalAction
+        /// </summary>
+        public virtual NameableObject CharacteristicsOfSubject()
+        {
+            return Subject;
+        }
     }
 }

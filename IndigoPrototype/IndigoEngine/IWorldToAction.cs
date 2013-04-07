@@ -9,7 +9,7 @@ namespace IndigoEngine
     /// <summary>
     /// Here is the interface for action to ask worl of nescessary functionality
     /// </summary>
-    interface IWorldToAction
+    public interface IWorldToAction
     {
         bool AskWorldForDeletion(object sender, Agent obj);
 

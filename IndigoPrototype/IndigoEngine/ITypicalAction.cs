@@ -36,5 +36,10 @@ namespace IndigoEngine
 		/// </summary>
 		/// <returns>Info about the subject: some skill, characteristics</returns>
 		NameableObject CharacteristicsOfSubject();
+
+        /// <summary>
+        /// Knolege about owner
+        /// </summary>
+        IWorldToAction World { get; set; }
     }
 }
