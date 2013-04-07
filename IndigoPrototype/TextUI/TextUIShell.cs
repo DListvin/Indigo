@@ -114,6 +114,20 @@ namespace TextUI
 				}
             }));
 
+            ListOfCommands.Add(new Command("init", "Initialising the model again", args =>
+            {
+                if(Model.State == ModelState.Uninitialised || Model.State == ModelState.Error)
+				{
+					Console.WriteLine("Initialising model...");
+					Model.Initialise();
+					Console.WriteLine("Model initialised.");					
+				}
+				else
+				{
+					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't initialise it!");
+				}
+            }));
+
             ListOfCommands.Add(new Command("exit", "Stops the entire UI", args =>
             {
                 if(Model.State == ModelState.Running || Model.State == ModelState.Paused)
@@ -127,30 +141,58 @@ namespace TextUI
 
             ListOfCommands.Add(new Command("start", "Starts model", args => 
 			{
-				Console.WriteLine("Starting model...");
-				Model.Start(); 
-				Console.WriteLine("Model started.");
+				if(Model.State == ModelState.Initialised)
+				{
+					Console.WriteLine("Starting model...");
+					Model.Start(); 
+					Console.WriteLine("Model started.");
+				}
+				else
+				{
+					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't start it!");
+				}
 			}));
 
             ListOfCommands.Add(new Command("pause", "Pauses model", args => 
 			{
-				Console.WriteLine("Pausing model...");
-				Model.Pause(); 
-				Console.WriteLine("Model paused.");
+				if(Model.State == ModelState.Running)
+				{
+					Console.WriteLine("Pausing model...");
+					Model.Pause(); 
+					Console.WriteLine("Model paused.");
+				}
+				else
+				{
+					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't pause it!");
+				}
 			}));
 
             ListOfCommands.Add(new Command("stop", "Stops model", args => 
 			{
-				Console.WriteLine("Stopping model...");
-				Model.Stop(); 
-				Console.WriteLine("Model stopped.");
+				if(Model.State == ModelState.Running || Model.State == ModelState.Paused)
+				{
+					Console.WriteLine("Stopping model...");
+					Model.Stop(); 
+					Console.WriteLine("Model stopped.");
+				}
+				else
+				{
+					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't stop it!");
+				}
 			}));
 
             ListOfCommands.Add(new Command("resume", "Resumes model from pause", args => 
 			{
-				Console.WriteLine("Resuming model...");
-				Model.Resume(); 
-				Console.WriteLine("Model resumed.");
+				if(Model.State == ModelState.Paused)
+				{
+					Console.WriteLine("Resuming model...");
+					Model.Resume(); 
+					Console.WriteLine("Model resumed.");
+				}
+				else
+				{
+					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't resume it!");
+				}
 			}));
 
             ListOfCommands.Add(new Command("state", "Shows model state", args => 

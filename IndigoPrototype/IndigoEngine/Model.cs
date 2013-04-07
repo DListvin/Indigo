@@ -86,13 +86,16 @@ namespace IndigoEngine
 		    /// </summary>
             public void Initialise()
             {
-                simulatingWorld = new World();
-                PassedModelIterations = 0;
-                TurnsToStore = 100;
-                ModelIterationTick = TimeSpan.FromSeconds(2);
-                modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
-                State = ModelState.Initialised;
-                storedActions = new Dictionary<long, IEnumerable<Action>>();
+				if(State == ModelState.Error || State == ModelState.Uninitialised)
+				{
+					simulatingWorld = new World();
+					PassedModelIterations = 0;
+					TurnsToStore = 100;
+					ModelIterationTick = TimeSpan.FromSeconds(2);
+					modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
+					State = ModelState.Initialised;
+					storedActions = new Dictionary<long, IEnumerable<Action>>();
+				}
             }
         
 		    /// <summary>
@@ -112,7 +115,10 @@ namespace IndigoEngine
 		    /// </summary>
             public void Pause()
             {
-                State = ModelState.Paused;
+				if(State == ModelState.Running)
+				{
+					State = ModelState.Paused;
+				}
             }
 		
 		    /// <summary>
@@ -131,9 +137,12 @@ namespace IndigoEngine
 		    /// </summary>
             public void Stop()
             {
-                State = ModelState.Stopping;
-                modelThread.Join(); //Waiting for other process to end
-                State = ModelState.Initialised;
+				if(State == ModelState.Running || State == ModelState.Paused)
+				{
+					State = ModelState.Stopping;
+					modelThread.Join(); //Waiting for other process to end
+					State = ModelState.Uninitialised;
+				}
             }
 
 		#endregion
