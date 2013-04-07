@@ -11,9 +11,11 @@ namespace IndigoEngine
     /// </summary>
     public class World : IWorldToAction, IWorldToAgent
     {
+        public delegate void modificate();
+
         private List<Agent> agents;           //List of all agents in the world
         private List<Action> actions; //List of all actions, that must be performed (refreshing each loop iteration)
-		
+        private List<Delegate> modificatiors; // List of Delegates, to add or Delete agents at right place in MainLoop
 		#region Constructors
 
         public World()
@@ -60,6 +62,11 @@ namespace IndigoEngine
                 action.Perform();
 			}
 
+            foreach (Delegate del in modificatiors)
+            {
+                del.DynamicInvoke();
+            }
+
             foreach (Agent agent in Agents)
             {
                 agent.PerformFeedback();
@@ -76,7 +83,7 @@ namespace IndigoEngine
 
             Agents = new List<Agent>();
             Actions = new List<Action>();
-
+            modificatiors = new List<Delegate>();
             //Test init			
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo1";
@@ -206,14 +213,24 @@ namespace IndigoEngine
                     return false;
                 if (obj.CurrentState.Health.CurrentUnitValue != 0)
                     return false;
-                return agents.Remove(obj);
+                if (!agents.Contains(obj))
+                    return false;
+                modificatiors.Add(new modificate(() =>
+                {
+                    agents.Remove(obj);
+                }));
+                return true;
             }
 
             public bool AskWorlForAddition(object sender, Agent obj)
             {
                 if (sender.GetType().BaseType != typeof(Action))
                     return false;
-                agents.Add(obj);
+                modificatiors.Add(new modificate(() =>
+                {
+                    agents.Add(obj);
+                }));
+                
                 return true;
             }
 
