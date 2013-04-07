@@ -69,6 +69,7 @@
     <Compile Include="IObservableModel.cs" />
     <Compile Include="ITypicalAction.cs" />
     <Compile Include="ITypicalNeed.cs" />
+    <Compile Include="IWorldToAction.cs" />
     <Compile Include="NameableObject.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Need.cs" />

@@ -9,7 +9,7 @@ namespace IndigoEngine
     /// <summary>
     /// World - logical moments in model.
     /// </summary>
-    public class World
+    public class World : IWorldToAction
     {
         private List<Agent> agents;           //List of all agents in the world
         private List<Action> actions; //List of all actions, that must be performed (refreshing each loop iteration)
@@ -190,5 +190,19 @@ namespace IndigoEngine
             }
             return Math.Sqrt(Math.Pow(agent1.Location.Value.X - agent2.Location.Value.X, 2) + Math.Pow(agent1.Location.Value.Y - agent2.Location.Value.Y, 2));
         }
+
+        #region IWorldToAction realisation
+
+        public bool AskWorldForDeletion(object sender, Agent obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AskWorlForAddition(object sender, Agent obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
