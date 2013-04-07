@@ -202,12 +202,19 @@ namespace IndigoEngine
 
             public bool AskWorldForDeletion(object sender, Agent obj)
             {
-                throw new NotImplementedException();
+                if (sender.GetType().BaseType != typeof(Action))
+                    return false;
+                if (obj.CurrentState.Health.CurrentUnitValue != 0)
+                    return false;
+                return agents.Remove(obj);
             }
 
             public bool AskWorlForAddition(object sender, Agent obj)
             {
-                throw new NotImplementedException();
+                if (sender.GetType().BaseType != typeof(Action))
+                    return false;
+                agents.Add(obj);
+                return true;
             }
 
         #endregion
