@@ -5,7 +5,11 @@ using System.Text;
 
 namespace IndigoEngine
 {
-    interface IWorldToAgent
+    /// <summary>
+    /// What agent knows of world
+    /// </summary>
+    public interface IWorldToAgent
     {
+        bool AskWorldForAnAction(Action action);
     }
 }

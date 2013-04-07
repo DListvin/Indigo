@@ -32,7 +32,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Operations with agent's world
 		/// </summary>
-        World HomeWorld{ get; set; }
+        IWorldToAgent HomeWorld{ get; set; }
 
 		/// <summary>
 		/// Making a decision about action in the current phase

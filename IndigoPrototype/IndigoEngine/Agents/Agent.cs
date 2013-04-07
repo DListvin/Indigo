@@ -44,7 +44,7 @@ namespace IndigoEngine.Agents
 
 				public ActionFeedback CurrentActionFeedback { get; set; }  //Current action result, that is needed to be perform
 
-				public World HomeWorld { get; set; }       //Agent's world
+				public IWorldToAgent HomeWorld { get; set; }       //Agent's world
 
 			#endregion
 

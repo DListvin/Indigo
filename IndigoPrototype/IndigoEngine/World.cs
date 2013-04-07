@@ -9,7 +9,7 @@ namespace IndigoEngine
     /// <summary>
     /// World - logical moments in model.
     /// </summary>
-    public class World : IWorldToAction
+    public class World : IWorldToAction, IWorldToAgent
     {
         private List<Agent> agents;           //List of all agents in the world
         private List<Action> actions; //List of all actions, that must be performed (refreshing each loop iteration)
@@ -127,17 +127,7 @@ namespace IndigoEngine
             Agents.Add(currentAddingAgent);
         }
 
-        /// <summary>
-        /// It is for agent for asking world of an action. 
-        /// </summary>
-        /// <param name="action">Action which agent is asking for</param>
-        /// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
-        public bool AskWorldForAnAction(Action action)
-        {
-            action.World = this;
-            Actions.Add(action);
-            return true;
-        }
+
 
         /// <summary>
         /// Here world somehow decides how to slove conflicts
@@ -192,17 +182,33 @@ namespace IndigoEngine
             return Math.Sqrt(Math.Pow(agent1.Location.Value.X - agent2.Location.Value.X, 2) + Math.Pow(agent1.Location.Value.Y - agent2.Location.Value.Y, 2));
         }
 
+        #region IWorldToAgent realisation
+
+            /// <summary>
+            /// It is for agent for asking world of an action. 
+            /// </summary>
+            /// <param name="action">Action which agent is asking for</param>
+            /// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
+            public bool AskWorldForAnAction(Action action)
+            {
+                action.World = this;
+                Actions.Add(action);
+                return true;
+            }
+
+        #endregion
+
         #region IWorldToAction realisation
 
-        public bool AskWorldForDeletion(object sender, Agent obj)
-        {
-            throw new NotImplementedException();
-        }
+            public bool AskWorldForDeletion(object sender, Agent obj)
+            {
+                throw new NotImplementedException();
+            }
 
-        public bool AskWorlForAddition(object sender, Agent obj)
-        {
-            throw new NotImplementedException();
-        }
+            public bool AskWorlForAddition(object sender, Agent obj)
+            {
+                throw new NotImplementedException();
+            }
 
         #endregion
     }
