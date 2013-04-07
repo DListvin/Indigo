@@ -14,9 +14,9 @@ namespace IndigoEngine
 			: base(argObj, argSubj)
         {
             MayBeConflict = true;
-            AcceptedObj.Add( typeof(AgentLiving));
-            AcceptedObj.Add(typeof(AgentLivingIndigo));
-            AcceptedSubj.Add(typeof(AgentItemFruit));
+            AcceptedSubj.Add( typeof(AgentLiving));
+            AcceptedSubj.Add(typeof(AgentLivingIndigo));
+            AcceptedObj.Add(typeof(AgentItemFruit));
         }
 
 		#endregion
@@ -30,6 +30,7 @@ namespace IndigoEngine
             Object.CurrentActionFeedback = new ActionFeedback(() =>
             {
                 Object.CurrentState.Health.CurrentUnitValue = 0;
+                World.AskWorldForDeletion(this, Object);
             });
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
