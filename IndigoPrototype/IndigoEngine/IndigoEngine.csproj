@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Actions\Action.cs" />
     <Compile Include="Actions\ActionAttack.cs" />
+    <Compile Include="Actions\ActionDrink.cs" />
     <Compile Include="Actions\ActionEat.cs" />
     <Compile Include="Actions\ActionGo.cs" />
     <Compile Include="Actions\ActionBreakCamp.cs" />

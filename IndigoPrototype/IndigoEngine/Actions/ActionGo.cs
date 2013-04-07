@@ -33,9 +33,8 @@ namespace IndigoEngine
             base.Perform();
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
                 {
-
-                    direction = new Point(Subject.Location.Value.X + direction.X, Subject.Location.Value.Y + direction.Y);
-                    Subject.Location = direction;
+                    Subject.Location = new Point(Subject.Location.Value.X + direction.X, 
+                                                 Subject.Location.Value.Y + direction.Y); 
                     (Subject.CurrentState as StateLiving).Stamina.CurrentUnitValue--;
                 });
         }

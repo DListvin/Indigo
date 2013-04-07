@@ -53,13 +53,13 @@ namespace IndigoEngine
                 // here must not be exception, but smth like event to say to agent, that he is LOX
             }
 
-            Object.CurrentActionFeedback = new ActionFeedback(() =>
+            Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                Object.Inventory.DeleteAgentByType(typeof(AgentItemLog));
-                Object.Inventory.DeleteAgentByType(typeof(AgentItemLog));
+                Subject.Inventory.DeleteAgentByType(typeof(AgentItemLog));
+                Subject.Inventory.DeleteAgentByType(typeof(AgentItemLog));
                 //generate event to world to create the camp
 
-                ((AgentLiving)Object).AgentsShortMemory.StoreAction(Subject, this);
+                ((AgentLiving)Subject).AgentsShortMemory.StoreAction(Subject, this);
             });
         }
 
