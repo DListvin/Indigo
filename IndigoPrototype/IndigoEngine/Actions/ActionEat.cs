@@ -22,7 +22,19 @@ namespace IndigoEngine
             AcceptedObj.Add(typeof(AgentItemFruit));
         }
 
-		#endregion
+		#endregion		
+		
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public override bool CheckForLegitimacy()
+		{
+			if(!base.CheckForLegitimacy())
+			{
+				return false;
+			}
+			return true;
+		}
 
 		/// <summary>
 		/// ITypicalAction
@@ -30,6 +42,7 @@ namespace IndigoEngine
         public override void Perform()
         {
             base.Perform();
+
             Object.CurrentActionFeedback = new ActionFeedback(() =>
             {
                 Object.CommitSuicide();
@@ -45,6 +58,21 @@ namespace IndigoEngine
 		public override string ToString()
 		{
             return "Action: eat";
+		}
+
+		/// <summary>
+		/// Override Action.CompareTo
+		/// </summary>
+		public int CompareTo(ActionBreakCamp argActionToCompare)
+		{
+			if (base.CompareTo(argActionToCompare) == 0)
+			{
+				if(Subject == argActionToCompare.Subject)
+				{
+					return 0;
+				}
+			}
+			return 1;
 		}
     }
 }

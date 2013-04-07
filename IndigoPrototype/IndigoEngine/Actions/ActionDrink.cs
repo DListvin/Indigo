@@ -23,6 +23,18 @@ namespace IndigoEngine
         }
 
         #endregion
+		
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public override bool CheckForLegitimacy()
+		{
+			if(!base.CheckForLegitimacy())
+			{
+				return false;
+			}
+			return true;
+		}
 
         /// <summary>
         /// ITypicalAction
@@ -46,5 +58,20 @@ namespace IndigoEngine
         {
             return "Action: drink ";
         }
+
+		/// <summary>
+		/// Override Action.CompareTo
+		/// </summary>
+		public int CompareTo(ActionBreakCamp argActionToCompare)
+		{
+			if (base.CompareTo(argActionToCompare) == 0)
+			{
+				if(Subject == argActionToCompare.Subject)
+				{
+					return 0;
+				}
+			}
+			return 1;
+		}
     }
 }

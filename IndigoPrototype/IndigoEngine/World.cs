@@ -83,7 +83,8 @@ namespace IndigoEngine
 
             Agents = new List<Agent>();
             Actions = new List<Action>();
-            modificatiors = new List<Delegate>();
+            modificatiors = new List<modificate>();
+
             //Test init			
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo1";
@@ -199,8 +200,24 @@ namespace IndigoEngine
             public bool AskWorldForAction(Action action)
             {
                 action.World = this;
-                Actions.Add(action);
-                return true;
+				if(action.CheckForLegitimacy())
+				{
+					if(Actions.Any(act => 
+					{
+						if(action == act)
+						{
+							return true;
+						}
+						return false;
+					}))
+					{	
+						return false;
+					}
+					Actions.Add(action);
+					return true;
+				}		
+						
+				return false;
             }
 			
 			public bool AskWorldForDeletion(Agent sender)

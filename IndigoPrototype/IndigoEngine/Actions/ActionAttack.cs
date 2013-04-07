@@ -15,16 +15,16 @@ namespace IndigoEngine
 
 		#region Constructors
 
-		public ActionAttack(Agent argObj, Agent argSubj, int argHitPointsToTakeOff) 
-			: base(argObj, argSubj)
-        {
-            HitPointsToTakeOff = argHitPointsToTakeOff;
-            MayBeConflict = true;
-            AcceptedObj.Add(typeof(AgentLiving));
-            AcceptedObj.Add(typeof(AgentLivingIndigo));
-            AcceptedSubj.Add(typeof(AgentLiving));
-            AcceptedSubj.Add(typeof(AgentLivingIndigo));
-        }
+			public ActionAttack(Agent argObj, Agent argSubj, int argHitPointsToTakeOff) 
+				: base(argObj, argSubj)
+			{
+				HitPointsToTakeOff = argHitPointsToTakeOff;
+				MayBeConflict = false;
+				AcceptedObj.Add(typeof(AgentLiving));
+				AcceptedObj.Add(typeof(AgentLivingIndigo));
+				AcceptedSubj.Add(typeof(AgentLiving));
+				AcceptedSubj.Add(typeof(AgentLivingIndigo));
+			}
 
 		#endregion
 
@@ -37,32 +37,47 @@ namespace IndigoEngine
 		}
 
 		#endregion
+		
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public override bool CheckForLegitimacy()
+		{
+			if(!base.CheckForLegitimacy())
+			{
+				return false;
+			}
 
+            if (Object.CurrentState.Health.CurrentUnitValue <= 60)
+            {
+				return false;
+            }
+			return true;
+		}
+		
 		/// <summary>
 		/// ITypicalAction
 		/// </summary>
         public override void Perform()
         {
             base.Perform();
-            if (Object.CurrentState.Health.CurrentUnitValue > 60)
-            {
-                Object.CurrentActionFeedback = new ActionFeedback(() => 
+           
+		    Object.CurrentActionFeedback = new ActionFeedback(() => 
+			{
+				Object.CurrentState.Health.CurrentUnitValue -= HitPointsToTakeOff; 
+				if(Object is AgentLiving)
 				{
-					Object.CurrentState.Health.CurrentUnitValue -= HitPointsToTakeOff; 
-					if(Object is AgentLiving)
-					{
-						((AgentLiving)Object).AgentsShortMemory.StoreAction(Subject, this);
-					}
-				});
+					((AgentLiving)Object).AgentsShortMemory.StoreAction(Subject, this);
+				}
+			});
 
-                Subject.CurrentActionFeedback = new ActionFeedback(() => 
+            Subject.CurrentActionFeedback = new ActionFeedback(() => 
+			{
+				if(Subject.CurrentState.Health.CurrentUnitValue + HitPointsToTakeOff <= Subject.CurrentState.Health.MaxValue) 
 				{
-					if(Subject.CurrentState.Health.CurrentUnitValue + HitPointsToTakeOff <= Subject.CurrentState.Health.MaxValue) 
-					{
-						Subject.CurrentState.Health.CurrentUnitValue += HitPointsToTakeOff; 
-					}
-				});
-            }
+					Subject.CurrentState.Health.CurrentUnitValue += HitPointsToTakeOff; 
+				}
+			});
         }
 
 		/// <summary>

@@ -55,7 +55,7 @@ namespace IndigoEngine.Agents
 		/// </summary>
 		public void CommitSuicide()
 		{
-			CurrentState.Health = CurrentState.Health.MinValue;
+			CurrentState.Health.CriticalUnitValue = CurrentState.Health.MinValue;
 		}
 				
 		/// <summary>

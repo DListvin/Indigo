@@ -22,9 +22,10 @@ namespace IndigoEngine
         Agent Subject { get; set; }
 
 		/// <summary>
-		/// Operations with action info: conflict actions can not be performed with one object from different subjects in one moment
+		/// Checking if the action could be perform with current object and subject
 		/// </summary>
-        bool MayBeConflict { get; set; }
+		/// <returns>True - if action can be perform, false - vise versa</returns>
+		bool CheckForLegitimacy();
 
 		/// <summary>
 		/// Perfoming the action: defines action results for object and subject

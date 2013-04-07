@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using IndigoEngine.Agents;
 using System.Drawing;
+using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
@@ -12,28 +12,44 @@ namespace IndigoEngine
     /// </summary>
     public class ActionBreakCamp : Action
     {
-        Point direction; // where from object will be camp
-
         #region Constructors
 
-        public ActionBreakCamp(Agent argObj, Point dir)
-            : base(argObj, null)
-        {
-            direction = Normilize(dir);
-            MayBeConflict = true;
-            AcceptedObj.Add(typeof(AgentLiving));
-            AcceptedObj.Add(typeof(AgentLivingIndigo));
-            AcceptedSubj.Add(typeof(AgentCamp));
-            Name = "To Break a Camp";
-        }
+			public ActionBreakCamp(Agent argObj, Point dir)
+				: base(argObj, null)
+			{
+				Direction = Normilize(dir);
+				MayBeConflict = true;
+				AcceptedObj.Add(typeof(AgentLiving));
+				AcceptedObj.Add(typeof(AgentLivingIndigo));
+				AcceptedSubj.Add(typeof(AgentCamp));
+				Name = "To Break a Camp";
+			}
 
         #endregion
 
         #region Properties
 
+			public Point Direction { get; set; } // where from object will be camp
 
+        #endregion		
+		
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public override bool CheckForLegitimacy()
+		{
+			if(!base.CheckForLegitimacy())
+			{
+				return false;
+			}   
 
-        #endregion
+            if (Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemLog)) < 2) //Number of logs int subject's inventory
+            {
+                return false;
+            }
+
+			return true;
+		}
 
         /// <summary>
         /// ITypicalAction
@@ -41,14 +57,6 @@ namespace IndigoEngine
         public override void Perform()
         {
             base.Perform();
-
-            int k = Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemLog));      //Number of logs int subject's inventory
-
-            if (k < 2)
-            {
-                throw (new Exception("Agent " + Object.ToString() + " does not have 2 logs to break Camp"));
-                // here must not be exception, but smth like event to say to agent, that he is LOX
-            }
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
@@ -63,5 +71,20 @@ namespace IndigoEngine
         {
             return "Action: " + Name;
         }
+
+		/// <summary>
+		/// Override Action.CompareTo
+		/// </summary>
+		public int CompareTo(ActionBreakCamp argActionToCompare)
+		{
+			if (base.CompareTo(argActionToCompare) == 0)
+			{
+				if(Direction == argActionToCompare.Direction)
+				{
+					return 0;
+				}
+			}
+			return 1;
+		}
     }
 }

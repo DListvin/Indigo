@@ -27,7 +27,7 @@ namespace IndigoEngine.Agents
         ///  If ItemList consists Agent with type agentType, it will be removed from list
         /// </summary>
         /// <param name="agentType">type of agent</param>
-        public void DeleteAgentsByType(Type agentType, int argCountToDelete);
+        void DeleteAgentsByType(Type agentType, int argCountToDelete);
 
         /// <summary>
         /// If ItemList consists Agent with type agentType, it will not be removed from list

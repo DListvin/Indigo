@@ -24,7 +24,25 @@ namespace IndigoEngine
             resourseType = resType;
         }
 
-        #endregion
+        #endregion		
+		
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public override bool CheckForLegitimacy()
+		{
+			if(!base.CheckForLegitimacy())
+			{
+				return false;
+			}
+
+            if (!Object.Inventory.ExistsAgentByType(resourseType))
+			{
+                return false;
+			}
+
+			return true;
+		}
 
         /// <summary>
         /// ITypicalAction
@@ -32,17 +50,10 @@ namespace IndigoEngine
         public override void Perform()
         {
             base.Perform();
-            Agent res = Object.Inventory.GetNoDeleteAgentByType(resourseType);
-            if (!Object.Inventory.ExistsAgentByType(resourseType))
-                return;//may be wrong;
-            Object.CurrentActionFeedback = new ActionFeedback(() =>
-            {
-                Object.Inventory.DeleteAgentsByType(resourseType);
-            });
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                Subject.Inventory.AddAgentToStorage(res);
+                Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(resourseType));
             });
 
         }
@@ -51,5 +62,20 @@ namespace IndigoEngine
         {
             return "Action: eat";
         }
+
+		/// <summary>
+		/// Override Action.CompareTo
+		/// </summary>
+		public int CompareTo(ActionBreakCamp argActionToCompare)
+		{
+			if (base.CompareTo(argActionToCompare) == 0)
+			{
+				if(Subject == argActionToCompare.Subject)
+				{
+					return 0;
+				}
+			}
+			return 1;
+		}
     }
 }
