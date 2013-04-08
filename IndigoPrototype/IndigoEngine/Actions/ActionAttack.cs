@@ -67,7 +67,7 @@ namespace IndigoEngine
 				Object.CurrentState.Health.CurrentUnitValue -= HitPointsToTakeOff; 
 				if(Object is AgentLiving)
 				{
-					((AgentLiving)Object).AgentsShortMemory.StoreAction(Subject, this);
+					(Object as AgentLiving).AgentsShortMemory.StoreAction(Subject, this);
 				}
 			});
 
@@ -87,7 +87,7 @@ namespace IndigoEngine
 		{
 			if(Object is AgentLivingIndigo && Subject is AgentLivingIndigo)
 			{
-				return (Subject.CurrentState as StateLiving).Aggressiveness; 
+				return (Subject as AgentLivingIndigo).CurrentState.Aggressiveness; 
 			}
 
 			return base.CharacteristicsOfSubject();

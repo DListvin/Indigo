@@ -74,7 +74,7 @@ namespace IndigoEngine.Agents
 		/// </summary>
         public virtual void StateRecompute()
         {
-            if (CurrentState.Health.CurrentUnitValue == CurrentState.Health.MinValue)
+            if (CurrentState.Health.CurrentUnitValue == this.CurrentState.Health.MinValue)
 			{
 				HomeWorld.AskWorldForDeletion(this);
 			}

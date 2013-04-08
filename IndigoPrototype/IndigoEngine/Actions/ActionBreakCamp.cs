@@ -63,7 +63,7 @@ namespace IndigoEngine
                 Subject.Inventory.DeleteAgentsByType(typeof(AgentItemLog), 2);
                 //generate event to world to create the camp
 
-                ((AgentLiving)Subject).AgentsShortMemory.StoreAction(Subject, this);
+                (Subject as AgentLiving).AgentsShortMemory.StoreAction(Subject, this);
             });
         }
 

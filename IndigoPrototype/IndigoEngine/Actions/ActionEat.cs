@@ -50,7 +50,7 @@ namespace IndigoEngine
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                ((StateLiving)Subject.CurrentState).Hunger.CurrentPercentValue = 100;
+                (Subject as AgentLiving).CurrentState.Hunger.CurrentPercentValue = 100;
             });
 
         }
