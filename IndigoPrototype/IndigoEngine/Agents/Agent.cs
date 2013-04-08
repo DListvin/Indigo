@@ -28,6 +28,8 @@ namespace IndigoEngine.Agents
 				Inventory = new ItemStorage();
 
 				HomeWorld = null;
+
+                NeedFromCharacteristic = new Dictionary<Characteristic, Need>();
 			}
 
 		#endregion
@@ -45,6 +47,8 @@ namespace IndigoEngine.Agents
 				public ActionFeedback CurrentActionFeedback { get; set; }  //Current action result, that is needed to be perform
 
 				public IWorldToAgent HomeWorld { get; set; }       //Agent's world
+
+                protected Dictionary<Characteristic, Need> NeedFromCharacteristic { get; set; } // Agent's spesific association Needs from Characteristic
 
 			#endregion
 

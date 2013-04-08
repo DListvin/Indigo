@@ -18,6 +18,12 @@ namespace IndigoEngine.Agents
                 CurrentState = new StateLiving();
 				AgentsShortMemory = new ShortMemory();
 				AgentsLongMemory = new LongMemory();
+                NeedFromCharacteristic.Add(CurrentState.Aggressiveness, Needs.NeedAttack);
+                NeedFromCharacteristic.Add(CurrentState.Health,         Needs.NeedCamp);
+                NeedFromCharacteristic.Add(CurrentState.Hunger,         Needs.NeedEat);
+                NeedFromCharacteristic.Add(CurrentState.Stamina,        Needs.NeedRest);
+                NeedFromCharacteristic.Add(CurrentState.Strenght,       Needs.NeedRest);
+                NeedFromCharacteristic.Add(CurrentState.Thirst,         Needs.NeedDrink);
 			}
 
 		#endregion
@@ -30,7 +36,7 @@ namespace IndigoEngine.Agents
 			public List<Skill> SkillsList { get; set; }             //List of skills that are available to agent
 			public ShortMemory AgentsShortMemory { get; set; }      //Agent's short memory
 			public LongMemory AgentsLongMemory { get; set; }        //Agent's long memory
-
+        
         #endregion
 		
         /// <summary>
@@ -119,7 +125,20 @@ namespace IndigoEngine.Agents
         /// <returns> main need</returns>
         protected virtual Need EstimateMainNeed()
         {
-            //List<Need> allNeed = new List<Need>();
+            List<Need> allNeed = new List<Need>();
+            Need need = new Need();
+            foreach (Characteristic ch in CurrentState)
+            {
+                if (ch.CurrentUnitValue < ch.CriticalUnitValue)
+                {
+                    if (!NeedFromCharacteristic.TryGetValue(ch,out need))
+                    {
+                        throw new Exception("Ditionary in AgentLiving has error. Cant find need by characteristic!");
+                    }
+                    allNeed.Add(need);
+                }
+            }
+            allNeed.Sort(new Comparison<Need>(Need.Comparing));
             if ((CurrentState as StateLiving).Hunger.CurrentUnitValue < (CurrentState as StateLiving).Hunger.CriticalUnitValue)
             {
                 return Needs.NeedEat;
