@@ -20,8 +20,8 @@ namespace IndigoEngine
             Subject = argSubj;
             Direction = Normilize(dir);
             MayBeConflict = true;
-            AcceptedObj.Add(typeof(AgentLiving));
-            AcceptedObj.Add(typeof(AgentLivingIndigo));
+            AcceptedSubj.Add(typeof(AgentLiving));
+            AcceptedSubj.Add(typeof(AgentLivingIndigo));
         }
 
         #endregion
@@ -67,11 +67,11 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public int CompareTo(ActionBreakCamp argActionToCompare)
+		public override int CompareTo(Action argActionToCompare)
 		{
 			if (base.CompareTo(argActionToCompare) == 0)
 			{
-				if(Direction == argActionToCompare.Direction)
+				if(Direction == ((ActionGo)argActionToCompare).Direction)
 				{
 					return 0;
 				}

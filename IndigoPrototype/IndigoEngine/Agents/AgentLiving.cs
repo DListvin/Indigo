@@ -70,7 +70,7 @@ namespace IndigoEngine.Agents
                     act.Object = ag;
                     if (Distance(this, ag) > Math.Sqrt(2))
                     {
-                        worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo(this, ag.Location.Value));
+                        worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo( this, ag.Location.Value));
                         if (worldResponseToAction)
                             break;
                     }
