@@ -23,7 +23,8 @@ namespace IndigoEngine.Agents
 		#endregion
 
         #region Properties
-			
+					
+			public new StateLiving CurrentState { get; set; }           //Current state of the agent
 			public int RangeOfView { get; set; }                    //Range of view of the agent (in cells around agent, apparently)
 			public List<NameableObject> FieldOfView { get; set; }   //Agent's field ov view. Includes all agents & actions, that current agent can see
 			public List<Skill> SkillsList { get; set; }             //List of skills that are available to agent
