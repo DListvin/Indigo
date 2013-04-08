@@ -36,7 +36,7 @@ namespace IndigoEngine.Agents
 
 		#endregion
 
-		#region Properties		
+		#region Properties
 
 			public Characteristic Strenght { get; set; }
 
