@@ -18,8 +18,9 @@ namespace IndigoEngine
 			/// From direction gives increment to position
 			/// </summary>
 			/// <returns>Point like (0,1) (-1,0) or (1,-1)</returns>
-			protected static Point Normilize(Point dir)
+			protected static Point Normilize(Point end, Point location)
 			{
+                Point dir = new Point(end.X - location.X, end.Y - location.Y);
 				if (Math.Abs(dir.X) > Math.Abs(dir.Y))
 				{
 					return new Point((dir.X < 0) ? -1 : 1, 0);

@@ -17,7 +17,7 @@ namespace IndigoEngine
 			public ActionBreakCamp(Agent argObj, Point dir)
 				: base(argObj, null)
 			{
-				Direction = Normilize(dir);
+				Direction = Normilize(dir, argObj.Location.Value);
 				MayBeConflict = true;
 				AcceptedObj.Add(typeof(AgentLiving));
 				AcceptedObj.Add(typeof(AgentLivingIndigo));

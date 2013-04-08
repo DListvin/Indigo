@@ -18,7 +18,7 @@ namespace IndigoEngine
             : base()
         {
             Subject = argSubj;
-            Direction = Normilize(dir);
+            Direction = Normilize(dir, argSubj.Location.Value);
             MayBeConflict = true;
             AcceptedSubj.Add(typeof(AgentLiving));
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
@@ -69,7 +69,7 @@ namespace IndigoEngine
 		/// </summary>
 		public override int CompareTo(Action argActionToCompare)
 		{
-			if (base.CompareTo(argActionToCompare) == 0)
+			if (base.CompareTo(argActionToCompare) == 0 && argActionToCompare.GetType().BaseType == typeof(ActionGo))
 			{
 				if(Direction == ((ActionGo)argActionToCompare).Direction)
 				{
