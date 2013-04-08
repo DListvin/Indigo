@@ -38,6 +38,8 @@ namespace IndigoEngine
         public Action()
             : base()
         {
+            AcceptedObj = new List<Type>();
+            AcceptedSubj = new List<Type>();
         }
 
         public Action(Agent argObj, Agent argSubj)
@@ -45,8 +47,6 @@ namespace IndigoEngine
         {
             Object = argObj;
             Subject = argSubj;
-            AcceptedObj = new List<Type>();
-            AcceptedSubj = new List<Type>();
         }
 
         #endregion
@@ -77,7 +77,7 @@ namespace IndigoEngine
         /// </summary>
 		public virtual bool CheckForLegitimacy()
 		{
-            if (!AcceptedObj.Contains(Object.GetType()))
+            if ((Object!=null) && !AcceptedObj.Contains(Object.GetType()))
             {
                 return false;
             }
