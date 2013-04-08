@@ -32,7 +32,7 @@ namespace IndigoEngine.Agents
 
 					foreach(System.Reflection.PropertyInfo info in (typeof(State)).GetProperties())
 					{
-						if(info.GetType() == typeof(Characteristic))
+						if(info.PropertyType == typeof(Characteristic))
 						{	
 							++result;
 						}
