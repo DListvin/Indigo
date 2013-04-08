@@ -130,12 +130,19 @@ namespace IndigoEngine.Agents
         }
 
 		public override void StateRecompute()
-		{
-			base.StateRecompute();
+        {
+            AgentsLongMemory.StoreShortMemory(AgentsShortMemory);
+            AgentsShortMemory.ForgetAll();
 
-			AgentsLongMemory.StoreShortMemory(AgentsShortMemory);
-			AgentsShortMemory.ForgetAll();
-            (CurrentState as StateLiving).Hunger.CurrentUnitValue--;
-		}
+            if ((CurrentState as StateLiving).Hunger.CurrentUnitValue-- == 0) 
+            {
+                CurrentState.Health.CriticalUnitValue--;
+            }
+            if ((CurrentState as StateLiving).Thirst.CurrentUnitValue-- ==0)
+            {
+                CurrentState.Health.CriticalUnitValue--;
+            }
+            base.StateRecompute();
+        }
 	}
 }
