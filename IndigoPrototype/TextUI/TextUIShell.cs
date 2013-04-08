@@ -221,7 +221,7 @@ namespace TextUI
             {
                 foreach (Agent agent in Model.Agents)
 				{
-                    Console.WriteLine(agent.ToString());                
+                    Console.WriteLine(agent.ToString() + "\n");                
 				}
             }));
 

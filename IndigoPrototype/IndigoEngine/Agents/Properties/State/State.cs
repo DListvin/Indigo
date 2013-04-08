@@ -30,9 +30,9 @@ namespace IndigoEngine.Agents
 				{
 					int result = 0; //result of the function
 
-					foreach(System.Reflection.FieldInfo info in (typeof(State)).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+					foreach(System.Reflection.PropertyInfo info in (typeof(State)).GetProperties())
 					{
-						if(info.GetType().BaseType == typeof(Characteristic))
+						if(info.GetType() == typeof(Characteristic))
 						{	
 							++result;
 						}
@@ -72,10 +72,27 @@ namespace IndigoEngine.Agents
         /// <returns></returns>
         public IEnumerator<Characteristic> GetEnumerator()
 		{
-			return ((typeof(State)).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Where(field => 
+			foreach (System.Reflection.PropertyInfo ch in this.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Where(field => 
 			{
-				return field.GetType().BaseType == typeof(Characteristic);
-			})).GetEnumerator() as IEnumerator<Characteristic>;
+				return field.PropertyType == typeof(Characteristic);
+			}))
+			{
+				yield return ch.GetValue(this, null) as Characteristic;
+			}
+		}
+		
+
+       public override string ToString()
+       {
+			string result = "\n   ";  //Result of the function
+			int timeForNewString = 1; //Showingm if the string should be new (shows 3 characteristics in one string)
+
+			foreach(Characteristic ch in this)
+			{
+				result += ch.ToString() + "; " + ((timeForNewString % 3 == 0) ? "\n   " : "");
+				++timeForNewString;
+			}
+			return result + "\n";
 		}
 	}
 }

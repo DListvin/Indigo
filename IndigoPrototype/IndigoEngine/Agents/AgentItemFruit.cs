@@ -19,10 +19,5 @@ namespace IndigoEngine.Agents
 
 		#endregion
 
-		public override string ToString()
-		{
-			return "Item fruit: " + Name;
-		}
-
 	}
 }

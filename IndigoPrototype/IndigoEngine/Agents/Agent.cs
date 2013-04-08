@@ -89,7 +89,7 @@ namespace IndigoEngine.Agents
 
         public override string ToString()
         {
-            return Name + ' ' + CurrentState.ToString() + ' ' + Location.ToString();
+            return Name + " " + CurrentState.ToString() + "   " + Location.ToString();
         }
 	}
 }
