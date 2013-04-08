@@ -54,6 +54,7 @@ namespace IndigoEngine.Agents
         /// <param name="argNeed">need, that must be satisfied</param>
         protected virtual void MakeAction(Need argNeed)
         {
+            CurrentActionFeedback = null;
             bool worldResponseToAction = false;	//World response if the action is accepted
             if (argNeed.SatisfyingActions.Count == 0)
                 throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
@@ -136,11 +137,11 @@ namespace IndigoEngine.Agents
 
             if ((CurrentState as StateLiving).Hunger.CurrentUnitValue-- == 0) 
             {
-                CurrentState.Health.CriticalUnitValue--;
+                CurrentState.Health.CurrentUnitValue--;
             }
-            if ((CurrentState as StateLiving).Thirst.CurrentUnitValue-- ==0)
+            if ((CurrentState as StateLiving).Thirst.CurrentUnitValue-- == 0)
             {
-                CurrentState.Health.CriticalUnitValue--;
+                CurrentState.Health.CurrentUnitValue--;
             }
             base.StateRecompute();
         }
