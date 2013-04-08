@@ -89,7 +89,7 @@ namespace IndigoEngine
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo1";
 			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(0, 0);
+            currentAddingAgent.Location = new System.Drawing.Point(10, 10);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
@@ -98,7 +98,7 @@ namespace IndigoEngine
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo2";
 			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(0, 5);
+            currentAddingAgent.Location = new System.Drawing.Point(10, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
@@ -107,7 +107,7 @@ namespace IndigoEngine
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo3";
 			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(5, 5);
+            currentAddingAgent.Location = new System.Drawing.Point(15, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
@@ -127,6 +127,14 @@ namespace IndigoEngine
             currentAddingAgent.Location = new System.Drawing.Point(2, 0);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
+            Agents.Add(currentAddingAgent);
+
+            currentAddingAgent = new AgentPuddle();
+            currentAddingAgent.Name = "Puddle1";
+            currentAddingAgent.HomeWorld = this;
+            currentAddingAgent.Location = new System.Drawing.Point(0, 0);
+            currentAddingAgent.CurrentState.Health.MaxValue = 200;
+            currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
             Agents.Add(currentAddingAgent);
 
 			currentAddingAgent = new AgentItemLog();
