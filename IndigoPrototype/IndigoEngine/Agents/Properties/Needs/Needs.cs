@@ -10,7 +10,7 @@ namespace IndigoEngine
 		/// <summary>
 		/// Atack need
 		/// </summary>
-        public static Need NeedExample
+        public static Need NeedAttack
         {
             get { return new Need("attack", 4, 1, new ActionAttack(null, null, 1)); }
         }
