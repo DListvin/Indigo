@@ -17,6 +17,7 @@ namespace GraphicalUI
         Point shiftPoint = new Point();
         Point mouseDownPoint = new Point(0, 0);
         bool leftMouseButtonInMapIsPressed = false;
+        int zoomModifyer = 0;
 
         public GrapgicalUIForm()
         {
@@ -28,13 +29,27 @@ namespace GraphicalUI
             shiftPoint = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
             IObservableModel model = new Model();
-
             GraphicalUIShell.Model = model;
+            GraphicalUIShell.Model.Initialise();
+
+            GraphicalUIShell.Model.ModelTick += new EventHandler(onModelTick);
+
+            //mapPanel.MouseWheel += new EventHandler(mapPanel_MouseWheel);
+
+            //testing
+            //drawTimer.Start();
         }
 
         private void onDrawTimerTick(object sender, EventArgs e)
         {
             //It should be replaced with the model tick eventhandler
+            mapPanel.Refresh();
+        }
+
+        //Doesn't work. Don't know why
+        private void onModelTick(object sender, EventArgs e)
+        {
+            MessageBox.Show("I do work!");
             mapPanel.Refresh();
         }
 
@@ -59,15 +74,46 @@ namespace GraphicalUI
             Pen tPen = new Pen(Color.Red, 5);
 
             //Points are testing and temporary
-            for (int i = -textureSize; i < mapHeight + textureSize; i += textureSize)
+            //Draws the background
+            for (int i = -(textureSize + zoomModifyer); i < mapHeight + (textureSize + zoomModifyer); i += (textureSize + zoomModifyer))
             {
-                for (int j = -textureSize; j < mapWidth + textureSize; j += textureSize)
+                for (int j = -(textureSize + zoomModifyer); j < mapWidth + (textureSize + zoomModifyer); j += (textureSize + zoomModifyer))
                 {
-                    e.Graphics.DrawImage(drawedImage, j - shiftPoint.X % textureSize, i - shiftPoint.Y % textureSize, textureSize, textureSize);
+                    e.Graphics.DrawImage(drawedImage, j - shiftPoint.X % (textureSize + zoomModifyer), i - shiftPoint.Y % (textureSize + zoomModifyer), (textureSize + zoomModifyer), (textureSize + zoomModifyer));
                     tPen.Color = Color.Red;
-                    e.Graphics.DrawEllipse(tPen, j - shiftPoint.X % textureSize, i - shiftPoint.Y % textureSize, 5, 5);
+                    e.Graphics.DrawEllipse(tPen, j - shiftPoint.X % (textureSize + zoomModifyer), i - shiftPoint.Y % (textureSize + zoomModifyer), 5, 5);
                     tPen.Color = Color.Blue;
                     e.Graphics.DrawEllipse(tPen, -shiftPoint.X, -shiftPoint.Y, 5, 5);
+                }
+            }
+
+            //Draws agents
+            foreach (Agent agent in GraphicalUIShell.Model.Agents)
+            {
+                if (agent.Location != null)
+                {
+                    if (agent.GetType() == typeof(AgentLivingIndigo))
+                    {
+                        drawedImage = GraphicalUI.Properties.Resources.indigo_suit64;
+                    }
+                    if (agent.GetType() == typeof(AgentItemFruit))
+                    {
+                        drawedImage = GraphicalUI.Properties.Resources.fruit64;
+                    }
+                    if (agent.GetType() == typeof(AgentCamp))
+                    {
+                        drawedImage = GraphicalUI.Properties.Resources.camp64;
+                    }
+                    if (agent.GetType() == typeof(AgentItemLog))
+                    {
+                        drawedImage = GraphicalUI.Properties.Resources.log64;
+                    }
+
+                    if ((agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
+                        (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
+                    {
+                        e.Graphics.DrawImage(drawedImage, agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X, -agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y, (textureSize + zoomModifyer), (textureSize + zoomModifyer));
+                    }
                 }
             }
         }
@@ -92,6 +138,18 @@ namespace GraphicalUI
             }
         }
 
+        private void mapPanel_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                zoomModifyer += GraphicalUI.Properties.Resources.grass64.Width / 4;
+            }
+            if (e.Delta < 0 && zoomModifyer >= -GraphicalUI.Properties.Resources.grass64.Width / 2)
+            {
+                zoomModifyer -= GraphicalUI.Properties.Resources.grass64.Width / 4;
+            }
+        }
+
         private void mapPanel_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -108,6 +166,21 @@ namespace GraphicalUI
                 shiftPoint.Y = mouseDownPoint.Y - e.Y;
                 mapPanel.Refresh();
             }
+        }
+
+        private void modelStartButton_Click(object sender, EventArgs e)
+        {
+            GraphicalUIShell.Model.Start();
+        }
+
+        private void modelPauseButton_Click(object sender, EventArgs e)
+        {
+            GraphicalUIShell.Model.Pause();
+        }
+
+        private void modelStopButton_Click(object sender, EventArgs e)
+        {
+            GraphicalUIShell.Model.Stop();
         }
     }
 }

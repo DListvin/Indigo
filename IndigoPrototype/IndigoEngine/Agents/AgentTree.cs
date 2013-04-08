@@ -8,7 +8,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Agent for tree
 	/// </summary>
-	class AgentTree : Agent
+	public class AgentTree : Agent
 	{		
 		#region Constructors
 			

@@ -8,7 +8,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Agent for indigo
 	/// </summary>
-    class AgentLivingIndigo : AgentLiving
+    public class AgentLivingIndigo : AgentLiving
     {
         #region Constructors
 

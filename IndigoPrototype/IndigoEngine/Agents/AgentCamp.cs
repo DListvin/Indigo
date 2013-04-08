@@ -8,7 +8,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Agent for camp
 	/// </summary>
-	class AgentCamp : Agent
+	public class AgentCamp : Agent
 	{	
 		#region Constructors
 			

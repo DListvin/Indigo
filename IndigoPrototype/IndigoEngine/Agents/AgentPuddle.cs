@@ -8,7 +8,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Agent for puddle
 	/// </summary>
-	class AgentPuddle : Agent
+	public class AgentPuddle : Agent
 	{
 		#region Constructors
 			

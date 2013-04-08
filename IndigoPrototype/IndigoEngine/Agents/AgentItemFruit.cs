@@ -8,7 +8,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Agent for fruit
 	/// </summary>
-	class AgentItemFruit : Agent
+	public class AgentItemFruit : Agent
 	{
 		#region Constructors
 			
