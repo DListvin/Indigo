@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IndigoEngine.Actions;
 
 namespace IndigoEngine
 {
@@ -39,6 +40,11 @@ namespace IndigoEngine
         public static Need NeedCamp
         {
             get { return new Need("camp", 2, 1, new ActionBreakCamp(null, new System.Drawing.Point())); }
+        }
+
+        public static Need NeedRest
+        {
+            get { return new Need("rest", 2, 3, new ActionRest()); }
         }
     }
 }

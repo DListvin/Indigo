@@ -14,10 +14,10 @@ namespace IndigoEngine
     {
         #region Constructors
 
-			public ActionBreakCamp(Agent argObj, Point dir)
-				: base(argObj, null)
+			public ActionBreakCamp(Agent argSubj, Point dir)
+				: base(null, argSubj)
 			{
-				Direction = Normilize(dir, argObj.Location.Value);
+                Direction = Normilize(dir, new Point(0, 0));
 				MayBeConflict = true;
 				AcceptedObj.Add(typeof(AgentLiving));
 				AcceptedObj.Add(typeof(AgentLivingIndigo));

@@ -55,7 +55,7 @@ namespace IndigoEngine
             {
 				Subject.Location = new Point(Subject.Location.Value.X + Direction.X, 
 				                             Subject.Location.Value.Y + Direction.Y); 
-				(Subject.CurrentState as StateLiving).Stamina.CurrentUnitValue--;
+				//(Subject.CurrentState as StateLiving).Stamina.CurrentUnitValue--;
             });
         }
 

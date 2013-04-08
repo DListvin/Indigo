@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IndigoEngine.Agents;
 
 namespace IndigoEngine
 {
@@ -14,6 +15,13 @@ namespace IndigoEngine
         int needSubLevel;                 //Sublevel to more flexible model
         List<Action> satisfyingActions; //List of actions, that can satisfy the need
 
+        public static int Comparing(Need n1, Need n2)
+        {
+            int comp = n1.NeedLevel.CompareTo(n2.NeedLevel);
+            int subcomp = n1.NeedSubLevel.CompareTo(n2.NeedSubLevel);
+            return comp == 1 ? 1 : comp == -1 ? -1 : subcomp;
+        }
+        
         #region Constructors
 
 		/// <summary>
@@ -67,6 +75,11 @@ namespace IndigoEngine
 			: this(argName, argNeedLevel, 0, argSatisfyingActionIDs)
 		{
 		}
+
+        public Need(Characteristic ch)
+        {
+            
+        }
 
 		#endregion
 

@@ -48,6 +48,7 @@
     <Compile Include="Actions\ActionGo.cs" />
     <Compile Include="Actions\ActionBreakCamp.cs" />
     <Compile Include="Actions\ActionObtainResourse.cs" />
+    <Compile Include="Actions\ActionRest.cs" />
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\AgentCamp.cs" />
     <Compile Include="Agents\AgentLivingIndigo.cs" />

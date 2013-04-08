@@ -32,6 +32,8 @@ namespace IndigoEngine.Agents
 
 				Aggressiveness = new Characteristic();
 				Aggressiveness.Name = "Aggressiveness";
+                Aggressiveness.CriticalUnitValue = 60;
+                Aggressiveness.CurrentUnitValue = 0;
 			}
 
 		#endregion
