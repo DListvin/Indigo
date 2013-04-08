@@ -144,5 +144,10 @@ namespace IndigoEngine.Agents
             }
             base.StateRecompute();
         }
+
+        public override string ToString()
+        {
+            return Name + ' ' + CurrentState.ToString();
+        }
 	}
 }

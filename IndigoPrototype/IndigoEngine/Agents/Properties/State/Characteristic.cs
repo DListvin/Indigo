@@ -199,7 +199,7 @@ namespace IndigoEngine.Agents
 
 		public override string ToString()
 		{
-			return Name + ": " + MinValue.ToString() + "..." + CurrentUnitValue.ToString() + "..." + MaxValue.ToString();
+			return Name + ": " + MinValue.ToString() + "." + CurrentUnitValue.ToString() + "." + MaxValue.ToString();
 		}
 	}
 }

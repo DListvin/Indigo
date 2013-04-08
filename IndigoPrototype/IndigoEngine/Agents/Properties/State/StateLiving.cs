@@ -85,5 +85,10 @@ namespace IndigoEngine.Agents
 			}
 
 		#endregion
+
+            public override string ToString()
+            {
+                return Health.ToString() + ';' + Stamina.ToString() + ';' + Hunger.ToString() + ';' + Thirst.ToString();
+            }
 	}
 }

@@ -86,5 +86,10 @@ namespace IndigoEngine.Agents
                 CurrentActionFeedback.Invoke();
 			}
         }
+
+        public override string ToString()
+        {
+            return Name + ' ' + CurrentState.ToString() + ' ' + Location.ToString();
+        }
 	}
 }
