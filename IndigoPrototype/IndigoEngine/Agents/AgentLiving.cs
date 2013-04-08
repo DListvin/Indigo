@@ -16,8 +16,7 @@ namespace IndigoEngine.Agents
 				:base()
 			{
                 CurrentState = new StateLiving();
-				AgentsShortMemory = new ShortMemory();
-				AgentsLongMemory = new LongMemory();
+				AgentsMemory = new Memory();
                 NeedFromCharacteristic.Add(CurrentState.Aggressiveness, Needs.NeedAttack);
                 NeedFromCharacteristic.Add(CurrentState.Health,         Needs.NeedCamp);
                 NeedFromCharacteristic.Add(CurrentState.Hunger,         Needs.NeedEat);
@@ -48,8 +47,7 @@ namespace IndigoEngine.Agents
 			public int RangeOfView { get; set; }                    //Range of view of the agent (in cells around agent, apparently)
 			public List<NameableObject> FieldOfView { get; set; }   //Agent's field ov view. Includes all agents & actions, that current agent can see
 			public List<Skill> SkillsList { get; set; }             //List of skills that are available to agent
-			public ShortMemory AgentsShortMemory { get; set; }      //Agent's short memory
-			public LongMemory AgentsLongMemory { get; set; }        //Agent's long memory
+			public Memory AgentsMemory { get; set; }            //Agent's memory
         
         #endregion
 		
@@ -166,9 +164,6 @@ namespace IndigoEngine.Agents
 
 		public override void StateRecompute()
         {
-            AgentsLongMemory.StoreShortMemory(AgentsShortMemory);
-            AgentsShortMemory.ForgetAll();
-
             if (CurrentState.Hunger.CurrentUnitValue-- == CurrentState.Hunger.MinValue) 
             {
                 CurrentState.Health.CurrentUnitValue--;

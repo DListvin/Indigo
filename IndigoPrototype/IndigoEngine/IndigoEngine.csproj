@@ -64,9 +64,7 @@
     <Compile Include="Agents\Properties\State\ITypicalCharacteristic.cs" />
     <Compile Include="Agents\Properties\Inventory\ITypicalItemStorage.cs" />
     <Compile Include="Agents\Properties\Skills\ITypicalSkill.cs" />
-    <Compile Include="Agents\Properties\Memory\LongMemory.cs" />
     <Compile Include="Agents\Properties\Memory\Memory.cs" />
-    <Compile Include="Agents\Properties\Memory\ShortMemory.cs" />
     <Compile Include="Agents\Properties\State\StateLiving.cs" />
     <Compile Include="Agents\Properties\Memory\StoredInformation.cs" />
     <Compile Include="IObservableModel.cs" />
