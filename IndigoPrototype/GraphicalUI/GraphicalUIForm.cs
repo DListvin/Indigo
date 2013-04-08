@@ -37,7 +37,7 @@ namespace GraphicalUI
             //mapPanel.MouseWheel += new EventHandler(mapPanel_MouseWheel);
 
             //testing
-            //drawTimer.Start();
+            drawTimer.Start();
         }
 
         private void onDrawTimerTick(object sender, EventArgs e)
@@ -46,11 +46,9 @@ namespace GraphicalUI
             mapPanel.Refresh();
         }
 
-        //Doesn't work. Don't know why
         private void onModelTick(object sender, EventArgs e)
         {
-            MessageBox.Show("I do work!");
-            mapPanel.Refresh();
+            //mapPanel.Refresh();
         }
 
         /// <summary>
