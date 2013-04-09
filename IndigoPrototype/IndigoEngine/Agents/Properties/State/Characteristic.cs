@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NLog;
 
 namespace IndigoEngine.Agents
 {
@@ -10,6 +11,8 @@ namespace IndigoEngine.Agents
 	/// </summary>
 	public class Characteristic : NameableObject, ITypicalCharacteristic
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		private int maxValue = 100; //Maximum value of the characteristic
 		private int minValue = 0;       //Minimum value of the characteristic
         private int criticalValue = 20; //Minimum value of the satisfied characteristic 

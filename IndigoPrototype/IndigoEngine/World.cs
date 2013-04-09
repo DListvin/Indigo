@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -11,6 +12,8 @@ namespace IndigoEngine
     /// </summary>
     public class World : IWorldToAction, IWorldToAgent
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public delegate void modificate();
 
         private List<Agent> agents;           //List of all agents in the world

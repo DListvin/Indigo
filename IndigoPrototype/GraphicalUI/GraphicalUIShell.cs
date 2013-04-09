@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using IndigoEngine;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace GraphicalUI
 {
@@ -12,6 +13,8 @@ namespace GraphicalUI
     /// </summary>
     static class GraphicalUIShell
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         //Attached model to observe
         static IObservableModel model = null;
 

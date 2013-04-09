@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using IndigoEngine;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace TextUI
 {
@@ -52,6 +53,8 @@ namespace TextUI
     /// </summary>
     static class TextUIShell
     {        
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private static List<Command> listOfCommands;  //List of available commands        
         private static IObservableModel model = null; //Attached model to observe
 		private static bool isRunning = true;         //Exit flag	

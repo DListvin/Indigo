@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NLog;
 
 namespace IndigoEngine.Agents
 {
@@ -10,6 +11,7 @@ namespace IndigoEngine.Agents
 	/// </summary>
 	public class Memory
 	{		
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		
 		#region Constructors
 

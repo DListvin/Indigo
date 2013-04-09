@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NLog;
 
 namespace IndigoEngine.Agents
 {
@@ -10,6 +11,8 @@ namespace IndigoEngine.Agents
 	/// </summary>
 	public static class Skills
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		/// <summary>
 		/// Default skill of woodcutting
 		/// </summary>

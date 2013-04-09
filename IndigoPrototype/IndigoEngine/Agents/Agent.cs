@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using NLog;
 
 namespace IndigoEngine.Agents
 {
@@ -15,7 +16,9 @@ namespace IndigoEngine.Agents
 	/// Basic class of the agent. Used for inheritance for other agents
 	/// </summary>
 	public abstract class Agent : NameableObject, ITypicalAgent 
-	{                    		
+	{         
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+		           		
 		#region Constructors
 			
 			public Agent() 

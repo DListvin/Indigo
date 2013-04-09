@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Actions;
+using NLog;
 
 namespace IndigoEngine
 {
     public static class Needs
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		/// <summary>
 		/// Atack need
 		/// </summary>

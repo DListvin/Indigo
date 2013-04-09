@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NLog;
 
 namespace IndigoEngine.Agents
 {
@@ -10,6 +11,8 @@ namespace IndigoEngine.Agents
 	/// </summary>
 	public class Skill : NameableObject, ITypicalSkill
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		private int skillQuality;	//Level of skill
 
 		#region Constructors

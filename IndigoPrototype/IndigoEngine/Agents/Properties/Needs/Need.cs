@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -11,6 +12,8 @@ namespace IndigoEngine
     /// </summary>
     public class Need : NameableObject, ITypicalNeed
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         int needLevel;                    //Need level like in Maslow's hierarchy of needs 
         int needSubLevel;                 //Sublevel to more flexible model
         List<Action> satisfyingActions; //List of actions, that can satisfy the need

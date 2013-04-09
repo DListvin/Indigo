@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace IndigoEngine
 {   
@@ -25,6 +26,8 @@ namespace IndigoEngine
     /// </summary>
     public class Model : IObservableModel
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private World simulatingWorld;                       //Shows, what world is simulating in the model
         private long passedModelIterations;                  //Info about how many iterations of main loop have passed
         private TimeSpan modelIterationTick;                 //Info about time interval betwin loop iterations

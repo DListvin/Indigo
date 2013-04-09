@@ -44,6 +44,7 @@
 			this.label8 = new System.Windows.Forms.Label();
 			this.label9 = new System.Windows.Forms.Label();
 			this.textBox5 = new System.Windows.Forms.TextBox();
+			this.label10 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -190,11 +191,22 @@
 			this.textBox5.TabIndex = 3;
 			this.textBox5.Text = "foreach(Agent s in Agent.Inventory)\r\n{\r\n  s.ToString() + \"\\n\";\r\n}";
 			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(304, 414);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(193, 65);
+			this.label10.TabIndex = 9;
+			this.label10.Text = "Телега:\r\nУдали потом эту форму и используй\r\n свою панельку с информацией\r\nНадеюсь" +
+    ", что инфо об агенте будет \r\nдинамически обновляться";
+			// 
 			// AgentInfoForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(644, 634);
+			this.Controls.Add(this.label10);
 			this.Controls.Add(this.label8);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this.button2);
@@ -236,5 +248,6 @@
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.TextBox textBox5;
+		private System.Windows.Forms.Label label10;
 	}
 }

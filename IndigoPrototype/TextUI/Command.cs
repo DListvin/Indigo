@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine;
+using NLog;
 
 namespace TextUI
 {
@@ -17,6 +18,8 @@ namespace TextUI
     /// </summary>
     class Command : NameableObject
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         string description;
         CommandRealisation commandBody;
         //List<Type> parameters;

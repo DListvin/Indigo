@@ -8,11 +8,14 @@ using System.Text;
 using System.Windows.Forms;
 using IndigoEngine;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace GraphicalUI
 {
     public partial class GrapgicalUIForm : Form
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         //shift from basic point
         Point shiftPoint = new Point();
         Point mouseDownPoint = new Point(0, 0);
