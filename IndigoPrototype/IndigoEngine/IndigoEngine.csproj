@@ -56,6 +56,8 @@
     <Compile Include="Agents\AgentItemLog.cs" />
     <Compile Include="Agents\AgentLiving.cs" />
     <Compile Include="Agents\AgentPuddle.cs" />
+    <Compile Include="Agents\Properties\FieldOfView\FieldOfView.cs" />
+    <Compile Include="Agents\Properties\FieldOfView\ITypicalFieldOfView.cs" />
     <Compile Include="Agents\Properties\State\State.cs" />
     <Compile Include="Agents\AgentTree.cs" />
     <Compile Include="Agents\Properties\State\Characteristic.cs" />

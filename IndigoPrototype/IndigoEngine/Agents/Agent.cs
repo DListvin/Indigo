@@ -54,6 +54,25 @@ namespace IndigoEngine.Agents
 
 		#endregion
 
+		#region Static methods
+
+			/// <summary>
+			/// Computes distance between two agents
+			/// </summary>
+			/// <param name="agent1">First agent</param>
+			/// <param name="agent2">Second agent</param>
+			/// <returns>Distance or NaN, if any of agents doesn'n have location</returns>
+			public static double Distance(Agent agent1, Agent agent2)
+			{
+				if (!agent1.Location.HasValue || !agent2.Location.HasValue)
+				{
+					return Double.NaN;
+				}
+				return Math.Sqrt(Math.Pow(agent1.Location.Value.X - agent2.Location.Value.X, 2) + Math.Pow(agent1.Location.Value.Y - agent2.Location.Value.Y, 2));
+			}
+
+		#endregion
+
 		/// <summary>
 		/// ITypicalAgent
 		/// </summary>

@@ -15,13 +15,25 @@ namespace IndigoEngine.Agents
 			public AgentLivingIndigo()
 				: base()
 			{
-				RangeOfView = 0;
-				FieldOfView = new List<NameableObject>();
+				#region Adding skills
 
-				SkillsList = new List<Skill>();
-				SkillsList.Add(Skills.Woodcutting);
-				SkillsList.Add(Skills.Gathering);
-				SkillsList.Add(Skills.Communicationing);
+					SkillsList = new List<Skill>();
+					SkillsList.Add(Skills.Woodcutting);
+					SkillsList.Add(Skills.Gathering);
+					SkillsList.Add(Skills.Communicationing);
+
+				#endregion
+				
+				#region Adding needs
+
+					NeedFromCharacteristic.Add(CurrentState.Aggressiveness, Needs.NeedAttack);
+					NeedFromCharacteristic.Add(CurrentState.Health,         Needs.NeedCamp);
+					NeedFromCharacteristic.Add(CurrentState.Hunger,         Needs.NeedEat);
+					NeedFromCharacteristic.Add(CurrentState.Stamina,        Needs.NeedRest);
+					NeedFromCharacteristic.Add(CurrentState.Strenght,       Needs.NeedRest);
+					NeedFromCharacteristic.Add(CurrentState.Thirst,         Needs.NeedDrink);
+
+				#endregion
 			}
 
         #endregion

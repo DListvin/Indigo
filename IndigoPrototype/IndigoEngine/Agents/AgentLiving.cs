@@ -16,13 +16,8 @@ namespace IndigoEngine.Agents
 				:base()
 			{
                 CurrentState = new StateLiving();
-				AgentsMemory = new Memory();
-                NeedFromCharacteristic.Add(CurrentState.Aggressiveness, Needs.NeedAttack);
-                NeedFromCharacteristic.Add(CurrentState.Health,         Needs.NeedCamp);
-                NeedFromCharacteristic.Add(CurrentState.Hunger,         Needs.NeedEat);
-                NeedFromCharacteristic.Add(CurrentState.Stamina,        Needs.NeedRest);
-                NeedFromCharacteristic.Add(CurrentState.Strenght,       Needs.NeedRest);
-                NeedFromCharacteristic.Add(CurrentState.Thirst,         Needs.NeedDrink);
+				CurrentMemory = new Memory();
+				CurrentVision = new Vision();
 			}
 
 		#endregion
@@ -30,7 +25,7 @@ namespace IndigoEngine.Agents
         #region Properties
 				
 			/// <summary>
-			/// Current state of the agent
+			/// Current state of the agent, override property from Agent to return StateLiving, instead of State
 			/// </summary>	
 			public new StateLiving CurrentState  
 			{
@@ -43,11 +38,24 @@ namespace IndigoEngine.Agents
 					base.CurrentState = value;
 				} 
 			} 
+			public Vision CurrentVision { get; set; }    //Agent's field ov view. Includes all agents & actions, that current agent can see
+			public List<Skill> SkillsList { get; set; }  //List of skills that are available to agent
+			public Memory CurrentMemory { get; set; }    //Agent's memory
 
-			public int RangeOfView { get; set; }                    //Range of view of the agent (in cells around agent, apparently)
-			public List<NameableObject> FieldOfView { get; set; }   //Agent's field ov view. Includes all agents & actions, that current agent can see
-			public List<Skill> SkillsList { get; set; }             //List of skills that are available to agent
-			public Memory AgentsMemory { get; set; }            //Agent's memory
+			/// <summary>
+			/// Agent's range of view, relative to CurrentVision. Necessary for easier agent management
+			/// </summary>
+			public int AgentsRangeOfView
+			{
+				get
+				{
+					return CurrentVision.RangeOfView;
+				}
+				set
+				{
+					CurrentVision.RangeOfView = value;
+				}
+			}
         
         #endregion
 		
@@ -81,7 +89,7 @@ namespace IndigoEngine.Agents
             foreach (Action act in argNeed.SatisfyingActions)
             {
                 act.Subject = this;
-                foreach (Agent ag in FieldOfView.Where(val => { return val is Agent; }))
+                foreach (Agent ag in CurrentVision.CurrentViewAgents)
                 {
 					if(!act.AcceptedObj.Contains(ag.GetType()))
 					{
@@ -104,21 +112,6 @@ namespace IndigoEngine.Agents
                 if (worldResponseToAction)
                     break;
             }
-        }
-
-        /// <summary>
-        /// Computes distance between two agents (May be we shoud make static class AgentAlgebra? We'll see if there will be more computational funcs with agents)
-        /// </summary>
-        /// <param name="agent1">First agent</param>
-        /// <param name="agent2">Second agent</param>
-        /// <returns>Distance or NaN, if any of agents doesn'n have location</returns>
-        double Distance(Agent agent1, Agent agent2)
-        {
-            if (!agent1.Location.HasValue || !agent2.Location.HasValue)
-            {
-                return Double.NaN;
-            }
-            return Math.Sqrt(Math.Pow(agent1.Location.Value.X - agent2.Location.Value.X, 2) + Math.Pow(agent1.Location.Value.Y - agent2.Location.Value.Y, 2));
         }
 
         /// <summary>

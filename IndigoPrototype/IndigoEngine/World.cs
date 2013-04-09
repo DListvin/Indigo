@@ -92,7 +92,7 @@ namespace IndigoEngine
             currentAddingAgent.Location = new System.Drawing.Point(10, 10);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-            (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
+            (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
             Agents.Add(currentAddingAgent);			
 			
 			currentAddingAgent = new AgentLivingIndigo();
@@ -101,7 +101,7 @@ namespace IndigoEngine
             currentAddingAgent.Location = new System.Drawing.Point(10, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-            (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
+            (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
             Agents.Add(currentAddingAgent);
 			
 			currentAddingAgent = new AgentLivingIndigo();
@@ -110,7 +110,7 @@ namespace IndigoEngine
             currentAddingAgent.Location = new System.Drawing.Point(15, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-            (currentAddingAgent as AgentLivingIndigo).RangeOfView = 100;
+            (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
             Agents.Add(currentAddingAgent);
 
             currentAddingAgent = new AgentItemFruit();
@@ -165,37 +165,22 @@ namespace IndigoEngine
         {
             foreach (AgentLivingIndigo agent in Agents.Where(a => { return a is AgentLivingIndigo; }))
             {
-                agent.FieldOfView.Clear();
+                agent.CurrentVision.CurrentView.Clear();
                 
                 if (agent.Location.HasValue)
                 {
                     //Adding agents
-                    agent.FieldOfView.AddRange(agents.Where(a =>
+                    agent.CurrentVision.CurrentView.AddRange(agents.Where(a =>
                     {
-                        return a.Location.HasValue && a != agent && Distance(a, agent) < agent.RangeOfView;
+                        return a.Location.HasValue && a != agent && Agent.Distance(a, agent) < agent.AgentsRangeOfView;
                     }));
                     //Adding actions
-                    agent.FieldOfView.AddRange(actions.Where(a =>
+                    agent.CurrentVision.CurrentView.AddRange(actions.Where(a =>
                     {
-                        return a.Subject.Location.HasValue && Distance(agent, a.Subject) < agent.RangeOfView;
+                        return a.Subject.Location.HasValue && Agent.Distance(agent, a.Subject) < agent.AgentsRangeOfView;
                     }));
                 }
             }
-        }
-
-        /// <summary>
-        /// Computes distance between two agents (May be we shoud make static class AgentAlgebra? We'll see if there will be more computational funcs with agents)
-        /// </summary>
-        /// <param name="agent1">First agent</param>
-        /// <param name="agent2">Second agent</param>
-        /// <returns>Distance or NaN, if any of agents doesn'n have location</returns>
-        double Distance(Agent agent1, Agent agent2)
-        {
-            if (!agent1.Location.HasValue || !agent2.Location.HasValue)
-            {
-                return Double.NaN;
-            }
-            return Math.Sqrt(Math.Pow(agent1.Location.Value.X - agent2.Location.Value.X, 2) + Math.Pow(agent1.Location.Value.Y - agent2.Location.Value.Y, 2));
         }
 
         #region IWorldToAgent realisation

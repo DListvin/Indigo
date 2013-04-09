@@ -91,7 +91,7 @@ namespace IndigoEngine
 					simulatingWorld = new World();
 					PassedModelIterations = 0;
 					TurnsToStore = 100;
-					ModelIterationTick = TimeSpan.FromSeconds(2);
+					ModelIterationTick = TimeSpan.FromSeconds(0.1);
 					modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
 					State = ModelState.Initialised;
 					storedActions = new Dictionary<long, IEnumerable<Action>>();

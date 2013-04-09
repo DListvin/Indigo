@@ -67,7 +67,7 @@ namespace IndigoEngine
 				Object.CurrentState.Health.CurrentUnitValue -= HitPointsToTakeOff; 
 				if(Object is AgentLiving)
 				{
-					(Object as AgentLiving).AgentsMemory.StoreAction(Subject, this);
+					(Object as AgentLiving).CurrentMemory.StoreAction(Subject, this);
 				}
 			});
 

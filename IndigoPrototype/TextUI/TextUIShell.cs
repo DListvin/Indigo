@@ -276,7 +276,7 @@ namespace TextUI
 					{
 						return ag.Name == agentName;
 					}
-				))).AgentsMemory.ToString());        
+				))).CurrentMemory.ToString());        
             }));
         }
 
