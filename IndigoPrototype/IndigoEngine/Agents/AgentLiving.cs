@@ -109,6 +109,9 @@ namespace IndigoEngine.Agents
                             break;
                     }
                 }
+                //if there are not object in currentVision
+                //Do smth
+
                 if (worldResponseToAction)
                     break;
             }
@@ -143,15 +146,10 @@ namespace IndigoEngine.Agents
                     allNeed.Add(need);
                 }
             }
+            if (allNeed.Count == 0)
+                return Needs.NeedNothing;
             allNeed.Sort(new Comparison<Need>(Need.Comparing));
-            if ((CurrentState as StateLiving).Hunger.CurrentUnitValue < (CurrentState as StateLiving).Hunger.CriticalUnitValue)
-            {
-                return Needs.NeedEat;
-            }
-            else
-            {
-                return Needs.NeedAttack;
-            }
+            return allNeed[0];
 
         }
 

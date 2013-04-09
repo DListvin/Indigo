@@ -46,5 +46,10 @@ namespace IndigoEngine
         {
             get { return new Need("rest", 2, 3, new ActionRest()); }
         }
+
+        public static Need NeedNothing
+        {
+            get { return new Need("nothing", 9, 1, new List<Action>()); }
+        }
     }
 }

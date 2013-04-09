@@ -60,6 +60,7 @@ namespace IndigoEngine.Agents
 			{
 				StateLiving result = new StateLiving();
 
+      
 				result.Health = argState1.Health + argState2.Health;
 				result.Strenght = argState1.Strenght + argState2.Strenght;
 				result.Stamina = argState1.Stamina + argState2.Stamina;

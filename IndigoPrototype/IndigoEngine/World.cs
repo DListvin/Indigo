@@ -132,7 +132,7 @@ namespace IndigoEngine
             currentAddingAgent = new AgentPuddle();
             currentAddingAgent.Name = "Puddle1";
             currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(0, 0);
+            currentAddingAgent.Location = new System.Drawing.Point(-2, -2);
             currentAddingAgent.CurrentState.Health.MaxValue = 200;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
             Agents.Add(currentAddingAgent);
