@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using IndigoEngine.Agents;
 using NLog;
 
@@ -77,6 +78,89 @@ namespace IndigoEngine
             }
         }
 
+		/// <summary>
+		/// Loking for agent at coordinates
+		/// </summary>
+		/// <param name="argAgentLoc">agent location</param>
+		/// <returns>Found agent or null</returns>
+		private Agent GetAgentAt(Point argAgentLoc)
+		{
+			return agents.FirstOrDefault(ag => 
+			{
+				return ag.Location == argAgentLoc;
+			});
+		}
+
+		/// <summary>
+		/// Generate the forest
+		/// </summary>
+		/// <param name="argForestCenter">Center of the forest</param>
+		/// <param name="argForestSize">Forest size. Defines the square to border the forest</param>
+		private void GenerateForests(Point argForestCenter, Size argForestSize, int argMaxTrees)
+		{
+			logger.Debug("Generating new forest at {0} of size {1} with not more than {3} trees", argForestCenter, argForestSize, argMaxTrees);
+
+			int chanceForNewTree = 30;                         //Chance for algorythm to create a new tree near the current       
+			Random currentChance = new Random();               //Current counted chance to compare with chanceForNewTree   
+
+			List<Point> newTrees = new List<Point>();          //Trees, that created in the current phase
+			List<Point> currentTreesArray = new List<Point>(); //Trees, that are using for creating new ones
+
+			int borderLeft = argForestCenter.X - argForestSize.Width / 2;    //Left border of the forest
+			int borderRight = argForestCenter.X + argForestSize.Width / 2;   //Right border of the forest  
+			int borderTop = argForestCenter.Y - argForestSize.Height / 2;    //Top border of the forest   
+			int borderBottom = argForestCenter.Y + argForestSize.Height / 2; //Bottom border of the forest     
+
+			int totalTreesAdded = 0;    //Total new trees created
+
+			currentTreesArray.Add(argForestCenter);
+			
+			while(currentTreesArray.Count != 0 && totalTreesAdded < argMaxTrees)
+			{
+				foreach(Point p in currentTreesArray)
+				{	
+					for(int i = p.X - 1; i <= p.X + 1; i++)
+					{
+						if(i > borderRight || i < borderLeft)
+						{
+							continue;
+						}
+						for(int j = p.Y - 1; j <= p.Y + 1; j++)
+						{	
+							if(j > borderBottom || j < borderTop)
+							{
+								continue;
+							}
+							if(i == p.X && j == p.Y)
+							{
+								continue;
+							}
+							if(currentChance.Next(100) < chanceForNewTree)
+							{
+								if(GetAgentAt(new Point(i, j)) != null)
+								{
+									continue;
+								}
+								AgentTree currentAddingAgent = new AgentTree();
+								currentAddingAgent.Name = "Tree at " + i.ToString() + " " + j.ToString();
+								currentAddingAgent.HomeWorld = this;
+								currentAddingAgent.Location = new Point(i, j);
+								Agents.Add(currentAddingAgent);
+
+								newTrees.Add(new Point(i, j));
+								totalTreesAdded++;
+							}
+						}
+					}
+				}
+				currentTreesArray.Clear();
+				currentTreesArray.AddRange(newTrees);
+				newTrees.Clear();
+			}
+
+			logger.Info("Generated new forest. {0} trees created", totalTreesAdded);
+		}
+
         /// <summary>
         /// Here we basicly create world.
         /// </summary>
@@ -88,11 +172,13 @@ namespace IndigoEngine
             Actions = new List<Action>();
             modificatiors = new List<modificate>();
 
+			GenerateForests(new Point(-10, -10), new Size(100, 100), (int)(40 * 40 * 0.25));
+
             //Test init			
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo1";
 			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(10, 10);
+            currentAddingAgent.Location = new Point(10, 10);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
@@ -101,7 +187,7 @@ namespace IndigoEngine
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo2";
 			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(10, 15);
+            currentAddingAgent.Location = new Point(10, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
@@ -110,7 +196,7 @@ namespace IndigoEngine
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo3";
 			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(15, 15);
+            currentAddingAgent.Location = new Point(15, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
@@ -119,7 +205,7 @@ namespace IndigoEngine
             currentAddingAgent = new AgentItemFruit();
             currentAddingAgent.Name = "Fruit1";
             currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(0, 2);
+            currentAddingAgent.Location = new Point(0, 2);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             Agents.Add(currentAddingAgent);
@@ -127,7 +213,7 @@ namespace IndigoEngine
             currentAddingAgent = new AgentItemFruit();
             currentAddingAgent.Name = "Fruit2";
             currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(2, 0);
+            currentAddingAgent.Location = new Point(2, 0);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             Agents.Add(currentAddingAgent);
@@ -135,7 +221,7 @@ namespace IndigoEngine
             currentAddingAgent = new AgentPuddle();
             currentAddingAgent.Name = "Puddle1";
             currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new System.Drawing.Point(-2, -2);
+            currentAddingAgent.Location = new Point(-2, -2);
             currentAddingAgent.CurrentState.Health.MaxValue = 200;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
             Agents.Add(currentAddingAgent);

@@ -43,7 +43,8 @@ namespace GraphicalUI
 			texturesDict.Add(typeof(AgentItemFruit), GraphicalUI.Properties.Resources.fruit64);
 			texturesDict.Add(typeof(AgentCamp), GraphicalUI.Properties.Resources.camp64);
 			texturesDict.Add(typeof(AgentItemLog), GraphicalUI.Properties.Resources.log64);			
-			texturesDict.Add(typeof(AgentPuddle), GraphicalUI.Properties.Resources.water64);
+			texturesDict.Add(typeof(AgentPuddle), GraphicalUI.Properties.Resources.water64);		
+			texturesDict.Add(typeof(AgentTree), GraphicalUI.Properties.Resources.tree64);
 
             //mapPanel.MouseWheel += new EventHandler(mapPanel_MouseWheel);
 
