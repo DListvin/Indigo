@@ -89,10 +89,6 @@ namespace GraphicalUI
                 for (int j = -(textureSize + zoomModifyer); j < mapWidth + (textureSize + zoomModifyer); j += (textureSize + zoomModifyer))
                 {
                     e.Graphics.DrawImage(drawedImage, j - shiftPoint.X % (textureSize + zoomModifyer), i - shiftPoint.Y % (textureSize + zoomModifyer), (textureSize + zoomModifyer), (textureSize + zoomModifyer));
-                    tPen.Color = Color.Red;
-                    e.Graphics.DrawEllipse(tPen, j - shiftPoint.X % (textureSize + zoomModifyer), i - shiftPoint.Y % (textureSize + zoomModifyer), 5, 5);
-                    tPen.Color = Color.Blue;
-                    e.Graphics.DrawEllipse(tPen, -shiftPoint.X, -shiftPoint.Y, 5, 5);
                 }
             }
 
@@ -116,6 +112,10 @@ namespace GraphicalUI
                     if (agent.GetType() == typeof(AgentItemLog))
                     {
                         drawedImage = GraphicalUI.Properties.Resources.log64;
+                    }
+                    if (agent.GetType() == typeof(AgentPuddle))
+                    {
+                        drawedImage = GraphicalUI.Properties.Resources.water64;
                     }
 
                     if ((agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
@@ -188,6 +188,16 @@ namespace GraphicalUI
         }
 
         private void modelStopButton_Click(object sender, EventArgs e)
+        {
+            GraphicalUIShell.Model.Stop();
+        }
+
+        private void resumeButton_Click(object sender, EventArgs e)
+        {
+            GraphicalUIShell.Model.Resume();
+        }
+
+        private void GrapgicalUIForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             GraphicalUIShell.Model.Stop();
         }

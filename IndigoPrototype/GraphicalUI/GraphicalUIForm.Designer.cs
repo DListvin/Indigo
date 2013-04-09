@@ -38,6 +38,7 @@
             this.mapInfoPanelScrollBar = new System.Windows.Forms.VScrollBar();
             this.drawTimer = new System.Windows.Forms.Timer(this.components);
             this.mapPanel = new GraphicalUI.myDoubleBufferedPanel();
+            this.resumeButton = new System.Windows.Forms.Button();
             this.modelControlPanel.SuspendLayout();
             this.mapInfoPanel.SuspendLayout();
             this.SuspendLayout();
@@ -47,6 +48,7 @@
             this.modelControlPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.modelControlPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.modelControlPanel.Controls.Add(this.resumeButton);
             this.modelControlPanel.Controls.Add(this.modelStopButton);
             this.modelControlPanel.Controls.Add(this.modelPauseButton);
             this.modelControlPanel.Controls.Add(this.modelStartButton);
@@ -57,7 +59,7 @@
             // 
             // modelStopButton
             // 
-            this.modelStopButton.Location = new System.Drawing.Point(167, 4);
+            this.modelStopButton.Location = new System.Drawing.Point(247, 4);
             this.modelStopButton.Name = "modelStopButton";
             this.modelStopButton.Size = new System.Drawing.Size(75, 23);
             this.modelStopButton.TabIndex = 2;
@@ -125,6 +127,16 @@
             this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseMove);
             this.mapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseUp);
             // 
+            // resumeButton
+            // 
+            this.resumeButton.Location = new System.Drawing.Point(166, 4);
+            this.resumeButton.Name = "resumeButton";
+            this.resumeButton.Size = new System.Drawing.Size(75, 23);
+            this.resumeButton.TabIndex = 3;
+            this.resumeButton.Text = "Resume";
+            this.resumeButton.UseVisualStyleBackColor = true;
+            this.resumeButton.Click += new System.EventHandler(this.resumeButton_Click);
+            // 
             // GrapgicalUIForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +149,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GrapgicalUIForm";
             this.Text = "Indigo";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GrapgicalUIForm_FormClosed);
             this.Load += new System.EventHandler(this.GrapgicalUIForm_Load);
             this.modelControlPanel.ResumeLayout(false);
             this.mapInfoPanel.ResumeLayout(false);
@@ -154,6 +167,7 @@
         private System.Windows.Forms.Button modelStopButton;
         private System.Windows.Forms.Button modelPauseButton;
         private System.Windows.Forms.Button modelStartButton;
+        private System.Windows.Forms.Button resumeButton;
     }
 }
 
