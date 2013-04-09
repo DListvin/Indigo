@@ -292,7 +292,6 @@ namespace TextUI
             {
                 throw new UnsetModelException("You shoud specify model to watch for using Model property before calling Run method");
             }
-
             Console.WriteLine("Indigo prj, text UI.");
             Console.WriteLine("Type -help to get list of all available commands");
 
