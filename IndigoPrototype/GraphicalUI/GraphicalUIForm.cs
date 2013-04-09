@@ -43,12 +43,23 @@ namespace GraphicalUI
         private void onDrawTimerTick(object sender, EventArgs e)
         {
             //It should be replaced with the model tick eventhandler
-            mapPanel.Refresh();
+            //mapPanel.Refresh();
         }
 
         private void onModelTick(object sender, EventArgs e)
         {
-            //mapPanel.Refresh();
+            CrossthreadRefreshMapPanel();
+        }
+
+        private void CrossthreadRefreshMapPanel()
+        {
+            if (mapPanel.InvokeRequired)
+            {
+                mapPanel.Invoke(new MethodInvoker(CrossthreadRefreshMapPanel));
+                return;
+            }
+
+            mapPanel.Refresh();
         }
 
         /// <summary>
