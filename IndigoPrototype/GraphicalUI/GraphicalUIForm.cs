@@ -46,7 +46,7 @@ namespace GraphicalUI
             //mapPanel.Refresh();
         }
 
-        private void onModelTick(object sender, EventArgs e)
+        private void onModelTick(object sender, EventArgs e)	
         {
             CrossthreadRefreshMapPanel();
         }
