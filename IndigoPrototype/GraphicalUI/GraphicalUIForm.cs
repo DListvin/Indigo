@@ -18,6 +18,8 @@ namespace GraphicalUI
         Point mouseDownPoint = new Point(0, 0);
         bool leftMouseButtonInMapIsPressed = false;
         int zoomModifyer = 0;
+		
+		Dictionary<Type, Image> texturesDict = new Dictionary<Type, Image>();
 
         public GrapgicalUIForm()
         {
@@ -33,6 +35,12 @@ namespace GraphicalUI
             GraphicalUIShell.Model.Initialise();
 
             GraphicalUIShell.Model.ModelTick += new EventHandler(onModelTick);
+
+			texturesDict.Add(typeof(AgentLivingIndigo), GraphicalUI.Properties.Resources.indigo_suit64);
+			texturesDict.Add(typeof(AgentItemFruit), GraphicalUI.Properties.Resources.fruit64);
+			texturesDict.Add(typeof(AgentCamp), GraphicalUI.Properties.Resources.camp64);
+			texturesDict.Add(typeof(AgentItemLog), GraphicalUI.Properties.Resources.log64);			
+			texturesDict.Add(typeof(AgentPuddle), GraphicalUI.Properties.Resources.water64);
 
             //mapPanel.MouseWheel += new EventHandler(mapPanel_MouseWheel);
 
@@ -97,26 +105,7 @@ namespace GraphicalUI
             {
                 if (agent.Location != null)
                 {
-                    if (agent.GetType() == typeof(AgentLivingIndigo))
-                    {
-                        drawedImage = GraphicalUI.Properties.Resources.indigo_suit64;
-                    }
-                    if (agent.GetType() == typeof(AgentItemFruit))
-                    {
-                        drawedImage = GraphicalUI.Properties.Resources.fruit64;
-                    }
-                    if (agent.GetType() == typeof(AgentCamp))
-                    {
-                        drawedImage = GraphicalUI.Properties.Resources.camp64;
-                    }
-                    if (agent.GetType() == typeof(AgentItemLog))
-                    {
-                        drawedImage = GraphicalUI.Properties.Resources.log64;
-                    }
-                    if (agent.GetType() == typeof(AgentPuddle))
-                    {
-                        drawedImage = GraphicalUI.Properties.Resources.water64;
-                    }
+                    texturesDict.TryGetValue(agent.GetType(), out drawedImage);
 
                     if ((agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
                         (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
@@ -195,11 +184,11 @@ namespace GraphicalUI
         private void resumeButton_Click(object sender, EventArgs e)
         {
             GraphicalUIShell.Model.Resume();
-        }
+		}
 
-        private void GrapgicalUIForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
+		private void GrapgicalUIForm_FormClosing(object sender, FormClosingEventArgs e)
+		{		
             GraphicalUIShell.Model.Stop();
-        }
+		}
     }
 }
