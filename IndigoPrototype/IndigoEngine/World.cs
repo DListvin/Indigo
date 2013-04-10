@@ -99,7 +99,7 @@ namespace IndigoEngine
 		/// <param name="argDensity">Forest density (0 - 1). Defines trees density in the forest square</param>
 		private void GenerateForest(Point argForestCenter, Size argForestSize, double argDensity)
 		{
-			logger.Debug("Generating new forest at {0} of size {1} with {3} density", argForestCenter, argForestSize, argDensity);
+			logger.Debug("Generating new forest at {0} of size {1} with {2} density", argForestCenter, argForestSize, argDensity);
 
 			int chanceForNewTree = 50;                         //Chance for algorythm to create a new tree near the current       
 			Random currentChance = new Random();               //Current counted chance to compare with chanceForNewTree   

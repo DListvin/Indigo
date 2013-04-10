@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndigoEngine", "IndigoEngine\IndigoEngine.csproj", "{41A0E5A7-0309-4B97-8F23-1ADC1B921448}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextUI", "TextUI\TextUI.csproj", "{3BAF5703-7906-4CE8-B12D-F479694E3FDB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicalUI", "GraphicalUI\GraphicalUI.csproj", "{BE1590BF-4EA1-4125-8519-F91FA124B921}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E7F002BA-DCDC-450C-950F-F393D6F3165E}"
+	ProjectSection(SolutionItems) = preProject
+		ext\NLog.dll = ext\NLog.dll
+		ext\NLog.Extended.dll = ext\NLog.Extended.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
