@@ -220,6 +220,30 @@ namespace TextUI
 				Console.WriteLine("Tick set to: " + Model.ModelIterationTick); 
             }));
 
+            ListOfCommands.Add(new Command("pass", "Makes world to quickly compute main loop for n times (ex: -pass 14)", args =>
+            {
+                if (args.Length < 2)
+                {
+                    Model.StepNIterationsForward();
+                }
+                else
+                {
+                    var ms = args[1] as string;
+                    Model.StepNIterationsForward(Int16.Parse(ms));
+                }                
+                Console.WriteLine("Model passed to iteration: " + Model.PassedModelIterations);
+            }));
+
+            ListOfCommands.Add(new Command("passto", "Makes world to quickly compute main loop up to n iteration (ex: -passto 144)", args =>
+            {
+                if (args.Length > 1)
+                {                    
+                    var n = args[1] as string;
+                    Model.GoToNIteration(Int16.Parse(n));
+                }
+                Console.WriteLine("Model passed to iteration: " + Model.PassedModelIterations);
+            }));
+
             ListOfCommands.Add(new Command("agents", "Lists all agents in the world", args =>
             {
                 foreach (Agent agent in Model.Agents)

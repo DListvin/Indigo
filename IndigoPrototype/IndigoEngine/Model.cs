@@ -152,7 +152,7 @@ namespace IndigoEngine
 
         public void MainLoop()
         {
-            //try
+            try
             {
                 for (; ; )
                 {
@@ -182,13 +182,68 @@ namespace IndigoEngine
                     }
                 }
             }
-            //catch (Exception e)
+            catch (Exception e)
             {
                 //Console.WriteLine(e.Message);
-                //State = ModelState.Error;
+                State = ModelState.Error;
             }
         }
 
+        /// <summary>
+        /// Quickly runs n steps forward
+        /// </summary>
+        /// <param name="n">number of stepsS</param>
+        public void StepNIterationsForward(int n = 1)
+        {
+            ModelState prevState = State;
+            try
+            {
+                for (int i = 0; i < n; ++i)
+                {
+                    if (State == ModelState.Stopping)
+                    {
+                        break;
+                    }
+                    if (State == ModelState.Paused)
+                    {
+                        State = ModelState.Running;
+                    }
+                    if (State == ModelState.Running)
+                    {
+                        //There out main loop is running
+                        simulatingWorld.MainLoopIteration();
+
+                        //Work out the end of iteration
+
+                        //Sending a message
+                        if (ModelTick != null)
+                            ModelTick(this, null);
+
+
+                        ManageActionStorage();
+                        ++PassedModelIterations;
+                    }
+                }
+                State = prevState;
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine(e.Message);
+                State = ModelState.Error;
+            }
+        }
+
+        /// <summary>
+        /// Computes model up to n iteration
+        /// </summary>
+        /// <param name="n">To wich iteration to compute</param>
+        public void GoToNIteration(long n)
+        {
+            if (n > PassedModelIterations)
+            {
+                StepNIterationsForward((int)(n - PassedModelIterations));
+            }
+        }
         /// <summary>
         /// Updates action storage each turn
         /// </summary>

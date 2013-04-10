@@ -71,5 +71,17 @@ namespace IndigoEngine
 		/// Stop main loop and process with safe method
 		/// </summary>
         void Stop();
+
+        /// <summary>
+        /// Computes n iterations
+        /// </summary>
+        /// <param name="n">number of iterations to compute</param>
+        void StepNIterationsForward(int n = 1);
+
+        /// <summary>
+        /// Computes model up to n iteration
+        /// </summary>
+        /// <param name="n">To wich iteration to compute</param>
+        void GoToNIteration(long n);
     }
 }
