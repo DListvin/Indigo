@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using IndigoEngine;
 using IndigoEngine.Agents;
 using NLog;
+using TextUI;
+using System.Threading;
 
 namespace GraphicalUI
 {
@@ -18,6 +20,15 @@ namespace GraphicalUI
         [STAThread]
         static void Main()
         {
+            IObservableModel model = new Model();
+            GraphicalUIShell.Model = model;
+            TextUIShell.Model = model;
+
+            model.Initialise();
+
+            Thread TextThread = new Thread(TextUIShell.Run);
+            TextThread.Start();            
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

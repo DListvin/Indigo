@@ -51,7 +51,7 @@ namespace TextUI
     /// <summary>
     /// Static class, making console UI.
     /// </summary>
-    static class TextUIShell
+    public static class TextUIShell
     {        
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 

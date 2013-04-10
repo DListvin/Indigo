@@ -16,7 +16,7 @@ namespace TextUI
     /// <summary>
     /// A class for one textUI command
     /// </summary>
-    class Command : NameableObject
+    public class Command : NameableObject
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 

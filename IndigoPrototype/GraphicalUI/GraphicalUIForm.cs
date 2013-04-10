@@ -33,10 +33,6 @@ namespace GraphicalUI
         {
             shiftPoint = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
-            IObservableModel model = new Model();
-            GraphicalUIShell.Model = model;
-            GraphicalUIShell.Model.Initialise();
-
             GraphicalUIShell.Model.ModelTick += new EventHandler(onModelTick);
 
 			texturesDict.Add(typeof(AgentLivingIndigo), GraphicalUI.Properties.Resources.indigo_suit64);

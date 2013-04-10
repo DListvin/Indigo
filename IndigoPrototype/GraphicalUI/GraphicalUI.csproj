@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BE1590BF-4EA1-4125-8519-F91FA124B921}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GraphicalUI</RootNamespace>
     <AssemblyName>GraphicalUI</AssemblyName>
@@ -50,6 +50,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>LogoDemo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
@@ -131,6 +134,10 @@
     <ProjectReference Include="..\IndigoEngine\IndigoEngine.csproj">
       <Project>{41A0E5A7-0309-4B97-8F23-1ADC1B921448}</Project>
       <Name>IndigoEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextUI\TextUI.csproj">
+      <Project>{3BAF5703-7906-4CE8-B12D-F479694E3FDB}</Project>
+      <Name>TextUI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
