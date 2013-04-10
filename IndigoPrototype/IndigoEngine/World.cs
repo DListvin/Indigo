@@ -96,11 +96,12 @@ namespace IndigoEngine
 		/// </summary>
 		/// <param name="argForestCenter">Center of the forest</param>
 		/// <param name="argForestSize">Forest size. Defines the square to border the forest</param>
-		private void GenerateForests(Point argForestCenter, Size argForestSize, int argMaxTrees)
+		/// <param name="argDensity">Forest density (0 - 1). Defines trees density in the forest square</param>
+		private void GenerateForest(Point argForestCenter, Size argForestSize, double argDensity)
 		{
-			logger.Debug("Generating new forest at {0} of size {1} with not more than {3} trees", argForestCenter, argForestSize, argMaxTrees);
+			logger.Debug("Generating new forest at {0} of size {1} with {3} density", argForestCenter, argForestSize, argDensity);
 
-			int chanceForNewTree = 30;                         //Chance for algorythm to create a new tree near the current       
+			int chanceForNewTree = 50;                         //Chance for algorythm to create a new tree near the current       
 			Random currentChance = new Random();               //Current counted chance to compare with chanceForNewTree   
 
 			List<Point> newTrees = new List<Point>();          //Trees, that created in the current phase
@@ -111,11 +112,13 @@ namespace IndigoEngine
 			int borderTop = argForestCenter.Y - argForestSize.Height / 2;    //Top border of the forest   
 			int borderBottom = argForestCenter.Y + argForestSize.Height / 2; //Bottom border of the forest     
 
+			int maxTrees = (int)(argForestSize.Height * argForestSize.Width * argDensity);  //Max number of trees in the forest
+
 			int totalTreesAdded = 0;    //Total new trees created
 
 			currentTreesArray.Add(argForestCenter);
 			
-			while(currentTreesArray.Count != 0 && totalTreesAdded < argMaxTrees)
+			while(currentTreesArray.Count != 0 && totalTreesAdded < maxTrees)
 			{
 				foreach(Point p in currentTreesArray)
 				{	
@@ -127,6 +130,17 @@ namespace IndigoEngine
 						}
 						for(int j = p.Y - 1; j <= p.Y + 1; j++)
 						{	
+							if(totalTreesAdded > maxTrees / 10) //edges of the forest are more discontinuous, so we are not checking diagonal cells
+							{
+								if(j != p.Y && (i == p.X - 1 || i == p.X + 1))
+								{
+									continue;
+								}
+								if(i != p.X && (j == p.Y - 1 || j == p.Y + 1))
+								{
+									continue;
+								}
+							}
 							if(j > borderBottom || j < borderTop)
 							{
 								continue;
@@ -172,7 +186,7 @@ namespace IndigoEngine
             Actions = new List<Action>();
             modificatiors = new List<modificate>();
 
-			GenerateForests(new Point(-10, -10), new Size(100, 100), (int)(40 * 40 * 0.25));
+			GenerateForest(new Point(-10, -10), new Size(50, 50), 0.10);
 
             //Test init			
 			currentAddingAgent = new AgentLivingIndigo();
