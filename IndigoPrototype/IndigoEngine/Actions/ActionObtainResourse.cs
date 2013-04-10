@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -11,14 +12,15 @@ namespace IndigoEngine
     /// </summary>
     class ActionObtainResourse : Action
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         Type resourseType;
         #region Constructors
 
-        public ActionObtainResourse(Agent argObj, Agent argSubj, Type resType)
-            : base(argObj, argSubj)
+		public ActionObtainResourse(Agent argSubj, Agent argObj, Type resType)
+			: base(argSubj, argObj)
         {
             MayBeConflict = true;
-            AcceptedSubj.Add(typeof(AgentLiving));
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
             AcceptedObj.Add(typeof(AgentTree));
             resourseType = resType;

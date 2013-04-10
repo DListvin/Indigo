@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
 using System.Drawing;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -12,6 +13,8 @@ namespace IndigoEngine
     /// </summary>
     class ActionGo : Action
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         #region Constructors
 
         public ActionGo(Agent argSubj, Point dir)
@@ -20,7 +23,7 @@ namespace IndigoEngine
             Subject = argSubj;
             Direction = Normilize(dir, argSubj.Location.Value);
             MayBeConflict = true;
-            AcceptedSubj.Add(typeof(AgentLiving));
+			RequiresObject = false;
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
         }
 
@@ -69,7 +72,7 @@ namespace IndigoEngine
 		/// </summary>
 		public override int CompareTo(Action argActionToCompare)
 		{
-			if (base.CompareTo(argActionToCompare) == 0 && argActionToCompare.GetType().BaseType == typeof(ActionGo))
+			if (base.CompareTo(argActionToCompare) == 0)
 			{
 				if(Direction == ((ActionGo)argActionToCompare).Direction)
 				{

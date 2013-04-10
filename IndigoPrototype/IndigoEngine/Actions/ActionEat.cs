@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -11,13 +12,14 @@ namespace IndigoEngine
     /// </summary>
     class ActionEat : Action
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		#region Constructors
 
-        public ActionEat(Agent argObj, Agent argSubj) 
-			: base(argObj, argSubj)
+		public ActionEat(Agent argSubj, Agent argObj)
+			: base(argSubj, argObj)
         {
             MayBeConflict = true;
-            AcceptedSubj.Add( typeof(AgentLiving));
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
             AcceptedObj.Add(typeof(AgentItemFruit));
         }

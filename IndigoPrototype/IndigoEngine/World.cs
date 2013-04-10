@@ -266,7 +266,7 @@ namespace IndigoEngine
         /// </summary>
         void UpdateAgentFeelings()
         {
-            foreach (AgentLivingIndigo agent in Agents.Where(a => { return a is AgentLivingIndigo; }))
+            foreach (Agent agent in Agents)
             {
                 agent.CurrentVision.CurrentView.Clear();
                 
@@ -356,6 +356,7 @@ namespace IndigoEngine
 				{
                     return false;
 				}
+				obj.HomeWorld = this;
                 modificatiors.Add(() =>
                 {
                     agents.Add(obj);

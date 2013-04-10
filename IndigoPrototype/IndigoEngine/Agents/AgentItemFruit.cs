@@ -18,6 +18,7 @@ namespace IndigoEngine.Agents
 			public AgentItemFruit()
 				: base()
 			{
+				NeedFromCharacteristic.Add(CurrentState.Health, Needs.NeedNothing);
 			}
 
 		#endregion

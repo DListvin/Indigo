@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
 using System.Drawing;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -12,6 +13,8 @@ namespace IndigoEngine
     /// </summary>
     public abstract class Action : NameableObject, ITypicalAction, IComparable<Action>
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		#region Static members	
 
 			/// <summary>
@@ -41,13 +44,16 @@ namespace IndigoEngine
         {
             AcceptedObj = new List<Type>();
             AcceptedSubj = new List<Type>();
+
+			MayBeConflict = false;
+			RequiresObject = true;
         }
 
-        public Action(Agent argObj, Agent argSubj)
+		public Action(Agent argSubj, Agent argObj)
             : this()
         {
-            Object = argObj;
             Subject = argSubj;
+            Object = argObj;
         }
 
         #endregion
@@ -62,11 +68,13 @@ namespace IndigoEngine
 
                 protected bool MayBeConflict { get; set; } //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
 
-                public List<Type> AcceptedSubj { get; set; } //Meant to be set in descendant class
+                public bool RequiresObject { get; set; } //Info about if action requaires object for it
 
-                public List<Type> AcceptedObj { get; set; }
+                public List<Type> AcceptedSubj { get; set; } //Meant to be set in descendant class(comment by Pasha) List of accepted subjects to this action
 
-                public IWorldToAction World { get; set; }
+                public List<Type> AcceptedObj { get; set; } //List of accepted objects to this action
+
+                public IWorldToAction World { get; set; }   //Home world of the action
 
             #endregion
 
@@ -78,11 +86,11 @@ namespace IndigoEngine
         /// </summary>
 		public virtual bool CheckForLegitimacy()
 		{
-            if ((Object!=null) && !AcceptedObj.Contains(Object.GetType()))
+            if (!AcceptedSubj.Contains(Subject.GetType()))
             {
                 return false;
             }
-            if (!AcceptedSubj.Contains(Subject.GetType()))
+            if ((Object!=null) && !AcceptedObj.Contains(Object.GetType()))
             {
                 return false;
             }
@@ -115,7 +123,7 @@ namespace IndigoEngine
 			{
 				return 1;
 			}
-			if(this.GetType().BaseType != argActionToCompare.GetType().BaseType)
+			if(this.GetType() != argActionToCompare.GetType())
 			{
 				return 1;
 			}

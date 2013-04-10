@@ -18,6 +18,7 @@ namespace IndigoEngine.Agents
 			public AgentCamp() 
 				: base()
 			{
+				NeedFromCharacteristic.Add(CurrentState.Health, Needs.NeedNothing);
 			}
 
 		#endregion

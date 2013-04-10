@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -11,18 +12,16 @@ namespace IndigoEngine
 	/// </summary>
     public class ActionAttack : Action
     {
-        int hitPointsToTakeOff;
-
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+		
 		#region Constructors
 
-			public ActionAttack(Agent argObj, Agent argSubj, int argHitPointsToTakeOff) 
-				: base(argObj, argSubj)
+		public ActionAttack(Agent argSubj, Agent argObj, int argHitPointsToTakeOff)
+			: base(argSubj, argObj)
 			{
 				HitPointsToTakeOff = argHitPointsToTakeOff;
 				MayBeConflict = false;
-				AcceptedObj.Add(typeof(AgentLiving));
 				AcceptedObj.Add(typeof(AgentLivingIndigo));
-				AcceptedSubj.Add(typeof(AgentLiving));
 				AcceptedSubj.Add(typeof(AgentLivingIndigo));
 			}
 
@@ -30,11 +29,7 @@ namespace IndigoEngine
 
 		#region Properties
 
-		public int HitPointsToTakeOff
-		{
-			get { return hitPointsToTakeOff; }
-			set { hitPointsToTakeOff = value; }
-		}
+			public int HitPointsToTakeOff { get; set; }
 
 		#endregion
 		

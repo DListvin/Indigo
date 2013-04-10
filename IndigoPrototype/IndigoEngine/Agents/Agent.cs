@@ -24,14 +24,12 @@ namespace IndigoEngine.Agents
 			public Agent() 
 				: base()
 			{
-				CurrentState = new State();
-			
-				Location = new Point(0, 0);
-
+				CurrentState = new State();			
+				Location = null;
 				Inventory = new ItemStorage();
-
-				HomeWorld = null;
-
+				HomeWorld = null;				
+				CurrentMemory = new Memory();
+				CurrentVision = new Vision();
                 NeedFromCharacteristic = new Dictionary<Characteristic, Need>();
 			}
 
@@ -41,15 +39,28 @@ namespace IndigoEngine.Agents
 					
 			#region ITypicalAgent realisation
 				
-				public State CurrentState { get; set; }    //Current state of the agent
-
-				public Point? Location { get; set; }       //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
-
-				public ItemStorage Inventory { get; set; } //Agent inventory
-
+				public State CurrentState { get; set; }                    //Current state of the agent
+				public Point? Location { get; set; }                       //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
+				public ItemStorage Inventory { get; set; }                 //Agent inventory
 				public ActionFeedback CurrentActionFeedback { get; set; }  //Current action result, that is needed to be perform
+				public IWorldToAgent HomeWorld { get; set; }               //Agent's world				
+				public Vision CurrentVision { get; set; }                  //Agent's field ov view. Includes all agents & actions, that current agent can see
+				public Memory CurrentMemory { get; set; }                  //Agent's memory
 
-				public IWorldToAgent HomeWorld { get; set; }       //Agent's world
+				/// <summary>
+				/// Agent's range of view, relative to CurrentVision. Necessary for easier agent management
+				/// </summary>
+				public int AgentsRangeOfView
+				{
+					get
+					{
+						return CurrentVision.RangeOfView;
+					}
+					set
+					{
+						CurrentVision.RangeOfView = value;
+					}
+				}
 
                 protected Dictionary<Characteristic, Need> NeedFromCharacteristic { get; set; } // Agent's spesific association Needs from Characteristic
 
@@ -82,6 +93,7 @@ namespace IndigoEngine.Agents
 		public void CommitSuicide()
 		{
 			CurrentState.Health.CurrentUnitValue = CurrentState.Health.MinValue;
+			logger.Info("Agent {0} commited suicide", this.Name);
 		}
 				
 		/// <summary>
@@ -89,17 +101,118 @@ namespace IndigoEngine.Agents
 		/// </summary>
 		public virtual void Decide()
 		{
+            //Kostya's logick here
+            //World must control everything, that I'm trying to do
+            //I can try to do everything.
+
+            //looking through ShortMemory to find active tasks
+            //if 1 step requied - complite
+            Need mainNeed = EstimateMainNeed();
+            MakeAction(mainNeed);
+
+			logger.Debug("Desided for {0}", this.Name);
 		}
+
+        /// <summary>
+        /// Calculate one main need of agent at this moment
+        /// </summary>
+        /// <returns> main need</returns>
+        protected virtual Need EstimateMainNeed()
+        {
+            List<Need> allNeed = new List<Need>();
+            Need need = new Need();
+            foreach (Characteristic ch in CurrentState)
+            {
+                if (ch.CurrentPercentValue < ch.CriticalPercentValue)
+                {
+                    if (!NeedFromCharacteristic.TryGetValue(ch, out need))
+                    {
+						logger.Error("Dictionary of the {0} doesn't have info about needs for {1}", this.Name, ch.Name);
+                        throw new Exception("Ditionary in Agent has error. Cant find need by characteristic!");
+                    }
+                    allNeed.Add(need);
+                }
+            }
+            if (allNeed.Count == 0)
+                return Needs.NeedNothing;
+            allNeed.Sort(new Comparison<Need>(Need.Comparing));
+
+			logger.Debug("Estimated main need for {0}", this.Name);
+
+            return allNeed[0];
+
+        }
+		
+        /// <summary>
+        /// Calculate the best decision of action to satisfy need
+        /// </summary>
+        /// <param name="argNeed">need, that must be satisfied</param>
+        protected virtual void MakeAction(Need argNeed)
+        {
+            CurrentActionFeedback = null;
+            bool worldResponseToAction = false;	//World response if the action is accepted
+            if (argNeed.SatisfyingActions.Count == 0)
+                throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
+
+            foreach (Action act in argNeed.SatisfyingActions)
+            {
+                act.Subject = this;
+
+				if(act.RequiresObject)
+				{
+					foreach (Agent ag in CurrentVision.CurrentViewAgents)
+					{
+						if(!act.AcceptedObj.Contains(ag.GetType()))
+						{
+							continue;
+						}
+						act.Object = ag;
+						if (Distance(this, ag) > Math.Sqrt(2))
+						{
+							worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo( this, ag.Location.Value));
+							if (worldResponseToAction)
+								break;
+						}
+						else
+						{
+							worldResponseToAction = HomeWorld.AskWorldForAction(act);
+							if (worldResponseToAction)
+							{
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					worldResponseToAction = HomeWorld.AskWorldForAction(act);
+				}
+
+                if (worldResponseToAction)
+				{
+                    break;
+				}
+            }
+
+			logger.Debug("Made action for {0}", this.Name);
+
+        }
 		
 		/// <summary>
 		/// ITypicalAgent
 		/// </summary>
         public virtual void StateRecompute()
         {
+			logger.Trace("Base state recomputing for {0}", this);
+
             if (CurrentState.Health.CurrentUnitValue == this.CurrentState.Health.MinValue)
 			{
 				HomeWorld.AskWorldForDeletion(this);
 			}
+
+			logger.Debug("Base state recomputed for {0}", this.Name);
+			logger.Trace("{0}", this);
+
         }
 
 		/// <summary>
@@ -110,7 +223,8 @@ namespace IndigoEngine.Agents
             if (CurrentActionFeedback != null)
 			{
                 CurrentActionFeedback.Invoke();
-			}
+			}			
+			logger.Debug("Performed action feedback for {0}", this.Name);
         }
 
         public override string ToString()

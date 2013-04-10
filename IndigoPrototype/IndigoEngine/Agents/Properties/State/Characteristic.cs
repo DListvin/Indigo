@@ -15,7 +15,7 @@ namespace IndigoEngine.Agents
 
 		private int maxValue = 100; //Maximum value of the characteristic
 		private int minValue = 0;       //Minimum value of the characteristic
-        private int criticalValue = 20; //Minimum value of the satisfied characteristic 
+        private int criticalPercentValue = 20; //Minimum value of the satisfied characteristic 
 		private int currentValue;   //Current value of the characteristic
 
 		#region Constructors
@@ -94,25 +94,25 @@ namespace IndigoEngine.Agents
 					}
 				}
 
-				public int CriticalUnitValue
+				public int CriticalPercentValue
 				{
 					get 
 					{
-						return criticalValue; 
+						return criticalPercentValue; 
 					}
 					set
 					{
-						if (value < MinValue)
+						if (value < 0)
 						{
-							criticalValue = MinValue;
+							criticalPercentValue = 0;
 							return;
 						}
-						if(value > MaxValue)
+						if(value > 100)
 						{	
-							criticalValue = MaxValue;
+							criticalPercentValue = 100;
 							return;
 						}
-						criticalValue = value;
+						criticalPercentValue = value;
 					}
 				}
 
@@ -145,9 +145,9 @@ namespace IndigoEngine.Agents
 				{
 					throw(new Exception(String.Format("You are trying to add 2 characteristics with different borders: {0} and {1}", argChar1, argChar2)));
 				}
-				if(argChar1.CriticalUnitValue != argChar2.CriticalUnitValue)
+				if(argChar1.CriticalPercentValue != argChar2.CriticalPercentValue)
 				{
-					throw(new Exception(String.Format("You are trying to add 2 characteristics with different critical values: {0} and {1}", argChar1.CriticalUnitValue, argChar2.CriticalUnitValue)));
+					throw(new Exception(String.Format("You are trying to add 2 characteristics with different critical values: {0} and {1}", argChar1.CriticalPercentValue, argChar2.CriticalPercentValue)));
 				}
 				result.CurrentUnitValue = (argChar1.CurrentUnitValue + argChar2.CurrentUnitValue);
 
@@ -165,9 +165,9 @@ namespace IndigoEngine.Agents
 				{
 					throw(new Exception(String.Format("You are trying to substract 2 characteristics with different borders: {0} and {1}", argChar1, argChar2)));
 				}
-				if(argChar1.CriticalUnitValue != argChar2.CriticalUnitValue)
+				if(argChar1.CriticalPercentValue != argChar2.CriticalPercentValue)
 				{
-					throw(new Exception(String.Format("You are trying to substract 2 characteristics with different critical values: {0} and {1}", argChar1.CriticalUnitValue, argChar2.CriticalUnitValue)));
+					throw(new Exception(String.Format("You are trying to substract 2 characteristics with different critical values: {0} and {1}", argChar1.CriticalPercentValue, argChar2.CriticalPercentValue)));
 				}
 				result.CurrentUnitValue = (argChar1.CurrentUnitValue - argChar2.CurrentUnitValue);
 
@@ -176,11 +176,7 @@ namespace IndigoEngine.Agents
 
 			public static Characteristic operator+(Characteristic argChar1, int argValue)
 			{
-				Characteristic result = new Characteristic();
-				result.MinValue = argChar1.MinValue;
-				result.MaxValue = argChar1.MaxValue;
-				result.CriticalUnitValue = argChar1.CriticalUnitValue;
-				result.Name = argChar1.Name;
+				Characteristic result = argChar1;
 				result.CurrentUnitValue = argChar1.CurrentUnitValue + argValue;
 
 				return result;
@@ -188,11 +184,7 @@ namespace IndigoEngine.Agents
 
 			public static Characteristic operator-(Characteristic argChar1, int argValue)
 			{
-				Characteristic result = new Characteristic();
-				result.MinValue = argChar1.MinValue;
-				result.MaxValue = argChar1.MaxValue;
-				result.CriticalUnitValue = argChar1.CriticalUnitValue;
-				result.Name = argChar1.Name;
+				Characteristic result = argChar1;
 				result.CurrentUnitValue = argChar1.CurrentUnitValue - argValue;
 
 				return result;

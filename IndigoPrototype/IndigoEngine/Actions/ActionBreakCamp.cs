@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using IndigoEngine.Agents;
+using NLog;
 
 namespace IndigoEngine
 {
@@ -12,14 +13,16 @@ namespace IndigoEngine
     /// </summary>
     public class ActionBreakCamp : Action
     {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
         #region Constructors
 
 			public ActionBreakCamp(Agent argSubj, Point dir)
-				: base(null, argSubj)
+			: base(argSubj, null)
 			{
                 Direction = Normilize(dir, new Point(0, 0));
 				MayBeConflict = true;
-				AcceptedObj.Add(typeof(AgentLiving));
+				RequiresObject = false;
 				AcceptedObj.Add(typeof(AgentLivingIndigo));
 				AcceptedSubj.Add(typeof(AgentCamp));
 				Name = "To Break a Camp";

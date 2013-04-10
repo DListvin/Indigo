@@ -25,7 +25,7 @@ namespace IndigoEngine.Agents
         /// <summary>
         /// Operations with characteristic critical value in units
         /// </summary>
-        int CriticalUnitValue { get; set; }
+        int CriticalPercentValue { get; set; }
 
 		/// <summary>
 		/// Operations with characteristic value in percents

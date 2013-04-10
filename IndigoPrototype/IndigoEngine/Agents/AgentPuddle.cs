@@ -18,6 +18,7 @@ namespace IndigoEngine.Agents
 			public AgentPuddle()
 				: base()
 			{
+				NeedFromCharacteristic.Add(CurrentState.Health, Needs.NeedNothing);
 			}
 
 		#endregion

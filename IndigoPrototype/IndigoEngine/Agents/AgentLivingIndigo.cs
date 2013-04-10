@@ -20,7 +20,6 @@ namespace IndigoEngine.Agents
 			{
 				#region Adding skills
 
-					SkillsList = new List<Skill>();
 					SkillsList.Add(Skills.Woodcutting);
 					SkillsList.Add(Skills.Gathering);
 					SkillsList.Add(Skills.Communicationing);

@@ -47,10 +47,12 @@
   <ItemGroup>
     <Compile Include="Actions\Action.cs" />
     <Compile Include="Actions\ActionAttack.cs" />
+    <Compile Include="Actions\ActionDoNothing.cs" />
     <Compile Include="Actions\ActionDrink.cs" />
     <Compile Include="Actions\ActionEat.cs" />
     <Compile Include="Actions\ActionGo.cs" />
     <Compile Include="Actions\ActionBreakCamp.cs" />
+    <Compile Include="Actions\ActionGrowFruit.cs" />
     <Compile Include="Actions\ActionObtainResourse.cs" />
     <Compile Include="Actions\ActionRest.cs" />
     <Compile Include="Agents\Agent.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Agents\Properties\Memory\Memory.cs" />
     <Compile Include="Agents\Properties\State\StateLiving.cs" />
     <Compile Include="Agents\Properties\Memory\StoredInformation.cs" />
+    <Compile Include="Agents\Properties\State\StateTree.cs" />
     <Compile Include="IObservableModel.cs" />
     <Compile Include="Actions\ITypicalAction.cs" />
     <Compile Include="Agents\Properties\Needs\ITypicalNeed.cs" />

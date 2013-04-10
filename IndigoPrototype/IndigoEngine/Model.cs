@@ -152,7 +152,7 @@ namespace IndigoEngine
 
         public void MainLoop()
         {
-            try
+            //try
             {
                 for (; ; )
                 {
@@ -182,10 +182,10 @@ namespace IndigoEngine
                     }
                 }
             }
-            catch (Exception e)
+            //catch (Exception)
             {
                 //Console.WriteLine(e.Message);
-                State = ModelState.Error;
+                //State = ModelState.Error;
             }
         }
 
@@ -226,7 +226,7 @@ namespace IndigoEngine
                 }
                 State = prevState;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Console.WriteLine(e.Message);
                 State = ModelState.Error;

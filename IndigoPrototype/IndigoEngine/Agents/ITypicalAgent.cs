@@ -35,6 +35,21 @@ namespace IndigoEngine.Agents
         IWorldToAgent HomeWorld{ get; set; }
 
 		/// <summary>
+		/// Operations with agent's field of view
+		/// </summary>
+		Vision CurrentVision { get; set; }  
+
+		/// <summary>
+		/// Operations with agent's memory
+		/// </summary>
+		Memory CurrentMemory { get; set; }
+
+		/// <summary>
+		/// Operations with agent's range of view
+		/// </summary>
+		int AgentsRangeOfView { get; set; }
+
+		/// <summary>
 		/// Killing the agent
 		/// </summary>
 		void CommitSuicide();
