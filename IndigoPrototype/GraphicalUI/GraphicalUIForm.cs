@@ -21,8 +21,8 @@ namespace GraphicalUI
         Point mouseDownPoint = new Point(0, 0);
         bool leftMouseButtonInMapIsPressed = false;
         int zoomModifyer = 0;
-		
-		Dictionary<Type, Image> texturesDict = new Dictionary<Type, Image>();
+
+        Dictionary<Type, Image> texturesDict = new Dictionary<Type, Image>();
 
         public GrapgicalUIForm()
         {
@@ -34,24 +34,14 @@ namespace GraphicalUI
             shiftPoint = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
             GraphicalUIShell.Model.ModelTick += new EventHandler(onModelTick);
+            mapPanel.MouseWheel += new MouseEventHandler(mapPanel_MouseWheel);
 
 			texturesDict.Add(typeof(AgentLivingIndigo), GraphicalUI.Properties.Resources.indigo_suit64);
 			texturesDict.Add(typeof(AgentItemFruit), GraphicalUI.Properties.Resources.fruit64);
 			texturesDict.Add(typeof(AgentCamp), GraphicalUI.Properties.Resources.camp64);
 			texturesDict.Add(typeof(AgentItemLog), GraphicalUI.Properties.Resources.log64);			
 			texturesDict.Add(typeof(AgentPuddle), GraphicalUI.Properties.Resources.water64);		
-			texturesDict.Add(typeof(AgentTree), GraphicalUI.Properties.Resources.tree64);
-
-            //mapPanel.MouseWheel += new EventHandler(mapPanel_MouseWheel);
-
-            //testing
-            drawTimer.Start();
-        }
-
-        private void onDrawTimerTick(object sender, EventArgs e)
-        {
-            //It should be replaced with the model tick eventhandler
-            //mapPanel.Refresh();
+			texturesDict.Add(typeof(AgentTree), GraphicalUI.Properties.Resources.tree64);            
         }
 
         private void onModelTick(object sender, EventArgs e)	
@@ -87,9 +77,6 @@ namespace GraphicalUI
             //Side of the texture
             int textureSize = GraphicalUI.Properties.Resources.grass64.Width;
 
-            //Testing part (to be deleted later)
-            Pen tPen = new Pen(Color.Red, 5);
-
             //Points are testing and temporary
             //Draws the background
             for (int i = -(textureSize + zoomModifyer); i < mapHeight + (textureSize + zoomModifyer); i += (textureSize + zoomModifyer))
@@ -106,6 +93,10 @@ namespace GraphicalUI
                 if (agent.Location != null)
                 {
                     texturesDict.TryGetValue(agent.GetType(), out drawedImage);
+                    if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemLog)))
+                    {
+                        drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
+                    }
 
                     if ((agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
                         (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
@@ -146,6 +137,7 @@ namespace GraphicalUI
             {
                 zoomModifyer -= GraphicalUI.Properties.Resources.grass64.Width / 4;
             }
+            mapPanel.Refresh();
         }
 
         private void mapPanel_MouseUp(object sender, MouseEventArgs e)
@@ -190,5 +182,15 @@ namespace GraphicalUI
 		{		
             GraphicalUIShell.Model.Stop();
 		}
+
+        private void mapPanel_MouseEnter(object sender, EventArgs e)
+        {
+            mapPanel.Select();
+        }
+
+        private void mapPanel_MouseLeave(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
