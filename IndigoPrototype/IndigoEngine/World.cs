@@ -83,8 +83,9 @@ namespace IndigoEngine
 		/// </summary>
 		/// <param name="argAgentLoc">agent location</param>
 		/// <returns>Found agent or null</returns>
-		private Agent GetAgentAt(Point argAgentLoc)
+		public Agent GetAgentAt(Point argAgentLoc)
 		{
+			logger.Debug("Finding agent at {0}", argAgentLoc);
 			return agents.FirstOrDefault(ag => 
 			{
 				return ag.Location == argAgentLoc;
@@ -97,7 +98,7 @@ namespace IndigoEngine
 		/// <param name="argForestCenter">Center of the forest</param>
 		/// <param name="argForestSize">Forest size. Defines the square to border the forest</param>
 		/// <param name="argDensity">Forest density (0 - 1). Defines trees density in the forest square</param>
-		private void GenerateForest(Point argForestCenter, Size argForestSize, double argDensity)
+		public void GenerateForest(Point argForestCenter, Size argForestSize, double argDensity)
 		{
 			logger.Debug("Generating new forest at {0} of size {1} with {2} density", argForestCenter, argForestSize, argDensity);
 
