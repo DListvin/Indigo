@@ -158,43 +158,61 @@ namespace IndigoEngine.Agents
             {
                 act.Subject = this;
 
-				if(act.RequiresObject)
-				{
-					foreach (Agent ag in CurrentVision.CurrentViewAgents)
-					{
-						if(!act.AcceptedObj.Contains(ag.GetType()))
-						{
-							continue;
-						}
-						act.Object = ag;
-						if (Distance(this, ag) > Math.Sqrt(2))
-						{
-							worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo( this, ag.Location.Value));
-							if (worldResponseToAction)
-								break;
-						}
-						else
-						{
-							worldResponseToAction = HomeWorld.AskWorldForAction(act);
-							if (worldResponseToAction)
-							{
-								break;
-							}
-						}
-					}
-				}
-				else
-				{
-					worldResponseToAction = HomeWorld.AskWorldForAction(act);
-				}
+                if (act.RequiresObject)
+                {
+                    foreach (Agent ag in Inventory.ItemList)
+                    {
+                        if (!act.AcceptedObj.Contains(ag.GetType()))
+                        {
+                            continue;
+                        }
+                        act.Object = ag;
+                        worldResponseToAction = HomeWorld.AskWorldForAction(act);
+                        if (worldResponseToAction)
+                        {
+                            break;
+                        }
+                    }
+                    if (worldResponseToAction)
+                    {
+                        break;
+                    }
+
+                    foreach (Agent ag in CurrentVision.CurrentViewAgents)
+                    {
+                        if (!act.AcceptedObj.Contains(ag.GetType()))
+                        {
+                            continue;
+                        }
+                        act.Object = ag;
+                        if (Distance(this, ag) > Math.Sqrt(2))
+                        {
+                            worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo(this, ag.Location.Value));
+                            if (worldResponseToAction)
+                                break;
+                        }
+                        else
+                        {
+                            worldResponseToAction = HomeWorld.AskWorldForAction(act);
+                            if (worldResponseToAction)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    worldResponseToAction = HomeWorld.AskWorldForAction(act);
+                }
 
                 if (worldResponseToAction)
-				{
+                {
                     break;
-				}
+                }
             }
 
-			logger.Debug("Made action for {0}", this.Name);
+            logger.Debug("Made action for {0}", this.Name);
 
         }
 		

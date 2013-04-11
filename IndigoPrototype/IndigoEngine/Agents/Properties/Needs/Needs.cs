@@ -24,7 +24,10 @@ namespace IndigoEngine
 			{
 				get
 				{
-					return new Need("eat", 1, 2, new ActionEat(null, null));
+                    List<Action> actions = new List<Action>();
+                    actions.Add(new ActionEat(null, null));
+                    actions.Add(new ActionObtainResourse(null, null, typeof(Agents.AgentItemFruit)));
+					return new Need("eat", 1, 2, actions);
 				}
 			}
 

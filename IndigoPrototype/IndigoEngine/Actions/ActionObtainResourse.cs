@@ -62,7 +62,7 @@ namespace IndigoEngine
 
         public override string ToString()
         {
-            return "Action: eat";
+            return "Action: Obtain Resourse";
         }
 
 		/// <summary>

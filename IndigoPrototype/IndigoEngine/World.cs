@@ -198,6 +198,7 @@ namespace IndigoEngine
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+            currentAddingAgent.Inventory.StorageSize = 3;
             Agents.Add(currentAddingAgent);			
 			
 			currentAddingAgent = new AgentLivingIndigo();
@@ -207,6 +208,7 @@ namespace IndigoEngine
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+            currentAddingAgent.Inventory.StorageSize = 3;
             Agents.Add(currentAddingAgent);
 			
 			currentAddingAgent = new AgentLivingIndigo();
@@ -216,6 +218,7 @@ namespace IndigoEngine
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+            currentAddingAgent.Inventory.StorageSize = 3;
             Agents.Add(currentAddingAgent);
 
             currentAddingAgent = new AgentItemFruit();
