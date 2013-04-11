@@ -21,7 +21,7 @@ namespace IndigoEngine
 			: base(argSubj, null)
 			{
                 Direction = Normilize(dir, new Point(0, 0));
-				MayBeConflict = true;
+				IsConflict = true;
 				RequiresObject = false;
 				AcceptedObj.Add(typeof(AgentLivingIndigo));
 				AcceptedSubj.Add(typeof(AgentCamp));

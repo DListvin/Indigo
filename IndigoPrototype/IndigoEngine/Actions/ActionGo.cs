@@ -22,7 +22,7 @@ namespace IndigoEngine
         {
             Subject = argSubj;
             Direction = Normilize(dir, argSubj.Location.Value);
-            MayBeConflict = true;
+            IsConflict = true;
 			RequiresObject = false;
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
         }

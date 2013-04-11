@@ -19,7 +19,7 @@ namespace IndigoEngine
 		public ActionEat(Agent argSubj, Agent argObj)
 			: base(argSubj, argObj)
         {
-            MayBeConflict = true;
+            IsConflict = true;
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
             AcceptedObj.Add(typeof(AgentItemFruit));
         }

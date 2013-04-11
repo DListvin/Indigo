@@ -20,7 +20,7 @@ namespace IndigoEngine
 			: base(argSubj, argObj)
 			{
 				HitPointsToTakeOff = argHitPointsToTakeOff;
-				MayBeConflict = false;
+				IsConflict = false;
 				AcceptedObj.Add(typeof(AgentLivingIndigo));
 				AcceptedSubj.Add(typeof(AgentLivingIndigo));
 			}

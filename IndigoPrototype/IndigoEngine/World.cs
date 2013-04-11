@@ -76,6 +76,7 @@ namespace IndigoEngine
             {
                 mod.DynamicInvoke();
             }
+			modificatiors.Clear();
         }
 
 		/// <summary>
@@ -187,7 +188,7 @@ namespace IndigoEngine
             Actions = new List<Action>();
             modificatiors = new List<modificate>();
 
-			GenerateForest(new Point(-10, -10), new Size(50, 50), 0.10);
+			//GenerateForest(new Point(-10, -10), new Size(10, 10), 0.50);
 
             //Test init			
 			currentAddingAgent = new AgentLivingIndigo();
@@ -245,6 +246,12 @@ namespace IndigoEngine
 			currentAddingAgent.HomeWorld = this;
 			currentAddingAgent.Name = "Log1";
             Agents.Add(currentAddingAgent);
+
+			currentAddingAgent = new AgentTree();
+			currentAddingAgent.Name = "Tree at " + 1.ToString() + " " + 1.ToString();
+			currentAddingAgent.HomeWorld = this;
+			currentAddingAgent.Location = new Point(1, 1);
+			Agents.Add(currentAddingAgent);
         }
 
 

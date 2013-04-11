@@ -16,7 +16,7 @@ namespace IndigoEngine.Actions
 			public ActionDoNothing(Agent argSubj)
 			: base(argSubj, null)
 			{
-				MayBeConflict = false;
+				IsConflict = false;
 				RequiresObject = false;
 				AcceptedSubj.Add(typeof(AgentLivingIndigo));
 				AcceptedSubj.Add(typeof(AgentCamp));

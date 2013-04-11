@@ -45,7 +45,7 @@ namespace IndigoEngine
             AcceptedObj = new List<Type>();
             AcceptedSubj = new List<Type>();
 
-			MayBeConflict = false;
+			IsConflict = false;
 			RequiresObject = true;
         }
 
@@ -66,7 +66,7 @@ namespace IndigoEngine
 
                 public Agent Subject { get; set; } //Subject of the action
 
-                protected bool MayBeConflict { get; set; } //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
+                protected bool IsConflict { get; set; } //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
 
                 public bool RequiresObject { get; set; } //Info about if action requaires object for it
 
@@ -119,7 +119,7 @@ namespace IndigoEngine
 		/// <returns> 0 - actions are equal, 1 - actions are unequal</returns>
 		public virtual int CompareTo(Action argActionToCompare)
 		{
-			if(!MayBeConflict)
+			if(!IsConflict)
 			{
 				return 1;
 			}

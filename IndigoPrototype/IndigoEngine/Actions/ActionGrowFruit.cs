@@ -16,7 +16,7 @@ namespace IndigoEngine.Actions
 			public ActionGrowFruit(Agent argSubj)
 			: base(argSubj, null)
 			{
-				MayBeConflict = false;
+				IsConflict = false;
 				RequiresObject = false;
 				AcceptedSubj.Add(typeof(AgentTree));
 				Name = "To grow a fruit on a tree";

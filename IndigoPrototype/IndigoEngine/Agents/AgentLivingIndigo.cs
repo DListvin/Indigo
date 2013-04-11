@@ -65,10 +65,5 @@ namespace IndigoEngine.Agents
         {
 			base.MakeAction(argNeed);
         }
-
-        public override string ToString()
-        {
-            return Name + ' ' + CurrentState.ToString() + "   " + Location.Value.ToString();
-        }
     }
 }

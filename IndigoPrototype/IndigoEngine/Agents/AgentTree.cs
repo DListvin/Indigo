@@ -58,12 +58,12 @@ namespace IndigoEngine.Agents
 
 			CurrentState.Prolificacy -= 3 - numberOfFruits;
 
-			base.StateRecompute();
-		}
+			if(numberOfFruits > 3)
+			{
+				logger.Fatal("{0}", numberOfFruits);
+			}
 
-		public override string ToString()
-		{
-			return "Tree: " + Name;
+			base.StateRecompute();
 		}
 	}
 }

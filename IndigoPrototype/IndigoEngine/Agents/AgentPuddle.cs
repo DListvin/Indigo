@@ -22,10 +22,5 @@ namespace IndigoEngine.Agents
 			}
 
 		#endregion
-
-		public override string ToString()
-		{
-			return "Puddle: " + Name;
-		}
 	}
 }

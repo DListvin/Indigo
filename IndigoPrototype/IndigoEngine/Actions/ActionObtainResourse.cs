@@ -20,7 +20,7 @@ namespace IndigoEngine
 		public ActionObtainResourse(Agent argSubj, Agent argObj, Type resType)
 			: base(argSubj, argObj)
         {
-            MayBeConflict = true;
+            IsConflict = true;
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
             AcceptedObj.Add(typeof(AgentTree));
             resourseType = resType;

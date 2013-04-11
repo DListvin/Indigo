@@ -93,7 +93,7 @@ namespace GraphicalUI
                 if (agent.Location != null)
                 {
                     texturesDict.TryGetValue(agent.GetType(), out drawedImage);
-                    if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemLog)))
+                    if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
                     {
                         drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
                     }

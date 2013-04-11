@@ -144,7 +144,14 @@ namespace IndigoEngine.Agents
 
 		public override string ToString()
 		{
-			return "Storage: " + ItemList.Count.ToString() + "/" + StorageSize.ToString();
+			string result = "Storage: " + ItemList.Count.ToString() + "/" + StorageSize.ToString();
+
+			foreach(Agent ag in ItemList)
+			{
+				result += "\n   " + ag.Name;
+			}
+
+			return result;
 		}
 	}
 }
