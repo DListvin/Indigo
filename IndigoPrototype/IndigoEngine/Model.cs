@@ -190,6 +190,15 @@ namespace IndigoEngine
         }
 
         /// <summary>
+        /// For testing during test = )
+        /// </summary>
+        /// <param name="agent"></param>
+        public void AddAgent(Agent agent)
+        {
+            simulatingWorld.Agents.Add(agent);
+        }
+
+        /// <summary>
         /// Quickly runs n steps forward
         /// </summary>
         /// <param name="n">number of stepsS</param>
