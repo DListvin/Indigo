@@ -190,7 +190,21 @@ namespace IndigoEngine
 
 			//GenerateForest(new Point(-10, -10), new Size(10, 10), 0.50);
 
-            //Test init			
+            /*//Terrific test init (for hard and cruel test)
+            for (int i = 0; i < 10000; ++i)
+            {
+                currentAddingAgent = new AgentLivingIndigo();
+                currentAddingAgent.Name = string.Format("Indigo{0}",i);
+                currentAddingAgent.HomeWorld = this;
+                currentAddingAgent.Location = new Point((i+1)*10, (i+1)*10);
+                currentAddingAgent.CurrentState.Health.MaxValue = 100;
+                currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
+                (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+                currentAddingAgent.Inventory.StorageSize = 3;
+                Agents.Add(currentAddingAgent);	
+            }*/
+
+            //Humble test init
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo1";
 			currentAddingAgent.HomeWorld = this;

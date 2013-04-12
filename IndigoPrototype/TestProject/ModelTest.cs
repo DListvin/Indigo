@@ -67,45 +67,42 @@ namespace TestProject
 
 
         /// <summary>
-        ///Model test 1
+        ///Timing test
         ///</summary>
         [TestMethod()]
         public void Test1()
         {
+            DateTime start;
+            DateTime stop;
+            TimeSpan delta;
+            int ms;
+            long ticks;
+            int sec;
+
             Model target = new Model();
 
-            for (int i = 0; i < 4; ++i)
+            start = DateTime.Now;
+            for (int i = 0; i < 500000; ++i)
                 target.AddAgent(new AgentLivingIndigo());
-
-                for (int i = 0; i < 100; ++i)
-                {
-                    //TODO - measure time
-                    target.StepNIterationsForward();
-                }
-
-            Console.WriteLine("write result");
+            #region Time calculation
+            stop = DateTime.Now;
+            delta = stop - start;
+            ticks = delta.Ticks;
+            ms = delta.Milliseconds;
+            sec = delta.Seconds;
+            Console.WriteLine("Time was {0} ticks or {1} s {2} ms", ticks, sec, ms);
             Assert.IsTrue(true);
-        }
+            #endregion
 
-        /// <summary>
-        ///Model test 2
-        ///</summary>
-        [TestMethod()]
-        public void Test2()
-        {
-            Model target = new Model();
+            int a = target.GetAgentsAmount();
+            Console.WriteLine(a);
 
-            for (int i = 0; i < 400; ++i)
-                target.AddAgent(new AgentLivingIndigo());
-
-            for (int i = 0; i < 100; ++i)
-            {
-                //TODO - measure time
+            for (int i = 0; i < 1; ++i)
+            {                    
                 target.StepNIterationsForward();
             }
-
-            Console.WriteLine("write result");
-            Assert.IsTrue(true);
-        }      
+            
+            
+        }
     }
 }

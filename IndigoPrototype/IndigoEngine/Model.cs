@@ -199,6 +199,14 @@ namespace IndigoEngine
         }
 
         /// <summary>
+        /// I wrote it for testing needs
+        /// </summary>
+        public int GetAgentsAmount()
+        {
+            return simulatingWorld.Agents.Count;
+        }
+
+        /// <summary>
         /// Quickly runs n steps forward
         /// </summary>
         /// <param name="n">number of stepsS</param>

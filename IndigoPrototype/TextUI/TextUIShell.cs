@@ -331,7 +331,7 @@ namespace TextUI
 					string[] parsedInput = input.Split(' ');					
 
 					if(!parsedInput[0].StartsWith("-"))
-						throw new WrongInputException("Each command shoud start with -. Don't know why, actualy.");
+						throw new WrongInputException("Each command should start with -. Don't know why, actualy.");
 
 					if(!listOfCommands.Exists(c => c.Name == parsedInput[0].Substring(1)))
 						throw new WrongInputException("There in no command with this name. Type -help to see list of available commands.");
