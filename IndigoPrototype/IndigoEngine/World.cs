@@ -350,6 +350,11 @@ namespace IndigoEngine
                 modificatiors.Add(() =>
                 {
                     agents.Remove(sender);
+                    foreach (Agent ag in agents)
+                    {
+                        if (ag.Inventory.ExistsAgentByType(sender.GetType()))
+                            ag.Inventory.GetAgentFromStorage(sender);
+                    }
                 });
 				return true;
 			}
@@ -371,6 +376,11 @@ namespace IndigoEngine
                 modificatiors.Add(() =>
                 {
                     agents.Remove(obj);
+                    foreach (Agent ag in agents)
+                    {
+                        if (ag.Inventory.ExistsAgentByType(obj.GetType()))
+                            ag.Inventory.GetAgentFromStorage(obj);
+                    }
                 });
                 return true;
             }
