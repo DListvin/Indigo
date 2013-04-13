@@ -6,6 +6,7 @@ using NLog;
 
 namespace IndigoEngine.Actions
 {
+    [Serializable]
     class ActionRest : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

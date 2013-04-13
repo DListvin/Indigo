@@ -7,6 +7,7 @@ using NLog;
 
 namespace IndigoEngine.Agents
 {
+    [Serializable]
 	public class StateTree : State
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

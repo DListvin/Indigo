@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Class for some characteristic of the agent
 	/// </summary>
+    [Serializable]
 	public class Characteristic : NameableObject, ITypicalCharacteristic
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

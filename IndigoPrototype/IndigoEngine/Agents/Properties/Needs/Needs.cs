@@ -7,6 +7,7 @@ using NLog;
 
 namespace IndigoEngine
 {
+    [Serializable]
     public static class Needs
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

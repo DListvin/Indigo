@@ -11,6 +11,7 @@ namespace IndigoEngine
     /// <summary>
     /// Action to go
     /// </summary>
+    [Serializable]
     class ActionGo : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

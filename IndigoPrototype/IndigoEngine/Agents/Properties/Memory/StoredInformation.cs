@@ -10,6 +10,7 @@ namespace IndigoEngine.Agents
 	/// Class for storing information about other agents 
 	/// Includes some learned characteristics, skills or the hole agent as info and storing time for solving conflicts between two same characteristics
 	/// </summary>
+    [Serializable]
 	public class StoredInformation
 	{         
 		private static Logger logger = LogManager.GetCurrentClassLogger(); 

@@ -10,6 +10,7 @@ namespace IndigoEngine
     /// <summary>
     /// Action to Obtain Resourse
     /// </summary>
+    [Serializable]
     class ActionObtainResourse : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

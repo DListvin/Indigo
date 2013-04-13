@@ -6,6 +6,7 @@ using NLog;
 
 namespace IndigoEngine
 {
+    [Serializable]
 	public abstract class NameableObject
 	{		
 		private static Logger logger = LogManager.GetCurrentClassLogger();

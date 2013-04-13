@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Class for storaging the characteristics of agents
 	/// </summary>
+    [Serializable]
 	public class State
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

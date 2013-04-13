@@ -10,6 +10,7 @@ namespace IndigoEngine
     /// <summary>
     /// Class of need
     /// </summary>
+    [Serializable]
     public class Need : NameableObject, ITypicalNeed
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

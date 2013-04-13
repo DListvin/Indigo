@@ -11,6 +11,7 @@ namespace IndigoEngine
     /// <summary>
     /// Describes possible states of model
     /// </summary>
+    [Serializable]
     public enum ModelState
     {
         Uninitialised,
@@ -24,6 +25,7 @@ namespace IndigoEngine
     /// <summary>
     /// Upper existanse, performing technical moments of engine. Contains world for logical moments.
     /// </summary>
+    [Serializable]
     public class Model : IObservableModel
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -33,7 +35,7 @@ namespace IndigoEngine
         private TimeSpan modelIterationTick;                 //Info about time interval betwin loop iterations
         private ModelState state = ModelState.Uninitialised; //Model state from ModelState enum
         IDictionary<long, IEnumerable<Action>> storedActions;
-        private Thread modelThread;  //This object controls working model in other process
+        [NonSerialized] private Thread modelThread;  //This object controls working model in other process
 
         public event EventHandler ModelTick;
 		

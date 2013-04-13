@@ -15,6 +15,7 @@ namespace TextUI
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        [STAThread]
         static void Main(string[] args)
         { 
             IObservableModel model = new Model();

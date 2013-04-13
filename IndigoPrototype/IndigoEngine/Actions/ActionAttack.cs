@@ -10,6 +10,7 @@ namespace IndigoEngine
 	/// <summary>
 	/// Attack action.
 	/// </summary>
+    [Serializable]
     public class ActionAttack : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

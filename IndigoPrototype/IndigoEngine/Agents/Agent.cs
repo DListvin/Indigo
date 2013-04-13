@@ -15,6 +15,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Basic class of the agent. Used for inheritance for other agents
 	/// </summary>
+    [Serializable]
 	public abstract class Agent : NameableObject, ITypicalAgent 
 	{         
 		private static Logger logger = LogManager.GetCurrentClassLogger();

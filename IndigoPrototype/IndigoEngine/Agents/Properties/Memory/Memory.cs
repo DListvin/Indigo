@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Memory of the agents
 	/// </summary>
+    [Serializable]
 	public class Memory
 	{		
 		private static Logger logger = LogManager.GetCurrentClassLogger();

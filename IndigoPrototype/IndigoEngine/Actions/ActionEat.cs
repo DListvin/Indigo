@@ -10,6 +10,7 @@ namespace IndigoEngine
     /// <summary>
     /// Action to Eat
     /// </summary>
+    [Serializable]
     class ActionEat : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

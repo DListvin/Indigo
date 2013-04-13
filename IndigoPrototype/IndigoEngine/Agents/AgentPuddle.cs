@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Agent for puddle
 	/// </summary>
+    [Serializable]
 	public class AgentPuddle : Agent
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

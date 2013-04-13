@@ -6,6 +6,7 @@ using NLog;
 
 namespace IndigoEngine.Agents
 {
+    [Serializable]
 	public class Vision : ITypicalFieldOfView
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

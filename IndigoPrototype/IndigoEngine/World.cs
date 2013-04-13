@@ -11,6 +11,7 @@ namespace IndigoEngine
     /// <summary>
     /// World - logical moments in model.
     /// </summary>
+    [Serializable]
     public class World : IWorldToAction, IWorldToAgent
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -191,7 +192,7 @@ namespace IndigoEngine
 			//GenerateForest(new Point(-10, -10), new Size(10, 10), 0.50);
 
             /*//Terrific test init (for hard and cruel test)
-            for (int i = 0; i < 10000; ++i)
+            for (int i = 0; i < 3; ++i)
             {
                 currentAddingAgent = new AgentLivingIndigo();
                 currentAddingAgent.Name = string.Format("Indigo{0}",i);
@@ -204,7 +205,8 @@ namespace IndigoEngine
                 Agents.Add(currentAddingAgent);	
             }*/
 
-            //Humble test init
+
+            //Basic test init
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo1";
 			currentAddingAgent.HomeWorld = this;

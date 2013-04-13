@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Class for inventory of the agent
 	/// </summary>
+    [Serializable]
 	public class ItemStorage : ITypicalItemStorage
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

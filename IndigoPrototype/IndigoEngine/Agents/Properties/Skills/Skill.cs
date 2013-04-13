@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Class for some skill of the agent
 	/// </summary>
+    [Serializable]
 	public class Skill : NameableObject, ITypicalSkill
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

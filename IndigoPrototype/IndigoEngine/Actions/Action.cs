@@ -11,6 +11,7 @@ namespace IndigoEngine
     /// <summary>
     /// basic class for action
     /// </summary>
+    [Serializable]
     public abstract class Action : NameableObject, ITypicalAction, IComparable<Action>
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

@@ -5,6 +5,9 @@ using System.Text;
 using IndigoEngine;
 using IndigoEngine.Agents;
 using NLog;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TextUI
 {
@@ -166,7 +169,7 @@ namespace TextUI
 				}
 				else
 				{
-					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't pause it!");
+					Console.WriteLine("Model is " + Model.State.ToString() + " and not running. You can't pause it!");
 				}
 			}));
 
@@ -180,7 +183,7 @@ namespace TextUI
 				}
 				else
 				{
-					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't stop it!");
+					Console.WriteLine("Model is " + Model.State.ToString() + " and is not stopped. You can't stop it!");
 				}
 			}));
 
@@ -194,7 +197,7 @@ namespace TextUI
 				}
 				else
 				{
-					Console.WriteLine("Model is " + Model.State.ToString() + ". You can't resume it!");
+					Console.WriteLine("Model is " + Model.State.ToString() + " and is not paused. You can't resume it!");
 				}
 			}));
 
@@ -304,6 +307,42 @@ namespace TextUI
 						return ag.Name == agentName;
 					}
 				))).CurrentMemory.ToString());        
+            }));
+
+            listOfCommands.Add(new Command("save", "Saving complete model at current state to SavedState\\ModelState.dat", args =>
+            {
+                FileStream stream = new FileStream("SavedState\\ModelState.dat", FileMode.Create);
+                BinaryFormatter formatter = new BinaryFormatter();
+                try
+                {
+                    formatter.Serialize(stream, Model);
+                }
+                catch (SerializationException e)
+                {
+                    Console.WriteLine("Failed to save. Reason: " + e.Message);
+                    throw;
+                }
+                stream.Close();
+                Console.WriteLine("Model saved!");
+            }));
+
+            listOfCommands.Add(new Command("load", "Loading complete model at saved state from SavedState\\ModelState.dat", args =>
+            {
+                ListOfCommands.First(c => c.Name == "stop").Execute();
+                FileStream stream = new FileStream("SavedState\\ModelState.dat", FileMode.Open);
+                BinaryFormatter formatter = new BinaryFormatter();
+                try
+                {
+                    Model = (IObservableModel)formatter.Deserialize(stream);
+                }
+                catch (SerializationException e)
+                {
+                    Console.WriteLine("Failed to load. Reason: " + e.Message);
+                    throw;
+                }
+                stream.Close();
+                Console.WriteLine("Model loaded!");
+                ListOfCommands.First(c => c.Name == "state").Execute();
             }));
         }
 

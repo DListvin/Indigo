@@ -11,6 +11,7 @@ namespace IndigoEngine
     /// <summary>
     /// Action to break the camp
     /// </summary>
+    [Serializable]
     public class ActionBreakCamp : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

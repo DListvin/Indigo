@@ -10,6 +10,7 @@ namespace IndigoEngine
     /// <summary>
     /// Action to drink
     /// </summary>
+    [Serializable]
     class ActionDrink : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Class of all avaliable skills
 	/// </summary>
+    [Serializable]
 	public static class Skills
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

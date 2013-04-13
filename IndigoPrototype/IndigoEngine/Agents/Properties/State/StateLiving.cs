@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Class for storaging characteristics of alive agents
 	/// </summary>
+    [Serializable]
 	public class StateLiving : State
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();

@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Basic class for alive agents
 	/// </summary>
+    [Serializable]
 	public abstract class AgentLiving : Agent
 	{		
 		private static Logger logger = LogManager.GetCurrentClassLogger();

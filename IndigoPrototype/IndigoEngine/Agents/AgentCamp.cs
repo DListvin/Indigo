@@ -9,6 +9,7 @@ namespace IndigoEngine.Agents
 	/// <summary>
 	/// Agent for camp
 	/// </summary>
+    [Serializable]
 	public class AgentCamp : Agent
 	{	
 		private static Logger logger = LogManager.GetCurrentClassLogger();
