@@ -10,12 +10,12 @@ namespace IndigoEngine
     /// What agent knows of world
     /// </summary>
     public interface IWorldToAgent
-    {
-        /// <summary>
-        /// Function to agent to Ask World For An Action
-        /// </summary>
-        /// <param name="action">action</param>
-        /// <returns>world agree or disagree to action</returns>
+    {        
+		/// <summary>
+		/// It is for agent for asking world of an action. 
+		/// </summary>
+		/// <param name="action">Action which agent is asking for</param>
+		/// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
         bool AskWorldForAction(Action action);
 		
         /// <summary>

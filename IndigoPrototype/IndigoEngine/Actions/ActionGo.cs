@@ -22,7 +22,7 @@ namespace IndigoEngine
             : base()
         {
             Subject = argSubj;
-            Direction = Normilize(dir, argSubj.Location.Value);
+            Direction = Normilize(dir, argSubj.CurrentLocation.Coords);
             IsConflict = true;
 			RequiresObject = false;
             AcceptedSubj.Add(typeof(AgentLivingIndigo));
@@ -57,8 +57,8 @@ namespace IndigoEngine
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-				Subject.Location = new Point(Subject.Location.Value.X + Direction.X, 
-				                             Subject.Location.Value.Y + Direction.Y); 
+				Subject.CurrentLocation = new Location(Subject.CurrentLocation.Coords.X + Direction.X, 
+				                             Subject.CurrentLocation.Coords.Y + Direction.Y); 
 				(Subject as AgentLiving).CurrentState.Stamina.CurrentUnitValue--;
             });
         }

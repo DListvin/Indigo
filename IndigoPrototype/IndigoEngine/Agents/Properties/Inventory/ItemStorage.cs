@@ -21,6 +21,7 @@ namespace IndigoEngine.Agents
 			public ItemStorage()
 			{
 				ItemList = new List<Agent>();
+				Owner = null;
 				StorageSize = 0;
 			}
 
@@ -47,8 +48,11 @@ namespace IndigoEngine.Agents
 						storageSize = value;
 					}
 				}
+				
+				public Agent Owner { get; set; } 
 
-			#endregion
+			#endregion			
+
 
 		#endregion
 
@@ -61,7 +65,7 @@ namespace IndigoEngine.Agents
 			{
 				throw(new Exception(String.Format("Failed to add {0} to storage {1} cause of lack of space", argAgent, this)));
 			}
-			argAgent.Location = null;
+			argAgent.CurrentLocation.TargetSorage = this;
 			ItemList.Add(argAgent);
 		}
 

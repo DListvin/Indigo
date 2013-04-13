@@ -26,8 +26,9 @@ namespace IndigoEngine.Agents
 				: base()
 			{
 				CurrentState = new State();			
-				Location = null;
+				CurrentLocation = new Location();
 				Inventory = new ItemStorage();
+				Inventory.Owner = this;
 				HomeWorld = null;				
 				CurrentMemory = new Memory();
 				CurrentVision = new Vision();
@@ -41,7 +42,7 @@ namespace IndigoEngine.Agents
 			#region ITypicalAgent realisation
 				
 				public State CurrentState { get; set; }                    //Current state of the agent
-				public Point? Location { get; set; }                       //Agent location in the world grid - (X, Y), if null - agent is in some ItemStorage
+				public Location CurrentLocation { get; set; }              //Agent location in the world grid - (X, Y), or agent - owner
 				public ItemStorage Inventory { get; set; }                 //Agent inventory
 				public ActionFeedback CurrentActionFeedback { get; set; }  //Current action result, that is needed to be perform
 				public IWorldToAgent HomeWorld { get; set; }               //Agent's world				
@@ -79,11 +80,11 @@ namespace IndigoEngine.Agents
 			/// <returns>Distance or NaN, if any of agents doesn'n have location</returns>
 			public static double Distance(Agent agent1, Agent agent2)
 			{
-				if (!agent1.Location.HasValue || !agent2.Location.HasValue)
+				if (agent1.CurrentLocation.HasOwner || agent2.CurrentLocation.HasOwner)
 				{
 					return Double.NaN;
 				}
-				return Math.Sqrt(Math.Pow(agent1.Location.Value.X - agent2.Location.Value.X, 2) + Math.Pow(agent1.Location.Value.Y - agent2.Location.Value.Y, 2));
+				return Math.Sqrt(Math.Pow(agent1.CurrentLocation.Coords.X - agent2.CurrentLocation.Coords.X, 2) + Math.Pow(agent1.CurrentLocation.Coords.Y - agent2.CurrentLocation.Coords.Y, 2));
 			}
 
 		#endregion
@@ -188,7 +189,7 @@ namespace IndigoEngine.Agents
                         act.Object = ag;
                         if (Distance(this, ag) > Math.Sqrt(2))
                         {
-                            worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo(this, ag.Location.Value));
+                            worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo(this, ag.CurrentLocation.Coords));
                             if (worldResponseToAction)
                                 break;
                         }
@@ -209,11 +210,10 @@ namespace IndigoEngine.Agents
 
                 if (worldResponseToAction)
                 {
+					logger.Debug("Made action for {0}: {1}", this.Name, act.Name);
                     break;
                 }
             }
-
-            logger.Debug("Made action for {0}", this.Name);
 
         }
 		
@@ -248,7 +248,7 @@ namespace IndigoEngine.Agents
 
         public override string ToString()
         {
-            return Name + " " + CurrentState.ToString() + "   " + Location.ToString() + "\n" + Inventory.ToString();
+            return Name + " " + CurrentState.ToString() + "   " + CurrentLocation.ToString() + "\n" + Inventory.ToString();
         }
 	}
 }

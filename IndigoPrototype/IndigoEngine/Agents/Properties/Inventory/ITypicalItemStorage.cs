@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IndigoEngine.Agents
 {
-	interface ITypicalItemStorage
+	public interface ITypicalItemStorage
 	{
 		/// <summary>
 		/// Operations with item storage content
@@ -16,6 +16,11 @@ namespace IndigoEngine.Agents
 		/// Operations with storage size
 		/// </summary>
 		int StorageSize { get; set; }
+
+		/// <summary>
+		/// Operations with pwner of the current item storage
+		/// </summary>
+		Agent Owner { get; set; }
 
 		/// <summary>
 		/// Adding a new agent into storage

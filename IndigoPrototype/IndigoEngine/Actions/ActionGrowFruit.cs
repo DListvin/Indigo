@@ -58,8 +58,8 @@ namespace IndigoEngine.Actions
 				//Realisation for tree
 				if(Subject is AgentTree)
 				{
-					AgentItemFruit newAgentToAdd = new AgentItemFruit();
-					newAgentToAdd.Name = "Fruit from " + Subject.Name;
+					Agent newAgentToAdd = new AgentItemFruit();
+					newAgentToAdd.Name = "Fruit " + Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemFruit)) + " from " + Subject.Name;
 
 					if(World.AskWorldForAddition(this, newAgentToAdd))
 					{

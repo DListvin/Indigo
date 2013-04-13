@@ -90,7 +90,7 @@ namespace GraphicalUI
             //Draws agents
             foreach (Agent agent in GraphicalUIShell.Model.Agents)
             {
-                if (agent.Location != null)
+                if (!agent.CurrentLocation.HasOwner)
                 {
                     texturesDict.TryGetValue(agent.GetType(), out drawedImage);
                     if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
@@ -98,10 +98,10 @@ namespace GraphicalUI
                         drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
                     }
 
-                    if ((agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
-                        (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
+                    if ((agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
+                        (-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
                     {
-                        e.Graphics.DrawImage(drawedImage, agent.Location.Value.X * (textureSize + zoomModifyer) - shiftPoint.X, -agent.Location.Value.Y * (textureSize + zoomModifyer) - shiftPoint.Y, (textureSize + zoomModifyer), (textureSize + zoomModifyer));
+                        e.Graphics.DrawImage(drawedImage, agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X, -agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y, (textureSize + zoomModifyer), (textureSize + zoomModifyer));
                     }
                 }
             }

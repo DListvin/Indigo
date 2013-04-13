@@ -17,7 +17,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Operations with agent location in the world grid
 		/// </summary>
-		Point? Location { get; set; }
+		Location CurrentLocation { get; set; }
 
 		/// <summary>
 		/// Operations with agent inventory

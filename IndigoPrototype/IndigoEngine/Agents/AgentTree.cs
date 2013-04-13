@@ -59,11 +59,6 @@ namespace IndigoEngine.Agents
 
 			CurrentState.Prolificacy -= 3 - numberOfFruits;
 
-			if(numberOfFruits > 3)
-			{
-				logger.Fatal("{0}", numberOfFruits);
-			}
-
 			base.StateRecompute();
 		}
 	}

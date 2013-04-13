@@ -154,7 +154,7 @@ namespace IndigoEngine
 
         public void MainLoop()
         {
-            try
+           // try
             {
                 for (; ; )
                 {
@@ -184,10 +184,10 @@ namespace IndigoEngine
                     }
                 }
             }
-            catch (Exception e)
+            //catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                State = ModelState.Error;
+                //Console.WriteLine(e.Message);
+                //State = ModelState.Error;
             }
         }
 
@@ -197,7 +197,7 @@ namespace IndigoEngine
         /// <param name="agent"></param>
         public void AddAgent(Agent agent)
         {
-            simulatingWorld.Agents.Add(agent);
+            simulatingWorld.AddAgent(agent);
         }
 
         /// <summary>

@@ -90,7 +90,7 @@ namespace IndigoEngine
 			logger.Debug("Finding agent at {0}", argAgentLoc);
 			return agents.FirstOrDefault(ag => 
 			{
-				return ag.Location == argAgentLoc;
+				return ag.CurrentLocation.Coords == argAgentLoc;
 			});
 		}
 
@@ -160,9 +160,8 @@ namespace IndigoEngine
 								}
 								AgentTree currentAddingAgent = new AgentTree();
 								currentAddingAgent.Name = "Tree at " + i.ToString() + " " + j.ToString();
-								currentAddingAgent.HomeWorld = this;
-								currentAddingAgent.Location = new Point(i, j);
-								Agents.Add(currentAddingAgent);
+								currentAddingAgent.CurrentLocation = new Location(i, j);
+								AddAgent(currentAddingAgent);
 
 								newTrees.Add(new Point(i, j));
 								totalTreesAdded++;
@@ -196,85 +195,74 @@ namespace IndigoEngine
             {
                 currentAddingAgent = new AgentLivingIndigo();
                 currentAddingAgent.Name = string.Format("Indigo{0}",i);
-                currentAddingAgent.HomeWorld = this;
                 currentAddingAgent.Location = new Point((i+1)*10, (i+1)*10);
                 currentAddingAgent.CurrentState.Health.MaxValue = 100;
                 currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
                 (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
                 currentAddingAgent.Inventory.StorageSize = 3;
-                Agents.Add(currentAddingAgent);	
+                AddAgent(currentAddingAgent);	
             }*/
 
 
             //Basic test init
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo1";
-			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new Point(10, 10);
+            currentAddingAgent.CurrentLocation = new Location(10, 10);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
             currentAddingAgent.Inventory.StorageSize = 3;
-            Agents.Add(currentAddingAgent);			
+            AddAgent(currentAddingAgent);			
 			
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo2";
-			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new Point(10, 15);
+            currentAddingAgent.CurrentLocation = new Location(10, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
             currentAddingAgent.Inventory.StorageSize = 3;
-            Agents.Add(currentAddingAgent);
+            AddAgent(currentAddingAgent);
 			
 			currentAddingAgent = new AgentLivingIndigo();
 			currentAddingAgent.Name = "Indigo3";
-			currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new Point(15, 15);
+            currentAddingAgent.CurrentLocation = new Location(15, 15);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
             (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
             currentAddingAgent.Inventory.StorageSize = 3;
-            Agents.Add(currentAddingAgent);
+			AddAgent(currentAddingAgent);
 
             currentAddingAgent = new AgentItemFruit();
             currentAddingAgent.Name = "Fruit1";
-            currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new Point(0, 2);
+            currentAddingAgent.CurrentLocation = new Location(0, 2);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-            Agents.Add(currentAddingAgent);
+			AddAgent(currentAddingAgent);
 
             currentAddingAgent = new AgentItemFruit();
             currentAddingAgent.Name = "Fruit2";
-            currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new Point(2, 0);
+            currentAddingAgent.CurrentLocation = new Location(2, 0);
             currentAddingAgent.CurrentState.Health.MaxValue = 100;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-            Agents.Add(currentAddingAgent);
+            AddAgent(currentAddingAgent);
 
             currentAddingAgent = new AgentPuddle();
             currentAddingAgent.Name = "Puddle1";
-            currentAddingAgent.HomeWorld = this;
-            currentAddingAgent.Location = new Point(-2, -2);
+            currentAddingAgent.CurrentLocation = new Location(-2, -2);
             currentAddingAgent.CurrentState.Health.MaxValue = 200;
             currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
-            Agents.Add(currentAddingAgent);
+            AddAgent(currentAddingAgent);
 
 			currentAddingAgent = new AgentItemLog();
-			currentAddingAgent.HomeWorld = this;
 			currentAddingAgent.Name = "Log1";
-            Agents.Add(currentAddingAgent);
+            AddAgent(currentAddingAgent);
 
 			currentAddingAgent = new AgentTree();
 			currentAddingAgent.Name = "Tree at " + 1.ToString() + " " + 1.ToString();
-			currentAddingAgent.HomeWorld = this;
-			currentAddingAgent.Location = new Point(1, 1);
-			Agents.Add(currentAddingAgent);
+			currentAddingAgent.CurrentLocation = new Location(1, 1);
+			AddAgent(currentAddingAgent);
         }
-
-
-
+		
         /// <summary>
         /// Here world somehow decides how to slove conflicts
         /// </summary>
@@ -297,17 +285,17 @@ namespace IndigoEngine
             {
                 agent.CurrentVision.CurrentView.Clear();
                 
-                if (agent.Location.HasValue)
+                if (!agent.CurrentLocation.HasOwner)
                 {
                     //Adding agents
                     agent.CurrentVision.CurrentView.AddRange(agents.Where(a =>
                     {
-                        return a.Location.HasValue && a != agent && Agent.Distance(a, agent) < agent.AgentsRangeOfView;
+                        return !a.CurrentLocation.HasOwner && a != agent && Agent.Distance(a, agent) < agent.AgentsRangeOfView;
                     }));
                     //Adding actions
                     agent.CurrentVision.CurrentView.AddRange(actions.Where(a =>
                     {
-                        return a.Subject.Location.HasValue && Agent.Distance(agent, a.Subject) < agent.AgentsRangeOfView;
+                        return !a.Subject.CurrentLocation.HasOwner && Agent.Distance(agent, a.Subject) < agent.AgentsRangeOfView;
                     }));
                 }
             }
@@ -315,11 +303,6 @@ namespace IndigoEngine
 
         #region IWorldToAgent realisation
 
-            /// <summary>
-            /// It is for agent for asking world of an action. 
-            /// </summary>
-            /// <param name="action">Action which agent is asking for</param>
-            /// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
             public bool AskWorldForAction(Action action)
             {
                 action.World = this;
@@ -351,12 +334,7 @@ namespace IndigoEngine
 				}
                 modificatiors.Add(() =>
                 {
-                    agents.Remove(sender);
-                    foreach (Agent ag in agents)
-                    {
-                        if (ag.Inventory.ExistsAgentByType(sender.GetType()))
-                            ag.Inventory.GetAgentFromStorage(sender);
-                    }
+					DeleteAgent(sender);
                 });
 				return true;
 			}
@@ -377,12 +355,7 @@ namespace IndigoEngine
 				}
                 modificatiors.Add(() =>
                 {
-                    agents.Remove(obj);
-                    foreach (Agent ag in agents)
-                    {
-                        if (ag.Inventory.ExistsAgentByType(obj.GetType()))
-                            ag.Inventory.GetAgentFromStorage(obj);
-                    }
+					DeleteAgent(obj);
                 });
                 return true;
             }
@@ -396,12 +369,35 @@ namespace IndigoEngine
 				obj.HomeWorld = this;
                 modificatiors.Add(() =>
                 {
-                    agents.Add(obj);
+                    AddAgent(obj);
                 });
                 
                 return true;
             }
 
         #endregion
+
+		/// <summary>
+		/// Deleting agent from the world completely. Nobody should use any other ways of deleting some agent, exept this method
+		/// </summary>
+		/// <param name="argAgentToDelete">Agent to delete</param>
+		public void DeleteAgent(Agent argAgentToDelete)
+		{
+			if(argAgentToDelete.CurrentLocation.HasOwner)
+			{
+				argAgentToDelete.CurrentLocation.Owner.Inventory.GetAgentFromStorage(argAgentToDelete);
+			}
+			agents.Remove(argAgentToDelete);
+		}
+
+		/// <summary>
+		/// Adding agent to the world. Nobody should use any other ways of adding some agent, exept this method
+		/// </summary>
+		/// <param name="argAgentToAdd">Agent to add</param>
+		public void AddAgent(Agent argAgentToAdd)
+		{
+			argAgentToAdd.HomeWorld = this;
+			Agents.Add(argAgentToAdd);
+		}
     }
 }
