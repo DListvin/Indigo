@@ -7,6 +7,9 @@ using NLog;
 
 namespace IndigoEngine.Actions
 {
+	/// <summary>
+	/// Class to store some info about action (accepted subjects, required skills e.c.)
+	/// </summary>
 	public class InfoAboutAction
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();	
