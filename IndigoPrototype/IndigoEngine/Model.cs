@@ -6,6 +6,9 @@ using System.Threading;
 using IndigoEngine.Agents;
 using IndigoEngine.Actions;
 using NLog;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace IndigoEngine
 {   
@@ -264,6 +267,42 @@ namespace IndigoEngine
                 StepNIterationsForward((int)(n - PassedModelIterations));
             }
         }
+
+        /// <summary>
+        /// Saving the model to file
+        /// </summary>
+        /// <param name="path">Path to savefile</param>
+        public void Save(string path)
+        {
+            FileStream stream;
+            BinaryFormatter formatter = new BinaryFormatter();
+            stream = new FileStream(path, FileMode.Create);
+            formatter.Serialize(stream, this);
+            stream.Close();
+            Console.WriteLine("Model saved!");
+        }
+
+        /// <summary>
+        /// Loading the model from file
+        /// </summary>
+        /// <param name="path">Path to savefile</param>
+        public void Load(string path)
+        {
+            FileStream stream = new FileStream(path, FileMode.Open);
+            BinaryFormatter formatter = new BinaryFormatter();
+            Model loaded = (Model)formatter.Deserialize(stream);
+
+            this.simulatingWorld = loaded.simulatingWorld;
+            this.passedModelIterations = loaded.passedModelIterations;
+            this.modelIterationTick = loaded.modelIterationTick;
+            this.state = loaded.state;
+            this.storedActions = loaded.storedActions;
+
+            stream.Close();
+            Console.WriteLine("Model loaded!");
+            this.Pause();
+        }
+
         /// <summary>
         /// Updates action storage each turn
         /// </summary>

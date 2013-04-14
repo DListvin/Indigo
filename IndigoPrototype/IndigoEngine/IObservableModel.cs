@@ -75,6 +75,18 @@ namespace IndigoEngine
         void Stop();
 
         /// <summary>
+        /// Saving the model to file
+        /// </summary>
+        /// <param name="path">Path to savefile</param>
+        void Save(string path);
+
+        /// <summary>
+        /// Loading the model from file
+        /// </summary>
+        /// <param name="path">Path to savefile</param>
+        void Load(string path);
+
+        /// <summary>
         /// Computes n iterations
         /// </summary>
         /// <param name="n">number of iterations to compute</param>

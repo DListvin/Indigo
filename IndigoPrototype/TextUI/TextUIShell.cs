@@ -309,39 +309,26 @@ namespace TextUI
 				))).CurrentMemory.ToString());        
             }));
 
-            listOfCommands.Add(new Command("save", "Saving complete model at current state to SavedState\\ModelState.dat", args =>
+            listOfCommands.Add(new Command("save", "Saving complete model to defined file in \"saves\" folder (ex: -save [<filename.dat>]) or to DefaultSave.dat by default", args =>
             {
-                FileStream stream = new FileStream("SavedState\\ModelState.dat", FileMode.Create);
-                BinaryFormatter formatter = new BinaryFormatter();
-                try
-                {
-                    formatter.Serialize(stream, Model);
-                }
-                catch (SerializationException e)
-                {
-                    Console.WriteLine("Failed to save. Reason: " + e.Message);
-                    throw;
-                }
-                stream.Close();
-                Console.WriteLine("Model saved!");
+                string path = "Saves\\";
+                if (args.Length > 1)
+                    path += args[1] as string;
+                else
+                    path += "DefaultSave.dat";
+
+                Model.Save(path);
             }));
 
-            listOfCommands.Add(new Command("load", "Loading complete model at saved state from SavedState\\ModelState.dat", args =>
+            listOfCommands.Add(new Command("load", "Loading complete model from defined file in \"saves\" folder (ex: -save [<filename.dat>]) or from DefaultSave.dat by default", args =>
             {
-                ListOfCommands.First(c => c.Name == "stop").Execute();
-                FileStream stream = new FileStream("SavedState\\ModelState.dat", FileMode.Open);
-                BinaryFormatter formatter = new BinaryFormatter();
-                try
-                {
-                    Model = (IObservableModel)formatter.Deserialize(stream);
-                }
-                catch (SerializationException e)
-                {
-                    Console.WriteLine("Failed to load. Reason: " + e.Message);
-                    throw;
-                }
-                stream.Close();
-                Console.WriteLine("Model loaded!");
+                string path = "Saves\\";
+                if (args.Length > 1)
+                    path += args[1] as string;
+                else
+                    path += "DefaultSave.dat";
+
+                Model.Load(path);
                 ListOfCommands.First(c => c.Name == "state").Execute();
             }));
         }
