@@ -282,5 +282,28 @@ namespace IndigoEngine
                 return kvpair.Key < PassedModelIterations - TurnsToStore; 
             }));
         }
+
+        #region ObjectMethodsOverride
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != this.GetType())
+                return false;
+
+            var o = obj as Model;
+
+            //Stored actions comparation
+            if(storedActions.Count != o.storedActions.Count)
+                return false;
+            for (int i = 0; i < storedActions.Count; ++i)
+            {
+                if (!storedActions[i].Equals(o.storedActions[i]))   //TODO: override Action.Equals
+                    return false;
+            }
+
+            return this.simulatingWorld.Equals(o.simulatingWorld) && this.passedModelIterations.Equals(o.passedModelIterations); //TODO: override World.Equals
+        }
+
+        #endregion
     }
 }

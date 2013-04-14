@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading;
 using IndigoEngine.Agents;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TestProject
 {
@@ -102,6 +105,48 @@ namespace TestProject
                 target.StepNIterationsForward();
             }
             
+            
+        }
+
+        /// <summary>
+        ///Serialization test
+        ///</summary>
+        [TestMethod()]
+        public void SerializationTest()
+        {
+            Model original = new Model();
+
+            FileStream sstream = new FileStream("ModelStateTest.dat", FileMode.Create);
+            BinaryFormatter sformatter = new BinaryFormatter();
+            try
+            {
+                sformatter.Serialize(sstream, original);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to save. Reason: " + e.Message);
+                throw;
+            }
+            sstream.Close();
+            Console.WriteLine("Model saved!");
+
+            Model loaded;
+
+            FileStream lstream = new FileStream("ModelStateTest.dat", FileMode.Open);
+            BinaryFormatter lformatter = new BinaryFormatter();
+            try
+            {
+                loaded = (Model)lformatter.Deserialize(lstream);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to load. Reason: " + e.Message);
+                throw;
+            }
+            lstream.Close();
+            Console.WriteLine("Model loaded!");
+            
+            Assert.IsTrue(original.Equals(loaded), "We loaded something distinuished from what we saved!");
             
         }
     }
