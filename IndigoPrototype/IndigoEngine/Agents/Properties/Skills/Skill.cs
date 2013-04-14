@@ -10,28 +10,52 @@ namespace IndigoEngine.Agents
 	/// Class for some skill of the agent
 	/// </summary>
     [Serializable]
-	public class Skill : NameableObject, ITypicalSkill
-	{
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+    public class Skill : NameableObject, ITypicalSkill
+    {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		#region Constructors
+        #region Constructors
 
-			public Skill() 
-				: base()
-			{
-				SkillQuality = 0;
-			}
+        public Skill()
+            : base()
+        {
+            SkillQuality = 0;
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
-		
-			#region ITypicalSkill realisation
+        #region Properties
 
-				public uint SkillQuality { get; set; } //Level of skill
+        #region ITypicalSkill realisation
 
-			#endregion
+        public uint SkillQuality { get; set; } //Level of skill
 
-		#endregion
-	}
+        #endregion
+
+        #endregion
+
+        #region ObjectMethodsOverride
+
+            public override bool Equals(object obj)
+            {
+                if (obj.GetType() != this.GetType())
+                    return false;
+
+                var o = obj as Skill;
+
+                return this.SkillQuality.Equals(o.SkillQuality) && this.Name.Equals(o.Name);
+            }
+
+            public static bool operator ==(Skill o1, Skill o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(Skill o1, Skill o2)
+            {
+                return !o1.Equals(o2);
+            }
+
+        #endregion
+    }
 }

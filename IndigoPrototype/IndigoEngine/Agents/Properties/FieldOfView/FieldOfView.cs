@@ -8,49 +8,73 @@ using IndigoEngine.Actions;
 namespace IndigoEngine.Agents
 {
     [Serializable]
-	public class Vision : ITypicalFieldOfView
-	{
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+    public class Vision : ITypicalFieldOfView
+    {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		#region Constructors
+        #region Constructors
 
-			public Vision()
-			{
-				RangeOfView = 0;
-				CurrentView = new List<NameableObject>();
-			}
+        public Vision()
+        {
+            RangeOfView = 0;
+            CurrentView = new List<NameableObject>();
+        }
 
-		#endregion
-		
-		#region Properties
+        #endregion
 
-			public int RangeOfView { get; set; } //Range of view of the agent (in cells around agent, apparently)		
+        #region Properties
 
-			public List<NameableObject> CurrentView { get; set; } 	//Current field ov view. Includes all agents & actions, that current agent can see		
+        public int RangeOfView { get; set; } //Range of view of the agent (in cells around agent, apparently)		
 
-			/// <summary>
-			/// ITypicalFieldOfView
-			/// </summary>
-			public List<NameableObject> CurrentViewAgents
-			{
-				get
-				{
-					return CurrentView.Where(val => { return val is Agent; }).ToList();
-				}
-			}			
+        public List<NameableObject> CurrentView { get; set; } 	//Current field ov view. Includes all agents & actions, that current agent can see		
 
-			/// <summary>
-			/// ITypicalFieldOfView
-			/// </summary>
-			public List<NameableObject> CurrentViewActions
-			{
-				get
-				{
-					return CurrentView.Where(val => { return val is ActionAbstract; }).ToList();
-				}
-			}
+        /// <summary>
+        /// ITypicalFieldOfView
+        /// </summary>
+        public List<NameableObject> CurrentViewAgents
+        {
+            get
+            {
+                return CurrentView.Where(val => { return val is Agent; }).ToList();
+            }
+        }
+
+        /// <summary>
+        /// ITypicalFieldOfView
+        /// </summary>
+        public List<NameableObject> CurrentViewActions
+        {
+            get
+            {
+                return CurrentView.Where(val => { return val is ActionAbstract; }).ToList();
+            }
+        }
 
 
-		#endregion
-	}
+        #endregion
+
+        #region ObjectMethodsOverride
+
+            public override bool Equals(object obj)
+            {
+                if (obj.GetType() != this.GetType())
+                    return false;
+
+                var o = obj as Vision;
+
+                return this.RangeOfView.Equals(o.RangeOfView);
+            }
+
+            public static bool operator ==(Vision o1, Vision o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(Vision o1, Vision o2)
+            {
+                return !o1.Equals(o2);
+            }
+
+        #endregion
+    }
 }

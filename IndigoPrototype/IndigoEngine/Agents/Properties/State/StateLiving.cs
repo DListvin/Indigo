@@ -10,87 +10,113 @@ namespace IndigoEngine.Agents
 	/// Class for storaging characteristics of alive agents
 	/// </summary>
     [Serializable]
-	public class StateLiving : State
-	{
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+    public class StateLiving : State
+    {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		#region Constructors
+        #region Constructors
 
-			public StateLiving()
-				:base()
-			{
-				Strenght = new Characteristic();
-				Strenght.Name = "Strenght";
+        public StateLiving()
+            : base()
+        {
+            Strenght = new Characteristic();
+            Strenght.Name = "Strenght";
 
-				Stamina = new Characteristic();
-				Stamina.Name = "Stamina";
+            Stamina = new Characteristic();
+            Stamina.Name = "Stamina";
 
-				Intelegence = new Characteristic();
-				Intelegence.Name = "Intelegence";
+            Intelegence = new Characteristic();
+            Intelegence.Name = "Intelegence";
 
-				Hunger = new Characteristic();
-				Hunger.Name = "Hunger";
+            Hunger = new Characteristic();
+            Hunger.Name = "Hunger";
 
-				Thirst = new Characteristic();
-				Thirst.Name = "Thirst";
+            Thirst = new Characteristic();
+            Thirst.Name = "Thirst";
 
-				Aggressiveness = new Characteristic();
-				Aggressiveness.Name = "Aggressiveness";
-                Aggressiveness.CriticalPercentValue = 60;
-                Aggressiveness.CurrentUnitValue = 0;
-			}
+            Aggressiveness = new Characteristic();
+            Aggressiveness.Name = "Aggressiveness";
+            Aggressiveness.CriticalPercentValue = 60;
+            Aggressiveness.CurrentUnitValue = 0;
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-			public Characteristic Strenght { get; set; }
+        public Characteristic Strenght { get; set; }
 
-			public Characteristic Stamina { get; set; }
+        public Characteristic Stamina { get; set; }
 
-			public Characteristic Intelegence { get; set; }
+        public Characteristic Intelegence { get; set; }
 
-			public Characteristic Hunger { get; set; }
+        public Characteristic Hunger { get; set; }
 
-			public Characteristic Thirst { get; set; }
+        public Characteristic Thirst { get; set; }
 
-			public Characteristic Aggressiveness { get; set; }
+        public Characteristic Aggressiveness { get; set; }
 
-		#endregion
+        #endregion
 
-		#region Static methods
+        #region Static methods
 
-			public static StateLiving operator+(StateLiving argState1, StateLiving argState2)
-			{
-				StateLiving result = new StateLiving();
+        public static StateLiving operator +(StateLiving argState1, StateLiving argState2)
+        {
+            StateLiving result = new StateLiving();
 
-      
-				result.Health = argState1.Health + argState2.Health;
-				result.Strenght = argState1.Strenght + argState2.Strenght;
-				result.Stamina = argState1.Stamina + argState2.Stamina;
-				result.Intelegence = argState1.Intelegence + argState2.Intelegence;
-				result.Hunger = argState1.Hunger + argState2.Hunger;
-				result.Thirst = argState1.Thirst + argState2.Thirst;
-				result.Aggressiveness = argState1.Aggressiveness + argState2.Aggressiveness;
 
-				return result;
-			}
+            result.Health = argState1.Health + argState2.Health;
+            result.Strenght = argState1.Strenght + argState2.Strenght;
+            result.Stamina = argState1.Stamina + argState2.Stamina;
+            result.Intelegence = argState1.Intelegence + argState2.Intelegence;
+            result.Hunger = argState1.Hunger + argState2.Hunger;
+            result.Thirst = argState1.Thirst + argState2.Thirst;
+            result.Aggressiveness = argState1.Aggressiveness + argState2.Aggressiveness;
 
-			public static StateLiving operator-(StateLiving argState1, StateLiving argState2)
-			{
-				StateLiving result = new StateLiving();				
+            return result;
+        }
 
-				result.Health = argState1.Health - argState2.Health;
-				result.Strenght = argState1.Strenght - argState2.Strenght;
-				result.Stamina = argState1.Stamina - argState2.Stamina;
-				result.Intelegence = argState1.Intelegence - argState2.Intelegence;
-				result.Hunger = argState1.Hunger - argState2.Hunger;
-				result.Thirst = argState1.Thirst - argState2.Thirst;
-				result.Aggressiveness = argState1.Aggressiveness - argState2.Aggressiveness;
+        public static StateLiving operator -(StateLiving argState1, StateLiving argState2)
+        {
+            StateLiving result = new StateLiving();
 
-				return result;
-			}
+            result.Health = argState1.Health - argState2.Health;
+            result.Strenght = argState1.Strenght - argState2.Strenght;
+            result.Stamina = argState1.Stamina - argState2.Stamina;
+            result.Intelegence = argState1.Intelegence - argState2.Intelegence;
+            result.Hunger = argState1.Hunger - argState2.Hunger;
+            result.Thirst = argState1.Thirst - argState2.Thirst;
+            result.Aggressiveness = argState1.Aggressiveness - argState2.Aggressiveness;
 
-		#endregion
-	}
+            return result;
+        }
+
+        #endregion
+
+        #region ObjectMethodsOverride
+
+            public override bool Equals(object obj)
+            {
+                if (obj.GetType() != this.GetType())
+                    return false;
+
+                var o = obj as StateLiving;
+
+                return base.Equals(obj) && this.Aggressiveness.Equals(o.Aggressiveness) && this.Hunger.Equals(o.Hunger) &&
+                    this.Intelegence.Equals(o.Intelegence) && this.Stamina.Equals(o.Stamina) &&
+                    this.Strenght.Equals(o.Strenght) && this.Thirst.Equals(o.Thirst);
+            }
+
+            public static bool operator ==(StateLiving o1, StateLiving o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(StateLiving o1, StateLiving o2)
+            {
+                return !o1.Equals(o2);
+            }
+
+        #endregion
+    }
 }

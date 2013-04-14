@@ -413,5 +413,59 @@ namespace IndigoEngine
             }
 
         #endregion
+
+        #region ObjectMethodsOverride
+
+            public override bool Equals(object obj)
+            {
+                if (obj.GetType() != this.GetType())
+                    return false;
+
+                var o = obj as World;
+
+                /*
+                //Actions comparation
+                if (actions.Count != o.actions.Count)
+                    return false;
+                for (int i = 0; i < actions.Count; ++i)
+                {
+                    if (!actions[i].Equals(o.actions[i]))   //TODO: override Action.Equals
+                        return false;
+                }
+                 * 
+                 * */
+
+                //Agents comparation
+                if (agents.Count != o.agents.Count)
+                    return false;
+                for (int i = 0; i < agents.Count; ++i)
+                {
+                    if (!agents[i].Equals(o.agents[i]))   
+                        return false;
+                }
+                /*
+                //Modifivators comparation                
+                if (modificatiors.Count != o.modificatiors.Count)
+                    return false;
+                for (int i = 0; i < modificatiors.Count; ++i)
+                {
+                    if (!modificatiors[i].Equals(o.modificatiors[i]))   //TODO: override modificate.Equals
+                        return false;
+                }
+                 * */
+                return true;
+            }
+
+            public static bool operator ==(World o1, World o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(World o1, World o2)
+            {
+                return !o1.Equals(o2);
+            }
+
+        #endregion
     }
 }

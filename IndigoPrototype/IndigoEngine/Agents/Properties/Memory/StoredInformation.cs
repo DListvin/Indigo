@@ -36,5 +36,29 @@ namespace IndigoEngine.Agents
 		{
 			return "     " + StoredInfo.ToString() + " at " + StoringTime.ToString() + "\n";
 		}
+
+        #region ObjectMethodsOverride
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != this.GetType())
+                return false;
+
+            var o = obj as StoredInformation;
+            
+            return this.StoredInfo.Equals(o.StoredInfo) && this.StoringTime.Equals(o.StoringTime);
+        }
+
+        public static bool operator ==(StoredInformation o1, StoredInformation o2)
+        {
+            return o1.Equals(o2);
+        }
+
+        public static bool operator !=(StoredInformation o1, StoredInformation o2)
+        {
+            return !o1.Equals(o2);
+        }
+
+        #endregion
 	}
 }
