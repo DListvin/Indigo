@@ -99,25 +99,6 @@ namespace IndigoEngine.Agents
                 }
                 return result + "\n";
             }
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as State;
-
-                return this.Health.Equals(o.Health) && this.NumberOfCharacteristicsInState.Equals(o.NumberOfCharacteristicsInState);
-            }
-
-            public static bool operator ==(State o1, State o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(State o1, State o2)
-            {
-                return !o1.Equals(o2);
-            }
 
         #endregion
     }

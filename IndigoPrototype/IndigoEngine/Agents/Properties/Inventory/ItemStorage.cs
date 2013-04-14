@@ -161,35 +161,6 @@ namespace IndigoEngine.Agents
                 return result;
             }
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as ItemStorage;
-
-                //Item comparation
-                if (ItemList.Count != o.ItemList.Count)
-                    return false;
-                for (int i = 0; i < ItemList.Count; ++i)
-                {
-                    if (!ItemList[i].Equals(o.ItemList[i]))
-                        return false;
-                }
-
-                return base.Equals(obj) && this.Owner.Name.Equals(o.Owner.Name);
-            }
-
-            public static bool operator ==(ItemStorage o1, ItemStorage o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(ItemStorage o1, ItemStorage o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
 	}
 }

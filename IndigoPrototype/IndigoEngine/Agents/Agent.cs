@@ -259,38 +259,6 @@ namespace IndigoEngine.Agents
                 return Name + " " + CurrentState.ToString() + "   " + CurrentLocation.ToString() + "\n" + Inventory.ToString();
             }
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as Agent;
-
-                //Skills comparation
-                if (SkillsList.Count != o.SkillsList.Count)
-                    return false;
-                for (int i = 0; i < SkillsList.Count; ++i)
-                {
-                    if (!SkillsList[i].Equals(o.SkillsList[i]))
-                        return false;
-                }
-
-                return this.CurrentActionFeedback.Equals(o.CurrentActionFeedback) && this.CurrentLocation.Equals(o.CurrentLocation) &&
-                    this.CurrentMemory.Equals(o.CurrentMemory) && this.CurrentState.Equals(o.CurrentState) &&
-                    this.CurrentVision.Equals(o.CurrentVision) && this.Inventory.Equals(o.Inventory) &&
-                    this.Name.Equals(o.Name);
-            }
-
-            public static bool operator ==(Agent o1, Agent o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(Agent o1, Agent o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
 	}
 }

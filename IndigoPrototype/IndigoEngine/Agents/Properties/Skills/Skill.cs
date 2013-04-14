@@ -36,26 +36,6 @@ namespace IndigoEngine.Agents
 
         #region ObjectMethodsOverride
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as Skill;
-
-                return this.SkillQuality.Equals(o.SkillQuality) && this.Name.Equals(o.Name);
-            }
-
-            public static bool operator ==(Skill o1, Skill o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(Skill o1, Skill o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
     }
 }

@@ -60,27 +60,7 @@ namespace IndigoEngine.Agents
 		#endregion
 
         #region ObjectMethodsOverride
-
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as StateTree;
-
-                return base.Equals(obj) && this.Prolificacy.Equals(o.Prolificacy);
-            }
-
-            public static bool operator ==(StateTree o1, StateTree o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(StateTree o1, StateTree o2)
-            {
-                return !o1.Equals(o2);
-            }
-
+        
         #endregion
 	}
 }

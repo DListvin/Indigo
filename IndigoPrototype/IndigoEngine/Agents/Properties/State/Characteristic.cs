@@ -200,27 +200,6 @@ namespace IndigoEngine.Agents
                 return Name + ": " + MinValue.ToString() + "." + CurrentUnitValue.ToString() + "." + MaxValue.ToString();
             }
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as Characteristic;
-
-                return base.Equals(obj) && this.MaxValue.Equals(o.MaxValue) && this.MinValue.Equals(o.MinValue) &&
-                    this.CurrentUnitValue.Equals(o.CurrentUnitValue) && this.CriticalPercentValue.Equals(this.CriticalPercentValue);
-            }
-
-            public static bool operator ==(Characteristic o1, Characteristic o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(Characteristic o1, Characteristic o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
     }
 }

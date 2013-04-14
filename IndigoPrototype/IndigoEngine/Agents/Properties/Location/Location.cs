@@ -92,26 +92,6 @@ namespace IndigoEngine.Agents
                 return HasOwner ? Owner.Name : Coords.ToString();
             }
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as Location;
-
-                return this.Coords.Equals(o.Coords) && this.HasOwner.Equals(o.HasOwner) && this.Owner.Equals(o.Owner);
-            }
-
-            public static bool operator ==(Location o1, Location o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(Location o1, Location o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
     }
 }

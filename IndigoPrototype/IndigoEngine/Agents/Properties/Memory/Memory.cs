@@ -135,36 +135,6 @@ namespace IndigoEngine.Agents
                 return result;
             }
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as Memory;
-
-                //Actions comparation
-                if (this.StoredAgents.Count != o.StoredAgents.Count)
-                    return false;
-
-                foreach (Agent a in StoredAgents.Keys)
-                {
-                    if (!StoredAgents[a].Equals(o.StoredAgents[a]))
-                        return false;
-                }
-
-                return true;
-            }
-
-            public static bool operator ==(Memory o1, Memory o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(Memory o1, Memory o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
     }
 }

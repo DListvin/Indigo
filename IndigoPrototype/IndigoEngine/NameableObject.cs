@@ -28,26 +28,6 @@ namespace IndigoEngine
 
         #region ObjectMethodsOverride
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as NameableObject;
-
-                return this.Name.Equals(o.Name);
-            }
-
-            public static bool operator ==(NameableObject o1, NameableObject o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(NameableObject o1, NameableObject o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
     }
 }

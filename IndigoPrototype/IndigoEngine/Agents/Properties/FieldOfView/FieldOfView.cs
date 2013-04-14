@@ -55,26 +55,6 @@ namespace IndigoEngine.Agents
 
         #region ObjectMethodsOverride
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as Vision;
-
-                return this.RangeOfView.Equals(o.RangeOfView);
-            }
-
-            public static bool operator ==(Vision o1, Vision o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(Vision o1, Vision o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
     }
 }

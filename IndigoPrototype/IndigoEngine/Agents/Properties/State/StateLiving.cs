@@ -95,28 +95,6 @@ namespace IndigoEngine.Agents
 
         #region ObjectMethodsOverride
 
-            public override bool Equals(object obj)
-            {
-                if (obj.GetType() != this.GetType())
-                    return false;
-
-                var o = obj as StateLiving;
-
-                return base.Equals(obj) && this.Aggressiveness.Equals(o.Aggressiveness) && this.Hunger.Equals(o.Hunger) &&
-                    this.Intelegence.Equals(o.Intelegence) && this.Stamina.Equals(o.Stamina) &&
-                    this.Strenght.Equals(o.Strenght) && this.Thirst.Equals(o.Thirst);
-            }
-
-            public static bool operator ==(StateLiving o1, StateLiving o2)
-            {
-                return o1.Equals(o2);
-            }
-
-            public static bool operator !=(StateLiving o1, StateLiving o2)
-            {
-                return !o1.Equals(o2);
-            }
-
         #endregion
     }
 }
