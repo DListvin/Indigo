@@ -6,13 +6,13 @@ using IndigoEngine.Agents;
 using System.Drawing;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
     /// <summary>
     /// Action to go
     /// </summary>
     [Serializable]
-    class ActionGo : Action
+    class ActionGo : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -23,6 +23,9 @@ namespace IndigoEngine
 																				typeof(AgentLivingIndigo),
 																			},
 																			new List<Type>()
+																			{
+																			},
+																			new List<Skill>()
 																			{
 																			},
 																			true,
@@ -87,7 +90,7 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public override int CompareTo(Action argActionToCompare)
+		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
 			return 1; //Action isn't conflict
 		}

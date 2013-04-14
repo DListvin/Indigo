@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IndigoEngine.Agents;
 using NLog;
 
 namespace IndigoEngine.Actions
 {
     [Serializable]
-    class ActionRest : Action
+    class ActionRest : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -17,6 +18,9 @@ namespace IndigoEngine.Actions
 																			{
 																			},
 																			new List<Type>()
+																			{
+																			},
+																			new List<Skill>()
 																			{
 																			},
 																			true,

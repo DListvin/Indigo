@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NLog;
+using IndigoEngine.Actions;
 
 namespace IndigoEngine.Agents
 {
@@ -45,7 +46,7 @@ namespace IndigoEngine.Agents
 			{
 				get
 				{
-					return CurrentView.Where(val => { return val is Action; }).ToList();
+					return CurrentView.Where(val => { return val is ActionAbstract; }).ToList();
 				}
 			}
 

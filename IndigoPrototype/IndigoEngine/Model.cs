@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using IndigoEngine.Agents;
+using IndigoEngine.Actions;
 using NLog;
 
 namespace IndigoEngine
@@ -34,7 +35,7 @@ namespace IndigoEngine
         private long passedModelIterations;                  //Info about how many iterations of main loop have passed
         private TimeSpan modelIterationTick;                 //Info about time interval betwin loop iterations
         private ModelState state = ModelState.Uninitialised; //Model state from ModelState enum
-        IDictionary<long, IEnumerable<Action>> storedActions;
+        IDictionary<long, IEnumerable<ActionAbstract>> storedActions;
         [NonSerialized] private Thread modelThread;  //This object controls working model in other process
 
         public event EventHandler ModelTick;
@@ -54,7 +55,7 @@ namespace IndigoEngine
 
                 public int TurnsToStore { get; set; } // For how many turns actions are stored
 
-                public IDictionary<long, IEnumerable<Action>> Actions { get { return storedActions; } private set { storedActions = value; } } // Action storage
+                public IDictionary<long, IEnumerable<ActionAbstract>> Actions { get { return storedActions; } private set { storedActions = value; } } // Action storage
 
                 public long PassedModelIterations 
 		        {
@@ -99,7 +100,7 @@ namespace IndigoEngine
 					ModelIterationTick = TimeSpan.FromSeconds(2);
 					modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
 					State = ModelState.Initialised;
-					storedActions = new Dictionary<long, IEnumerable<Action>>();
+					storedActions = new Dictionary<long, IEnumerable<ActionAbstract>>();
 				}
             }
         
@@ -269,8 +270,8 @@ namespace IndigoEngine
         void ManageActionStorage()
         {
             //Coping container, cause in main loop it will be cleared by reference
-            List<Action> temp = new List<Action>();
-            foreach(Action action in simulatingWorld.Actions)
+            List<ActionAbstract> temp = new List<ActionAbstract>();
+            foreach(ActionAbstract action in simulatingWorld.Actions)
                 temp.Add(action);
 
             Actions.Add(PassedModelIterations, temp);

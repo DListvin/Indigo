@@ -5,13 +5,13 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
     /// <summary>
     /// Action to Obtain Resourse
     /// </summary>
     [Serializable]
-    class ActionObtainLog : Action
+    class ActionObtainLog : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -24,6 +24,10 @@ namespace IndigoEngine
 																			new List<Type>()
 																			{
 																				typeof(AgentTree),
+																			},
+																			new List<Skill>()
+																			{
+																				Skills.Woodcutting,
 																			},
 																			true,
 																			true
@@ -78,7 +82,7 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public override int CompareTo(Action argActionToCompare)
+		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
 			if(Object == (argActionToCompare as ActionObtainLog).Object)
 			{

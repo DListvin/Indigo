@@ -6,13 +6,13 @@ using IndigoEngine.Agents;
 using System.Drawing;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
     /// <summary>
     /// basic class for action
     /// </summary>
     [Serializable]
-    public abstract class Action : NameableObject, ITypicalAction, IComparable<Action>
+    public abstract class ActionAbstract : NameableObject, ITypicalAction, IComparable<ActionAbstract>
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -40,12 +40,12 @@ namespace IndigoEngine
 
         #region Constructors
 
-        public Action()
+        public ActionAbstract()
             : base()
         {
         }
 
-		public Action(Agent argSubj, Agent argObj)
+		public ActionAbstract(Agent argSubj, Agent argObj)
             : this()
         {
             Subject = argSubj;
@@ -97,7 +97,7 @@ namespace IndigoEngine
 		/// </summary>
 		/// <param name="argActionToCompare">Action to compare with</param>
 		/// <returns> 0 - actions are equal, 1 - actions are unequal</returns>
-		public virtual int CompareTo(Action argActionToCompare)
+		public virtual int CompareTo(ActionAbstract argActionToCompare)
 		{
 			return 1;
 		}

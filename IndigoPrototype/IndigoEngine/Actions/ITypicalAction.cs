@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
     /// <summary>
     /// An action, suggested by agent and performed by world

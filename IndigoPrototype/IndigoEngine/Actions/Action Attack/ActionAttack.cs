@@ -5,13 +5,13 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
 	/// <summary>
 	/// Attack action.
 	/// </summary>
     [Serializable]
-    public class ActionAttack : Action
+    public class ActionAttack : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();			
 
@@ -25,26 +25,12 @@ namespace IndigoEngine
 																			{
 																				typeof(AgentLivingIndigo),
 																			},
+																			new List<Skill>()
+																			{
+																			},
 																			false,
 																			true
 																		);
-
-		static ActionAttack()
-		{
-			CurrentActionInfo = new InfoAboutAction
-												(
-													new List<Type>()
-													{
-														typeof(AgentLivingIndigo),
-													},
-													new List<Type>()
-													{
-														typeof(AgentLivingIndigo),
-													},
-													false,
-													true
-												);
-		}
 
 		#region Constructors
 
@@ -124,7 +110,7 @@ namespace IndigoEngine
 			return base.CharacteristicsOfSubject();
 		}
 
-		public override int CompareTo(Action argActionToCompare)
+		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
 			return 1; //Action isn't conflict
 		}

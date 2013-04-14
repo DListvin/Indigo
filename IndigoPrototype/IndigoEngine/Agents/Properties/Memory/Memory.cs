@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NLog;
+using IndigoEngine.Actions;
 
 namespace IndigoEngine.Agents
 {
@@ -29,7 +30,7 @@ namespace IndigoEngine.Agents
 
 		#endregion
 		
-		public void StoreAction(Agent argAgentSender, Action argAction)
+		public void StoreAction(Agent argAgentSender, ActionAbstract argAction)
 		{
 			StoredInformation st = new StoredInformation();   //New information to store
 			st.StoredInfo = argAction.CharacteristicsOfSubject();

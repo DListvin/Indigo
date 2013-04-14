@@ -6,13 +6,13 @@ using System.Drawing;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
     /// <summary>
     /// Action to break the camp
     /// </summary>
     [Serializable]
-    public class ActionBreakCamp : Action
+    public class ActionBreakCamp : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();	
 
@@ -24,6 +24,10 @@ namespace IndigoEngine
 																			},
 																			new List<Type>()
 																			{
+																			},
+																			new List<Skill>()
+																			{
+																				Skills.CampConstructing,
 																			},
 																			true,
 																			false
@@ -95,7 +99,7 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public override int CompareTo(Action argActionToCompare)
+		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
 			if(Direction == (argActionToCompare as ActionBreakCamp).Direction)
 			{

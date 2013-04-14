@@ -6,7 +6,7 @@ using IndigoEngine.Agents;
 using System.Drawing;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
 	public static class ActionsManager
 	{		
@@ -15,16 +15,16 @@ namespace IndigoEngine
 		//Dictionary for different binary actions realisations for different participants
 		#region Dictionary itself. Dangerous! Do not open! 
 
-		private static Dictionary<Type, Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>>> BinaryActionsDataBase = new Dictionary<Type, Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>>>()
+		private static Dictionary<Type, Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>> BinaryActionsDataBase = new Dictionary<Type, Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>>()
 		{
 			//Action attack dictionary
 			{
 				typeof(ActionAttack),
-				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>>()
+				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
-						new Dictionary<Type, Func<Agent, Agent, object[], Action>>()
+						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
 						{
 							{
 								typeof(AgentLivingIndigo),
@@ -37,11 +37,11 @@ namespace IndigoEngine
 			//Action drink dictionary
 			{
 				typeof(ActionDrink),
-				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>>()
+				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
-						new Dictionary<Type, Func<Agent, Agent, object[], Action>>()
+						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
 						{
 							{
 								typeof(AgentPuddle),
@@ -54,11 +54,11 @@ namespace IndigoEngine
 			//Action eat dictionary
 			{
 				typeof(ActionEat),
-				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>>()
+				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
-						new Dictionary<Type, Func<Agent, Agent, object[], Action>>()
+						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
 						{
 							{
 								typeof(AgentItemFruit),
@@ -71,11 +71,11 @@ namespace IndigoEngine
 			//Action obtain fruit dictionary
 			{
 				typeof(ActionObtainFruit),
-				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>>()
+				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
-						new Dictionary<Type, Func<Agent, Agent, object[], Action>>()
+						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
 						{
 							{
 								typeof(AgentTree),
@@ -88,11 +88,11 @@ namespace IndigoEngine
 			//Action obtain log dictionary
 			{
 				typeof(ActionObtainLog),
-				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>>()
+				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
-						new Dictionary<Type, Func<Agent, Agent, object[], Action>>()
+						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
 						{
 							{
 								typeof(AgentTree),
@@ -108,12 +108,12 @@ namespace IndigoEngine
 		
 		//Dictionary for different witout objects actions realisations for different participants
 		#region Dictionary itself. Dangerous! Do not open! 
-		private static Dictionary<Type, Dictionary<Type, Func<Agent, object[], Action>>> UnaryActionsDataBase = new Dictionary<Type, Dictionary<Type, Func<Agent, object[], Action>>>()
+		private static Dictionary<Type, Dictionary<Type, Func<Agent, object[], ActionAbstract>>> UnaryActionsDataBase = new Dictionary<Type, Dictionary<Type, Func<Agent, object[], ActionAbstract>>>()
 		{
 			//Action break camp dictionary
 			{
 				typeof(ActionBreakCamp),
-				new Dictionary<Type, Func<Agent, object[], Action>>()
+				new Dictionary<Type, Func<Agent, object[], ActionAbstract>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
@@ -124,7 +124,7 @@ namespace IndigoEngine
 			//Action go dictionary
 			{
 				typeof(ActionGo),
-				new Dictionary<Type, Func<Agent, object[], Action>>()
+				new Dictionary<Type, Func<Agent, object[], ActionAbstract>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
@@ -135,7 +135,7 @@ namespace IndigoEngine
 			//Action grow fruit dictionary
 			{
 				typeof(ActionGrowFruit),
-				new Dictionary<Type, Func<Agent, object[], Action>>()
+				new Dictionary<Type, Func<Agent, object[], ActionAbstract>>()
 				{
 					{
 						typeof(AgentTree), 
@@ -146,7 +146,7 @@ namespace IndigoEngine
 			//Action do nothing dictionary
 			{
 				typeof(ActionDoNothing),
-				new Dictionary<Type, Func<Agent, object[], Action>>()
+				new Dictionary<Type, Func<Agent, object[], ActionAbstract>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
@@ -177,11 +177,11 @@ namespace IndigoEngine
 		};	
 		#endregion
 
-		public static Action GetThisActionForCurrentParticipants(Type argActionType, Agent argSubject, Agent argObject, params object[] argParams)
+		public static ActionAbstract GetThisActionForCurrentParticipants(Type argActionType, Agent argSubject, Agent argObject, params object[] argParams)
 		{
 			logger.Trace("Getting action for action type {0}, subject: {1}, object: {2}", argActionType, argSubject.Name, argObject != null ? argObject.Name : "none");
 
-			if(argActionType.BaseType != typeof(Action))
+			if(argActionType.BaseType != typeof(ActionAbstract))
 			{
 				logger.Error("Trying to get action for none-action type: {0}!", argActionType);
 				return null;
@@ -190,12 +190,12 @@ namespace IndigoEngine
 			System.Reflection.FieldInfo field = argActionType.GetField("CurrentActionInfo", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
 			InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;
 			
-			Action result; //Action to return
+			ActionAbstract result; //Action to return
 			if(currentInfo.RequiresObject)
 			{
-				Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], Action>>> subjectTypeDictionary; //supportive vars
-				Dictionary<Type, Func<Agent, Agent, object[], Action>> objectTypeDictionary; //supportive vars
-				Func<Agent, Agent, object[], Action> actionFunc; //supportive vars
+				Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>> subjectTypeDictionary; //supportive vars
+				Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>> objectTypeDictionary; //supportive vars
+				Func<Agent, Agent, object[], ActionAbstract> actionFunc; //supportive vars
 
 				BinaryActionsDataBase.TryGetValue(argActionType, out subjectTypeDictionary);
 				subjectTypeDictionary.TryGetValue(argSubject.GetType(), out objectTypeDictionary);
@@ -205,8 +205,8 @@ namespace IndigoEngine
 			}
 			else
 			{
-				Dictionary<Type, Func<Agent, object[], Action>> subjectTypeDictionary; //supportive vars
-				Func<Agent, object[], Action> actionFunc; //supportive vars
+				Dictionary<Type, Func<Agent, object[], ActionAbstract>> subjectTypeDictionary; //supportive vars
+				Func<Agent, object[], ActionAbstract> actionFunc; //supportive vars
 
 				UnaryActionsDataBase.TryGetValue(argActionType, out subjectTypeDictionary);
 				subjectTypeDictionary.TryGetValue(argSubject.GetType(), out actionFunc);

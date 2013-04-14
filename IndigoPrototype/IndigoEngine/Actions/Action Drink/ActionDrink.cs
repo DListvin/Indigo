@@ -5,13 +5,13 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
     /// <summary>
     /// Action to drink
     /// </summary>
     [Serializable]
-    class ActionDrink : Action
+    class ActionDrink : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -24,6 +24,9 @@ namespace IndigoEngine
 																			new List<Type>()
 																			{
 																				typeof(AgentPuddle),
+																			},
+																			new List<Skill>()
+																			{
 																			},
 																			true,
 																			true
@@ -76,7 +79,7 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public override int CompareTo(Action argActionToCompare)
+		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
 			if(Object == (argActionToCompare as ActionDrink).Object)
 			{

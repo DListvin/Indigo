@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using IndigoEngine.Agents;
 using System.Drawing;
+using IndigoEngine.Actions;
 
 namespace IndigoEngine
 {
@@ -26,7 +27,7 @@ namespace IndigoEngine
         /// <summary>
         /// Collection of (iteration, actionCollection). Stores actions for some number of turns.
         /// </summary>
-        IDictionary<long, IEnumerable<Action>> Actions { get; }
+        IDictionary<long, IEnumerable<ActionAbstract>> Actions { get; }
 
         /// <summary>
         /// How many turns actions should be stored

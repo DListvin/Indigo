@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using IndigoEngine.Agents;
+using IndigoEngine.Actions;
 using NLog;
 
 namespace IndigoEngine
@@ -19,7 +20,7 @@ namespace IndigoEngine
         public delegate void modificate();
 
         private List<Agent> agents;           //List of all agents in the world
-        private List<Action> actions; //List of all actions, that must be performed (refreshing each loop iteration)
+        private List<ActionAbstract> actions; //List of all actions, that must be performed (refreshing each loop iteration)
         private List<modificate> modificatiors; // List of Delegates, to add or Delete agents at right place in MainLoop
 
 		#region Constructors
@@ -39,7 +40,7 @@ namespace IndigoEngine
 			set { agents = value; }
         }
 
-        public List<Action> Actions
+        public List<ActionAbstract> Actions
         {
             get { return actions; }
 			set { actions = value; }
@@ -166,7 +167,7 @@ namespace IndigoEngine
 
 				SolveActionConflicts();
 
-				foreach (Action action in Actions)
+				foreach (ActionAbstract action in Actions)
 				{
 					action.Perform();
 				}
@@ -192,7 +193,7 @@ namespace IndigoEngine
 				Agent currentAddingAgent; //Agent, that is adding to the world now. This variable is necessary to configure the agent
 
 				Agents = new List<Agent>();
-				Actions = new List<Action>();
+				Actions = new List<ActionAbstract>();
 				modificatiors = new List<modificate>();
 
 				//GenerateForest(new Point(-10, -10), new Size(10, 10), 0.50);
@@ -335,7 +336,7 @@ namespace IndigoEngine
 
         #region IWorldToAgent realisation
 
-            public bool AskWorldForAction(Action action)
+            public bool AskWorldForAction(ActionAbstract action)
             {
                 action.World = this;
 				if(action.CheckForLegitimacy())
@@ -381,7 +382,7 @@ namespace IndigoEngine
 
             public bool AskWorldForDeletion(object sender, Agent obj)
             {
-                if (sender.GetType().BaseType != typeof(Action))
+                if (sender.GetType().BaseType != typeof(ActionAbstract))
 				{
                     return false;
 				}
@@ -398,7 +399,7 @@ namespace IndigoEngine
 
             public bool AskWorldForAddition(object sender, Agent obj)
             {
-                if (sender.GetType().BaseType != typeof(Action))
+                if (sender.GetType().BaseType != typeof(ActionAbstract))
 				{
                     return false;
 				}

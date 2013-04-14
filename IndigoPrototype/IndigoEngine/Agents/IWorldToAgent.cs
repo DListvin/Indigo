@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
+using IndigoEngine.Actions;
 
 namespace IndigoEngine
 {
@@ -16,7 +17,7 @@ namespace IndigoEngine
 		/// </summary>
 		/// <param name="action">Action which agent is asking for</param>
 		/// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
-        bool AskWorldForAction(Action action);
+        bool AskWorldForAction(ActionAbstract action);
 		
         /// <summary>
         /// Ask World For Deletion obj

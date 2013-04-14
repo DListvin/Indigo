@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using NLog;
+using IndigoEngine.Actions;
 
 namespace IndigoEngine.Agents
 {
@@ -170,7 +171,7 @@ namespace IndigoEngine.Agents
                         {
                             continue;
                         }
-						Action newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
+						ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
                         worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                         if (worldResponseToAction)
                         {
@@ -190,14 +191,14 @@ namespace IndigoEngine.Agents
                         }
                         if (Distance(this, ag) > Math.Sqrt(2))
                         {
-							Action newAction = ActionsManager.GetThisActionForCurrentParticipants(typeof(ActionGo), this, null, ag.CurrentLocation.Coords);
+							ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(typeof(ActionGo), this, null, ag.CurrentLocation.Coords);
 							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                             if (worldResponseToAction)
                                 break;
                         }
                         else
                         {
-							Action newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
+							ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
 							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                             if (worldResponseToAction)
                             {
@@ -208,7 +209,7 @@ namespace IndigoEngine.Agents
                 }
                 else
                 {
-					Action newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, null);
+					ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, null);
 					worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                 }
 

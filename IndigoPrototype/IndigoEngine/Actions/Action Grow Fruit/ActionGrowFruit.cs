@@ -5,10 +5,10 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine
+namespace IndigoEngine.Actions
 {
     [Serializable]
-	class ActionGrowFruit : Action
+	class ActionGrowFruit : ActionAbstract
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -19,6 +19,9 @@ namespace IndigoEngine
 																				typeof(AgentTree),
 																			},
 																			new List<Type>()
+																			{
+																			},
+																			new List<Skill>()
 																			{
 																			},
 																			false,
@@ -95,7 +98,7 @@ namespace IndigoEngine
 			return base.CharacteristicsOfSubject();
 		}
 
-		public override int CompareTo(Action argActionToCompare)
+		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
 			return 1; //Action isn't conflict
 		}
