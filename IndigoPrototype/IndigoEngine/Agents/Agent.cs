@@ -40,7 +40,7 @@ namespace IndigoEngine.Agents
 
 		#region Properties
 					
-			#region ITypicalAgent realisation
+			#region ITypicalAgent realisation				
 				
 				public State CurrentState { get; set; }                    //Current state of the agent
 				public Location CurrentLocation { get; set; }              //Agent location in the world grid - (X, Y), or agent - owner
@@ -49,6 +49,7 @@ namespace IndigoEngine.Agents
 				public IWorldToAgent HomeWorld { get; set; }               //Agent's world				
 				public Vision CurrentVision { get; set; }                  //Agent's field ov view. Includes all agents & actions, that current agent can see
 				public Memory CurrentMemory { get; set; }                  //Agent's memory
+				public List<Skill> SkillsList { get; set; }                //List of skills that are available to agent
 
 				/// <summary>
 				/// Agent's range of view, relative to CurrentVision. Necessary for easier agent management

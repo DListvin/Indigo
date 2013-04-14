@@ -34,7 +34,23 @@ namespace IndigoEngine.Actions
 			{
 			}
 
-        #endregion	
+        #endregion		
+		
+		/// <summary>
+		/// ITypicalAction
+		/// </summary>
+		public override bool CheckForLegitimacy()
+		{
+			if(!base.CheckForLegitimacy())
+			{
+				return false;
+			}
+			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
+			{
+				return false;
+			}
+			return true;
+		}
 
     }
 }

@@ -45,6 +45,11 @@ namespace IndigoEngine.Agents
 		Memory CurrentMemory { get; set; }
 
 		/// <summary>
+		/// Operations with list of skills that are available to agent
+		/// </summary>
+		List<Skill> SkillsList { get; set; } 
+
+		/// <summary>
 		/// Operations with agent's range of view
 		/// </summary>
 		int AgentsRangeOfView { get; set; }

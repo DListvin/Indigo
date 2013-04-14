@@ -50,6 +50,11 @@ namespace IndigoEngine.Actions
 			{
 				return false;
 			}   
+			 
+			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
+			{
+				return false;
+			}
 
             if (Subject.Inventory.ItemList.Count >= Subject.Inventory.StorageSize) //Cheking for item storage errors. May be it is extra checking?
             {

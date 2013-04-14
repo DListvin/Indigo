@@ -65,7 +65,12 @@ namespace IndigoEngine.Actions
 			if(!base.CheckForLegitimacy())
 			{
 				return false;
-			}   
+			}  
+			 
+			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
+			{
+				return false;
+			}
 
             if (Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemLog)) < 2) //Number of logs int subject's inventory
             {

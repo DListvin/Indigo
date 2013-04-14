@@ -36,6 +36,25 @@ namespace IndigoEngine.Actions
 				return new Point((dir.X < 0) ? -1 : 1, (dir.Y < 0) ? -1 : 1);
 			}
 
+			protected static bool CheckForSkills(Agent argAgentToCheck, List<Skill> argListForChecking)
+			{
+				foreach(Skill sk in argListForChecking)
+				{
+					if(!argAgentToCheck.SkillsList.Any( skill =>
+					{
+						if(skill.Name == sk.Name && skill.SkillQuality >= sk.SkillQuality)
+						{
+							return true;
+						}
+						return false;
+					}))
+					{	
+						return false;
+					}
+				}
+				return true;
+			}
+
 		#endregion   
 
         #region Constructors

@@ -51,6 +51,11 @@ namespace IndigoEngine.Actions
 			{
 				return false;
 			}
+			 
+			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
+			{
+				return false;
+			}
 
             if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
 			{

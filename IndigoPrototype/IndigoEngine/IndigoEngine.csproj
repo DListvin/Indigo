@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="Actions\Action Obtain Resourse\ActionObtainFruit.cs" />
     <Compile Include="Actions\Action Obtain Resourse\ActionObtainLog.cs" />
-    <Compile Include="Actions\Action.cs" />
+    <Compile Include="Actions\ActionAbstract.cs" />
     <Compile Include="Actions\Action Attack\ActionAttack.cs" />
     <Compile Include="Actions\Action Do Nothing\ActionDoNothing.cs" />
     <Compile Include="Actions\Action Drink\ActionDrink.cs" />

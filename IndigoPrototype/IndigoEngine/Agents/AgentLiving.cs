@@ -26,8 +26,6 @@ namespace IndigoEngine.Agents
 		#endregion
 
         #region Properties
-				
-			public List<Skill> SkillsList { get; set; } //List of skills that are available to agent
 
 			/// <summary>
 			/// Current state of the agent, override property from Agent to return StateLiving, instead of State
