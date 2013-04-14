@@ -423,6 +423,7 @@ namespace IndigoEngine
 
                 var o = obj as World;
 
+                /*
                 //Actions comparation
                 if (actions.Count != o.actions.Count)
                     return false;
@@ -431,6 +432,8 @@ namespace IndigoEngine
                     if (!actions[i].Equals(o.actions[i]))   //TODO: override Action.Equals
                         return false;
                 }
+                 * 
+                 * */
 
                 //Agents comparation
                 if (agents.Count != o.agents.Count)
@@ -440,7 +443,7 @@ namespace IndigoEngine
                     if (!agents[i].Equals(o.agents[i]))   
                         return false;
                 }
-
+                /*
                 //Modifivators comparation                
                 if (modificatiors.Count != o.modificatiors.Count)
                     return false;
@@ -449,15 +452,16 @@ namespace IndigoEngine
                     if (!modificatiors[i].Equals(o.modificatiors[i]))   //TODO: override modificate.Equals
                         return false;
                 }
+                 * */
                 return true;
             }
 
-            public static bool operator ==(Model o1, Model o2)
+            public static bool operator ==(World o1, World o2)
             {
                 return o1.Equals(o2);
             }
 
-            public static bool operator !=(Model o1, Model o2)
+            public static bool operator !=(World o1, World o2)
             {
                 return !o1.Equals(o2);
             }
