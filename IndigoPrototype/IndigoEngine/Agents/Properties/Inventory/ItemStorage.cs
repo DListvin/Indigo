@@ -147,16 +147,49 @@ namespace IndigoEngine.Agents
                 yield return ItemList[i];
         }
 
-		public override string ToString()
-		{
-			string result = "Storage: " + ItemList.Count.ToString() + "/" + StorageSize.ToString();
+        #region ObjectMethodsOverride
 
-			foreach(Agent ag in ItemList)
-			{
-				result += "\n   " + ag.Name;
-			}
+            public override string ToString()
+            {
+                string result = "Storage: " + ItemList.Count.ToString() + "/" + StorageSize.ToString();
 
-			return result;
-		}
+                foreach (Agent ag in ItemList)
+                {
+                    result += "\n   " + ag.Name;
+                }
+
+                return result;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj.GetType() != this.GetType())
+                    return false;
+
+                var o = obj as ItemStorage;
+
+                //Item comparation
+                if (ItemList.Count != o.ItemList.Count)
+                    return false;
+                for (int i = 0; i < ItemList.Count; ++i)
+                {
+                    if (!ItemList[i].Equals(o.ItemList[i]))
+                        return false;
+                }
+
+                return base.Equals(obj) && this.Owner.Name.Equals(o.Owner.Name);
+            }
+
+            public static bool operator ==(ItemStorage o1, ItemStorage o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(ItemStorage o1, ItemStorage o2)
+            {
+                return !o1.Equals(o2);
+            }
+
+        #endregion
 	}
 }

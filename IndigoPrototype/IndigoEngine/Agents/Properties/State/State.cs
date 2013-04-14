@@ -10,93 +10,115 @@ namespace IndigoEngine.Agents
 	/// Class for storaging the characteristics of agents
 	/// </summary>
     [Serializable]
-	public class State
-	{
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+    public class State
+    {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		#region Constructors
+        #region Constructors
 
-			public State()
-			{
-				Health = new Characteristic();
-				Health.Name = "Health";
-			}
+        public State()
+        {
+            Health = new Characteristic();
+            Health.Name = "Health";
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-			public Characteristic Health { get; set; } //Agent health
+        public Characteristic Health { get; set; } //Agent health
 
-			protected int NumberOfCharacteristicsInState //Number of characteristics in the state
-			{
-				get
-				{
-					int result = 0; //result of the function
+        protected int NumberOfCharacteristicsInState //Number of characteristics in the state
+        {
+            get
+            {
+                int result = 0; //result of the function
 
-					foreach(System.Reflection.PropertyInfo info in (typeof(State)).GetProperties())
-					{
-						if(info.PropertyType == typeof(Characteristic))
-						{	
-							++result;
-						}
-					}
+                foreach (System.Reflection.PropertyInfo info in (typeof(State)).GetProperties())
+                {
+                    if (info.PropertyType == typeof(Characteristic))
+                    {
+                        ++result;
+                    }
+                }
 
-					return result;
-				}
-			}
+                return result;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Static methods
+        #region Static methods
 
-			public static State operator+(State argState1, State argState2)
-			{
-				State result = new State();
+        public static State operator +(State argState1, State argState2)
+        {
+            State result = new State();
 
-				result.Health = argState1.Health + argState2.Health;
+            result.Health = argState1.Health + argState2.Health;
 
-				return result;
-			}
+            return result;
+        }
 
-			public static State operator-(State argState1, State argState2)
-			{
-				State result = new State();
+        public static State operator -(State argState1, State argState2)
+        {
+            State result = new State();
 
-				result.Health = argState1.Health - argState2.Health;
+            result.Health = argState1.Health - argState2.Health;
 
-				return result;
-			}
+            return result;
+        }
 
-		#endregion		
+        #endregion
 
         /// <summary>
         /// IEnumerator for foreach
         /// </summary>
         /// <returns></returns>
         public IEnumerator<Characteristic> GetEnumerator()
-		{
-			foreach (System.Reflection.PropertyInfo ch in this.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Where(field => 
-			{
-				return field.PropertyType == typeof(Characteristic);
-			}))
-			{
-				yield return ch.GetValue(this, null) as Characteristic;
-			}
-		}
-		
+        {
+            foreach (System.Reflection.PropertyInfo ch in this.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Where(field =>
+            {
+                return field.PropertyType == typeof(Characteristic);
+            }))
+            {
+                yield return ch.GetValue(this, null) as Characteristic;
+            }
+        }
 
-       public override string ToString()
-       {
-			string result = "\n   ";  //Result of the function
-			int timeForNewString = 1; //Showingm if the string should be new (shows 3 characteristics in one string)
+        #region ObjectMethodsOverride
 
-			foreach(Characteristic ch in this)
-			{
-				result += ch.ToString() + "; " + ((timeForNewString % 3 == 0) ? "\n   " : "");
-				++timeForNewString;
-			}
-			return result + "\n";
-		}
-	}
+            public override string ToString()
+            {
+                string result = "\n   ";  //Result of the function
+                int timeForNewString = 1; //Showingm if the string should be new (shows 3 characteristics in one string)
+
+                foreach (Characteristic ch in this)
+                {
+                    result += ch.ToString() + "; " + ((timeForNewString % 3 == 0) ? "\n   " : "");
+                    ++timeForNewString;
+                }
+                return result + "\n";
+            }
+            public override bool Equals(object obj)
+            {
+                if (obj.GetType() != this.GetType())
+                    return false;
+
+                var o = obj as State;
+
+                return this.Health.Equals(o.Health) && this.NumberOfCharacteristicsInState.Equals(o.NumberOfCharacteristicsInState);
+            }
+
+            public static bool operator ==(State o1, State o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(State o1, State o2)
+            {
+                return !o1.Equals(o2);
+            }
+
+        #endregion
+    }
 }

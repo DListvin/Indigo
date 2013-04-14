@@ -285,24 +285,34 @@ namespace IndigoEngine
 
         #region ObjectMethodsOverride
 
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != this.GetType())
-                return false;
-
-            var o = obj as Model;
-
-            //Stored actions comparation
-            if(storedActions.Count != o.storedActions.Count)
-                return false;
-            for (int i = 0; i < storedActions.Count; ++i)
+            public override bool Equals(object obj)
             {
-                if (!storedActions[i].Equals(o.storedActions[i]))   //TODO: override Action.Equals
+                if (obj.GetType() != this.GetType())
                     return false;
+
+                var o = obj as Model;
+
+                //Stored actions comparation
+                if(storedActions.Count != o.storedActions.Count)
+                    return false;
+                for (int i = 0; i < storedActions.Count; ++i)
+                {
+                    if (!storedActions[i].Equals(o.storedActions[i]))
+                        return false;
+                }
+
+                return this.simulatingWorld.Equals(o.simulatingWorld) && this.passedModelIterations.Equals(o.passedModelIterations);
             }
 
-            return this.simulatingWorld.Equals(o.simulatingWorld) && this.passedModelIterations.Equals(o.passedModelIterations); //TODO: override World.Equals
-        }
+            public static bool operator ==(Model o1, Model o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(Model o1, Model o2)
+            {
+                return !o1.Equals(o2);
+            }
 
         #endregion
     }

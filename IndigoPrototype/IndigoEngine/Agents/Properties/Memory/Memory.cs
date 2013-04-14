@@ -11,126 +11,160 @@ namespace IndigoEngine.Agents
 	/// Memory of the agents
 	/// </summary>
     [Serializable]
-	public class Memory
-	{		
-		private static Logger logger = LogManager.GetCurrentClassLogger();
-		
-		#region Constructors
+    public class Memory
+    {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-			public Memory()
-			{
-				StoredAgents = new Dictionary<Agent, List<StoredInformation>>();
-			}
+        #region Constructors
 
-		#endregion
+        public Memory()
+        {
+            StoredAgents = new Dictionary<Agent, List<StoredInformation>>();
+        }
 
-		#region Properties
+        #endregion
 
-			public Dictionary<Agent, List<StoredInformation>> StoredAgents { get; set; } //Dictionary with memories about other agents: <reference to the agent(id), info about agent>.
+        #region Properties
 
-		#endregion
-		
-		public void StoreAction(Agent argAgentSender, ActionAbstract argAction)
-		{
-			StoredInformation st = new StoredInformation();   //New information to store
-			st.StoredInfo = argAction.CharacteristicsOfSubject();
+        public Dictionary<Agent, List<StoredInformation>> StoredAgents { get; set; } //Dictionary with memories about other agents: <reference to the agent(id), info about agent>.
 
-			if(StoredAgents.ContainsKey(argAgentSender))
-			{
-				if(!(StoredAgents[argAgentSender].Exists(obj => 
-					{
-						return obj.StoredInfo == argAction.CharacteristicsOfSubject();
-					})))
-				{
-					StoredAgents[argAgentSender].Add(st);
-				}
-			}
-			else
-			{
-				List<StoredInformation> lst = new List<StoredInformation>();  //New list to store new agent
-				lst.Add(st);
-				StoredAgents.Add(argAgentSender, lst);
-			}
-		}
+        #endregion
 
-		/// <summary>
-		/// Storing the hole state of the agent
-		/// </summary>
-		/// <param name="argAgentToStore">agent to store</param>
-		public void StoreAgent(Agent argAgentToStore)
-		{			
-			StoredInformation st = new StoredInformation();  //Information to store, includes the agent
-			st.StoredInfo = argAgentToStore;
+        public void StoreAction(Agent argAgentSender, ActionAbstract argAction)
+        {
+            StoredInformation st = new StoredInformation();   //New information to store
+            st.StoredInfo = argAction.CharacteristicsOfSubject();
 
-			if(StoredAgents.ContainsKey(argAgentToStore))
-			{
-				StoredAgents[argAgentToStore].Clear();
-				StoredAgents[argAgentToStore].Add(st);
-			}
-			else
-			{
-				List<StoredInformation> lst = new List<StoredInformation>();
-				lst.Add(st);
-				StoredAgents.Add(argAgentToStore, lst);
-			}
-		}
+            if (StoredAgents.ContainsKey(argAgentSender))
+            {
+                if (!(StoredAgents[argAgentSender].Exists(obj =>
+                    {
+                        return obj.StoredInfo == argAction.CharacteristicsOfSubject();
+                    })))
+                {
+                    StoredAgents[argAgentSender].Add(st);
+                }
+            }
+            else
+            {
+                List<StoredInformation> lst = new List<StoredInformation>();  //New list to store new agent
+                lst.Add(st);
+                StoredAgents.Add(argAgentSender, lst);
+            }
+        }
 
-		/// <summary>
-		/// Finding stored agent by type
-		/// </summary>
-		/// <param name="predicate">Predicate, that declares the type of agent wich is searched</param>
-		/// <returns>Found agent or null reference</returns>
-		public List<NameableObject> FindStoredAgentsOfType<T>()
-		{
-			List<NameableObject> result = new List<NameableObject>();  //Result of the function
+        /// <summary>
+        /// Storing the hole state of the agent
+        /// </summary>
+        /// <param name="argAgentToStore">agent to store</param>
+        public void StoreAgent(Agent argAgentToStore)
+        {
+            StoredInformation st = new StoredInformation();  //Information to store, includes the agent
+            st.StoredInfo = argAgentToStore;
 
-			foreach(Agent ag in StoredAgents.Keys)
-			{
-				if(ag is T)
-				{
-					if(StoredAgents[(Agent)ag].First().StoredInfo is T)
-					{
-						result.Add(StoredAgents[(Agent)ag].First().StoredInfo);
-					}					
-				}
-			}
+            if (StoredAgents.ContainsKey(argAgentToStore))
+            {
+                StoredAgents[argAgentToStore].Clear();
+                StoredAgents[argAgentToStore].Add(st);
+            }
+            else
+            {
+                List<StoredInformation> lst = new List<StoredInformation>();
+                lst.Add(st);
+                StoredAgents.Add(argAgentToStore, lst);
+            }
+        }
 
-			return result;
-		}
+        /// <summary>
+        /// Finding stored agent by type
+        /// </summary>
+        /// <param name="predicate">Predicate, that declares the type of agent wich is searched</param>
+        /// <returns>Found agent or null reference</returns>
+        public List<NameableObject> FindStoredAgentsOfType<T>()
+        {
+            List<NameableObject> result = new List<NameableObject>();  //Result of the function
 
-		/// <summary>
-		/// Finding some info about the agent(characteristics and skills)
-		/// </summary>
-		/// <param name="argAgentKey">Agent which info is serching for</param>
-		/// <param name="predicate">Predicate that specify the necessary info</param>
-		/// <returns>Found info</returns>
-		public NameableObject FindInfoAboutAgent(Agent argAgentKey, Func<NameableObject, bool> predicate)
-		{
-			return StoredAgents[argAgentKey].Last(info => {return predicate(info.StoredInfo);}).StoredInfo;
-		}
-		
-		/// <summary>
-		/// Memory class override
-		/// </summary>
-		public void ForgetAll()
-		{
-			StoredAgents.Clear();
-		}
+            foreach (Agent ag in StoredAgents.Keys)
+            {
+                if (ag is T)
+                {
+                    if (StoredAgents[(Agent)ag].First().StoredInfo is T)
+                    {
+                        result.Add(StoredAgents[(Agent)ag].First().StoredInfo);
+                    }
+                }
+            }
 
-		public override string ToString()
-		{
-			string result = "";  //Result of the function
+            return result;
+        }
 
-			foreach(KeyValuePair<Agent, List<StoredInformation>> storedAgent in StoredAgents)
-			{
-				result += storedAgent.Key.ToString() + " is " + "\n";
-				foreach(StoredInformation st in storedAgent.Value)
-				{
-					result += st.ToString();
-				}
-			}
+        /// <summary>
+        /// Finding some info about the agent(characteristics and skills)
+        /// </summary>
+        /// <param name="argAgentKey">Agent which info is serching for</param>
+        /// <param name="predicate">Predicate that specify the necessary info</param>
+        /// <returns>Found info</returns>
+        public NameableObject FindInfoAboutAgent(Agent argAgentKey, Func<NameableObject, bool> predicate)
+        {
+            return StoredAgents[argAgentKey].Last(info => { return predicate(info.StoredInfo); }).StoredInfo;
+        }
 
-			return result;
-		}
-	}
+        /// <summary>
+        /// Memory class override
+        /// </summary>
+        public void ForgetAll()
+        {
+            StoredAgents.Clear();
+        }
+
+        #region ObjectMethodsOverride
+
+            public override string ToString()
+            {
+                string result = "";  //Result of the function
+
+                foreach (KeyValuePair<Agent, List<StoredInformation>> storedAgent in StoredAgents)
+                {
+                    result += storedAgent.Key.ToString() + " is " + "\n";
+                    foreach (StoredInformation st in storedAgent.Value)
+                    {
+                        result += st.ToString();
+                    }
+                }
+
+                return result;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj.GetType() != this.GetType())
+                    return false;
+
+                var o = obj as Memory;
+
+                //Actions comparation
+                if (this.StoredAgents.Count != o.StoredAgents.Count)
+                    return false;
+
+                foreach (Agent a in StoredAgents.Keys)
+                {
+                    if (!StoredAgents[a].Equals(o.StoredAgents[a]))
+                        return false;
+                }
+
+                return true;
+            }
+
+            public static bool operator ==(Memory o1, Memory o2)
+            {
+                return o1.Equals(o2);
+            }
+
+            public static bool operator !=(Memory o1, Memory o2)
+            {
+                return !o1.Equals(o2);
+            }
+
+        #endregion
+    }
 }
