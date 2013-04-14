@@ -3,39 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IndigoEngine.Agents;
-using System.Drawing;
 using NLog;
 
 namespace IndigoEngine
 {
     /// <summary>
-    /// Action to go
+    /// Action to Obtain Resourse
     /// </summary>
     [Serializable]
-    class ActionGo : Action
+    class ActionObtainFruit : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
+		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
+																		(
+																			new List<Type>()
+																			{
+																				typeof(AgentLivingIndigo),
+																			},
+																			new List<Type>()
+																			{
+																				typeof(AgentTree),
+																			},
+																			true,
+																			true
+																		);
+
         #region Constructors
 
-        public ActionGo(Agent argSubj, Point dir)
-            : base()
-        {
-            Subject = argSubj;
-            Direction = Normilize(dir, argSubj.CurrentLocation.Coords);
-            IsConflict = true;
-			RequiresObject = false;
-            AcceptedSubj.Add(typeof(AgentLivingIndigo));
-        }
+			public ActionObtainFruit(Agent argSubj, Agent argObj)
+				: base(argSubj, argObj)
+			{
+			}
 
-        #endregion
+        #endregion		
 		
-		#region Properties
-
-			public Point Direction { get; set; } // point where to go
-
-		#endregion
-
 		/// <summary>
 		/// ITypicalAction
 		/// </summary>
@@ -45,6 +47,12 @@ namespace IndigoEngine
 			{
 				return false;
 			}
+
+            if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
+			{
+                return false;
+			}
+
 			return true;
 		}
 
@@ -57,15 +65,14 @@ namespace IndigoEngine
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-				Subject.CurrentLocation = new Location(Subject.CurrentLocation.Coords.X + Direction.X, 
-				                             Subject.CurrentLocation.Coords.Y + Direction.Y); 
-				(Subject as AgentLiving).CurrentState.Stamina.CurrentUnitValue--;
+                Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemFruit)));
             });
+
         }
 
         public override string ToString()
         {
-            return "Action: go";
+            return "Action: Obtain fruit";
         }
 
 		/// <summary>
@@ -73,12 +80,9 @@ namespace IndigoEngine
 		/// </summary>
 		public override int CompareTo(Action argActionToCompare)
 		{
-			if (base.CompareTo(argActionToCompare) == 0)
+			if(Object == (argActionToCompare as ActionObtainFruit).Object)
 			{
-				if(Direction == ((ActionGo)argActionToCompare).Direction)
-				{
-					return 0;
-				}
+				return 0;
 			}
 			return 1;
 		}

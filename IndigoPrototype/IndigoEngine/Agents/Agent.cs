@@ -156,20 +156,22 @@ namespace IndigoEngine.Agents
             if (argNeed.SatisfyingActions.Count == 0)
                 throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
 
-            foreach (Action act in argNeed.SatisfyingActions)
+            foreach (Type act in argNeed.SatisfyingActions)
             {
-                act.Subject = this;
+				System.Reflection.FieldInfo field = act.GetField("CurrentActionInfo", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+				InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;
+				
 
-                if (act.RequiresObject)
+                if (currentInfo.RequiresObject)
                 {
                     foreach (Agent ag in Inventory.ItemList)
                     {
-                        if (!act.AcceptedObj.Contains(ag.GetType()))
+                        if (!currentInfo.AcceptedObjects.Contains(ag.GetType()))
                         {
                             continue;
                         }
-                        act.Object = ag;
-                        worldResponseToAction = HomeWorld.AskWorldForAction(act);
+						Action newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
+                        worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                         if (worldResponseToAction)
                         {
                             break;
@@ -182,20 +184,21 @@ namespace IndigoEngine.Agents
 
                     foreach (Agent ag in CurrentVision.CurrentViewAgents)
                     {
-                        if (!act.AcceptedObj.Contains(ag.GetType()))
+                        if (!currentInfo.AcceptedObjects.Contains(ag.GetType()))
                         {
                             continue;
                         }
-                        act.Object = ag;
                         if (Distance(this, ag) > Math.Sqrt(2))
                         {
-                            worldResponseToAction = HomeWorld.AskWorldForAction(new ActionGo(this, ag.CurrentLocation.Coords));
+							Action newAction = ActionsManager.GetThisActionForCurrentParticipants(typeof(ActionGo), this, null, ag.CurrentLocation.Coords);
+							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                             if (worldResponseToAction)
                                 break;
                         }
                         else
                         {
-                            worldResponseToAction = HomeWorld.AskWorldForAction(act);
+							Action newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
+							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                             if (worldResponseToAction)
                             {
                                 break;
@@ -205,7 +208,8 @@ namespace IndigoEngine.Agents
                 }
                 else
                 {
-                    worldResponseToAction = HomeWorld.AskWorldForAction(act);
+					Action newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, null);
+					worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                 }
 
                 if (worldResponseToAction)

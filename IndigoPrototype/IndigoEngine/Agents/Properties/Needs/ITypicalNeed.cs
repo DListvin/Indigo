@@ -23,6 +23,6 @@ namespace IndigoEngine
 		/// <summary>
 		/// Operation with list of actions, that can satisfy the need
 		/// </summary>
-        List<Action> SatisfyingActions { get; set; }
+        List<Type> SatisfyingActions { get; set; }
     }
 }

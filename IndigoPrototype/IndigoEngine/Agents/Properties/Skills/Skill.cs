@@ -14,8 +14,6 @@ namespace IndigoEngine.Agents
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		private int skillQuality;	//Level of skill
-
 		#region Constructors
 
 			public Skill() 
@@ -30,22 +28,7 @@ namespace IndigoEngine.Agents
 		
 			#region ITypicalSkill realisation
 
-				public int SkillQuality
-				{
-					get
-					{
-						return skillQuality; 
-					}
-					set
-					{
-						if(value < 0)
-						{
-							throw(new Exception(String.Format("Level of skill {0} is less than 0: {1}", this, value)));
-						}
-
-						skillQuality = value;
-					}
-				}
+				public uint SkillQuality { get; set; } //Level of skill
 
 			#endregion
 

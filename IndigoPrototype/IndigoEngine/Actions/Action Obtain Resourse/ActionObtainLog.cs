@@ -11,21 +11,30 @@ namespace IndigoEngine
     /// Action to Obtain Resourse
     /// </summary>
     [Serializable]
-    class ActionObtainResourse : Action
+    class ActionObtainLog : Action
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        Type resourseType;
+		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
+																		(
+																			new List<Type>()
+																			{
+																				typeof(AgentLivingIndigo),
+																			},
+																			new List<Type>()
+																			{
+																				typeof(AgentTree),
+																			},
+																			true,
+																			true
+																		);
+
         #region Constructors
 
-		public ActionObtainResourse(Agent argSubj, Agent argObj, Type resType)
-			: base(argSubj, argObj)
-        {
-            IsConflict = true;
-            AcceptedSubj.Add(typeof(AgentLivingIndigo));
-            AcceptedObj.Add(typeof(AgentTree));
-            resourseType = resType;
-        }
+			public ActionObtainLog(Agent argSubj, Agent argObj)
+				: base(argSubj, argObj)
+			{
+			}
 
         #endregion		
 		
@@ -39,7 +48,7 @@ namespace IndigoEngine
 				return false;
 			}
 
-            if (!Object.Inventory.ExistsAgentByType(resourseType))
+            if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemLog)))
 			{
                 return false;
 			}
@@ -56,27 +65,24 @@ namespace IndigoEngine
 
             Subject.CurrentActionFeedback = new ActionFeedback(() =>
             {
-                Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(resourseType));
+                Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog)));
             });
 
         }
 
         public override string ToString()
         {
-            return "Action: Obtain Resourse";
+            return "Action: Obtain fruit";
         }
 
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public int CompareTo(ActionBreakCamp argActionToCompare)
+		public override int CompareTo(Action argActionToCompare)
 		{
-			if (base.CompareTo(argActionToCompare) == 0)
+			if(Object == (argActionToCompare as ActionObtainLog).Object)
 			{
-				if(Object == argActionToCompare.Object)
-				{
-					return 0;
-				}
+				return 0;
 			}
 			return 1;
 		}

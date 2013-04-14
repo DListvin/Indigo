@@ -5,24 +5,34 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine
 {
     [Serializable]
 	class ActionGrowFruit : Action
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
+		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
+																		(
+																			new List<Type>()
+																			{
+																				typeof(AgentTree),
+																			},
+																			new List<Type>()
+																			{
+																			},
+																			false,
+																			false
+																		);
+
         #region Constructors
 
 			public ActionGrowFruit(Agent argSubj)
 			: base(argSubj, null)
 			{
-				IsConflict = false;
-				RequiresObject = false;
-				AcceptedSubj.Add(typeof(AgentTree));
 				Name = "To grow a fruit on a tree";
 
-				logger.Info("Created new {0}", this.GetType());
+				logger.Debug("Created new {0}", this.GetType());
 				logger.Trace("Created new {0}", this);
 			}
 
@@ -83,6 +93,11 @@ namespace IndigoEngine.Actions
 			}
 
 			return base.CharacteristicsOfSubject();
+		}
+
+		public override int CompareTo(Action argActionToCompare)
+		{
+			return 1; //Action isn't conflict
 		}
 
         public override string ToString()

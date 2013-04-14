@@ -13,17 +13,52 @@ namespace IndigoEngine
     [Serializable]
     public class ActionAttack : Action
     {
-		private static Logger logger = LogManager.GetCurrentClassLogger();
-		
+		private static Logger logger = LogManager.GetCurrentClassLogger();			
+
+		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
+																		(
+																			new List<Type>()
+																			{
+																				typeof(AgentLivingIndigo),
+																			},
+																			new List<Type>()
+																			{
+																				typeof(AgentLivingIndigo),
+																			},
+																			false,
+																			true
+																		);
+
+		static ActionAttack()
+		{
+			CurrentActionInfo = new InfoAboutAction
+												(
+													new List<Type>()
+													{
+														typeof(AgentLivingIndigo),
+													},
+													new List<Type>()
+													{
+														typeof(AgentLivingIndigo),
+													},
+													false,
+													true
+												);
+		}
+
 		#region Constructors
 
-		public ActionAttack(Agent argSubj, Agent argObj, int argHitPointsToTakeOff)
+		public ActionAttack(Agent argSubj, Agent argObj, params object[] argHitPointsToTakeOff)
 			: base(argSubj, argObj)
 			{
-				HitPointsToTakeOff = argHitPointsToTakeOff;
-				IsConflict = false;
-				AcceptedObj.Add(typeof(AgentLivingIndigo));
-				AcceptedSubj.Add(typeof(AgentLivingIndigo));
+				if(argHitPointsToTakeOff.Length == 0)
+				{
+					HitPointsToTakeOff = 1;
+				}
+				else
+				{
+					HitPointsToTakeOff = (int)argHitPointsToTakeOff[0];
+				}
 			}
 
 		#endregion
@@ -87,6 +122,11 @@ namespace IndigoEngine
 			}
 
 			return base.CharacteristicsOfSubject();
+		}
+
+		public override int CompareTo(Action argActionToCompare)
+		{
+			return 1; //Action isn't conflict
 		}
 
 		public override string ToString()

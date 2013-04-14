@@ -13,11 +13,12 @@ namespace IndigoEngine
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
 		#region Indigo needs
+
 			public static Need NeedAttack
 			{
 				get
 				{
-					return new Need("attack", 4, 1, new ActionAttack(null, null, 1));
+					return new Need("attack", 4, 1, typeof(ActionAttack));
 				}
 			}
 
@@ -25,9 +26,9 @@ namespace IndigoEngine
 			{
 				get
 				{
-                    List<Action> actions = new List<Action>();
-                    actions.Add(new ActionEat(null, null));
-                    actions.Add(new ActionObtainResourse(null, null, typeof(Agents.AgentItemFruit)));
+                    List<Type> actions = new List<Type>();
+                    actions.Add(typeof(ActionEat));
+                    actions.Add(typeof(ActionObtainFruit)); //(null, null, typeof(Agents.AgentItemFruit)));
 					return new Need("eat", 1, 2, actions);
 				}
 			}
@@ -36,7 +37,7 @@ namespace IndigoEngine
 			{
 				get
 				{
-					return new Need("drink", 1, 1, new ActionDrink(null, null));
+					return new Need("drink", 1, 1, typeof(ActionDrink));
 				}
 			}
 
@@ -44,23 +45,23 @@ namespace IndigoEngine
 			{
 				get
 				{
-					return new Need("log", 2, 2, new ActionObtainResourse(null, null, typeof(Agents.AgentItemLog)));
+					return new Need("log", 2, 2, typeof(ActionObtainLog));//(null, null, typeof(Agents.AgentItemLog)));
 				}
 			}
 
 			public static Need NeedCamp
 			{
-				get { return new Need("camp", 2, 1, new ActionBreakCamp(null, new System.Drawing.Point())); }
+				get { return new Need("camp", 2, 1, typeof(ActionBreakCamp));}
 			}
 
 			public static Need NeedRest
 			{
-				get { return new Need("rest", 2, 3, new ActionRest()); }
+				get { return new Need("rest", 2, 3, typeof(ActionRest)); }
 			}
 
 			public static Need NeedNothing
 			{
-				get { return new Need("nothing", 9, 1, new ActionDoNothing(null)); }
+				get { return new Need("nothing", 9, 1, typeof(ActionDoNothing)); }
 			}
 
 		#endregion
@@ -71,7 +72,7 @@ namespace IndigoEngine
 			{
 				get
 				{
-					return new Need("grow fruit", 1, 1, new ActionGrowFruit(null));
+					return new Need("grow fruit", 1, 1, typeof(ActionGrowFruit));
 				}
 			}
 

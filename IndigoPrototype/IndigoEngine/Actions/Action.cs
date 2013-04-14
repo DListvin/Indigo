@@ -16,7 +16,7 @@ namespace IndigoEngine
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		#region Static members	
+		#region Static methods	
 
 			/// <summary>
 			/// From direction gives increment to position
@@ -43,11 +43,6 @@ namespace IndigoEngine
         public Action()
             : base()
         {
-            AcceptedObj = new List<Type>();
-            AcceptedSubj = new List<Type>();
-
-			IsConflict = false;
-			RequiresObject = true;
         }
 
 		public Action(Agent argSubj, Agent argObj)
@@ -67,14 +62,6 @@ namespace IndigoEngine
 
                 public Agent Subject { get; set; } //Subject of the action
 
-                protected bool IsConflict { get; set; } //Info about if action is conflict: conflict actions can not be performed with one object from different subjects in one moment
-
-                public bool RequiresObject { get; set; } //Info about if action requaires object for it
-
-                public List<Type> AcceptedSubj { get; set; } //Meant to be set in descendant class(comment by Pasha) List of accepted subjects to this action
-
-                public List<Type> AcceptedObj { get; set; } //List of accepted objects to this action
-
                 public IWorldToAction World { get; set; }   //Home world of the action
 
             #endregion
@@ -87,14 +74,6 @@ namespace IndigoEngine
         /// </summary>
 		public virtual bool CheckForLegitimacy()
 		{
-            if (!AcceptedSubj.Contains(Subject.GetType()))
-            {
-                return false;
-            }
-            if ((Object!=null) && !AcceptedObj.Contains(Object.GetType()))
-            {
-                return false;
-            }
 			return true;
 		}
 
@@ -120,15 +99,7 @@ namespace IndigoEngine
 		/// <returns> 0 - actions are equal, 1 - actions are unequal</returns>
 		public virtual int CompareTo(Action argActionToCompare)
 		{
-			if(!IsConflict)
-			{
-				return 1;
-			}
-			if(this.GetType() != argActionToCompare.GetType())
-			{
-				return 1;
-			}
-			return 0;
+			return 1;
 		}
     }
 }

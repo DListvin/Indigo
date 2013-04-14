@@ -15,14 +15,25 @@ namespace IndigoEngine
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
+		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
+																		(
+																			new List<Type>()
+																			{
+																				typeof(AgentLivingIndigo),
+																			},
+																			new List<Type>()
+																			{
+																				typeof(AgentPuddle),
+																			},
+																			true,
+																			true
+																		);
+
         #region Constructors
 
 		public ActionDrink(Agent argSubj, Agent argObj)
 			: base(argSubj, argObj)
         {
-            IsConflict = true;
-            AcceptedSubj.Add(typeof(AgentLivingIndigo));
-            AcceptedObj.Add(typeof(AgentPuddle));
         }
 
         #endregion
@@ -65,14 +76,11 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public int CompareTo(ActionBreakCamp argActionToCompare)
+		public override int CompareTo(Action argActionToCompare)
 		{
-			if (base.CompareTo(argActionToCompare) == 0)
+			if(Object == (argActionToCompare as ActionDrink).Object)
 			{
-				if(Object == argActionToCompare.Object)
-				{
-					return 0;
-				}
+				return 0;
 			}
 			return 1;
 		}

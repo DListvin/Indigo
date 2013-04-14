@@ -148,7 +148,7 @@ namespace IndigoEngine
 
 		#endregion
 
-		#region World management
+		#region World management		
 
 			/// <summary>
 			/// Here is the main loop
@@ -159,6 +159,31 @@ namespace IndigoEngine
 
 				Actions.Clear();
 
+<<<<<<< HEAD
+            /*//Terrific test init (for hard and cruel test)
+            for (int i = 0; i < 3; ++i)
+            {
+                currentAddingAgent = new AgentLivingIndigo();
+                currentAddingAgent.Name = string.Format("Indigo{0}",i);
+                currentAddingAgent.Location = new Point((i+1)*10, (i+1)*10);
+                currentAddingAgent.CurrentState.Health.MaxValue = 100;
+                currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
+                (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+                currentAddingAgent.Inventory.StorageSize = 3;
+                AddAgent(currentAddingAgent);	
+            }*/
+
+
+            //Basic test init
+			currentAddingAgent = new AgentLivingIndigo();
+			currentAddingAgent.Name = "Indigo1";
+            currentAddingAgent.CurrentLocation = new Location(10, 10);
+            currentAddingAgent.CurrentState.Health.MaxValue = 100;
+            currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
+            (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+            currentAddingAgent.Inventory.StorageSize = 3;
+            AddAgent(currentAddingAgent);			
+=======
 				foreach (Agent agent in Agents)
 				{
 					agent.Decide();
@@ -198,7 +223,7 @@ namespace IndigoEngine
 				//GenerateForest(new Point(-10, -10), new Size(10, 10), 0.50);
 
 				/*//Terrific test init (for hard and cruel test)
-            for (int i = 0; i < 3; ++i)
+				for (int i = 0; i < 10000; ++i)
 				{
 					currentAddingAgent = new AgentLivingIndigo();
 					currentAddingAgent.Name = string.Format("Indigo{0}",i);
@@ -210,8 +235,7 @@ namespace IndigoEngine
 					AddAgent(currentAddingAgent);	
 				}*/
 
-
-            //Basic test init
+				//Humble test init
 				currentAddingAgent = new AgentLivingIndigo();
 				currentAddingAgent.Name = "Indigo1";
 				currentAddingAgent.CurrentLocation = new Location(10, 10);
@@ -220,6 +244,7 @@ namespace IndigoEngine
 				(currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
 				currentAddingAgent.Inventory.StorageSize = 3;
 				AddAgent(currentAddingAgent);			
+>>>>>>> Рефакторинг: класс World разделен на логические блоки
 			
 				currentAddingAgent = new AgentLivingIndigo();
 				currentAddingAgent.Name = "Indigo2";
@@ -342,10 +367,6 @@ namespace IndigoEngine
 				{
 					if(Actions.Any(act => 
 					{
-						if(action.GetType() != act.GetType())
-						{
-							return false;
-						}
 						if(action.CompareTo(act) == 0)
 						{
 							return true;

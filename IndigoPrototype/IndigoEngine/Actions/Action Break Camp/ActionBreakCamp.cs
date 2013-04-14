@@ -14,18 +14,34 @@ namespace IndigoEngine
     [Serializable]
     public class ActionBreakCamp : Action
     {
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static Logger logger = LogManager.GetCurrentClassLogger();	
+
+		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
+																		(
+																			new List<Type>()
+																			{
+																				typeof(AgentLivingIndigo),
+																			},
+																			new List<Type>()
+																			{
+																			},
+																			true,
+																			false
+																		);
 
         #region Constructors
 
-			public ActionBreakCamp(Agent argSubj, Point dir)
+			public ActionBreakCamp(Agent argSubj, params object[] argDir)
 			: base(argSubj, null)
 			{
-                Direction = Normilize(dir, new Point(0, 0));
-				IsConflict = true;
-				RequiresObject = false;
-				AcceptedObj.Add(typeof(AgentLivingIndigo));
-				AcceptedSubj.Add(typeof(AgentCamp));
+				if(argDir.Length == 0)
+				{
+					Direction = new Point();
+				}
+				else
+				{
+					Direction = Normilize((Point)argDir[0], new Point(0, 0));
+				}
 				Name = "To Break a Camp";
 			}
 
@@ -79,14 +95,11 @@ namespace IndigoEngine
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
-		public int CompareTo(ActionBreakCamp argActionToCompare)
+		public override int CompareTo(Action argActionToCompare)
 		{
-			if (base.CompareTo(argActionToCompare) == 0)
+			if(Direction == (argActionToCompare as ActionBreakCamp).Direction)
 			{
-				if(Direction == argActionToCompare.Direction)
-				{
-					return 0;
-				}
+				return 0;
 			}
 			return 1;
 		}
