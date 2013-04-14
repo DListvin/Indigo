@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IndigoEngine.Actions;
 
 namespace IndigoEngine.Agents
 {
@@ -18,13 +19,13 @@ namespace IndigoEngine.Agents
 		List<NameableObject> CurrentView { get;	set; }
 
 		/// <summary>
-		/// List of all actions, that current agent can see
-		/// </summary>
-		List<NameableObject> CurrentViewActions { get; }
-
-		/// <summary>
 		/// List of all agents, that current agent can see
 		/// </summary>
-		List<NameableObject> CurrentViewAgents {	get; }
+		List<Agent> CurrentViewAgents {	get; }
+
+		/// <summary>
+		/// List of all actions, that current agent can see
+		/// </summary>
+		List<ActionAbstract> CurrentViewActions { get; }
 	}
 }

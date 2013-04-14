@@ -16,72 +16,72 @@ namespace IndigoEngine.Agents
 
         #region Constructors
 
-        public Location()
-        {
-            TargetSorage = null;
-            Coords = new Point(0, 0);
+			public Location()
+			{
+				TargetSorage = null;
+				Coords = new Point(0, 0);
 
-            logger.Info("Created new {0}", this.GetType());
-            logger.Trace("Created new {0}", this);
-        }
+				logger.Info("Created new {0}", this.GetType());
+				logger.Trace("Created new {0}", this);
+			}
 
-        public Location(int argX, int argY)
-            : base()
-        {
-            Coords = new Point(argX, argY);
-        }
+			public Location(int argX, int argY)
+				: base()
+			{
+				Coords = new Point(argX, argY);
+			}
 
-        public Location(ITypicalItemStorage argTargetSorage)
-            : base()
-        {
-            TargetSorage = argTargetSorage;
-        }
+			public Location(ITypicalItemStorage argTargetSorage)
+				: base()
+			{
+				TargetSorage = argTargetSorage;
+			}
 
         #endregion
 
         #region Properties
 
-        public Agent Owner
-        {
-            get
-            {
-                if (HasOwner)
-                {
-                    return TargetSorage.Owner;
-                }
-                return null;
-            }
-        }
+			public Agent Owner
+			{
+				get
+				{
+					if (HasOwner)
+					{
+						return TargetSorage.Owner;
+					}
+					return null;
+				}
+			}
 
-        public ITypicalItemStorage TargetSorage { get; set; } //Item storage of the current object(shows, if the object is in some ItemStorage)
+			public ITypicalItemStorage TargetSorage { get; set; } //Item storage of the current object(shows, if the object is in some ItemStorage)
 
-        public Point Coords
-        {
-            get
-            {
-                if (HasOwner)
-                {
-                    return Owner.CurrentLocation.Coords;
-                }
-                return coords;
-            }
-            set
-            {
-                coords = value;
-            }
-        }
+			public Point Coords
+			{
+				get
+				{
+					if (HasOwner)
+					{
+						return Owner.CurrentLocation.Coords;
+					}
+					return coords;
+				}
+				set
+				{
+					coords = value;
+				}
+			}
 
-        public bool HasOwner
-        {
-            get
-            {
-                if (TargetSorage == null)
-                {
-                    return false;
-                }
-                return true;
-            }
-        }
+			public bool HasOwner
+			{
+				get
+				{
+					if (TargetSorage == null)
+					{
+						return false;
+					}
+					return true;
+				}
+			}
 
         #endregion
 

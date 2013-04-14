@@ -22,7 +22,7 @@ namespace IndigoEngine.Agents
 				#region Adding skills
 
 					SkillsList.Add(Skills.Woodcutting);
-					//SkillsList.Add(Skills.Gathering);
+					SkillsList.Add(Skills.Gathering);
 					SkillsList.Add(Skills.Communicationing);
 
 				#endregion

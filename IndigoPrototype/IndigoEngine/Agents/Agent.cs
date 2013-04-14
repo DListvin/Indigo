@@ -141,7 +141,7 @@ namespace IndigoEngine.Agents
                 return Needs.NeedNothing;
             allNeed.Sort(new Comparison<Need>(Need.Comparing));
 
-			logger.Debug("Estimated main need for {0}", this.Name);
+			logger.Debug("Estimated main need for {0} it is {1}", this.Name, allNeed[0].Name);
 
             return allNeed[0];
 
@@ -155,36 +155,18 @@ namespace IndigoEngine.Agents
         {
             CurrentActionFeedback = null;
             bool worldResponseToAction = false;	//World response if the action is accepted.
+			ActionAbstract newAction;           //New action to create
             if (argNeed.SatisfyingActions.Count == 0)
                 throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
 
             foreach (Type act in argNeed.SatisfyingActions)
             {
 				System.Reflection.FieldInfo field = act.GetField("CurrentActionInfo", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-				InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;
-				
+				InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;				
 
                 if (currentInfo.RequiresObject)
                 {
-                    foreach (Agent ag in Inventory.ItemList)
-                    {
-                        if (!currentInfo.AcceptedObjects.Contains(ag.GetType()))
-                        {
-                            continue;
-                        }
-						ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
-                        worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
-                        if (worldResponseToAction)
-                        {
-                            break;
-                        }
-                    }
-                    if (worldResponseToAction)
-                    {
-                        break;
-                    }
-
-                    foreach (Agent ag in CurrentVision.CurrentViewAgents)
+                    foreach (Agent ag in Inventory.ItemList.Concat(CurrentVision.CurrentViewAgents))
                     {
                         if (!currentInfo.AcceptedObjects.Contains(ag.GetType()))
                         {
@@ -192,25 +174,24 @@ namespace IndigoEngine.Agents
                         }
                         if (Distance(this, ag) > Math.Sqrt(2))
                         {
-							ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(typeof(ActionGo), this, null, ag.CurrentLocation.Coords);
+							newAction = ActionsManager.GetThisActionForCurrentParticipants(typeof(ActionGo), ActionGo.CurrentActionInfo, this, null, ag.CurrentLocation.Coords);
 							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                             if (worldResponseToAction)
+							{
                                 break;
+							}
                         }
-                        else
+						newAction = ActionsManager.GetThisActionForCurrentParticipants(act, currentInfo, this, ag);
+                        worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
+                        if (worldResponseToAction)
                         {
-							ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, ag);
-							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
-                            if (worldResponseToAction)
-                            {
-                                break;
-                            }
+                            break;
                         }
                     }
                 }
                 else
                 {
-					ActionAbstract newAction = ActionsManager.GetThisActionForCurrentParticipants(act, this, null);
+					newAction = ActionsManager.GetThisActionForCurrentParticipants(act, currentInfo, this, null);
 					worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                 }
 

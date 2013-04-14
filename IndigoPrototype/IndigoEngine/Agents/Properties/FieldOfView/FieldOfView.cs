@@ -31,22 +31,32 @@ namespace IndigoEngine.Agents
         /// <summary>
         /// ITypicalFieldOfView
         /// </summary>
-        public List<NameableObject> CurrentViewAgents
+        public List<Agent> CurrentViewAgents
         {
             get
             {
-                return CurrentView.Where(val => { return val is Agent; }).ToList();
+				List<Agent> result = new List<Agent>();
+				foreach(Agent ag in CurrentView.Where(val => { return val is Agent; }))
+				{
+					result.Add(ag);
+				}
+                return result;
             }
         }
 
         /// <summary>
         /// ITypicalFieldOfView
         /// </summary>
-        public List<NameableObject> CurrentViewActions
+        public List<ActionAbstract> CurrentViewActions
         {
             get
             {
-                return CurrentView.Where(val => { return val is ActionAbstract; }).ToList();
+				List<ActionAbstract> result = new List<ActionAbstract>();
+				foreach(ActionAbstract act in CurrentView.Where(val => { return val is ActionAbstract; }))
+				{
+					result.Add(act);
+				}
+                return result;
             }
         }
 

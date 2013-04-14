@@ -109,7 +109,7 @@ namespace IndigoEngine.Actions
 
 		#endregion
 		
-		//Dictionary for different witout objects actions realisations for different participants
+		//Dictionary for different actions witout objects realisations for different participants
 		#region Dictionary itself. Dangerous! Do not open! 
 		private static Dictionary<Type, Dictionary<Type, Func<Agent, object[], ActionAbstract>>> UnaryActionsDataBase = new Dictionary<Type, Dictionary<Type, Func<Agent, object[], ActionAbstract>>>()
 		{
@@ -180,7 +180,16 @@ namespace IndigoEngine.Actions
 		};	
 		#endregion
 
-		public static ActionAbstract GetThisActionForCurrentParticipants(Type argActionType, Agent argSubject, Agent argObject, params object[] argParams)
+		/// <summary>
+		/// Getting the action object for current participants and action type
+		/// </summary>
+		/// <param name="argActionType">Action type</param>
+		/// <param name="argCurrentInfo">Action info (need for optimisation)</param>
+		/// <param name="argSubject">Subject</param>
+		/// <param name="argObject">Object</param>
+		/// <param name="argParams">Action params</param>
+		/// <returns>Action object</returns>
+		public static ActionAbstract GetThisActionForCurrentParticipants(Type argActionType, InfoAboutAction argCurrentInfo, Agent argSubject, Agent argObject, params object[] argParams)
 		{
 			logger.Trace("Getting action for action type {0}, subject: {1}, object: {2}", argActionType, argSubject.Name, argObject != null ? argObject.Name : "none");
 
@@ -189,12 +198,9 @@ namespace IndigoEngine.Actions
 				logger.Error("Trying to get action for none-action type: {0}!", argActionType);
 				return null;
 			}
-
-			System.Reflection.FieldInfo field = argActionType.GetField("CurrentActionInfo", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-			InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;  //Info about current action type
 			
-			ActionAbstract result; //Action to return
-			if(currentInfo.RequiresObject)
+			ActionAbstract result = null; //Action to return
+			if(argCurrentInfo.RequiresObject)
 			{
 				Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>> subjectTypeDictionary; //supportive vars
 				Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>> objectTypeDictionary; //supportive vars
@@ -203,8 +209,8 @@ namespace IndigoEngine.Actions
 				BinaryActionsDataBase.TryGetValue(argActionType, out subjectTypeDictionary);
 				subjectTypeDictionary.TryGetValue(argSubject.GetType(), out objectTypeDictionary);
 				objectTypeDictionary.TryGetValue(argObject.GetType(), out actionFunc);
-
-				result = actionFunc(argSubject, argObject, argParams);
+				
+				result = actionFunc(argSubject, argObject, argParams);			
 			}
 			else
 			{
@@ -214,7 +220,7 @@ namespace IndigoEngine.Actions
 				UnaryActionsDataBase.TryGetValue(argActionType, out subjectTypeDictionary);
 				subjectTypeDictionary.TryGetValue(argSubject.GetType(), out actionFunc);
 
-				result = actionFunc(argSubject, argParams);				
+				result = actionFunc(argSubject, argParams);							
 			}
 
 			logger.Debug("Get action for {0}", argActionType);
