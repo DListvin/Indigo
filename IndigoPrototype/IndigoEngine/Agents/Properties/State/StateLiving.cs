@@ -26,7 +26,7 @@ namespace IndigoEngine.Agents
 				Stamina.Name = "Stamina";
 
 				Intellegence = new Characteristic();
-				Intellegence.Name = "Intelegence";
+				Intellegence.Name = "Intellegence";
 
 				Hunger = new Characteristic();
 				Hunger.Name = "Hunger";
