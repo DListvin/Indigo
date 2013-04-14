@@ -16,80 +16,80 @@ namespace IndigoEngine.Agents
 
         #region Constructors
 
-        public StateLiving()
-            : base()
-        {
-            Strenght = new Characteristic();
-            Strenght.Name = "Strenght";
+			public StateLiving()
+				: base()
+			{
+				Strenght = new Characteristic();
+				Strenght.Name = "Strenght";
 
-            Stamina = new Characteristic();
-            Stamina.Name = "Stamina";
+				Stamina = new Characteristic();
+				Stamina.Name = "Stamina";
 
-            Intelegence = new Characteristic();
-            Intelegence.Name = "Intelegence";
+				Intellegence = new Characteristic();
+				Intellegence.Name = "Intelegence";
 
-            Hunger = new Characteristic();
-            Hunger.Name = "Hunger";
+				Hunger = new Characteristic();
+				Hunger.Name = "Hunger";
 
-            Thirst = new Characteristic();
-            Thirst.Name = "Thirst";
+				Thirst = new Characteristic();
+				Thirst.Name = "Thirst";
 
-            Aggressiveness = new Characteristic();
-            Aggressiveness.Name = "Aggressiveness";
-            Aggressiveness.CriticalPercentValue = 60;
-            Aggressiveness.CurrentUnitValue = 0;
-        }
+				Aggressiveness = new Characteristic();
+				Aggressiveness.Name = "Aggressiveness";
+				Aggressiveness.CriticalPercentValue = 60;
+				Aggressiveness.CurrentUnitValue = 0;
+			}
 
         #endregion
 
         #region Properties
 
-        public Characteristic Strenght { get; set; }
+			public Characteristic Strenght { get; set; }
 
-        public Characteristic Stamina { get; set; }
+			public Characteristic Stamina { get; set; }
 
-        public Characteristic Intelegence { get; set; }
+			public Characteristic Intellegence { get; set; }
 
-        public Characteristic Hunger { get; set; }
+			public Characteristic Hunger { get; set; }
 
-        public Characteristic Thirst { get; set; }
+			public Characteristic Thirst { get; set; }
 
-        public Characteristic Aggressiveness { get; set; }
+			public Characteristic Aggressiveness { get; set; }
 
         #endregion
 
         #region Static methods
 
-        public static StateLiving operator +(StateLiving argState1, StateLiving argState2)
-        {
-            StateLiving result = new StateLiving();
+			public static StateLiving operator +(StateLiving argState1, StateLiving argState2)
+			{
+				StateLiving result = new StateLiving();
 
 
-            result.Health = argState1.Health + argState2.Health;
-            result.Strenght = argState1.Strenght + argState2.Strenght;
-            result.Stamina = argState1.Stamina + argState2.Stamina;
-            result.Intelegence = argState1.Intelegence + argState2.Intelegence;
-            result.Hunger = argState1.Hunger + argState2.Hunger;
-            result.Thirst = argState1.Thirst + argState2.Thirst;
-            result.Aggressiveness = argState1.Aggressiveness + argState2.Aggressiveness;
+				result.Health = argState1.Health + argState2.Health;
+				result.Strenght = argState1.Strenght + argState2.Strenght;
+				result.Stamina = argState1.Stamina + argState2.Stamina;
+				result.Intellegence = argState1.Intellegence + argState2.Intellegence;
+				result.Hunger = argState1.Hunger + argState2.Hunger;
+				result.Thirst = argState1.Thirst + argState2.Thirst;
+				result.Aggressiveness = argState1.Aggressiveness + argState2.Aggressiveness;
 
-            return result;
-        }
+				return result;
+			}
 
-        public static StateLiving operator -(StateLiving argState1, StateLiving argState2)
-        {
-            StateLiving result = new StateLiving();
+			public static StateLiving operator -(StateLiving argState1, StateLiving argState2)
+			{
+				StateLiving result = new StateLiving();
 
-            result.Health = argState1.Health - argState2.Health;
-            result.Strenght = argState1.Strenght - argState2.Strenght;
-            result.Stamina = argState1.Stamina - argState2.Stamina;
-            result.Intelegence = argState1.Intelegence - argState2.Intelegence;
-            result.Hunger = argState1.Hunger - argState2.Hunger;
-            result.Thirst = argState1.Thirst - argState2.Thirst;
-            result.Aggressiveness = argState1.Aggressiveness - argState2.Aggressiveness;
+				result.Health = argState1.Health - argState2.Health;
+				result.Strenght = argState1.Strenght - argState2.Strenght;
+				result.Stamina = argState1.Stamina - argState2.Stamina;
+				result.Intellegence = argState1.Intellegence - argState2.Intellegence;
+				result.Hunger = argState1.Hunger - argState2.Hunger;
+				result.Thirst = argState1.Thirst - argState2.Thirst;
+				result.Aggressiveness = argState1.Aggressiveness - argState2.Aggressiveness;
 
-            return result;
-        }
+				return result;
+			}
 
         #endregion
 
