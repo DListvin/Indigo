@@ -7,6 +7,7 @@ using NLog;
 
 namespace IndigoEngine.Agents
 {
+    [Serializable]
 	public class Location
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
