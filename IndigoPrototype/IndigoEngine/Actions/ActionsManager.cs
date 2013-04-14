@@ -8,6 +8,9 @@ using NLog;
 
 namespace IndigoEngine.Actions
 {
+	/// <summary>
+	/// Class for converting action type to current action
+	/// </summary>
 	public static class ActionsManager
 	{		
 		private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -188,7 +191,7 @@ namespace IndigoEngine.Actions
 			}
 
 			System.Reflection.FieldInfo field = argActionType.GetField("CurrentActionInfo", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-			InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;
+			InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;  //Info about current action type
 			
 			ActionAbstract result; //Action to return
 			if(currentInfo.RequiresObject)
@@ -213,6 +216,8 @@ namespace IndigoEngine.Actions
 
 				result = actionFunc(argSubject, argParams);				
 			}
+
+			logger.Debug("Get action for {0}", argActionType);
 
 			return result;
 		}

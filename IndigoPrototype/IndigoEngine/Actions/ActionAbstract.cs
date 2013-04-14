@@ -36,6 +36,12 @@ namespace IndigoEngine.Actions
 				return new Point((dir.X < 0) ? -1 : 1, (dir.Y < 0) ? -1 : 1);
 			}
 
+			/// <summary>
+			/// Checking current subject for containing skills for current action
+			/// </summary>
+			/// <param name="argAgentToCheck">Agent from wich to take skills</param>
+			/// <param name="argListForChecking">List to check</param>
+			/// <returns>True agent have required skills, false - vice versa</returns>
 			protected static bool CheckForSkills(Agent argAgentToCheck, List<Skill> argListForChecking)
 			{
 				foreach(Skill sk in argListForChecking)
