@@ -154,7 +154,7 @@ namespace IndigoEngine.Agents
         protected virtual void MakeAction(Need argNeed)
         {
             CurrentActionFeedback = null;
-            bool worldResponseToAction = false;	//World response if the action is accepted
+            bool worldResponseToAction = false;	//World response if the action is accepted.
             if (argNeed.SatisfyingActions.Count == 0)
                 throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
 
