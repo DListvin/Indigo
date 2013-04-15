@@ -16,57 +16,57 @@ namespace IndigoEngine.Agents
 
         #region Constructors
 
-        public State()
-        {
-            Health = new Characteristic();
-            Health.Name = "Health";
-        }
+			public State()
+			{
+				Health = new Characteristic();
+				Health.Name = "Health";
+			}
 
         #endregion
 
         #region Properties
 
-        public Characteristic Health { get; set; } //Agent health
+			public Characteristic Health { get; set; } //Agent health
 
-        protected int NumberOfCharacteristicsInState //Number of characteristics in the state
-        {
-            get
-            {
-                int result = 0; //result of the function
+			protected int NumberOfCharacteristicsInState //Number of characteristics in the state
+			{
+				get
+				{
+					int result = 0; //result of the function
 
-                foreach (System.Reflection.PropertyInfo info in (typeof(State)).GetProperties())
-                {
-                    if (info.PropertyType == typeof(Characteristic))
-                    {
-                        ++result;
-                    }
-                }
+					foreach (System.Reflection.PropertyInfo info in (typeof(State)).GetProperties())
+					{
+						if (info.PropertyType == typeof(Characteristic))
+						{
+							++result;
+						}
+					}
 
-                return result;
-            }
-        }
+					return result;
+				}
+			}
 
         #endregion
 
         #region Static methods
 
-        public static State operator +(State argState1, State argState2)
-        {
-            State result = new State();
+			public static State operator +(State argState1, State argState2)
+			{
+				State result = new State();
 
-            result.Health = argState1.Health + argState2.Health;
+				result.Health = argState1.Health + argState2.Health;
 
-            return result;
-        }
+				return result;
+			}
 
-        public static State operator -(State argState1, State argState2)
-        {
-            State result = new State();
+			public static State operator -(State argState1, State argState2)
+			{
+				State result = new State();
 
-            result.Health = argState1.Health - argState2.Health;
+				result.Health = argState1.Health - argState2.Health;
 
-            return result;
-        }
+				return result;
+			}
 
         #endregion
 

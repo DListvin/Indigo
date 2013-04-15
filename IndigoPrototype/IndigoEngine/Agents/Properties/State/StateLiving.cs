@@ -25,8 +25,8 @@ namespace IndigoEngine.Agents
 				Stamina = new Characteristic();
 				Stamina.Name = "Stamina";
 
-				Intellegence = new Characteristic();
-				Intellegence.Name = "Intellegence";
+				Intelligence = new Characteristic();
+				Intelligence.Name = "Intelligence";
 
 				Hunger = new Characteristic();
 				Hunger.Name = "Hunger";
@@ -48,7 +48,7 @@ namespace IndigoEngine.Agents
 
 			public Characteristic Stamina { get; set; }
 
-			public Characteristic Intellegence { get; set; }
+			public Characteristic Intelligence { get; set; }
 
 			public Characteristic Hunger { get; set; }
 
@@ -68,7 +68,7 @@ namespace IndigoEngine.Agents
 				result.Health = argState1.Health + argState2.Health;
 				result.Strenght = argState1.Strenght + argState2.Strenght;
 				result.Stamina = argState1.Stamina + argState2.Stamina;
-				result.Intellegence = argState1.Intellegence + argState2.Intellegence;
+				result.Intelligence = argState1.Intelligence + argState2.Intelligence;
 				result.Hunger = argState1.Hunger + argState2.Hunger;
 				result.Thirst = argState1.Thirst + argState2.Thirst;
 				result.Aggressiveness = argState1.Aggressiveness + argState2.Aggressiveness;
@@ -83,7 +83,7 @@ namespace IndigoEngine.Agents
 				result.Health = argState1.Health - argState2.Health;
 				result.Strenght = argState1.Strenght - argState2.Strenght;
 				result.Stamina = argState1.Stamina - argState2.Stamina;
-				result.Intellegence = argState1.Intellegence - argState2.Intellegence;
+				result.Intelligence = argState1.Intelligence - argState2.Intelligence;
 				result.Hunger = argState1.Hunger - argState2.Hunger;
 				result.Thirst = argState1.Thirst - argState2.Thirst;
 				result.Aggressiveness = argState1.Aggressiveness - argState2.Aggressiveness;
