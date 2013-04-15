@@ -16,9 +16,11 @@ namespace IndigoEngine.Actions
 																		(
 																			new List<Type>()
 																			{
+																				typeof(AgentLivingIndigo),
 																			},
 																			new List<Type>()
 																			{
+																				typeof(AgentCamp),
 																			},
 																			new List<Skill>()
 																			{
@@ -29,8 +31,8 @@ namespace IndigoEngine.Actions
 
         #region Constructors
 
-			public ActionRest()
-				: base(null, null)
+			public ActionRest(Agent argSubj, Agent argObj)
+				: base(argSubj, argObj)
 			{
 			}
 
@@ -50,6 +52,32 @@ namespace IndigoEngine.Actions
 				return false;
 			}
 			return true;
+		}
+
+		public override void Perform()
+		{
+			base.Perform();
+           
+		    Object.CurrentActionFeedback += new ActionFeedback(() => 
+			{
+				Object.CurrentState.Health.CurrentUnitValue--; 
+			});
+
+            Subject.CurrentActionFeedback += new ActionFeedback(() => 
+			{
+				(Subject as AgentLivingIndigo).CurrentState.Stamina.CurrentUnitValue += 2;
+				(Subject as AgentLivingIndigo).CurrentState.Strenght.CurrentUnitValue += 2;
+				(Subject as AgentLivingIndigo).CurrentState.Health.CurrentUnitValue++;
+			});
+		}
+
+		public override int CompareTo(ActionAbstract argActionToCompare)
+		{
+			if(Object == (argActionToCompare as ActionRest).Object)
+			{
+				return 0;
+			}
+			return 1;
 		}
 
     }

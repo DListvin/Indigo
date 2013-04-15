@@ -28,7 +28,7 @@ namespace IndigoEngine
 				{
                     List<Type> actions = new List<Type>();
                     actions.Add(typeof(ActionEat));
-                    actions.Add(typeof(ActionObtainFruit)); //(null, null, typeof(Agents.AgentItemFruit)));
+                    actions.Add(typeof(ActionObtainFruit)); 
 					return new Need("eat", 1, 2, actions);
 				}
 			}
@@ -41,27 +41,24 @@ namespace IndigoEngine
 				}
 			}
 
-			public static Need NeedLog
-			{
-				get
-				{
-					return new Need("log", 2, 2, typeof(ActionObtainLog));//(null, null, typeof(Agents.AgentItemLog)));
-				}
-			}
-
-			public static Need NeedCamp
-			{
-				get { return new Need("camp", 2, 1, typeof(ActionBreakCamp));}
-			}
-
 			public static Need NeedRest
 			{
-				get { return new Need("rest", 2, 3, typeof(ActionRest)); }
+				get 
+				{
+                    List<Type> actions = new List<Type>();
+					actions.Add(typeof(ActionRest));
+                    actions.Add(typeof(ActionBreakCamp));
+                    actions.Add(typeof(ActionObtainLog)); 
+					return new Need("camp", 2, 1, actions);
+				}
 			}
 
 			public static Need NeedNothing
 			{
-				get { return new Need("nothing", 9, 1, typeof(ActionDoNothing)); }
+				get 
+				{
+					return new Need("nothing", 9, 1, typeof(ActionDoNothing)); 
+				}
 			}
 
 		#endregion

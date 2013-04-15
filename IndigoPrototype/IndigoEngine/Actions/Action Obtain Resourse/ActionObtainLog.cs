@@ -24,6 +24,7 @@ namespace IndigoEngine.Actions
 																			new List<Type>()
 																			{
 																				typeof(AgentTree),
+																				typeof(AgentItemLog),
 																			},
 																			new List<Skill>()
 																			{
@@ -57,9 +58,19 @@ namespace IndigoEngine.Actions
 				return false;
 			}
 
-            if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemLog)))
+			if(Object is AgentTree)
 			{
-                return false;
+				if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemLog)))
+				{
+					return false;
+				}
+			}
+			if(Object is AgentItemLog)
+			{
+				if(Object.CurrentLocation.HasOwner)
+				{
+					return false;
+				}
 			}
 
 			return true;
@@ -70,13 +81,20 @@ namespace IndigoEngine.Actions
         /// </summary>
         public override void Perform()
         {
-            base.Perform();
+            base.Perform();			
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() =>
-            {
-                Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog)));
-            });
+			if(Object is AgentTree)
+			{
+				Subject.CurrentActionFeedback += new ActionFeedback(() =>
+				{
+					Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog)));
+				});
+			}	
 
+			if(Object is AgentItemLog)
+			{
+				Subject.Inventory.AddAgentToStorage(Object);
+			}
         }
 
         public override string ToString()

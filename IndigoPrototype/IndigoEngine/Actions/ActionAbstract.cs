@@ -107,6 +107,13 @@ namespace IndigoEngine.Actions
         /// </summary>
         public virtual void Perform()
         {
+			if(Object != null)
+			{
+				Object.CurrentActionFeedback += new ActionFeedback( () => 
+				{
+					Object.CurrentMemory.StoreAction(Subject, this); 
+				});
+			}
         }
 
         /// <summary>

@@ -79,7 +79,7 @@ namespace IndigoEngine.Actions
         {
             base.Perform();
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() =>
+            Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
 				Subject.CurrentLocation = new Location(Subject.CurrentLocation.Coords.X + Direction.X, 
 				                             Subject.CurrentLocation.Coords.Y + Direction.Y); 

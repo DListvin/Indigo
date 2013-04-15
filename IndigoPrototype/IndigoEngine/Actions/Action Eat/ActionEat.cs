@@ -65,12 +65,12 @@ namespace IndigoEngine.Actions
         {
             base.Perform();
 
-            Object.CurrentActionFeedback = new ActionFeedback(() =>
+            Object.CurrentActionFeedback += new ActionFeedback(() =>
             {
                 Object.CommitSuicide();
             });
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() =>
+            Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
                 (Subject as AgentLiving).CurrentState.Hunger.CurrentPercentValue = 100;
             });

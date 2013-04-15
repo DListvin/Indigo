@@ -64,12 +64,13 @@ namespace IndigoEngine.Actions
         public override void Perform()
         {
             base.Perform();
-            Object.CurrentActionFeedback = new ActionFeedback(() =>
+
+            Object.CurrentActionFeedback += new ActionFeedback(() =>
             {
                 Object.CurrentState.Health.CurrentUnitValue--;
             });
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() =>
+            Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
                 (Subject as AgentLiving).CurrentState.Thirst.CurrentPercentValue = 100;
             });

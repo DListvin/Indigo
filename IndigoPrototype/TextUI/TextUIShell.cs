@@ -302,11 +302,11 @@ namespace TextUI
                 var agentName = args[1] as string;
                 
                 Console.WriteLine(
-					((AgentLiving)(Model.Agents.First(ag => 
+					(Model.Agents.First(ag => 
 					{
 						return ag.Name == agentName;
 					}
-				))).CurrentMemory.ToString());        
+				)).CurrentMemory.ToString());        
             }));
 
             listOfCommands.Add(new Command("save", "Saving complete model to defined file in \"saves\" folder (ex: -save [<filename.dat>]) or to DefaultSave.dat by default", args =>

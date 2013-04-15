@@ -26,7 +26,7 @@ namespace IndigoEngine.Agents
 
         #region Properties
 
-        public Dictionary<Agent, List<StoredInformation>> StoredAgents { get; set; } //Dictionary with memories about other agents: <reference to the agent(id), info about agent>.
+			public Dictionary<Agent, List<StoredInformation>> StoredAgents { get; set; } //Dictionary with memories about other agents: <reference to the agent(id), info about agent>.
 
         #endregion
 
@@ -125,7 +125,7 @@ namespace IndigoEngine.Agents
 
                 foreach (KeyValuePair<Agent, List<StoredInformation>> storedAgent in StoredAgents)
                 {
-                    result += storedAgent.Key.ToString() + " is " + "\n";
+                    result += storedAgent.Key.Name + " is " + "\n";
                     foreach (StoredInformation st in storedAgent.Value)
                     {
                         result += st.ToString();

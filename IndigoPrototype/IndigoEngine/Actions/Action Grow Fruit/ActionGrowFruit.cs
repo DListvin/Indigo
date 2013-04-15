@@ -71,18 +71,22 @@ namespace IndigoEngine.Actions
         {
             base.Perform();
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() =>
+            Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
 				//Realisation for tree
 				if(Subject is AgentTree)
 				{
 					Agent newAgentToAdd = new AgentItemFruit();
 					newAgentToAdd.Name = "Fruit " + Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemFruit)) + " from " + Subject.Name;
+					Subject.Inventory.AddAgentToStorage(newAgentToAdd);
 
 					if(World.AskWorldForAddition(this, newAgentToAdd))
 					{
-						Subject.Inventory.AddAgentToStorage(newAgentToAdd);
 						(Subject as AgentTree).CurrentState.Prolificacy.CurrentPercentValue = 100; 
+					}
+					else
+					{
+						Subject.Inventory.GetAgentFromStorage(newAgentToAdd);
 					}
 				}
             });

@@ -24,6 +24,7 @@ namespace IndigoEngine.Actions
 																			new List<Type>()
 																			{
 																				typeof(AgentTree),
+																				typeof(AgentItemFruit)
 																			},
 																			new List<Skill>()
 																			{
@@ -57,9 +58,19 @@ namespace IndigoEngine.Actions
 				return false;
 			}
 
-            if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
+			if(Object is AgentTree)
 			{
-                return false;
+				if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
+				{
+					return false;
+				}
+			}
+			if(Object is AgentItemFruit)
+			{
+				if(Object.CurrentLocation.HasOwner)
+				{
+					return false;
+				}
 			}
 
 			return true;
@@ -72,10 +83,17 @@ namespace IndigoEngine.Actions
         {
             base.Perform();
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() =>
-            {
-                Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemFruit)));
-            });
+			if(Object is AgentTree)
+			{
+				Subject.CurrentActionFeedback += new ActionFeedback(() =>
+				{
+					Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemFruit)));
+				});
+			}
+			if(Object is AgentItemFruit)
+			{
+				Subject.Inventory.AddAgentToStorage(Object);
+			}
 
         }
 

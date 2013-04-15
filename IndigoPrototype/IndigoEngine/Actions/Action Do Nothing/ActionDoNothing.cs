@@ -58,6 +58,16 @@ namespace IndigoEngine.Actions
 			return true;
 		}
 
+		public override void Perform()
+		{
+			base.Perform();
+			if(Subject is AgentLivingIndigo)
+			{
+				(Subject as AgentLivingIndigo).CurrentState.Stamina.CurrentUnitValue++;
+				(Subject as AgentLivingIndigo).CurrentState.Strenght.CurrentUnitValue++;
+			}
+		}
+
 		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
 			return 1; //Action isn't conflict

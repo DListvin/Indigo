@@ -69,7 +69,7 @@ namespace IndigoEngine.Actions
 				return false;
 			}
 
-            if (Object.CurrentState.Health.CurrentUnitValue <= 60)
+            if (Object.CurrentState.Health.CurrentPercentValue <= 10)
             {
 				return false;
             }
@@ -83,21 +83,15 @@ namespace IndigoEngine.Actions
         {
             base.Perform();
            
-		    Object.CurrentActionFeedback = new ActionFeedback(() => 
+		    Object.CurrentActionFeedback += new ActionFeedback(() => 
 			{
 				Object.CurrentState.Health.CurrentUnitValue -= HitPointsToTakeOff; 
-				if(Object is AgentLiving)
-				{
-					(Object as AgentLiving).CurrentMemory.StoreAction(Subject, this);
-				}
 			});
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() => 
+            Subject.CurrentActionFeedback += new ActionFeedback(() => 
 			{
-				if(Subject.CurrentState.Health.CurrentUnitValue + HitPointsToTakeOff <= Subject.CurrentState.Health.MaxValue) 
-				{
-					Subject.CurrentState.Health.CurrentUnitValue += HitPointsToTakeOff; 
-				}
+				(Subject as AgentLiving).CurrentState.Stamina.CurrentUnitValue--;
+				(Subject as AgentLiving).CurrentState.Aggressiveness.CurrentUnitValue++;
 			});
         }
 

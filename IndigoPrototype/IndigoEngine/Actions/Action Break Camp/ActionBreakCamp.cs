@@ -40,11 +40,11 @@ namespace IndigoEngine.Actions
 			{
 				if(argDir.Length == 0)
 				{
-					Direction = new Point();
+					Direction = Normilize(new Point(), Subject.CurrentLocation.Coords);
 				}
 				else
 				{
-					Direction = Normilize((Point)argDir[0], new Point(0, 0));
+					Direction = Normilize((Point)argDir[0], Subject.CurrentLocation.Coords);
 				}
 				Name = "To Break a Camp";
 			}
@@ -87,12 +87,20 @@ namespace IndigoEngine.Actions
         {
             base.Perform();
 
-            Subject.CurrentActionFeedback = new ActionFeedback(() =>
+            Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
-                Subject.Inventory.DeleteAgentsByType(typeof(AgentItemLog), 2);
-                //generate event to world to create the camp
+				AgentCamp addingCamp = new AgentCamp();
+				addingCamp.CurrentLocation = new Location(Subject.CurrentLocation.Coords.X + Direction.X, Subject.CurrentLocation.Coords.Y + Direction.Y);
+				addingCamp.Name = "Camp_by_" + Subject.Name;
+				if(
+					World.AskWorldForAddition(this, addingCamp) &&
+					World.AskWorldForDeletion(this, Subject.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog))) &&
+					World.AskWorldForDeletion(this, Subject.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog)))
+				)
+				{						
+					(Subject as AgentLiving).CurrentMemory.StoreAgent(addingCamp); 
+				}
 
-                (Subject as AgentLiving).CurrentMemory.StoreAction(Subject, this);
             });
         }
 

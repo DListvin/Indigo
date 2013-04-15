@@ -129,7 +129,7 @@ namespace IndigoEngine
 										continue;
 									}
 									AgentTree currentAddingAgent = new AgentTree();
-									currentAddingAgent.Name = "Tree at " + i.ToString() + " " + j.ToString();
+									currentAddingAgent.Name = "Tree_at_" + i.ToString() + "_" + j.ToString();
 									currentAddingAgent.CurrentLocation = new Location(i, j);
 									AddAgent(currentAddingAgent);
 
@@ -265,8 +265,23 @@ namespace IndigoEngine
 				currentAddingAgent.Name = "Log1";
 				AddAgent(currentAddingAgent);
 
+				currentAddingAgent = new AgentItemLog();
+				currentAddingAgent.Name = "Log2";
+				currentAddingAgent.CurrentLocation = new Location(3, 4);
+				AddAgent(currentAddingAgent);
+
+				currentAddingAgent = new AgentItemLog();
+				currentAddingAgent.Name = "Log3";
+				currentAddingAgent.CurrentLocation = new Location(-3, 4);
+				AddAgent(currentAddingAgent);
+
+				currentAddingAgent = new AgentItemLog();
+				currentAddingAgent.Name = "Log4";
+				currentAddingAgent.CurrentLocation = new Location(-3, -4);
+				AddAgent(currentAddingAgent);
+
 				currentAddingAgent = new AgentTree();
-				currentAddingAgent.Name = "Tree at " + 1.ToString() + " " + 1.ToString();
+				currentAddingAgent.Name = "Tree_at_" + 1.ToString() + "_" + 1.ToString();
 				currentAddingAgent.CurrentLocation = new Location(1, 1);
 				AddAgent(currentAddingAgent);
 			}
@@ -402,6 +417,10 @@ namespace IndigoEngine
                 if (sender.GetType().BaseType != typeof(ActionAbstract))
 				{
                     return false;
+				}
+				if(!obj.CurrentLocation.HasOwner && GetAgentAt(obj.CurrentLocation.Coords) != null)
+				{
+					return false;
 				}
 				obj.HomeWorld = this;
                 modificatiors.Add(() =>

@@ -83,6 +83,10 @@ namespace IndigoEngine.Actions
 							{
 								typeof(AgentTree),
 								(sub, ob, par) => {return new ActionObtainFruit(sub, ob);}
+							},							
+							{
+								typeof(AgentItemFruit),
+								(sub, ob, par) => {return new ActionObtainFruit(sub, ob);}
 							}
 						}
 					}
@@ -100,7 +104,28 @@ namespace IndigoEngine.Actions
 							{
 								typeof(AgentTree),
 								(sub, ob, par) => {return new ActionObtainLog(sub, ob);}
+							},
+							{
+								typeof(AgentItemLog),
+								(sub, ob, par) => {return new ActionObtainLog(sub, ob);}
 							}
+						}
+					}
+				}
+			},	
+			//Action rest dictionary
+			{
+				typeof(ActionRest),
+				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
+				{
+					{
+						typeof(AgentLivingIndigo), 
+						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
+						{
+							{
+								typeof(AgentCamp),
+								(sub, ob, par) => {return new ActionRest(sub, ob);}
+							},
 						}
 					}
 				}

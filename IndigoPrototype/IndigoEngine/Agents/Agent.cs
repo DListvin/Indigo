@@ -138,7 +138,9 @@ namespace IndigoEngine.Agents
                 }
             }
             if (allNeed.Count == 0)
+			{
                 return Needs.NeedNothing;
+			}
             allNeed.Sort(new Comparison<Need>(Need.Comparing));
 
 			logger.Debug("Estimated main need for {0} it is {1}", this.Name, allNeed[0].Name);
@@ -215,6 +217,10 @@ namespace IndigoEngine.Agents
 			{
 				HomeWorld.AskWorldForDeletion(this);
 			}
+			foreach(ActionAbstract act in CurrentVision.CurrentViewActions)
+			{
+				CurrentMemory.StoreAction(act.Subject, act);
+			}
 
 			logger.Debug("Base state recomputed for {0}", this.Name);
 			logger.Trace("{0}", this);
@@ -229,6 +235,7 @@ namespace IndigoEngine.Agents
             if (CurrentActionFeedback != null)
 			{
                 CurrentActionFeedback.Invoke();
+				CurrentActionFeedback = null;
 			}			
 			logger.Debug("Performed action feedback for {0}", this.Name);
         }

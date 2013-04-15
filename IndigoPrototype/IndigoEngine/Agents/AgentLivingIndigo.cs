@@ -24,13 +24,14 @@ namespace IndigoEngine.Agents
 					SkillsList.Add(Skills.Woodcutting);
 					SkillsList.Add(Skills.Gathering);
 					SkillsList.Add(Skills.Communicationing);
+					SkillsList.Add(Skills.CampConstructing);
 
 				#endregion
 				
 				#region Adding needs
 
 					NeedFromCharacteristic.Add(CurrentState.Aggressiveness, Needs.NeedAttack);
-					NeedFromCharacteristic.Add(CurrentState.Health,         Needs.NeedCamp);
+					NeedFromCharacteristic.Add(CurrentState.Health,         Needs.NeedRest);
 					NeedFromCharacteristic.Add(CurrentState.Hunger,         Needs.NeedEat);
 					NeedFromCharacteristic.Add(CurrentState.Stamina,        Needs.NeedRest);
 					NeedFromCharacteristic.Add(CurrentState.Strenght,       Needs.NeedRest);
