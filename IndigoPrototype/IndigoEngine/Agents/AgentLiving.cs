@@ -54,11 +54,11 @@ namespace IndigoEngine.Agents
 
 		public override void StateRecompute()
         {
-            if (CurrentState.Hunger.CurrentUnitValue-- == CurrentState.Hunger.MinValue) 
+            if (CurrentState.FoodSatiety.CurrentUnitValue-- == CurrentState.FoodSatiety.MinValue) 
             {
                 CurrentState.Health.CurrentUnitValue--;
             }
-            if (CurrentState.Thirst.CurrentUnitValue-- == CurrentState.Thirst.MinValue)
+            if (CurrentState.WaterSatiety.CurrentUnitValue-- == CurrentState.WaterSatiety.MinValue)
             {
                 CurrentState.Health.CurrentUnitValue--;
             }

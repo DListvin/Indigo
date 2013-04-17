@@ -58,13 +58,14 @@ namespace IndigoEngine.Actions
 			return true;
 		}
 
-		public override void Perform()
+		public override void CalculateFeedbacks()
 		{
-			base.Perform();
+			base.CalculateFeedbacks();
 			if(Subject is AgentLivingIndigo)
 			{
 				(Subject as AgentLivingIndigo).CurrentState.Stamina.CurrentUnitValue++;
 				(Subject as AgentLivingIndigo).CurrentState.Strenght.CurrentUnitValue++;
+				(Subject as AgentLiving).CurrentState.Peacefulness.CurrentUnitValue--;  //They are becoming more aggressive. Spike for attackig each other
 			}
 		}
 

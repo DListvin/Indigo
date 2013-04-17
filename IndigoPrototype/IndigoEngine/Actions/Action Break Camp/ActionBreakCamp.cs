@@ -72,7 +72,7 @@ namespace IndigoEngine.Actions
 				return false;
 			}
 
-            if (Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemLog)) < 2) //Number of logs int subject's inventory
+            if (Subject.Inventory.NumberOfAgentsByType(typeof(AgentItemLog)) < 2) //Number of logs int subject's inventory
             {
                 return false;
             }
@@ -83,9 +83,9 @@ namespace IndigoEngine.Actions
         /// <summary>
         /// ITypicalAction
         /// </summary>
-        public override void Perform()
+        public override void CalculateFeedbacks()
         {
-            base.Perform();
+            base.CalculateFeedbacks();
 
             Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
@@ -94,8 +94,8 @@ namespace IndigoEngine.Actions
 				addingCamp.Name = "Camp_by_" + Subject.Name;
 				if(
 					World.AskWorldForAddition(this, addingCamp) &&
-					World.AskWorldForDeletion(this, Subject.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog))) &&
-					World.AskWorldForDeletion(this, Subject.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog)))
+					World.AskWorldForDeletion(this, Subject.Inventory.PopAgentByType(typeof(AgentItemLog))) &&
+					World.AskWorldForDeletion(this, Subject.Inventory.PopAgentByType(typeof(AgentItemLog)))
 				)
 				{						
 					(Subject as AgentLiving).CurrentMemory.StoreAgent(addingCamp); 

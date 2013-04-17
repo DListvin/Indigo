@@ -79,21 +79,24 @@ namespace IndigoEngine.Actions
         /// <summary>
         /// ITypicalAction
         /// </summary>
-        public override void Perform()
+        public override void CalculateFeedbacks()
         {
-            base.Perform();			
+            base.CalculateFeedbacks();			
 
 			if(Object is AgentTree)
 			{
 				Subject.CurrentActionFeedback += new ActionFeedback(() =>
 				{
-					Subject.Inventory.AddAgentToStorage(Object.Inventory.GetAgentByTypeFromStorage(typeof(AgentItemLog)));
+					Subject.Inventory.AddAgentToStorage(Object.Inventory.PopAgentByType(typeof(AgentItemLog)));
 				});
 			}	
 
 			if(Object is AgentItemLog)
 			{
-				Subject.Inventory.AddAgentToStorage(Object);
+				Subject.CurrentActionFeedback += new ActionFeedback(() =>
+				{
+					Subject.Inventory.AddAgentToStorage(Object);
+				});
 			}
         }
 

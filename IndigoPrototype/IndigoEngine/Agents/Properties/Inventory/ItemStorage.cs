@@ -65,7 +65,7 @@ namespace IndigoEngine.Agents
 			{
 				throw(new Exception(String.Format("Failed to add {0} to storage {1} cause of lack of space", argAgent, this)));
 			}
-			argAgent.CurrentLocation.TargetSorage = this;
+			argAgent.CurrentLocation.TargetStorage = this;
 			ItemList.Add(argAgent);
 		}
 
@@ -90,7 +90,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
-        public Agent GetNoDeleteAgentByType(Type agentType)
+        public Agent GetAgentByType(Type agentType)
         {
             return ItemList.Find(ag => { return ag.GetType() == agentType; });
         }
@@ -98,7 +98,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
-		public Agent GetAgentFromStorage(Agent argAgent)
+		public Agent PopAgent(Agent argAgent)
 		{	
 			ItemList.Remove(argAgent); 
 			return argAgent;
@@ -107,9 +107,9 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
-		public Agent GetAgentByTypeFromStorage(Type argType)
+		public Agent PopAgentByType(Type argType)
 		{
-			return GetAgentFromStorage(ItemList.Find(ag => { return ag.GetType() == argType; }));
+			return PopAgent(ItemList.Find(ag => { return ag.GetType() == argType; }));
 		}
 
 		/// <summary>
@@ -123,7 +123,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
-		public int CountNumberOfAgentsByType(Type argType)
+		public int NumberOfAgentsByType(Type argType)
 		{
 			int result = 0;  //Result of the function
 

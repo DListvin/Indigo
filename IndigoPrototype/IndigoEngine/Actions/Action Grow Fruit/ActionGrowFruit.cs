@@ -67,9 +67,9 @@ namespace IndigoEngine.Actions
         /// <summary>
         /// ITypicalAction
         /// </summary>
-        public override void Perform()
+        public override void CalculateFeedbacks()
         {
-            base.Perform();
+            base.CalculateFeedbacks();
 
             Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
@@ -77,7 +77,7 @@ namespace IndigoEngine.Actions
 				if(Subject is AgentTree)
 				{
 					Agent newAgentToAdd = new AgentItemFruit();
-					newAgentToAdd.Name = "Fruit " + Subject.Inventory.CountNumberOfAgentsByType(typeof(AgentItemFruit)) + " from " + Subject.Name;
+					newAgentToAdd.Name = "Fruit " + Subject.Inventory.NumberOfAgentsByType(typeof(AgentItemFruit)) + " from " + Subject.Name;
 					Subject.Inventory.AddAgentToStorage(newAgentToAdd);
 
 					if(World.AskWorldForAddition(this, newAgentToAdd))
@@ -86,7 +86,7 @@ namespace IndigoEngine.Actions
 					}
 					else
 					{
-						Subject.Inventory.GetAgentFromStorage(newAgentToAdd);
+						Subject.Inventory.PopAgent(newAgentToAdd);
 					}
 				}
             });

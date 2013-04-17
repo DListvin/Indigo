@@ -28,16 +28,14 @@ namespace IndigoEngine.Agents
 				Intelligence = new Characteristic();
 				Intelligence.Name = "Intelligence";
 
-				Hunger = new Characteristic();
-				Hunger.Name = "Hunger";
+				FoodSatiety = new Characteristic();
+				FoodSatiety.Name = "FoodSatiety";
 
-				Thirst = new Characteristic();
-				Thirst.Name = "Thirst";
+				WaterSatiety = new Characteristic();
+				WaterSatiety.Name = "WaterSatiety";
 
-				Aggressiveness = new Characteristic();
-				Aggressiveness.Name = "Aggressiveness";
-				Aggressiveness.CriticalPercentValue = 60;
-				Aggressiveness.CurrentUnitValue = 0;
+				Peacefulness = new Characteristic();
+				Peacefulness.Name = "Peacefulness";
 			}
 
         #endregion
@@ -50,11 +48,11 @@ namespace IndigoEngine.Agents
 
 			public Characteristic Intelligence { get; set; }
 
-			public Characteristic Hunger { get; set; }
+			public Characteristic FoodSatiety { get; set; }
 
-			public Characteristic Thirst { get; set; }
+			public Characteristic WaterSatiety { get; set; }
 
-			public Characteristic Aggressiveness { get; set; }
+			public Characteristic Peacefulness { get; set; }
 
         #endregion
 
@@ -69,9 +67,9 @@ namespace IndigoEngine.Agents
 				result.Strenght = argState1.Strenght + argState2.Strenght;
 				result.Stamina = argState1.Stamina + argState2.Stamina;
 				result.Intelligence = argState1.Intelligence + argState2.Intelligence;
-				result.Hunger = argState1.Hunger + argState2.Hunger;
-				result.Thirst = argState1.Thirst + argState2.Thirst;
-				result.Aggressiveness = argState1.Aggressiveness + argState2.Aggressiveness;
+				result.FoodSatiety = argState1.FoodSatiety + argState2.FoodSatiety;
+				result.WaterSatiety = argState1.WaterSatiety + argState2.WaterSatiety;
+				result.Peacefulness = argState1.Peacefulness + argState2.Peacefulness;
 
 				return result;
 			}
@@ -84,9 +82,9 @@ namespace IndigoEngine.Agents
 				result.Strenght = argState1.Strenght - argState2.Strenght;
 				result.Stamina = argState1.Stamina - argState2.Stamina;
 				result.Intelligence = argState1.Intelligence - argState2.Intelligence;
-				result.Hunger = argState1.Hunger - argState2.Hunger;
-				result.Thirst = argState1.Thirst - argState2.Thirst;
-				result.Aggressiveness = argState1.Aggressiveness - argState2.Aggressiveness;
+				result.FoodSatiety = argState1.FoodSatiety - argState2.FoodSatiety;
+				result.WaterSatiety = argState1.WaterSatiety - argState2.WaterSatiety;
+				result.Peacefulness = argState1.Peacefulness - argState2.Peacefulness;
 
 				return result;
 			}

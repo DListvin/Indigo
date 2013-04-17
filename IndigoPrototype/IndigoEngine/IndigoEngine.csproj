@@ -84,7 +84,7 @@
     <Compile Include="Actions\ITypicalAction.cs" />
     <Compile Include="Agents\Properties\Needs\ITypicalNeed.cs" />
     <Compile Include="Actions\IWorldToAction.cs" />
-    <Compile Include="IWorldToAgent.cs" />
+    <Compile Include="Agents\IWorldToAgent.cs" />
     <Compile Include="NameableObject.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Agents\Properties\Needs\Need.cs" />

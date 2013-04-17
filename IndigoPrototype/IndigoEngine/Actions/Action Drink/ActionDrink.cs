@@ -61,9 +61,9 @@ namespace IndigoEngine.Actions
         /// <summary>
         /// ITypicalAction
         /// </summary>
-        public override void Perform()
+        public override void CalculateFeedbacks()
         {
-            base.Perform();
+            base.CalculateFeedbacks();
 
             Object.CurrentActionFeedback += new ActionFeedback(() =>
             {
@@ -72,7 +72,7 @@ namespace IndigoEngine.Actions
 
             Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
-                (Subject as AgentLiving).CurrentState.Thirst.CurrentPercentValue = 100;
+                (Subject as AgentLiving).CurrentState.WaterSatiety.CurrentPercentValue = 100;
             });
 
         }

@@ -105,7 +105,7 @@ namespace IndigoEngine.Actions
         /// <summary>
         /// ITypicalAction
         /// </summary>
-        public virtual void Perform()
+        public virtual void CalculateFeedbacks()
         {
 			if(Object != null)
 			{

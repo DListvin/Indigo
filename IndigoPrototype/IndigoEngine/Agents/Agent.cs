@@ -155,7 +155,6 @@ namespace IndigoEngine.Agents
         /// <param name="argNeed">need, that must be satisfied</param>
         protected virtual void MakeAction(Need argNeed)
         {
-            CurrentActionFeedback = null;
             bool worldResponseToAction = false;	//World response if the action is accepted.
 			ActionAbstract newAction;           //New action to create
             if (argNeed.SatisfyingActions.Count == 0)
@@ -176,14 +175,14 @@ namespace IndigoEngine.Agents
                         }
                         if (Distance(this, ag) > Math.Sqrt(2))
                         {
-							newAction = ActionsManager.GetThisActionForCurrentParticipants(typeof(ActionGo), ActionGo.CurrentActionInfo, this, null, ag.CurrentLocation.Coords);
+							newAction = ActionsManager.GetActionForCurrentParticipants(typeof(ActionGo), ActionGo.CurrentActionInfo, this, null, ag.CurrentLocation.Coords);
 							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                             if (worldResponseToAction)
 							{
                                 break;
 							}
                         }
-						newAction = ActionsManager.GetThisActionForCurrentParticipants(act, currentInfo, this, ag);
+						newAction = ActionsManager.GetActionForCurrentParticipants(act, currentInfo, this, ag);
                         worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                         if (worldResponseToAction)
                         {
@@ -193,7 +192,7 @@ namespace IndigoEngine.Agents
                 }
                 else
                 {
-					newAction = ActionsManager.GetThisActionForCurrentParticipants(act, currentInfo, this, null);
+					newAction = ActionsManager.GetActionForCurrentParticipants(act, currentInfo, this, null);
 					worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                 }
 
@@ -212,6 +211,8 @@ namespace IndigoEngine.Agents
         public virtual void StateRecompute()
         {
 			logger.Trace("Base state recomputing for {0}", this);
+
+			PerformFeedback();
 
             if (CurrentState.Health.CurrentUnitValue == this.CurrentState.Health.MinValue)
 			{

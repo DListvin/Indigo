@@ -39,21 +39,21 @@ namespace IndigoEngine.Agents
          /// </summary>
         /// <param name="agentType">type of agent</param>
         /// <returns> agent with type agentType</returns>
-        Agent GetNoDeleteAgentByType(Type agentType);
+        Agent GetAgentByType(Type agentType);
 
 		/// <summary>
 		/// Getting the specified agent from the storage
 		/// </summary>
 		/// <param name="argAgent">Specifier for agent</param>
 		/// <returns>Agent, that matches and no more in storage</returns>
-		Agent GetAgentFromStorage(Agent argAgent);
+		Agent PopAgent(Agent argAgent);
 
 		/// <summary>
 		/// Getting the agent, that matches the type, from the storage
 		/// </summary>
 		/// <param name="argType">Type of the agent to find</param>
 		/// <returns>Agent, that matches and no more in storage</returns>
-		Agent GetAgentByTypeFromStorage(Type argType);
+		Agent PopAgentByType(Type argType);
 				
 		/// <summary>
 		/// Shows, if the agent of type argType exists in the ItemStorage
@@ -67,6 +67,6 @@ namespace IndigoEngine.Agents
 		/// </summary>
 		/// <param name="argType">type wich is searching</param>
 		/// <returns>Number of matching agents</returns>
-		int CountNumberOfAgentsByType(Type argType);
+		int NumberOfAgentsByType(Type argType);
 	}
 }

@@ -30,7 +30,7 @@ namespace IndigoEngine.Actions
 		/// <summary>
 		/// Perfoming the action: defines action results for object and subject
 		/// </summary>
-        void Perform();
+        void CalculateFeedbacks();
 
 		/// <summary>
 		/// Provides some info, that characterise the subject of the action (necessary to remember subject's characteristics)

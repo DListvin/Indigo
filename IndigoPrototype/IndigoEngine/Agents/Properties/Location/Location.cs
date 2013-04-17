@@ -18,7 +18,7 @@ namespace IndigoEngine.Agents
 
 			public Location()
 			{
-				TargetSorage = null;
+				TargetStorage = null;
 				Coords = new Point(0, 0);
 
 				logger.Info("Created new {0}", this.GetType());
@@ -34,7 +34,7 @@ namespace IndigoEngine.Agents
 			public Location(ITypicalItemStorage argTargetSorage)
 				: base()
 			{
-				TargetSorage = argTargetSorage;
+				TargetStorage = argTargetSorage;
 			}
 
         #endregion
@@ -47,13 +47,13 @@ namespace IndigoEngine.Agents
 				{
 					if (HasOwner)
 					{
-						return TargetSorage.Owner;
+						return TargetStorage.Owner;
 					}
 					return null;
 				}
 			}
 
-			public ITypicalItemStorage TargetSorage { get; set; } //Item storage of the current object(shows, if the object is in some ItemStorage)
+			public ITypicalItemStorage TargetStorage { get; set; } //Item storage of the current object(shows, if the object is in some ItemStorage)
 
 			public Point Coords
 			{
@@ -75,7 +75,7 @@ namespace IndigoEngine.Agents
 			{
 				get
 				{
-					if (TargetSorage == null)
+					if (TargetStorage == null)
 					{
 						return false;
 					}

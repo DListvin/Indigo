@@ -17,11 +17,11 @@ namespace IndigoEngine
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public delegate void modificate();
+        public delegate void worldCommand();  //Delegate to store some commands for world recompute
 
-        private List<Agent> agents;           //List of all agents in the world
-        private List<ActionAbstract> actions; //List of all actions, that must be performed (refreshing each loop iteration)
-        private List<modificate> modificatiors; // List of Delegates, to add or Delete agents at right place in MainLoop
+        private List<Agent> agents;               //List of all agents in the world
+        private List<ActionAbstract> actions;     //List of all actions, that must be performed (refreshing each loop iteration)
+        private List<worldCommand> worldCommands; // List of Delegates, to add or Delete agents at right place in MainLoop
 
 		#region Constructors
 
@@ -165,24 +165,23 @@ namespace IndigoEngine
 					agent.Decide();
 				}
 
-				SolveActionConflicts();
+				//SolveActionConflicts();
 
 				foreach (ActionAbstract action in Actions)
 				{
-					action.Perform();
+					action.CalculateFeedbacks();
 				}
 
 				foreach (Agent agent in Agents)
 				{
-					agent.PerformFeedback();
 					agent.StateRecompute();
 				}
 
-				foreach (modificate mod in modificatiors)
+				foreach (worldCommand com in worldCommands)
 				{
-					mod.DynamicInvoke();
+					com.DynamicInvoke();
 				}
-				modificatiors.Clear();
+				worldCommands.Clear();
 			}
 
 			/// <summary>
@@ -194,7 +193,7 @@ namespace IndigoEngine
 
 				Agents = new List<Agent>();
 				Actions = new List<ActionAbstract>();
-				modificatiors = new List<modificate>();
+				worldCommands = new List<worldCommand>();
 
 				//GenerateForest(new Point(-10, -10), new Size(10, 10), 0.50);
 
@@ -332,7 +331,7 @@ namespace IndigoEngine
 			{
 				if(argAgentToDelete.CurrentLocation.HasOwner)
 				{
-					argAgentToDelete.CurrentLocation.Owner.Inventory.GetAgentFromStorage(argAgentToDelete);
+					argAgentToDelete.CurrentLocation.Owner.Inventory.PopAgent(argAgentToDelete);
 				}
 				agents.Remove(argAgentToDelete);
 			}
@@ -354,15 +353,15 @@ namespace IndigoEngine
             public bool AskWorldForAction(ActionAbstract action)
             {
                 action.World = this;
-				if(action.CheckForLegitimacy())
+				if(action.CheckForLegitimacy()) //Checking action itself if it is legimate
 				{
-					if(Actions.Any(act => 
+					if(Actions.Any(act =>  //Checking action for conflicts
 					{
-						if(action.GetType() != act.GetType())
+						if(action.GetType() != act.GetType()) //Comparing actions types
 						{
 							return false;
 						}
-						if(action.CompareTo(act) == 0)
+						if(action.CompareTo(act) == 0)  //Comparing actions for conflicts
 						{
 							return true;
 						}
@@ -380,11 +379,11 @@ namespace IndigoEngine
 			
 			public bool AskWorldForDeletion(Agent sender)
 			{
-                if (!agents.Contains(sender))
+                if (!agents.Contains(sender))  //Checking existing of the agent to delete
 				{
                     return false;
 				}
-                modificatiors.Add(() =>
+                worldCommands.Add(() =>
                 {
 					DeleteAgent(sender);
                 });
@@ -397,15 +396,15 @@ namespace IndigoEngine
 
             public bool AskWorldForDeletion(object sender, Agent obj)
             {
-                if (sender.GetType().BaseType != typeof(ActionAbstract))
+                if (sender.GetType().BaseType != typeof(ActionAbstract)) //Checking sender type (only actions accepted)
 				{
                     return false;
 				}
-                if (!agents.Contains(obj))
+                if (!agents.Contains(obj))  //Checking existing of the agent to delete
 				{
                     return false;
 				}
-                modificatiors.Add(() =>
+                worldCommands.Add(() =>
                 {
 					DeleteAgent(obj);
                 });
@@ -414,16 +413,15 @@ namespace IndigoEngine
 
             public bool AskWorldForAddition(object sender, Agent obj)
             {
-                if (sender.GetType().BaseType != typeof(ActionAbstract))
+                if (sender.GetType().BaseType != typeof(ActionAbstract)) //Checking sender type (only actions accepted)
 				{
                     return false;
 				}
-				if(!obj.CurrentLocation.HasOwner && GetAgentAt(obj.CurrentLocation.Coords) != null)
+				if(!obj.CurrentLocation.HasOwner && GetAgentAt(obj.CurrentLocation.Coords) != null) //Checking for adding in the place of some agent
 				{
 					return false;
 				}
-				obj.HomeWorld = this;
-                modificatiors.Add(() =>
+                worldCommands.Add(() =>
                 {
                     AddAgent(obj);
                 });

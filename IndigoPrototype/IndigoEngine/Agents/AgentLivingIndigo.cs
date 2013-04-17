@@ -30,12 +30,12 @@ namespace IndigoEngine.Agents
 				
 				#region Adding needs
 
-					NeedFromCharacteristic.Add(CurrentState.Aggressiveness, Needs.NeedAttack);
+					NeedFromCharacteristic.Add(CurrentState.Peacefulness, Needs.NeedAttack);
 					NeedFromCharacteristic.Add(CurrentState.Health,         Needs.NeedRest);
-					NeedFromCharacteristic.Add(CurrentState.Hunger,         Needs.NeedEat);
+					NeedFromCharacteristic.Add(CurrentState.FoodSatiety,         Needs.NeedEat);
 					NeedFromCharacteristic.Add(CurrentState.Stamina,        Needs.NeedRest);
 					NeedFromCharacteristic.Add(CurrentState.Strenght,       Needs.NeedRest);
-					NeedFromCharacteristic.Add(CurrentState.Thirst,         Needs.NeedDrink);
+					NeedFromCharacteristic.Add(CurrentState.WaterSatiety,         Needs.NeedDrink);
 
 				#endregion
 			}

@@ -54,9 +54,9 @@ namespace IndigoEngine.Actions
 			return true;
 		}
 
-		public override void Perform()
+		public override void CalculateFeedbacks()
 		{
-			base.Perform();
+			base.CalculateFeedbacks();
            
 		    Object.CurrentActionFeedback += new ActionFeedback(() => 
 			{

@@ -172,6 +172,7 @@ namespace IndigoEngine
 					}
                     if (State == ModelState.Running)
                     {
+						System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew(); 
                         //There out main loop is running
                         simulatingWorld.MainLoopIteration();
 
@@ -184,7 +185,11 @@ namespace IndigoEngine
 
                         ManageActionStorage();
                         ++PassedModelIterations;
-                        Thread.Sleep(ModelIterationTick);
+
+						timer.Stop();
+						long ticksToSleep = ModelIterationTick.Ticks - timer.ElapsedTicks;
+						TimeSpan timeToSleep = new TimeSpan(ticksToSleep < 0 ? 0 : ticksToSleep);
+                        Thread.Sleep(timeToSleep);
                     }
                 }
             }
@@ -196,16 +201,23 @@ namespace IndigoEngine
         }
 
         /// <summary>
-        /// For testing during test = )
+        /// IObservableModel
         /// </summary>
-        /// <param name="agent"></param>
-        public void AddAgent(Agent agent)
+        public void AddAgent(Agent argAgentToAdd)
         {
-            simulatingWorld.AddAgent(agent);
+            simulatingWorld.AddAgent(argAgentToAdd);
         }
-
+		
         /// <summary>
-        /// I wrote it for testing needs
+        /// IObservableModel
+        /// </summary>
+		public void DeleteAgent(Agent argAgentToDelete)
+		{
+            simulatingWorld.DeleteAgent(argAgentToDelete);
+		}
+		
+        /// <summary>
+        /// IObservableModel
         /// </summary>
         public int GetAgentsAmount()
         {

@@ -96,6 +96,24 @@ namespace IndigoEngine
         /// Computes model up to n iteration
         /// </summary>
         /// <param name="n">To wich iteration to compute</param>
-        void GoToNIteration(long n);
+        void GoToNIteration(long n);		
+			
+		/// <summary>
+		/// Deleting agent from the world completely. 
+		/// </summary>
+		/// <param name="argAgentToDelete">Agent to delete</param>
+		void DeleteAgent(Agent argAgentToDelete);
+
+		/// <summary>
+		/// Adding agent to the world. 
+		/// </summary>
+		/// <param name="argAgentToAdd">Agent to add</param>
+		void AddAgent(Agent argAgentToAdd);
+
+		/// <summary>
+		/// Getting the number of agents in the world
+		/// </summary>
+		/// <returns></returns>
+		int GetAgentsAmount();
     }
 }

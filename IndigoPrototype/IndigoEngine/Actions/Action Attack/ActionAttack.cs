@@ -79,19 +79,20 @@ namespace IndigoEngine.Actions
 		/// <summary>
 		/// ITypicalAction
 		/// </summary>
-        public override void Perform()
+        public override void CalculateFeedbacks()
         {
-            base.Perform();
+            base.CalculateFeedbacks();
            
 		    Object.CurrentActionFeedback += new ActionFeedback(() => 
 			{
 				Object.CurrentState.Health.CurrentUnitValue -= HitPointsToTakeOff; 
+				(Object as AgentLiving).CurrentState.Peacefulness.CurrentUnitValue--;
 			});
 
             Subject.CurrentActionFeedback += new ActionFeedback(() => 
 			{
 				(Subject as AgentLiving).CurrentState.Stamina.CurrentUnitValue--;
-				(Subject as AgentLiving).CurrentState.Aggressiveness.CurrentUnitValue++;
+				(Subject as AgentLiving).CurrentState.Peacefulness.CurrentUnitValue++;
 			});
         }
 
@@ -102,7 +103,7 @@ namespace IndigoEngine.Actions
 		{
 			if(Object is AgentLivingIndigo && Subject is AgentLivingIndigo)
 			{
-				return (Subject as AgentLivingIndigo).CurrentState.Aggressiveness; 
+				return (Subject as AgentLivingIndigo).CurrentState.Peacefulness; 
 			}
 
 			return base.CharacteristicsOfSubject();

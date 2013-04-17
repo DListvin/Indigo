@@ -55,7 +55,7 @@ namespace IndigoEngine.Agents
 
 		public override void StateRecompute()
 		{
-			int numberOfFruits = Inventory.CountNumberOfAgentsByType(typeof(AgentItemFruit));  //Number of fruits, that are on the tree now
+			int numberOfFruits = Inventory.NumberOfAgentsByType(typeof(AgentItemFruit));  //Number of fruits, that are on the tree now
 
 			CurrentState.Prolificacy -= 3 - numberOfFruits;
 

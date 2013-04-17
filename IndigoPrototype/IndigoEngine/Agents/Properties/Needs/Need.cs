@@ -15,10 +15,6 @@ namespace IndigoEngine
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        int needLevel;                    //Need level like in Maslow's hierarchy of needs 
-        int needSubLevel;                 //Sublevel to more flexible model
-        List<Type> satisfyingActions;   //List of actions, that can satisfy the need
-
         public static int Comparing(Need n1, Need n2)
         {
             int comp = n1.NeedLevel.CompareTo(n2.NeedLevel);
@@ -33,9 +29,9 @@ namespace IndigoEngine
 			/// </summary>
 			public Need()
 			{
-				needLevel = 10;
-				needSubLevel = 1;
-				satisfyingActions = new List<Type>();
+				NeedLevel = 10;
+				NeedSubLevel = 1;
+				SatisfyingActions = new List<Type>();
 			}
 
 			/// <summary>
@@ -89,23 +85,11 @@ namespace IndigoEngine
 
 		#region ITypicalNeed realisation
 
-			public int NeedLevel
-			{
-				get { return needLevel; }
-				set { needLevel = value; }
-			}
+			public int NeedLevel { get; set; }     //Need level like in Maslow's hierarchy of needs 
 
-			public int NeedSubLevel
-			{
-				get { return needSubLevel; }
-				set { needSubLevel = value; }
-			}
+			public int NeedSubLevel { get; set; }  //Sublevel to more flexible model
 
-			public List<Type> SatisfyingActions
-			{
-				get { return satisfyingActions; }
-				set { satisfyingActions = value; }
-			}
+			public List<Type> SatisfyingActions { get; set; } //List of actions, that can satisfy the need
 
         #endregion
 
