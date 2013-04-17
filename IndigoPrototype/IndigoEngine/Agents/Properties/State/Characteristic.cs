@@ -77,20 +77,18 @@ namespace IndigoEngine.Agents
 				{
 					get
 					{
+						if(currentValue <= MinValue)
+						{
+							return MinValue;
+						}
+						if(currentValue >= MaxValue)
+						{
+							return MaxValue;
+						}
 						return currentValue;
 					}
 					set
 					{
-						if (value < MinValue)
-						{
-							currentValue = MinValue;
-							return;
-						}
-						if (value > MaxValue)
-						{
-							currentValue = MaxValue;
-							return;
-						}
 						currentValue = value;
 					}
 				}
