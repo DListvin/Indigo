@@ -14,6 +14,70 @@ namespace IndigoEngine.Agents
 
         private Point coords; //Agent location in the world grid - (X, Y)
 
+		#region Static methods
+
+			/// <summary>
+			/// Operator + for locations
+			/// </summary>
+			/// <param name="argLoc1">Location 1</param>
+			/// <param name="argLoc2">Location 2</param>
+			/// <returns>Addition result</returns>
+			public static Location operator+(Location argLoc1, Location argLoc2)
+			{
+				Location result = new Location();
+
+				result.Coords = new Point(argLoc1.Coords.X + argLoc2.Coords.X, argLoc1.Coords.Y + argLoc2.Coords.Y);
+
+				return result;
+			}
+			
+			/// <summary>
+			/// Operator + for location and point
+			/// </summary>
+			/// <param name="argLoc1">Location 1</param>
+			/// <param name="argLoc2">Point 2</param>
+			/// <returns>Addition result</returns>
+			public static Location operator+(Location argLoc1, Point argLoc2)
+			{
+				Location result = new Location();
+
+				result.Coords = new Point(argLoc1.Coords.X + argLoc2.X, argLoc1.Coords.Y + argLoc2.Y);
+
+				return result;
+			}
+
+			/// <summary>
+			/// Operator - for locations
+			/// </summary>
+			/// <param name="argLoc1">Location 1</param>
+			/// <param name="argLoc2">Location 2</param>
+			/// <returns>Substraction result</returns>
+			public static Location operator-(Location argLoc1, Location argLoc2)
+			{
+				Location result = new Location();
+
+				result.Coords = new Point(argLoc1.Coords.X - argLoc2.Coords.X, argLoc1.Coords.Y - argLoc2.Coords.Y);
+
+				return result;
+			}
+			
+			/// <summary>
+			/// Operator - for location and point
+			/// </summary>
+			/// <param name="argLoc1">Location 1</param>
+			/// <param name="argLoc2">Point 2</param>
+			/// <returns>Substraction result</returns>
+			public static Location operator-(Location argLoc1, Point argLoc2)
+			{
+				Location result = new Location();
+
+				result.Coords = new Point(argLoc1.Coords.X - argLoc2.X, argLoc1.Coords.Y - argLoc2.Y);
+
+				return result;
+			}
+
+		#endregion
+
         #region Constructors
 
 			public Location()
