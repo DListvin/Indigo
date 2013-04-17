@@ -25,6 +25,6 @@ namespace IndigoEngine
         /// <param name="sender">sender</param>
         /// <param name="obj">object, which want to delete</param>
         /// <returns></returns>
-        bool AskWorldForDeletion(Agent sender);
+        bool AskWorldForEuthanasia(Agent sender);
     }
 }

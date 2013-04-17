@@ -40,20 +40,24 @@ namespace IndigoEngine.Actions
 			{
 				if(argDir.Length == 0)
 				{
-					Direction = Normilize(new Point(), Subject.CurrentLocation.Coords);
+					BuildDirection = Normilize(new Point(), Subject.CurrentLocation.Coords);
 				}
 				else
 				{
-					Direction = Normilize((Point)argDir[0], Subject.CurrentLocation.Coords);
+					BuildDirection = Normilize((Point)argDir[0], Subject.CurrentLocation.Coords);
 				}
+
+				CampLocation = new Location(Subject.CurrentLocation.Coords.X + BuildDirection.X, Subject.CurrentLocation.Coords.Y + BuildDirection.Y);
 				Name = "To Break a Camp";
 			}
 
-        #endregion
+        #endregion	
 
         #region Properties
 
-			public Point Direction { get; set; } // where from object will be camp
+			public Point BuildDirection { get; set; }    //Where from object wi	ll be camp
+
+			public Location CampLocation { get; set; }   //Where is the new camp in the world grid
 
         #endregion		
 		
@@ -90,7 +94,7 @@ namespace IndigoEngine.Actions
             Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
 				AgentCamp addingCamp = new AgentCamp();
-				addingCamp.CurrentLocation = new Location(Subject.CurrentLocation.Coords.X + Direction.X, Subject.CurrentLocation.Coords.Y + Direction.Y);
+				addingCamp.CurrentLocation = CampLocation;
 				addingCamp.Name = "Camp_by_" + Subject.Name;
 				if(
 					World.AskWorldForAddition(this, addingCamp) &&
@@ -114,7 +118,7 @@ namespace IndigoEngine.Actions
 		/// </summary>
 		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
-			if(Direction == (argActionToCompare as ActionBreakCamp).Direction)
+			if(CampLocation == (argActionToCompare as ActionBreakCamp).CampLocation)
 			{
 				return 0;
 			}

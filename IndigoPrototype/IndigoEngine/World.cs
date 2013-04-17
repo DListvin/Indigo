@@ -195,7 +195,7 @@ namespace IndigoEngine
 				Actions = new List<ActionAbstract>();
 				worldCommands = new List<worldCommand>();
 
-				//GenerateForest(new Point(-10, -10), new Size(10, 10), 0.50);
+				GenerateForest(new Point(-5, -5), new Size(10, 10), 0.50);
 
 				/*//Terrific test init (for hard and cruel test)
             for (int i = 0; i < 3; ++i)
@@ -377,7 +377,7 @@ namespace IndigoEngine
 				return false;
             }
 			
-			public bool AskWorldForDeletion(Agent sender)
+			public bool AskWorldForEuthanasia(Agent sender)
 			{
                 if (!agents.Contains(sender))  //Checking existing of the agent to delete
 				{
@@ -385,7 +385,18 @@ namespace IndigoEngine
 				}
                 worldCommands.Add(() =>
                 {
-					DeleteAgent(sender);
+					Agent corpse;   //Corpse of the deleting agent
+					if(WorldRules.CorpseDictionary.TryGetValue(sender.GetType(), out corpse))
+					{
+						corpse.CurrentLocation = sender.CurrentLocation;
+						corpse.Name = sender.Name + "_corpse";
+					}
+					sender.Inventory.DropAll();
+					DeleteAgent(sender);	
+					if(corpse != null)
+					{				
+						AddAgent(corpse);
+					}
                 });
 				return true;
 			}

@@ -216,7 +216,7 @@ namespace IndigoEngine.Agents
 
             if (CurrentState.Health.CurrentUnitValue == this.CurrentState.Health.MinValue)
 			{
-				HomeWorld.AskWorldForDeletion(this);
+				HomeWorld.AskWorldForEuthanasia(this);
 			}
 			foreach(ActionAbstract act in CurrentVision.CurrentViewActions)
 			{

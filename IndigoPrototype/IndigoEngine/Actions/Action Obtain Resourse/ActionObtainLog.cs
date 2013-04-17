@@ -57,14 +57,6 @@ namespace IndigoEngine.Actions
 			{
 				return false;
 			}
-
-			if(Object is AgentTree)
-			{
-				if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemLog)))
-				{
-					return false;
-				}
-			}
 			if(Object is AgentItemLog)
 			{
 				if(Object.CurrentLocation.HasOwner)
@@ -85,9 +77,9 @@ namespace IndigoEngine.Actions
 
 			if(Object is AgentTree)
 			{
-				Subject.CurrentActionFeedback += new ActionFeedback(() =>
+				Object.CurrentActionFeedback += new ActionFeedback(() =>
 				{
-					Subject.Inventory.AddAgentToStorage(Object.Inventory.PopAgentByType(typeof(AgentItemLog)));
+					Object.CurrentState.Health.CurrentUnitValue -= 50;
 				});
 			}	
 

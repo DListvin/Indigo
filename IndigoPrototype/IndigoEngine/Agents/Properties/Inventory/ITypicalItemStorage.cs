@@ -23,6 +23,11 @@ namespace IndigoEngine.Agents
 		Agent Owner { get; set; }
 
 		/// <summary>
+		/// Dropping all items from the storage on the owner coords
+		/// </summary>
+		void DropAll();
+
+		/// <summary>
 		/// Adding a new agent into storage
 		/// </summary>
 		/// <param name="argAgent">Agent to add</param>

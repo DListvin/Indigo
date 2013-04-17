@@ -93,6 +93,7 @@
     <Compile Include="Agents\Properties\Skills\Skill.cs" />
     <Compile Include="Agents\Properties\Skills\Skills.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="WorldRules.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NLog.config">

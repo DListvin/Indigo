@@ -59,6 +59,18 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
+		public void DropAll()
+		{
+			foreach(Agent ag in ItemList)
+			{
+				ag.CurrentLocation = Owner.CurrentLocation;
+			}	
+			ItemList.Clear();
+		}
+
+		/// <summary>
+		/// ITypicalItemStorage
+		/// </summary>
 		public void AddAgentToStorage(Agent argAgent)
 		{
 			if(ItemList.Count + 1 > StorageSize)
