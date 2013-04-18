@@ -253,38 +253,32 @@ namespace IndigoEngine
         /// <param name="n">number of stepsS</param>
         public void StepNIterationsForward(int n = 1)
         {
-            logger.Trace("StepNIterationsForward(n = {0}) entered; ModelState is {1}", n, State.ToString());
+            logger.Trace("StepNIterationsForward(n = {0}) entered; ModelState is {1}", n, State);
+            if (State != ModelState.Paused && State != ModelState.Running)
+            {
+                logger.Error("Failed to jump {0} iterations, cause the model is {1}", n, State);
+				return;
+            }
             ModelState prevState = State;
+			State = ModelState.Paused;
             try
             {
                 for (int i = 0; i < n; ++i)
                 {
-                    if (State == ModelState.Stopping)
-                    {
-                        break;
-                    }
-                    if (State == ModelState.Paused)
-                    {
-                        State = ModelState.Running;
-                    }
-                    if (State == ModelState.Running)
-                    {
-                        //There out main loop is running
-                        simulatingWorld.MainLoopIteration();
+					//There out main loop is running
+					simulatingWorld.MainLoopIteration();
 
-                        //Work out the end of iteration
-
-                        //Sending a message
-                        if (ModelTick != null)
-                            ModelTick(this, null);
-
-
-                        ManageActionStorage();
-                        ++PassedModelIterations;
-                    }
+					ManageActionStorage();
+					++PassedModelIterations;
                 }
+
+				//Sending a message about tick
+				if (ModelTick != null)
+				{
+					ModelTick(this, null);
+				}
                 State = prevState;
-                logger.Info("Jumped {0} iterations forward, curretn iteration is {1}", n, PassedModelIterations);
+                logger.Info("Jumped {0} iterations forward, current iteration is {1}", n, PassedModelIterations);
             }
             catch (Exception e)
             {
@@ -300,7 +294,7 @@ namespace IndigoEngine
         /// <param name="n">To wich iteration to compute</param>
         public void GoToNIteration(long n)
         {
-            logger.Trace("GoToNIteration(n = {0}) entered; ModelState is {1}", n, State.ToString());
+            logger.Trace("GoToNIteration(n = {0}) entered; ModelState is {1}", n, State);
             if (n > PassedModelIterations)
             {
                 StepNIterationsForward((int)(n - PassedModelIterations));

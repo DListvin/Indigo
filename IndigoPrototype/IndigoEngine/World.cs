@@ -306,22 +306,25 @@ namespace IndigoEngine
 			/// </summary>
 			private void UpdateAgentFeelings()
 			{
-				foreach (Agent agent in Agents)
+				lock(Agents)
 				{
-					agent.CurrentVision.CurrentView.Clear();
-                
-					if (!agent.CurrentLocation.HasOwner)
+					foreach (Agent agent in Agents)
 					{
-						//Adding agents
-						agent.CurrentVision.CurrentView.AddRange(agents.Where(a =>
+						agent.CurrentVision.CurrentView.Clear();
+                
+						if (!agent.CurrentLocation.HasOwner)
 						{
-							return !a.CurrentLocation.HasOwner && a != agent && Agent.Distance(a, agent) < agent.AgentsRangeOfView;
-						}));
-						//Adding actions
-						agent.CurrentVision.CurrentView.AddRange(actions.Where(a =>
-						{
-							return !a.Subject.CurrentLocation.HasOwner && Agent.Distance(agent, a.Subject) < agent.AgentsRangeOfView;
-						}));
+							//Adding agents
+							agent.CurrentVision.CurrentView.AddRange(agents.Where(a =>
+							{
+								return !a.CurrentLocation.HasOwner && a != agent && Agent.Distance(a, agent) < agent.AgentsRangeOfView;
+							}));
+							//Adding actions
+							agent.CurrentVision.CurrentView.AddRange(actions.Where(a =>
+							{
+								return !a.Subject.CurrentLocation.HasOwner && Agent.Distance(agent, a.Subject) < agent.AgentsRangeOfView;
+							}));
+						}
 					}
 				}
 			}
