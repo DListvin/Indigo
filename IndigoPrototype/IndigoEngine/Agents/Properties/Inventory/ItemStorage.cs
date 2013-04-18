@@ -71,14 +71,16 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
-		public void AddAgentToStorage(Agent argAgent)
+		public bool AddAgentToStorage(Agent argAgent)
 		{
 			if(ItemList.Count + 1 > StorageSize)
 			{
-				throw(new Exception(String.Format("Failed to add {0} to storage {1} cause of lack of space", argAgent, this)));
+				logger.Error("Failed to add {0} to storage {1} cause of lack of space", argAgent, this);
+				return false;
 			}
 			argAgent.CurrentLocation.TargetStorage = this;
 			ItemList.Add(argAgent);
+			return true;
 		}
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace IndigoEngine.Agents
 					if(ag.GetType() == agentType)
 					{
 						ItemList.Remove(ag);
-						return;
+						break;;
 					}
 				}
 			}

@@ -31,7 +31,8 @@ namespace IndigoEngine.Agents
 		/// Adding a new agent into storage
 		/// </summary>
 		/// <param name="argAgent">Agent to add</param>
-		void AddAgentToStorage(Agent argAgent);
+		/// <returns>Success state</returns>
+		bool AddAgentToStorage(Agent argAgent);
 
         /// <summary>
         ///  If ItemList consists Agent with type agentType, it will be removed from list
