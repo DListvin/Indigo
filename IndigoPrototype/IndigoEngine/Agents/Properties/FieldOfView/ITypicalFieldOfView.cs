@@ -19,7 +19,7 @@ namespace IndigoEngine.Agents
 		List<NameableObject> CurrentView { get;	set; }
 
 		/// <summary>
-		/// List of all agents, that current agent can see
+		/// List of all agents, that current agent can see(in order by distanse to the viewer)
 		/// </summary>
 		List<Agent> CurrentViewAgents {	get; }
 

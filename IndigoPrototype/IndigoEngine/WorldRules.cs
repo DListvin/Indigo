@@ -16,11 +16,11 @@ namespace IndigoEngine
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		public static Dictionary<Type, Agent> CorpseDictionary = new Dictionary<Type, Agent>()  //Dictionary for storing links between agents and their corpses (tree - log e.c.)
+		public static Dictionary<Type, Func<Agent>> CorpseDictionary = new Dictionary<Type, Func<Agent>>()  //Dictionary for storing links between agents and their corpses (tree - log e.c.)
 		{
 			{
 				typeof(AgentTree),
-				new AgentItemLog()
+				() => {return new AgentItemLog();}
 			}
 		};
 	}

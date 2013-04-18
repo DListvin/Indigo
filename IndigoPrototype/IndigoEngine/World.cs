@@ -388,18 +388,17 @@ namespace IndigoEngine
 				}
                 worldCommands.Add(() =>
                 {
-					Agent corpse;   //Corpse of the deleting agent
-					if(WorldRules.CorpseDictionary.TryGetValue(sender.GetType(), out corpse))
+					Func<Agent> corpseFunc;   //Func to get corpse of the deleting agent
+					Agent corpse;             //Corpse of the deleting agent
+					if(WorldRules.CorpseDictionary.TryGetValue(sender.GetType(), out corpseFunc))
 					{
+						corpse = corpseFunc();
 						corpse.CurrentLocation = sender.CurrentLocation;
 						corpse.Name = sender.Name + "_corpse";
+						AddAgent(corpse);
 					}
 					sender.Inventory.DropAll();
 					DeleteAgent(sender);	
-					if(corpse != null)
-					{				
-						AddAgent(corpse);
-					}
                 });
 				return true;
 			}
