@@ -249,10 +249,30 @@ namespace TextUI
 
             ListOfCommands.Add(new Command("agents", "Lists all agents in the world", args =>
             {
-                foreach (Agent agent in Model.Agents)
+				lock(Model.Agents)
 				{
-                    Console.WriteLine(agent.ToString() + "\n");                
+					foreach (Agent agent in Model.Agents)
+					{
+						Console.WriteLine(agent.ToString() + "\n");                
+					}
 				}
+            }));
+			
+            ListOfCommands.Add(new Command("agent", "Info about the current agent in the world (ex: agent <agent_name>)", args =>
+            {
+				if(args.Length < 1)
+				{
+					Console.WriteLine("Irregular command input! You should specify agent name!");
+					return;
+				}
+                var agentName = args[1] as string;
+                
+                Console.WriteLine(
+					(Model.Agents.First(ag => 
+					{
+						return ag.Name == agentName;
+					}
+				)).ToString());   
             }));
 
             ListOfCommands.Add(new Command("subscribe", "Subscribes commands on model tick (ex: -subscribe iteration agents)", args =>
@@ -299,6 +319,12 @@ namespace TextUI
 
             ListOfCommands.Add(new Command("showmem", "Showing the long memory of the agent (ex: -showmem <agent_name>)", args =>
             {
+				if(args.Length < 1)
+				{
+					Console.WriteLine("Irregular command input! You should specify agent name!");
+					return;
+				}
+
                 var agentName = args[1] as string;
                 
                 Console.WriteLine(
