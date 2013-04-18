@@ -214,7 +214,7 @@ namespace IndigoEngine.Agents
 
 			PerformFeedback();
 
-            if (CurrentState.Health.CurrentUnitValue == this.CurrentState.Health.MinValue)
+            if (CurrentState.Health.CurrentUnitValue <= this.CurrentState.Health.MinValue)
 			{
 				HomeWorld.AskWorldForEuthanasia(this);
 			}

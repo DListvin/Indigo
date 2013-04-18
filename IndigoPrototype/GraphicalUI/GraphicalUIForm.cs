@@ -87,24 +87,27 @@ namespace GraphicalUI
                 }
             }
 
-            //Draws agents
-            foreach (Agent agent in GraphicalUIShell.Model.Agents)
-            {
-                if (!agent.CurrentLocation.HasOwner)
-                {
-                    texturesDict.TryGetValue(agent.GetType(), out drawedImage);
-                    if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
-                    {
-                        drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
-                    }
+			lock(GraphicalUIShell.Model.Agents) //Locking Agents for other threads
+			{
+				//Draws agents
+				foreach (Agent agent in GraphicalUIShell.Model.Agents)
+				{
+					if (!agent.CurrentLocation.HasOwner)
+					{
+						texturesDict.TryGetValue(agent.GetType(), out drawedImage);
+						if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
+						{
+							drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
+						}
 
-                    if ((agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
-                        (-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
-                    {
-                        e.Graphics.DrawImage(drawedImage, agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X, -agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y, (textureSize + zoomModifyer), (textureSize + zoomModifyer));
-                    }
-                }
-            }
+						if ((agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
+							(-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
+						{
+							e.Graphics.DrawImage(drawedImage, agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X, -agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y, (textureSize + zoomModifyer), (textureSize + zoomModifyer));
+						}
+					}
+				}
+			}
         }
 
         /// <summary>
