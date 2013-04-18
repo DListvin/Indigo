@@ -177,10 +177,13 @@ namespace IndigoEngine
 					agent.StateRecompute();
 				}
 
-				foreach (worldCommand com in worldCommands)
-				{
-					com.DynamicInvoke();
-				}
+                lock (Agents) //No other thread can access Agenst while this thread in within this block
+                {
+                    foreach (worldCommand com in worldCommands)
+                    {
+                        com.DynamicInvoke();
+                    }
+                }
 				worldCommands.Clear();
 			}
 

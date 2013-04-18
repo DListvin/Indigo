@@ -40,6 +40,7 @@ namespace IndigoEngine
         private ModelState state = ModelState.Uninitialised; //Model state from ModelState enum
         IDictionary<long, IEnumerable<ActionAbstract>> storedActions;
         [NonSerialized] private Thread modelThread;  //This object controls working model in other process
+        private EventWaitHandle waitEvent = new AutoResetEvent(true); //Using for safe suspend and resume of model process
 
         public event EventHandler ModelTick;
 		
@@ -102,8 +103,9 @@ namespace IndigoEngine
 					TurnsToStore = 100;
 					ModelIterationTick = TimeSpan.FromSeconds(2);
 					modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
-					State = ModelState.Initialised;
-					storedActions = new Dictionary<long, IEnumerable<ActionAbstract>>();
+                    storedActions = new Dictionary<long, IEnumerable<ActionAbstract>>();
+                    State = ModelState.Initialised;
+					
 				}
             }
         
@@ -138,6 +140,7 @@ namespace IndigoEngine
 			    if(State == ModelState.Paused)
 			    {
 				    State = ModelState.Running;
+                    waitEvent.Set(); //Tells model thread to stop waiting
 			    }
             }
 		
@@ -168,7 +171,7 @@ namespace IndigoEngine
 					}
                     if (State == ModelState.Paused)
 					{
-                        continue;
+                        waitEvent.WaitOne(); //Wait for waitEvent.Set()
 					}
                     if (State == ModelState.Running)
                     {
@@ -320,18 +323,22 @@ namespace IndigoEngine
         /// </summary>
         void ManageActionStorage()
         {
-            //Coping container, cause in main loop it will be cleared by reference
-            List<ActionAbstract> temp = new List<ActionAbstract>();
-            foreach(ActionAbstract action in simulatingWorld.Actions)
-                temp.Add(action);
 
-            Actions.Add(PassedModelIterations, temp);
+            lock (Actions) //No other thread can access Actions while this process is in this block
+            {
+                //Coping container, cause in main loop it will be cleared by reference
+                List<ActionAbstract> temp = new List<ActionAbstract>();
+                foreach (ActionAbstract action in simulatingWorld.Actions)
+                    temp.Add(action);
 
-            //Remove old values
-            Actions.Remove(Actions.FirstOrDefault(kvpair => 
-            { 
-                return kvpair.Key < PassedModelIterations - TurnsToStore; 
-            }));
+                Actions.Add(PassedModelIterations, temp);
+
+                //Remove old values
+                Actions.Remove(Actions.FirstOrDefault(kvpair =>
+                {
+                    return kvpair.Key < PassedModelIterations - TurnsToStore;
+                }));
+            }
         }
 
         #region ObjectMethodsOverride
