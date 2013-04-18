@@ -96,6 +96,8 @@ namespace IndigoEngine
 		    /// </summary>
             public void Initialise()
             {
+                logger.Trace("Initialise method entered; ModelState now is {0}", State.ToString());
+
 				if(State == ModelState.Error || State == ModelState.Uninitialised)
 				{
 					simulatingWorld = new World();
@@ -105,7 +107,8 @@ namespace IndigoEngine
 					modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
                     storedActions = new Dictionary<long, IEnumerable<ActionAbstract>>();
                     State = ModelState.Initialised;
-					
+
+                    logger.Info("Model initialised");
 				}
             }
         
@@ -114,10 +117,15 @@ namespace IndigoEngine
 		    /// </summary>
             public void Start()
             {
+                logger.Trace("Start method entered; ModelState now is {0}", State.ToString());
+
                 if (State == ModelState.Initialised)
                 {
                     State = ModelState.Running;
+
+                    logger.Trace("Starting model thread");
                     modelThread.Start(); //Start process
+                    logger.Info("Model thread started");
                 }
             }
 		
@@ -126,6 +134,8 @@ namespace IndigoEngine
 		    /// </summary>
             public void Pause()
             {
+                logger.Trace("Pause method entered; ModelState now is {0}", State.ToString());
+
 				if(State == ModelState.Running)
 				{
 					State = ModelState.Paused;
@@ -136,7 +146,9 @@ namespace IndigoEngine
 		    /// IObservableModel
 		    /// </summary>
             public void Resume()
-            {	
+            {
+                logger.Trace("Resume method entered; ModelState now is {0}", State.ToString());
+
 			    if(State == ModelState.Paused)
 			    {
 				    State = ModelState.Running;
@@ -149,10 +161,14 @@ namespace IndigoEngine
 		    /// </summary>
             public void Stop()
             {
+                logger.Trace("Stop method entered; ModelState now is {0}", State.ToString());
+
 				if(State == ModelState.Running || State == ModelState.Paused)
 				{
 					State = ModelState.Stopping;
+                    logger.Info("Waiting for model thread to stop");
 					modelThread.Join(); //Waiting for other process to end
+                    logger.Info("Model thread joined successfuly");
 					State = ModelState.Uninitialised;
 				}
             }
@@ -161,16 +177,18 @@ namespace IndigoEngine
 
         public void MainLoop()
         {
-           // try
+            try
             {
                 for (; ; )
                 {
                     if (State == ModelState.Stopping)
 					{
+                        logger.Info("Stopping model");
                         break;
 					}
                     if (State == ModelState.Paused)
 					{
+                        logger.Info("Pausing model");
                         waitEvent.WaitOne(); //Wait for waitEvent.Set()
 					}
                     if (State == ModelState.Running)
@@ -196,10 +214,12 @@ namespace IndigoEngine
                     }
                 }
             }
-            //catch (Exception e)
+            catch (Exception e)
             {
-                //Console.WriteLine(e.Message);
-                //State = ModelState.Error;
+                logger.Error("Error {0} occupied in main loop", e.Message);
+                Console.WriteLine(e.Message);
+                State = ModelState.Error;
+                throw e;
             }
         }
 
@@ -233,6 +253,7 @@ namespace IndigoEngine
         /// <param name="n">number of stepsS</param>
         public void StepNIterationsForward(int n = 1)
         {
+            logger.Trace("StepNIterationsForward(n = {0}) entered; ModelState is {1}", n, State.ToString());
             ModelState prevState = State;
             try
             {
@@ -263,10 +284,12 @@ namespace IndigoEngine
                     }
                 }
                 State = prevState;
+                logger.Info("Jumped {0} iterations forward, curretn iteration is {1}", n, PassedModelIterations);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //Console.WriteLine(e.Message);
+                logger.Error("Error {0} occupied in main loop during StepNIterationsForward", e.Message);
+                Console.WriteLine(e.Message);
                 State = ModelState.Error;
             }
         }
@@ -277,6 +300,7 @@ namespace IndigoEngine
         /// <param name="n">To wich iteration to compute</param>
         public void GoToNIteration(long n)
         {
+            logger.Trace("GoToNIteration(n = {0}) entered; ModelState is {1}", n, State.ToString());
             if (n > PassedModelIterations)
             {
                 StepNIterationsForward((int)(n - PassedModelIterations));
@@ -289,12 +313,14 @@ namespace IndigoEngine
         /// <param name="path">Path to savefile</param>
         public void Save(string path)
         {
+            logger.Trace("Save({0}) entered", path);
             FileStream stream;
             BinaryFormatter formatter = new BinaryFormatter();
             stream = new FileStream(path, FileMode.Create);
             formatter.Serialize(stream, this);
             stream.Close();
             Console.WriteLine("Model saved!");
+            logger.Info("Model has been serialized to {0}", path);
         }
 
         /// <summary>
@@ -303,19 +329,31 @@ namespace IndigoEngine
         /// <param name="path">Path to savefile</param>
         public void Load(string path)
         {
+            logger.Trace("Load({0}) entered", path);
             FileStream stream = new FileStream(path, FileMode.Open);
             BinaryFormatter formatter = new BinaryFormatter();
             Model loaded = (Model)formatter.Deserialize(stream);
 
-            this.simulatingWorld = loaded.simulatingWorld;
+            lock (simulatingWorld)
+            {
+                this.simulatingWorld = loaded.simulatingWorld;
+            }
+
             this.passedModelIterations = loaded.passedModelIterations;
+
             this.modelIterationTick = loaded.modelIterationTick;
+
             this.state = loaded.state;
-            this.storedActions = loaded.storedActions;
+
+            lock (storedActions)
+            {
+                this.storedActions = loaded.storedActions;
+            }
 
             stream.Close();
             Console.WriteLine("Model loaded!");
             this.Pause();
+            logger.Info("Model has been deserialized from {0}", path);
         }
 
         /// <summary>
