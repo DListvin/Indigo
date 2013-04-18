@@ -14,6 +14,11 @@ namespace IndigoEngine.Agents
 		int RangeOfView	{ get; set; }
 
 		/// <summary>
+		/// Owner of the current vision
+		/// </summary>
+		Agent Owner { get; set; }	
+
+		/// <summary>
 		/// Current field ov view. Includes all agents & actions, that current agent can see
 		/// </summary>
 		List<NameableObject> CurrentView { get;	set; }

@@ -33,6 +33,7 @@ namespace IndigoEngine.Agents
 				HomeWorld = null;				
 				CurrentMemory = new Memory();
 				CurrentVision = new Vision();
+				CurrentVision.Owner = this;
                 NeedFromCharacteristic = new Dictionary<Characteristic, Need>();
 			}
 
