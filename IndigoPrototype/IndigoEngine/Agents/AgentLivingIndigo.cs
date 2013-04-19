@@ -10,6 +10,7 @@ namespace IndigoEngine.Agents
 	/// Agent for indigo
 	/// </summary>
     [Serializable]
+	[Deciding]
     public class AgentLivingIndigo : AgentLiving
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();

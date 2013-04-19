@@ -112,10 +112,14 @@ namespace IndigoEngine.Agents
 
             //looking through ShortMemory to find active tasks
             //if 1 step requied - complite
-            Need mainNeed = EstimateMainNeed();
-            MakeAction(mainNeed);
-
-			logger.Debug("Desided for {0}", this.Name);
+				
+			Attribute isDeciding = Attribute.GetCustomAttribute(this.GetType(), typeof(DecidingAttribute));  // getting attributes for this class
+			if(isDeciding != null)
+			{
+				Need mainNeed = EstimateMainNeed();
+				MakeAction(mainNeed);
+				logger.Debug("Desided for {0}", this.Name);
+			}
 		}
 
         /// <summary>

@@ -10,6 +10,7 @@ namespace IndigoEngine.Agents
 	/// Agent for tree
 	/// </summary>
     [Serializable]
+	[Deciding]
 	public class AgentTree : Agent
 	{	
 		private static Logger logger = LogManager.GetCurrentClassLogger();
