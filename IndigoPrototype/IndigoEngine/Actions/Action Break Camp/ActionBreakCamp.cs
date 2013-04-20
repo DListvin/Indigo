@@ -12,26 +12,21 @@ namespace IndigoEngine.Actions
     /// Action to break the camp
     /// </summary>
     [Serializable]
+	[ActionInfo(
+					new Type[]
+					{
+						typeof(AgentLivingIndigo),
+					},
+					new Type[]
+					{
+					},
+					"CampConstructing",
+					IsConflict = true,
+					RequiresObject = false
+				)]
     public class ActionBreakCamp : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();	
-
-		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
-																		(
-																			new List<Type>()
-																			{
-																				typeof(AgentLivingIndigo),
-																			},
-																			new List<Type>()
-																			{
-																			},
-																			new List<Skill>()
-																			{
-																				Skills.CampConstructing,
-																			},
-																			true,
-																			false
-																		);
 
         #region Constructors
 
@@ -70,11 +65,6 @@ namespace IndigoEngine.Actions
 			{
 				return false;
 			}  
-			 
-			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
-			{
-				return false;
-			}
 
             if (Subject.Inventory.NumberOfAgentsByType(typeof(AgentItemLog)) < 2) //Number of logs int subject's inventory
             {

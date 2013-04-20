@@ -58,6 +58,7 @@
     <Compile Include="Actions\ActionsManager.cs" />
     <Compile Include="Actions\Action Rest\ActionRest.cs" />
     <Compile Include="Actions\InfoAboutAction.cs" />
+    <Compile Include="Actions\MetaData\ActionInfoAttribute.cs" />
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\AgentCamp.cs" />
     <Compile Include="Agents\AgentLivingIndigo.cs" />
@@ -65,8 +66,8 @@
     <Compile Include="Agents\AgentItemLog.cs" />
     <Compile Include="Agents\AgentLiving.cs" />
     <Compile Include="Agents\AgentPuddle.cs" />
-    <Compile Include="Agents\Properties\FieldOfView\Vision.cs" />
-    <Compile Include="Agents\Properties\FieldOfView\ITypicalFieldOfView.cs" />
+    <Compile Include="Agents\Properties\Vision\Vision.cs" />
+    <Compile Include="Agents\Properties\Vision\ITypicalVision.cs" />
     <Compile Include="Agents\Properties\Location\Location.cs" />
     <Compile Include="Agents\Properties\MetaData\DecidingAttribute.cs" />
     <Compile Include="Agents\Properties\State\State.cs" />

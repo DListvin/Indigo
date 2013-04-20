@@ -11,26 +11,21 @@ namespace IndigoEngine.Actions
     /// Action to Eat
     /// </summary>
     [Serializable]
+	[ActionInfo(
+					new Type[]
+					{
+						typeof(AgentLivingIndigo),
+					},
+					new Type[]
+					{
+						typeof(AgentItemFruit),
+					},
+					IsConflict = true,
+					RequiresObject = true
+				)]
     class ActionEat : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-
-		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
-																		(
-																			new List<Type>()
-																			{
-																				typeof(AgentLivingIndigo),
-																			},
-																			new List<Type>()
-																			{
-																				typeof(AgentItemFruit),
-																			},
-																			new List<Skill>()
-																			{
-																			},
-																			true,
-																			true
-																		);
 
 		#region Constructors
 
@@ -47,11 +42,6 @@ namespace IndigoEngine.Actions
 		public override bool CheckForLegitimacy()
 		{
 			if(!base.CheckForLegitimacy())
-			{
-				return false;
-			}
-			 
-			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
 			{
 				return false;
 			}

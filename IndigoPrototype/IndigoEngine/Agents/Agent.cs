@@ -163,12 +163,20 @@ namespace IndigoEngine.Agents
             bool worldResponseToAction = false;	//World response if the action is accepted.
 			ActionAbstract newAction;           //New action to create
             if (argNeed.SatisfyingActions.Count == 0)
-                throw (new Exception(String.Format("Number of Action to satisfy need {0} is 0", argNeed)));
+			{
+				logger.Error("Number of Action to satisfy need {0} is 0", argNeed);
+				return;
+			}
 
             foreach (Type act in argNeed.SatisfyingActions)
             {
-				System.Reflection.FieldInfo field = act.GetField("CurrentActionInfo", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-				InfoAboutAction currentInfo = field.GetValue(null) as InfoAboutAction;				
+				Attribute actionInfo = Attribute.GetCustomAttribute(act, typeof(ActionInfoAttribute));  // getting attributes for this class
+				if(actionInfo == null)
+				{
+					logger.Error("Failed to get action info attribute for {0}", act.GetType());
+					return;
+				}
+				var currentInfo = actionInfo as ActionInfoAttribute; //Converting attribute to ActionInfo			
 
                 if (currentInfo.RequiresObject)
                 {
@@ -180,7 +188,14 @@ namespace IndigoEngine.Agents
                         }
                         if (Distance(this, ag) > Math.Sqrt(2))
                         {
-							newAction = ActionsManager.GetActionForCurrentParticipants(typeof(ActionGo), ActionGo.CurrentActionInfo, this, null, ag.CurrentLocation.Coords);
+							actionInfo = Attribute.GetCustomAttribute(typeof(ActionGo), typeof(ActionInfoAttribute));  // getting attributes for this class
+							if(actionInfo == null)
+							{
+								logger.Error("Failed to get action info attribute for ActionGo");
+								return;
+							}
+							currentInfo = actionInfo as ActionInfoAttribute;
+							newAction = ActionsManager.GetActionForCurrentParticipants(typeof(ActionGo), currentInfo, this, null, ag.CurrentLocation.Coords);
 							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                             if (worldResponseToAction)
 							{

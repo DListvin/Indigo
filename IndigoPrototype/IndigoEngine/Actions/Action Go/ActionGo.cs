@@ -12,25 +12,20 @@ namespace IndigoEngine.Actions
     /// Action to go
     /// </summary>
     [Serializable]
+	[ActionInfo(
+					new Type[]
+					{
+						typeof(AgentLivingIndigo),
+					},
+					new Type[]
+					{
+					},
+					IsConflict = true,
+					RequiresObject = false
+				)]
     class ActionGo : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-
-		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
-																		(
-																			new List<Type>()
-																			{
-																				typeof(AgentLivingIndigo),
-																			},
-																			new List<Type>()
-																			{
-																			},
-																			new List<Skill>()
-																			{
-																			},
-																			true,
-																			false
-																		);
 
         #region Constructors
 
@@ -61,11 +56,6 @@ namespace IndigoEngine.Actions
 		public override bool CheckForLegitimacy()
 		{
 			if(!base.CheckForLegitimacy())
-			{
-				return false;
-			}
-			 
-			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
 			{
 				return false;
 			}

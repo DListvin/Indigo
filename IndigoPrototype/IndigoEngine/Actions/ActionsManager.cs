@@ -214,7 +214,7 @@ namespace IndigoEngine.Actions
 		/// <param name="argObject">Object</param>
 		/// <param name="argParams">Action params</param>
 		/// <returns>Action object</returns>
-		public static ActionAbstract GetActionForCurrentParticipants(Type argActionType, InfoAboutAction argCurrentInfo, Agent argSubject, Agent argObject, params object[] argParams)
+		public static ActionAbstract GetActionForCurrentParticipants(Type argActionType, ActionInfoAttribute argCurrentInfo, Agent argSubject, Agent argObject, params object[] argParams)
 		{
 			logger.Trace("Getting action for action type {0}, subject: {1}, object: {2}", argActionType, argSubject.Name, argObject != null ? argObject.Name : "none");
 

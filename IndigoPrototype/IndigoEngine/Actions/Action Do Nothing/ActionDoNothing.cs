@@ -8,30 +8,25 @@ using NLog;
 namespace IndigoEngine.Actions
 {
     [Serializable]
+	[ActionInfo(
+					new Type[]
+					{
+						typeof(AgentLivingIndigo),
+						typeof(AgentCamp),
+						typeof(AgentItemFruit),
+						typeof(AgentItemLog),
+						typeof(AgentPuddle),
+						typeof(AgentTree)
+					},
+					new Type[]
+					{
+					},
+					IsConflict = false,
+					RequiresObject = false
+				)]
 	class ActionDoNothing : ActionAbstract
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-
-		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
-																		(
-																			new List<Type>()
-																			{
-																				typeof(AgentLivingIndigo),
-																				typeof(AgentCamp),
-																				typeof(AgentItemFruit),
-																				typeof(AgentItemLog),
-																				typeof(AgentPuddle),
-																				typeof(AgentTree)
-																			},
-																			new List<Type>()
-																			{
-																			},
-																			new List<Skill>()
-																			{
-																			},
-																			false,
-																			false
-																		);
 
 		#region Constructors
 
@@ -48,10 +43,6 @@ namespace IndigoEngine.Actions
 		public override bool CheckForLegitimacy()
 		{
 			if(!base.CheckForLegitimacy())
-			{
-				return false;
-			}
-			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
 			{
 				return false;
 			}

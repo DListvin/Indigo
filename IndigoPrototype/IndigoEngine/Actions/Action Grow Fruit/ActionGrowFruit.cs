@@ -8,25 +8,20 @@ using NLog;
 namespace IndigoEngine.Actions
 {
     [Serializable]
+	[ActionInfo(
+					new Type[]
+					{
+						typeof(AgentTree),
+					},
+					new Type[]
+					{
+					},
+					IsConflict = false,
+					RequiresObject = false
+				)]
 	class ActionGrowFruit : ActionAbstract
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-
-		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
-																		(
-																			new List<Type>()
-																			{
-																				typeof(AgentTree),
-																			},
-																			new List<Type>()
-																			{
-																			},
-																			new List<Skill>()
-																			{
-																			},
-																			false,
-																			false
-																		);
 
         #region Constructors
 
@@ -50,12 +45,6 @@ namespace IndigoEngine.Actions
 			{
 				return false;
 			}   
-			 
-			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
-			{
-				return false;
-			}
-
             if (Subject.Inventory.ItemList.Count >= Subject.Inventory.StorageSize) //Cheking for item storage errors. May be it is extra checking?
             {
                 return false;

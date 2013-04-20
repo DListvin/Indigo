@@ -99,6 +99,16 @@ namespace IndigoEngine.Actions
         /// </summary>
 		public virtual bool CheckForLegitimacy()
 		{
+			Attribute actionInfo = Attribute.GetCustomAttribute(this.GetType(), typeof(ActionInfoAttribute));  // getting attributes for this class
+			if(actionInfo == null)
+			{
+				logger.Error("Failed to get action info attribute for {0}", this.GetType());
+				return false;
+			}
+			if(!ActionAbstract.CheckForSkills(Subject, (actionInfo as ActionInfoAttribute).RequiredSkills))
+			{
+				return false;
+			}
 			return true;
 		}
 

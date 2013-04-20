@@ -11,28 +11,23 @@ namespace IndigoEngine.Actions
     /// Action to Obtain Resourse
     /// </summary>
     [Serializable]
+	[ActionInfo(
+					new Type[]
+					{
+						typeof(AgentLivingIndigo),
+					},
+					new Type[]
+					{
+						typeof(AgentTree),
+						typeof(AgentItemFruit)
+					},
+					"Gathering",
+					IsConflict = true,
+					RequiresObject = true
+				)]
     class ActionObtainFruit : ActionAbstract
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-
-		public static InfoAboutAction CurrentActionInfo = new InfoAboutAction
-																		(
-																			new List<Type>()
-																			{
-																				typeof(AgentLivingIndigo),
-																			},
-																			new List<Type>()
-																			{
-																				typeof(AgentTree),
-																				typeof(AgentItemFruit)
-																			},
-																			new List<Skill>()
-																			{
-																				Skills.Gathering,
-																			},
-																			true,
-																			true
-																		);
 
         #region Constructors
 
@@ -49,11 +44,6 @@ namespace IndigoEngine.Actions
 		public override bool CheckForLegitimacy()
 		{
 			if(!base.CheckForLegitimacy())
-			{
-				return false;
-			}
-			 
-			if(!ActionAbstract.CheckForSkills(Subject, CurrentActionInfo.RequiredSkills))
 			{
 				return false;
 			}

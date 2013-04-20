@@ -8,7 +8,7 @@ using IndigoEngine.Actions;
 namespace IndigoEngine.Agents
 {
     [Serializable]
-    public class Vision : ITypicalFieldOfView
+    public class Vision : ITypicalVision
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

@@ -14,6 +14,15 @@ namespace IndigoEngine.Agents
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
+		public static Skill GetSkillByName(string argName)
+		{
+			Skill result;	//Result of the function
+
+			result = new Skill();
+			result.Name = argName;
+			return result;			
+		}
+
 		/// <summary>
 		/// Default skill of woodcutting
 		/// </summary>
@@ -29,7 +38,7 @@ namespace IndigoEngine.Agents
 			}
 		}
 
-		/// <summary>
+		/// <summary>	
 		/// Default skill of camp constructing
 		/// </summary>
 		public static Skill CampConstructing

@@ -6,7 +6,7 @@ using IndigoEngine.Actions;
 
 namespace IndigoEngine.Agents
 {
-	interface ITypicalFieldOfView
+	interface ITypicalVision
 	{
 		/// <summary>
 		/// Range of view of the agent (in cells around agent, apparently)
