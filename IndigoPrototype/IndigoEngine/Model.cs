@@ -260,7 +260,7 @@ namespace IndigoEngine
 				return;
             }
             ModelState prevState = State;
-			State = ModelState.Paused;
+            Pause(); //instead of State = ModelState.Paused
             try
             {
                 for (int i = 0; i < n; ++i)
@@ -277,7 +277,10 @@ namespace IndigoEngine
 				{
 					ModelTick(this, null);
 				}
-                State = prevState;
+
+                if (prevState == ModelState.Running)
+                    Resume();
+                //instead of State = prevState;
                 logger.Info("Jumped {0} iterations forward, current iteration is {1}", n, PassedModelIterations);
             }
             catch (Exception e)
