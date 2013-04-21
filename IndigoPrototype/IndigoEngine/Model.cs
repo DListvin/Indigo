@@ -165,6 +165,7 @@ namespace IndigoEngine
 
 				if(State == ModelState.Running || State == ModelState.Paused)
 				{
+                    waitEvent.Set(); //unpause, if was
 					State = ModelState.Stopping;
                     logger.Info("Waiting for model thread to stop");
 					modelThread.Join(); //Waiting for other process to end

@@ -30,8 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GrapgicalUIForm));
             this.modelControlPanel = new System.Windows.Forms.Panel();
-            this.resumeButton = new System.Windows.Forms.Button();
-            this.modelStopButton = new System.Windows.Forms.Button();
             this.modelPauseButton = new System.Windows.Forms.Button();
             this.modelStartButton = new System.Windows.Forms.Button();
             this.mapInfoPanel = new System.Windows.Forms.Panel();
@@ -46,8 +44,6 @@
             this.modelControlPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.modelControlPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.modelControlPanel.Controls.Add(this.resumeButton);
-            this.modelControlPanel.Controls.Add(this.modelStopButton);
             this.modelControlPanel.Controls.Add(this.modelPauseButton);
             this.modelControlPanel.Controls.Add(this.modelStartButton);
             this.modelControlPanel.Location = new System.Drawing.Point(13, 469);
@@ -55,28 +51,9 @@
             this.modelControlPanel.Size = new System.Drawing.Size(759, 81);
             this.modelControlPanel.TabIndex = 1;
             // 
-            // resumeButton
-            // 
-            this.resumeButton.Location = new System.Drawing.Point(166, 4);
-            this.resumeButton.Name = "resumeButton";
-            this.resumeButton.Size = new System.Drawing.Size(75, 23);
-            this.resumeButton.TabIndex = 3;
-            this.resumeButton.Text = "Resume";
-            this.resumeButton.UseVisualStyleBackColor = true;
-            this.resumeButton.Click += new System.EventHandler(this.resumeButton_Click);
-            // 
-            // modelStopButton
-            // 
-            this.modelStopButton.Location = new System.Drawing.Point(247, 4);
-            this.modelStopButton.Name = "modelStopButton";
-            this.modelStopButton.Size = new System.Drawing.Size(75, 23);
-            this.modelStopButton.TabIndex = 2;
-            this.modelStopButton.Text = "Stop";
-            this.modelStopButton.UseVisualStyleBackColor = true;
-            this.modelStopButton.Click += new System.EventHandler(this.modelStopButton_Click);
-            // 
             // modelPauseButton
             // 
+            this.modelPauseButton.Enabled = false;
             this.modelPauseButton.Location = new System.Drawing.Point(85, 4);
             this.modelPauseButton.Name = "modelPauseButton";
             this.modelPauseButton.Size = new System.Drawing.Size(75, 23);
@@ -158,10 +135,8 @@
         private System.Windows.Forms.Panel modelControlPanel;
         private System.Windows.Forms.Panel mapInfoPanel;
         private System.Windows.Forms.VScrollBar mapInfoPanelScrollBar;
-        private System.Windows.Forms.Button modelStopButton;
         private System.Windows.Forms.Button modelPauseButton;
         private System.Windows.Forms.Button modelStartButton;
-        private System.Windows.Forms.Button resumeButton;
     }
 }
 

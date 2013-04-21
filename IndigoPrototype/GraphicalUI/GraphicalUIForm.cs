@@ -163,23 +163,40 @@ namespace GraphicalUI
 
         private void modelStartButton_Click(object sender, EventArgs e)
         {
-            GraphicalUIShell.Model.Start();
+            if (GraphicalUIShell.Model.State == ModelState.Initialised)
+            {                
+                modelStartButton.Text = "Stop!";
+                modelPauseButton.Text = "Pause";
+                modelPauseButton.Enabled = true;
+                GraphicalUIShell.Model.Start();
+            }
+            else if (GraphicalUIShell.Model.State == ModelState.Running || GraphicalUIShell.Model.State == ModelState.Paused || GraphicalUIShell.Model.State == ModelState.Error)
+            {                
+                modelStartButton.Text = "Initialize";
+                modelPauseButton.Enabled = false;
+                GraphicalUIShell.Model.Stop();
+            }
+            else if (GraphicalUIShell.Model.State == ModelState.Uninitialised)
+            {                
+                modelStartButton.Text = "Start";
+                modelPauseButton.Enabled = false;
+                GraphicalUIShell.Model.Initialise();
+            }
         }
 
         private void modelPauseButton_Click(object sender, EventArgs e)
         {
-            GraphicalUIShell.Model.Pause();
-        }
-
-        private void modelStopButton_Click(object sender, EventArgs e)
-        {
-            GraphicalUIShell.Model.Stop();
-        }
-
-        private void resumeButton_Click(object sender, EventArgs e)
-        {
-            GraphicalUIShell.Model.Resume();
-		}
+            if (GraphicalUIShell.Model.State == ModelState.Running)
+            {
+                GraphicalUIShell.Model.Pause();
+                modelPauseButton.Text = "Resume";
+            }
+            else if (GraphicalUIShell.Model.State == ModelState.Paused)
+            {
+                GraphicalUIShell.Model.Resume();
+                modelPauseButton.Text = "Pause";
+            }
+        }        
 
 		private void GrapgicalUIForm_FormClosing(object sender, FormClosingEventArgs e)
 		{		
