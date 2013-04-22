@@ -12,9 +12,9 @@ namespace IndigoEngine.Actions
 					new Type[]
 					{
 						typeof(AgentLivingIndigo),
-						typeof(AgentCamp),
-						typeof(AgentItemFruit),
-						typeof(AgentItemLog),
+						typeof(AgentManMadeShelterCamp),
+						typeof(AgentItemFoodFruit),
+						typeof(AgentItemResLog),
 						typeof(AgentPuddle),
 						typeof(AgentTree)
 					},

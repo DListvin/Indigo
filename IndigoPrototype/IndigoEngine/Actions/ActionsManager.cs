@@ -64,7 +64,7 @@ namespace IndigoEngine.Actions
 						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
 						{
 							{
-								typeof(AgentItemFruit),
+								typeof(AgentItemFoodFruit),
 								(sub, ob, par) => {return new ActionEat(sub, ob);}
 							}
 						}
@@ -85,7 +85,7 @@ namespace IndigoEngine.Actions
 								(sub, ob, par) => {return new ActionObtainFruit(sub, ob);}
 							},							
 							{
-								typeof(AgentItemFruit),
+								typeof(AgentItemFoodFruit),
 								(sub, ob, par) => {return new ActionObtainFruit(sub, ob);}
 							}
 						}
@@ -106,7 +106,7 @@ namespace IndigoEngine.Actions
 								(sub, ob, par) => {return new ActionObtainLog(sub, ob);}
 							},
 							{
-								typeof(AgentItemLog),
+								typeof(AgentItemResLog),
 								(sub, ob, par) => {return new ActionObtainLog(sub, ob);}
 							}
 						}
@@ -123,7 +123,7 @@ namespace IndigoEngine.Actions
 						new Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>()
 						{
 							{
-								typeof(AgentCamp),
+								typeof(AgentManMadeShelterCamp),
 								(sub, ob, par) => {return new ActionRest(sub, ob);}
 							},
 						}
@@ -181,15 +181,15 @@ namespace IndigoEngine.Actions
 						(sub, par) => {return new ActionDoNothing(sub);}
 					},
 					{
-						typeof(AgentCamp), 
+						typeof(AgentManMadeShelterCamp), 
 						(sub, par) => {return new ActionDoNothing(sub);}
 					},
 					{
-						typeof(AgentItemFruit), 
+						typeof(AgentItemFoodFruit), 
 						(sub, par) => {return new ActionDoNothing(sub);}
 					},
 					{
-						typeof(AgentItemLog), 
+						typeof(AgentItemResLog), 
 						(sub, par) => {return new ActionDoNothing(sub);}
 					},
 					{

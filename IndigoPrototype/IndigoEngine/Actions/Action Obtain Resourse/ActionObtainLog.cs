@@ -19,7 +19,7 @@ namespace IndigoEngine.Actions
 					new Type[]
 					{
 						typeof(AgentTree),
-						typeof(AgentItemLog)
+						typeof(AgentItemResLog)
 					},
 					"Woodcutting",
 					IsConflict = true,
@@ -47,7 +47,7 @@ namespace IndigoEngine.Actions
 			{
 				return false;
 			}
-			if(Object is AgentItemLog)
+			if(Object is AgentItemResLog)
 			{
 				if(Object.CurrentLocation.HasOwner)
 				{
@@ -73,7 +73,7 @@ namespace IndigoEngine.Actions
 				});
 			}	
 
-			if(Object is AgentItemLog)
+			if(Object is AgentItemResLog)
 			{
 				Subject.CurrentActionFeedback += new ActionFeedback(() =>
 				{

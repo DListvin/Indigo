@@ -18,7 +18,7 @@ namespace IndigoEngine.Actions
 					},
 					new Type[]
 					{
-						typeof(AgentItemFruit),
+						typeof(AgentItemFoodFruit),
 					},
 					IsConflict = true,
 					RequiresObject = true

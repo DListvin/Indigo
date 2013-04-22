@@ -20,7 +20,7 @@ namespace IndigoEngine
 		{
 			{
 				typeof(AgentTree),
-				() => {return new AgentItemLog();}
+				() => {return new AgentItemResLog();}
 			}
 		};
 	}

@@ -242,14 +242,14 @@ namespace IndigoEngine
 				currentAddingAgent.Inventory.StorageSize = 3;
 				AddAgent(currentAddingAgent);
 
-				currentAddingAgent = new AgentItemFruit();
+				currentAddingAgent = new AgentItemFoodFruit();
 				currentAddingAgent.Name = "Fruit1";
 				currentAddingAgent.CurrentLocation = new Location(0, 2);
 				currentAddingAgent.CurrentState.Health.MaxValue = 100;
 				currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
 				AddAgent(currentAddingAgent);
 
-				currentAddingAgent = new AgentItemFruit();
+				currentAddingAgent = new AgentItemFoodFruit();
 				currentAddingAgent.Name = "Fruit2";
 				currentAddingAgent.CurrentLocation = new Location(2, 0);
 				currentAddingAgent.CurrentState.Health.MaxValue = 100;
@@ -263,21 +263,21 @@ namespace IndigoEngine
 				currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
 				AddAgent(currentAddingAgent);
 
-				currentAddingAgent = new AgentItemLog();
+				currentAddingAgent = new AgentItemResLog();
 				currentAddingAgent.Name = "Log1";
 				AddAgent(currentAddingAgent);
 
-				currentAddingAgent = new AgentItemLog();
+				currentAddingAgent = new AgentItemResLog();
 				currentAddingAgent.Name = "Log2";
 				currentAddingAgent.CurrentLocation = new Location(3, 4);
 				AddAgent(currentAddingAgent);
 
-				currentAddingAgent = new AgentItemLog();
+				currentAddingAgent = new AgentItemResLog();
 				currentAddingAgent.Name = "Log3";
 				currentAddingAgent.CurrentLocation = new Location(-3, 4);
 				AddAgent(currentAddingAgent);
 
-				currentAddingAgent = new AgentItemLog();
+				currentAddingAgent = new AgentItemResLog();
 				currentAddingAgent.Name = "Log4";
 				currentAddingAgent.CurrentLocation = new Location(-3, -4);
 				AddAgent(currentAddingAgent);

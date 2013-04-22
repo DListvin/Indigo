@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +10,13 @@ namespace IndigoEngine.Agents
 	/// Agent for camp
 	/// </summary>
     [Serializable]
-	public class AgentCamp : Agent
+	public class AgentManMadeShelterCamp : AgentManMadeShelter
 	{	
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
 		#region Constructors
 			
-			public AgentCamp() 
+			public AgentManMadeShelterCamp() 
 				: base()
 			{
 				NeedFromCharacteristic.Add(CurrentState.Health, Needs.NeedNothing);

@@ -7,21 +7,11 @@ using NLog;
 namespace IndigoEngine.Agents
 {
 	/// <summary>
-	/// Agent for log
+	/// Again structure class
 	/// </summary>
     [Serializable]
-	public class AgentItemLog : Agent
+	public abstract class AgentItemRes : AgentItem
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-
-		#region Constructors
-			
-			public AgentItemLog() 
-				: base()
-			{
-				NeedFromCharacteristic.Add(CurrentState.Health, Needs.NeedNothing);
-			}
-
-		#endregion
 	}
 }

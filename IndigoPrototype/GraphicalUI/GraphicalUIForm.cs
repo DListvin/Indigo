@@ -37,9 +37,9 @@ namespace GraphicalUI
             mapPanel.MouseWheel += new MouseEventHandler(mapPanel_MouseWheel);
 
 			texturesDict.Add(typeof(AgentLivingIndigo), GraphicalUI.Properties.Resources.indigo_suit64);
-			texturesDict.Add(typeof(AgentItemFruit), GraphicalUI.Properties.Resources.fruit64);
-			texturesDict.Add(typeof(AgentCamp), GraphicalUI.Properties.Resources.camp64);
-			texturesDict.Add(typeof(AgentItemLog), GraphicalUI.Properties.Resources.log64);			
+			texturesDict.Add(typeof(AgentItemFoodFruit), GraphicalUI.Properties.Resources.fruit64);
+			texturesDict.Add(typeof(AgentManMadeShelterCamp), GraphicalUI.Properties.Resources.camp64);
+			texturesDict.Add(typeof(AgentItemResLog), GraphicalUI.Properties.Resources.log64);			
 			texturesDict.Add(typeof(AgentPuddle), GraphicalUI.Properties.Resources.water64);		
 			texturesDict.Add(typeof(AgentTree), GraphicalUI.Properties.Resources.tree64);            
         }
@@ -95,7 +95,7 @@ namespace GraphicalUI
 					if (!agent.CurrentLocation.HasOwner)
 					{
 						texturesDict.TryGetValue(agent.GetType(), out drawedImage);
-						if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
+						if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemFoodFruit)))
 						{
 							drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
 						}

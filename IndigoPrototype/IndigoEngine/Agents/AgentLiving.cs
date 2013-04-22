@@ -43,14 +43,6 @@ namespace IndigoEngine.Agents
 			} 
         
         #endregion
-		
-        /// <summary>
-        /// This function is the brain of agent, it decide what to do
-        /// </summary>
-        public override void Decide()
-        {
-            base.Decide();
-        }
 
 		public override void StateRecompute()
         {

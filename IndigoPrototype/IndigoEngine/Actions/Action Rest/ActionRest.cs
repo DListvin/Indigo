@@ -15,7 +15,7 @@ namespace IndigoEngine.Actions
 					},
 					new Type[]
 					{
-						typeof(AgentCamp),
+						typeof(AgentManMadeShelterCamp),
 					},
 					IsConflict = true,
 					RequiresObject = true

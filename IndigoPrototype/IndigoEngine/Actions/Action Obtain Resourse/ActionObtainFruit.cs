@@ -19,7 +19,7 @@ namespace IndigoEngine.Actions
 					new Type[]
 					{
 						typeof(AgentTree),
-						typeof(AgentItemFruit)
+						typeof(AgentItemFoodFruit)
 					},
 					"Gathering",
 					IsConflict = true,
@@ -50,12 +50,12 @@ namespace IndigoEngine.Actions
 
 			if(Object is AgentTree)
 			{
-				if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemFruit)))
+				if (!Object.Inventory.ExistsAgentByType(typeof(AgentItemFoodFruit)))
 				{
 					return false;
 				}
 			}
-			if(Object is AgentItemFruit)
+			if(Object is AgentItemFoodFruit)
 			{
 				if(Object.CurrentLocation.HasOwner)
 				{
@@ -77,10 +77,10 @@ namespace IndigoEngine.Actions
 			{
 				Subject.CurrentActionFeedback += new ActionFeedback(() =>
 				{
-					Subject.Inventory.AddAgentToStorage(Object.Inventory.PopAgentByType(typeof(AgentItemFruit)));
+					Subject.Inventory.AddAgentToStorage(Object.Inventory.PopAgentByType(typeof(AgentItemFoodFruit)));
 				});
 			}
-			if(Object is AgentItemFruit)
+			if(Object is AgentItemFoodFruit)
 			{
 				Subject.CurrentActionFeedback += new ActionFeedback(() =>
 				{
