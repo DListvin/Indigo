@@ -33,10 +33,9 @@
             this.modelPauseButton = new System.Windows.Forms.Button();
             this.modelStartButton = new System.Windows.Forms.Button();
             this.mapInfoPanel = new System.Windows.Forms.Panel();
-            this.mapInfoPanelScrollBar = new System.Windows.Forms.VScrollBar();
             this.mapPanel = new GraphicalUI.myDoubleBufferedPanel();
+            this.clearInfobutton = new System.Windows.Forms.Button();
             this.modelControlPanel.SuspendLayout();
-            this.mapInfoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // modelControlPanel
@@ -44,11 +43,12 @@
             this.modelControlPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.modelControlPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.modelControlPanel.Controls.Add(this.clearInfobutton);
             this.modelControlPanel.Controls.Add(this.modelPauseButton);
             this.modelControlPanel.Controls.Add(this.modelStartButton);
             this.modelControlPanel.Location = new System.Drawing.Point(13, 469);
             this.modelControlPanel.Name = "modelControlPanel";
-            this.modelControlPanel.Size = new System.Drawing.Size(759, 81);
+            this.modelControlPanel.Size = new System.Drawing.Size(880, 81);
             this.modelControlPanel.TabIndex = 1;
             // 
             // modelPauseButton
@@ -77,20 +77,10 @@
             this.mapInfoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.mapInfoPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.mapInfoPanel.Controls.Add(this.mapInfoPanelScrollBar);
-            this.mapInfoPanel.Location = new System.Drawing.Point(569, 13);
+            this.mapInfoPanel.Location = new System.Drawing.Point(517, 13);
             this.mapInfoPanel.Name = "mapInfoPanel";
-            this.mapInfoPanel.Size = new System.Drawing.Size(203, 450);
+            this.mapInfoPanel.Size = new System.Drawing.Size(376, 450);
             this.mapInfoPanel.TabIndex = 2;
-            // 
-            // mapInfoPanelScrollBar
-            // 
-            this.mapInfoPanelScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.mapInfoPanelScrollBar.Location = new System.Drawing.Point(186, 0);
-            this.mapInfoPanelScrollBar.Name = "mapInfoPanelScrollBar";
-            this.mapInfoPanelScrollBar.Size = new System.Drawing.Size(17, 450);
-            this.mapInfoPanelScrollBar.TabIndex = 0;
             // 
             // mapPanel
             // 
@@ -100,8 +90,9 @@
             this.mapPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.mapPanel.Location = new System.Drawing.Point(13, 13);
             this.mapPanel.Name = "mapPanel";
-            this.mapPanel.Size = new System.Drawing.Size(550, 450);
+            this.mapPanel.Size = new System.Drawing.Size(498, 450);
             this.mapPanel.TabIndex = 0;
+            this.mapPanel.Click += new System.EventHandler(this.mapPanel_Click);
             this.mapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPanel_Paint);
             this.mapPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseDown);
             this.mapPanel.MouseEnter += new System.EventHandler(this.mapPanel_MouseEnter);
@@ -109,11 +100,22 @@
             this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseMove);
             this.mapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseUp);
             // 
+            // clearInfobutton
+            // 
+            this.clearInfobutton.Enabled = false;
+            this.clearInfobutton.Location = new System.Drawing.Point(504, 4);
+            this.clearInfobutton.Name = "clearInfobutton";
+            this.clearInfobutton.Size = new System.Drawing.Size(75, 23);
+            this.clearInfobutton.TabIndex = 2;
+            this.clearInfobutton.Text = "ClearInfo";
+            this.clearInfobutton.UseVisualStyleBackColor = true;
+            this.clearInfobutton.Click += new System.EventHandler(this.clearInfobutton_Click);
+            // 
             // GrapgicalUIForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.ClientSize = new System.Drawing.Size(905, 562);
             this.Controls.Add(this.mapInfoPanel);
             this.Controls.Add(this.modelControlPanel);
             this.Controls.Add(this.mapPanel);
@@ -124,7 +126,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GrapgicalUIForm_FormClosing);
             this.Load += new System.EventHandler(this.GrapgicalUIForm_Load);
             this.modelControlPanel.ResumeLayout(false);
-            this.mapInfoPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -134,9 +135,9 @@
         private myDoubleBufferedPanel mapPanel;
         private System.Windows.Forms.Panel modelControlPanel;
         private System.Windows.Forms.Panel mapInfoPanel;
-        private System.Windows.Forms.VScrollBar mapInfoPanelScrollBar;
         private System.Windows.Forms.Button modelPauseButton;
         private System.Windows.Forms.Button modelStartButton;
+        private System.Windows.Forms.Button clearInfobutton;
     }
 }
 

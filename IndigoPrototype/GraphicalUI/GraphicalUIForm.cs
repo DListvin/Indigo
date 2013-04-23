@@ -21,12 +21,20 @@ namespace GraphicalUI
         Point mouseDownPoint = new Point(0, 0);
         bool leftMouseButtonInMapIsPressed = false;
         int zoomModifyer = 0;
+        int textureSize;//Side of the texture
+        List<Agent> displayInfoAgents;
 
         Dictionary<Type, Image> texturesDict = new Dictionary<Type, Image>();
 
         public GrapgicalUIForm()
         {
             InitializeComponent();
+            Label label = new Label();
+            // Initialize the Label and TextBox controls.
+            label.Location = new Point(1, 1);
+            label.Text = "";
+            label.AutoSize = true;
+            mapInfoPanel.Controls.Add(label);
         }
 
         private void GrapgicalUIForm_Load(object sender, EventArgs e)
@@ -41,12 +49,17 @@ namespace GraphicalUI
 			texturesDict.Add(typeof(AgentManMadeShelterCamp), GraphicalUI.Properties.Resources.camp64);
 			texturesDict.Add(typeof(AgentItemResLog), GraphicalUI.Properties.Resources.log64);			
 			texturesDict.Add(typeof(AgentPuddle), GraphicalUI.Properties.Resources.water64);		
-			texturesDict.Add(typeof(AgentTree), GraphicalUI.Properties.Resources.tree64);            
+			texturesDict.Add(typeof(AgentTree), GraphicalUI.Properties.Resources.tree64);
+
+            displayInfoAgents = new List<Agent>();
+
+            textureSize = GraphicalUI.Properties.Resources.grass64.Width;
         }
 
         private void onModelTick(object sender, EventArgs e)	
         {
-            CrossthreadRefreshMapPanel();
+            UpdateMapInfoPanel();
+            CrossthreadRefreshMapPanel();            
         }
 
         private void CrossthreadRefreshMapPanel()
@@ -74,14 +87,13 @@ namespace GraphicalUI
             Image drawedImage = GraphicalUI.Properties.Resources.grass64;
             //Point to draw in
             Point drawPoint = new Point(0, 0);
-            //Side of the texture
-            int textureSize = GraphicalUI.Properties.Resources.grass64.Width;
-
+            Point drawBegin = new Point(-textureSize - zoomModifyer, -textureSize - zoomModifyer);
+            Point drawEnd = new Point(mapHeight + (textureSize + zoomModifyer), mapWidth + (textureSize + zoomModifyer));
             //Points are testing and temporary
             //Draws the background
-            for (int i = -(textureSize + zoomModifyer); i < mapHeight + (textureSize + zoomModifyer); i += (textureSize + zoomModifyer))
+            for (int i = drawBegin.X; i < drawEnd.X; i += (textureSize + zoomModifyer))
             {
-                for (int j = -(textureSize + zoomModifyer); j < mapWidth + (textureSize + zoomModifyer); j += (textureSize + zoomModifyer))
+                for (int j = drawBegin.Y; j < drawEnd.Y; j += (textureSize + zoomModifyer))
                 {
                     e.Graphics.DrawImage(drawedImage, j - shiftPoint.X % (textureSize + zoomModifyer), i - shiftPoint.Y % (textureSize + zoomModifyer), (textureSize + zoomModifyer), (textureSize + zoomModifyer));
                 }
@@ -99,16 +111,35 @@ namespace GraphicalUI
 						{
 							drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
 						}
-
-						if ((agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X > -(textureSize + zoomModifyer)) && (agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X < mapWidth + (textureSize + zoomModifyer)) &&
-							(-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y > -(textureSize + zoomModifyer)) && (-agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y < mapHeight + (textureSize + zoomModifyer)))
+                        Point agentUICoord = GetUICoord(agent.CurrentLocation);
+                        if ((agentUICoord.X > -(textureSize + zoomModifyer)) && (agentUICoord.X < mapWidth + (textureSize + zoomModifyer)) &&
+                            (agentUICoord.Y > -(textureSize + zoomModifyer)) && (agentUICoord.Y < mapHeight + (textureSize + zoomModifyer)))
 						{
-							e.Graphics.DrawImage(drawedImage, agent.CurrentLocation.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X, -agent.CurrentLocation.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y, (textureSize + zoomModifyer), (textureSize + zoomModifyer));
+                            e.Graphics.DrawImage(drawedImage, agentUICoord.X, agentUICoord.Y, (textureSize + zoomModifyer), (textureSize + zoomModifyer));
 						}
 					}
 				}
 			}
+            foreach (Agent agent in displayInfoAgents)
+            {
+                e.Graphics.DrawRectangle(new Pen(Brushes.DarkGreen), new Rectangle(GetUICoord(agent.CurrentLocation), new Size((textureSize + zoomModifyer), (textureSize + zoomModifyer))));
+            }
         }
+
+        private Point GetUICoord(Location modelCoord)
+        {
+            return new Point(modelCoord.Coords.X * (textureSize + zoomModifyer) - shiftPoint.X,
+                            -modelCoord.Coords.Y * (textureSize + zoomModifyer) - shiftPoint.Y);
+        }
+        private Location GetModelCoord(Point UICoord)
+        {
+            double y = -(double)(UICoord.Y + shiftPoint.Y) / (double)(textureSize + zoomModifyer);
+            double x =  (double)(UICoord.X + shiftPoint.X) / (double)(textureSize + zoomModifyer);
+            x = x < 0 ? x-1 : x;
+            y = y < 0 ? y : y+1;
+            return new Location((int)x, (int)y);
+        }
+
 
         /// <summary>
         /// Paints the mapPanel
@@ -149,6 +180,50 @@ namespace GraphicalUI
             {
                 leftMouseButtonInMapIsPressed = false;
             }
+            if (e.Button == MouseButtons.Right)
+            {
+                CalcDisplayInfoAgents(new Point(e.X, e.Y));
+                UpdateMapInfoPanel();
+                mapPanel.Refresh();
+            }
+        }
+
+        private void CalcDisplayInfoAgents(Point coord)
+        {
+            List<Agent> ans = new List<Agent>();
+            Location loc = GetModelCoord(coord);
+            foreach (Agent ag in GraphicalUIShell.Model.Agents)
+            {
+                if (!ag.CurrentLocation.HasOwner)
+                {     
+                    if (ag.CurrentLocation.Coords.X == loc.Coords.X && ag.CurrentLocation.Coords.Y == loc.Coords.Y)
+                    {
+                        if (displayInfoAgents.Contains(ag))
+                        {
+                            displayInfoAgents.Remove(ag);
+                        }
+                        else
+                        {
+                            displayInfoAgents.Add(ag);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void UpdateMapInfoPanel()
+        {
+            if (mapInfoPanel.InvokeRequired)
+            {
+                mapInfoPanel.Invoke(new MethodInvoker(UpdateMapInfoPanel));
+                return;
+            }            
+            mapInfoPanel.Controls[0].Text = "";
+            foreach (Agent ag in displayInfoAgents)
+            {
+                mapInfoPanel.Controls[0].Text += ag.ToString() + "\n\n";
+            }          
+
         }
 
         private void mapPanel_MouseMove(object sender, MouseEventArgs e)
@@ -211,6 +286,16 @@ namespace GraphicalUI
         private void mapPanel_MouseLeave(object sender, EventArgs e)
         {
             
+        }
+
+        private void mapPanel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clearInfobutton_Click(object sender, EventArgs e)
+        {
+            displayInfoAgents.Clear();
         }
     }
 }
