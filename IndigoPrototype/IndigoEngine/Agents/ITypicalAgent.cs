@@ -68,10 +68,5 @@ namespace IndigoEngine.Agents
         /// Modify it's charecterictics each turn.
         /// </summary>
         void StateRecompute();
-
-		/// <summary>
-		/// Apply action feedback to agent
-		/// </summary>
-		void PerformFeedback();
 	}
 }

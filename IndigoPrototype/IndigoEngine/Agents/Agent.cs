@@ -233,8 +233,9 @@ namespace IndigoEngine.Agents
 			logger.Trace("Base state recomputing for {0}", this);
 
 			PerformFeedback();
+			CurrentState.Reduct();
 
-            if (CurrentState.Health.CurrentUnitValue <= this.CurrentState.Health.MinValue)
+            if (CurrentState.Health.CurrentUnitValue == this.CurrentState.Health.MinValue)
 			{
 				HomeWorld.AskWorldForEuthanasia(this);
 			}
@@ -251,7 +252,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalAgent
 		/// </summary>
-        public void PerformFeedback()
+        private void PerformFeedback()
         {
             if (CurrentActionFeedback != null)
 			{

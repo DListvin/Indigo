@@ -69,6 +69,18 @@ namespace IndigoEngine.Agents
 			}
 
         #endregion
+		
+
+		/// <summary>
+		/// Set currentValue in each characteristic between borders. Use it in the end of the iteration
+		/// </summary>
+		public void Reduct()
+		{
+			foreach(Characteristic ch in this)
+			{
+				ch.Reduct();
+			}
+		}
 
         /// <summary>
         /// IEnumerator for foreach
