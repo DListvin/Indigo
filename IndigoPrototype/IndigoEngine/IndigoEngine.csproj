@@ -62,6 +62,10 @@
     <Compile Include="Actions\Action Grow Fruit\ActionGrowFruit.cs" />
     <Compile Include="Actions\ActionsManager.cs" />
     <Compile Include="Actions\Action Rest\ActionRest.cs" />
+    <Compile Include="Actions\Exceptions\ConflictException.cs" />
+    <Compile Include="Actions\Exceptions\NotLegimateExeception.cs" />
+    <Compile Include="Actions\Exceptions\ResourceRequiredException.cs" />
+    <Compile Include="Actions\Exceptions\SkillRequiredException.cs" />
     <Compile Include="Actions\InfoAboutAction.cs" />
     <Compile Include="Actions\MetaData\ActionInfoAttribute.cs" />
     <Compile Include="Agents\AgentItemFood.cs" />

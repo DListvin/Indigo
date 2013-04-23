@@ -39,22 +39,22 @@ namespace IndigoEngine.Actions
 
         #endregion	
 
-		public override bool CheckForLegitimacy()
+		public override Exception CheckForLegitimacy()
 		{
-			if(!base.CheckForLegitimacy())
+			if(base.CheckForLegitimacy() != null)
 			{
-				return false;
+				return base.CheckForLegitimacy();
 			}
 
 			if(Object is AgentItem)
 			{
 				if(Object.CurrentLocation.HasOwner)
 				{
-					return false;
+					return new NotLegimateExeception();
 				}
 			}
 
-			return true;
+			return null;
 		}
 
 		public override void CalculateFeedbacks()

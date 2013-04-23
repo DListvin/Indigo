@@ -41,19 +41,19 @@ namespace IndigoEngine.Actions
 		/// <summary>
 		/// ITypicalAction
 		/// </summary>
-		public override bool CheckForLegitimacy()
+		public override Exception CheckForLegitimacy()
 		{
-			if(!base.CheckForLegitimacy())
+			if(base.CheckForLegitimacy() != null)
 			{
-				return false;
+				return base.CheckForLegitimacy();
 			}  
 
             if (Subject.Inventory.NumberOfAgentsByType(typeof(AgentItemResLog)) < 2) //Number of logs int subject's inventory
             {
-                return false;
+                return new ResourceRequiredException();
             }
 
-			return true;
+			return null;
 		}
 
         /// <summary>

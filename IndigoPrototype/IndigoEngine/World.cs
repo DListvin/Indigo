@@ -356,31 +356,31 @@ namespace IndigoEngine
 
         #region IWorldToAgent realisation
 
-            public bool AskWorldForAction(ActionAbstract action)
+            public Exception AskWorldForAction(ActionAbstract action)
             {
                 action.World = this;
-				if(action.CheckForLegitimacy()) //Checking action itself if it is legimate
+				if(action.CheckForLegitimacy() != null) //Checking action for legitimacy
 				{
-					if(Actions.Any(act =>  //Checking action for conflicts
+					return action.CheckForLegitimacy();
+				}
+				if(Actions.Any(act =>  //Checking action for conflicts
+				{
+					if(action.GetType() != act.GetType()) //Comparing actions types
 					{
-						if(action.GetType() != act.GetType()) //Comparing actions types
-						{
-							return false;
-						}
-						if(action.CompareTo(act) == 0)  //Comparing actions for conflicts
-						{
-							return true;
-						}
-						return false;
-					}))
-					{	
 						return false;
 					}
-					Actions.Add(action);
-					return true;
-				}		
-						
-				return false;
+					if(action.CompareTo(act) == 0)  //Comparing actions for conflicts
+					{
+						return true;
+					}
+					return false;
+				}))
+				{	
+					return new ConflictException();
+				}
+				Actions.Add(action);
+
+				return null;
             }
 			
 			public bool AskWorldForEuthanasia(Agent sender)

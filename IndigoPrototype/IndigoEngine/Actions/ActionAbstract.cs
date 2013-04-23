@@ -97,19 +97,19 @@ namespace IndigoEngine.Actions
         /// <summary>
         /// ITypicalAction here is control for obj and subj types
         /// </summary>
-		public virtual bool CheckForLegitimacy()
+		public virtual Exception CheckForLegitimacy()
 		{
 			Attribute actionInfo = Attribute.GetCustomAttribute(this.GetType(), typeof(ActionInfoAttribute));  // getting attributes for this class
 			if(actionInfo == null)
 			{
 				logger.Error("Failed to get action info attribute for {0}", this.GetType());
-				return false;
+				return new Exception();
 			}
 			if(!ActionAbstract.CheckForSkills(Subject, (actionInfo as ActionInfoAttribute).RequiredSkills))
 			{
-				return false;
+				return new SkillRequiredException();
 			}
-			return true;
+			return null;
 		}
 
         /// <summary>

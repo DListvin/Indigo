@@ -17,7 +17,7 @@ namespace IndigoEngine
 		/// </summary>
 		/// <param name="action">Action which agent is asking for</param>
 		/// <returns>Positive return mean action is accepted. Negative - vice versa</returns>
-        bool AskWorldForAction(ActionAbstract action);
+        Exception AskWorldForAction(ActionAbstract action);
 		
         /// <summary>
         /// Ask World For Deletion obj

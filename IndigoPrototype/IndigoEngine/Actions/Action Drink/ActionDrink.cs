@@ -35,18 +35,6 @@ namespace IndigoEngine.Actions
         }
 
         #endregion
-		
-		/// <summary>
-		/// ITypicalAction
-		/// </summary>
-		public override bool CheckForLegitimacy()
-		{
-			if(!base.CheckForLegitimacy())
-			{
-				return false;
-			}
-			return true;
-		}
 
         /// <summary>
         /// ITypicalAction

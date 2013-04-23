@@ -160,8 +160,8 @@ namespace IndigoEngine.Agents
         /// <param name="argNeed">need, that must be satisfied</param>
         protected virtual void MakeAction(Need argNeed)
         {
-            bool worldResponseToAction = false;	//World response if the action is accepted.
-			ActionAbstract newAction = null;    //New action to create
+            Exception worldResponseToAction = new Exception();	//World response if the action is accepted.
+			ActionAbstract newAction = null;                    //New action to create
             if (argNeed.SatisfyingActions.Count == 0)
 			{
 				logger.Error("Number of Action to satisfy need {0} is 0", argNeed);
@@ -176,7 +176,7 @@ namespace IndigoEngine.Agents
 					logger.Error("Failed to get action info attribute for {0}", act.GetType());
 					return;
 				}
-				var currentInfo = actionInfo as ActionInfoAttribute; //Converting attribute to ActionInfo			
+				ActionInfoAttribute currentInfo = actionInfo as ActionInfoAttribute; //Converting attribute to ActionInfo			
 
                 if (currentInfo.RequiresObject)
                 {
@@ -197,14 +197,14 @@ namespace IndigoEngine.Agents
 							currentInfo = actionInfo as ActionInfoAttribute;
 							newAction = ActionsManager.GetActionForCurrentParticipants(typeof(ActionGo), currentInfo, this, null, ag.CurrentLocation.Coords);
 							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
-                            if (worldResponseToAction)
+                            if (worldResponseToAction == null)
 							{
                                 break;
 							}
                         }
 						newAction = ActionsManager.GetActionForCurrentParticipants(act, currentInfo, this, ag);
                         worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
-                        if (worldResponseToAction)
+                        if (worldResponseToAction == null)
                         {
                             break;
                         }
@@ -216,7 +216,7 @@ namespace IndigoEngine.Agents
 					worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
                 }
 
-                if (worldResponseToAction)
+                if (worldResponseToAction == null)
                 {
 					logger.Debug("Made action for {0}: {1}", this.Name, newAction.Name);
                     break;

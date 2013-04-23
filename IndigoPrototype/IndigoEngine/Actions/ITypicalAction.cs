@@ -25,7 +25,7 @@ namespace IndigoEngine.Actions
 		/// Checking if the action could be perform with current object and subject
 		/// </summary>
 		/// <returns>True - if action can be perform, false - vise versa</returns>
-		bool CheckForLegitimacy();
+		Exception CheckForLegitimacy();
 
 		/// <summary>
 		/// Perfoming the action: defines action results for object and subject
