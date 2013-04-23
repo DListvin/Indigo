@@ -7,6 +7,9 @@ using NLog;
 
 namespace IndigoEngine.Actions
 {
+	/// <summary>
+	/// Action for tree to grow a fruit on itself
+	/// </summary>
     [Serializable]
 	[ActionInfo(
 					new Type[]
@@ -100,10 +103,5 @@ namespace IndigoEngine.Actions
 		{
 			return 1; //Action isn't conflict
 		}
-
-        public override string ToString()
-        {
-            return "Action: " + Name;
-        }
 	}
 }

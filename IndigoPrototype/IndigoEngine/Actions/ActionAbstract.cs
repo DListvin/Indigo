@@ -143,5 +143,10 @@ namespace IndigoEngine.Actions
 		{
 			return 1;
 		}
+
+        public override string ToString()
+        {
+            return "Action: " + Name;
+        }
     }
 }

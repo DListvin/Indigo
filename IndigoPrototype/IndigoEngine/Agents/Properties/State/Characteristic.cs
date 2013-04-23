@@ -81,14 +81,15 @@ namespace IndigoEngine.Agents
 						{
 							return MinValue;
 						}
-						if(currentValue >= MaxValue)
-						{
-							return MaxValue;
-						}
 						return currentValue;
 					}
 					set
 					{
+						if(value >= MaxValue)
+						{
+							currentValue = MaxValue;
+							return;
+						}
 						currentValue = value;
 					}
 				}

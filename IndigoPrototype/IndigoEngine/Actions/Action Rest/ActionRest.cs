@@ -7,6 +7,9 @@ using NLog;
 
 namespace IndigoEngine.Actions
 {
+	/// <summary>
+	/// Action for agent to rest (mainly: restoring health)
+	/// </summary>
     [Serializable]
 	[ActionInfo(
 					new Type[]

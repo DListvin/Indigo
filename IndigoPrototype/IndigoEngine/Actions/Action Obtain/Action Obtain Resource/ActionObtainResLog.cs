@@ -8,7 +8,7 @@ using NLog;
 namespace IndigoEngine.Actions
 {
     /// <summary>
-    /// Action to Obtain Resourse
+    /// Action to Obtain log
     /// </summary>
     [Serializable]
 	[ActionInfo(
@@ -25,13 +25,13 @@ namespace IndigoEngine.Actions
 					IsConflict = true,
 					RequiresObject = true
 				)]
-    class ActionObtainLog : ActionAbstract
+    class ActionObtainResLog : ActionObtainRes
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
         #region Constructors
 
-			public ActionObtainLog(Agent argSubj, Agent argObj)
+			public ActionObtainResLog(Agent argSubj, Agent argObj)
 				: base(argSubj, argObj)
 			{
 			}
@@ -46,13 +46,6 @@ namespace IndigoEngine.Actions
 			if(!base.CheckForLegitimacy())
 			{
 				return false;
-			}
-			if(Object is AgentItemResLog)
-			{
-				if(Object.CurrentLocation.HasOwner)
-				{
-					return false;
-				}
 			}
 
 			return true;
@@ -72,19 +65,6 @@ namespace IndigoEngine.Actions
 					Object.CurrentState.Health.CurrentUnitValue -= 50;
 				});
 			}	
-
-			if(Object is AgentItemResLog)
-			{
-				Subject.CurrentActionFeedback += new ActionFeedback(() =>
-				{
-					Subject.Inventory.AddAgentToStorage(Object);
-				});
-			}
-        }
-
-        public override string ToString()
-        {
-            return "Action: Obtain fruit";
         }
 
 		/// <summary>
@@ -92,7 +72,7 @@ namespace IndigoEngine.Actions
 		/// </summary>
 		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
-			if(Object == (argActionToCompare as ActionObtainLog).Object)
+			if(Object == (argActionToCompare as ActionObtainResLog).Object)
 			{
 				return 0;
 			}

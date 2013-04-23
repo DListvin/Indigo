@@ -24,35 +24,17 @@ namespace IndigoEngine.Actions
 					IsConflict = true,
 					RequiresObject = false
 				)]
-    public class ActionBreakCamp : ActionAbstract
+    public class ActionBuildShelterCamp : ActionBuildShelter
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();	
 
         #region Constructors
 
-			public ActionBreakCamp(Agent argSubj, params object[] argDir)
-			: base(argSubj, null)
+			public ActionBuildShelterCamp(Agent argSubj, params object[] argDir)
+				: base(argSubj, argDir)
 			{
-				if(argDir.Length == 0)
-				{
-					BuildDirection = Normilize(new Point(), Subject.CurrentLocation.Coords);
-				}
-				else
-				{
-					BuildDirection = Normilize((Point)argDir[0], Subject.CurrentLocation.Coords);
-				}
-
-				CampLocation = new Location(Subject.CurrentLocation.Coords.X + BuildDirection.X, Subject.CurrentLocation.Coords.Y + BuildDirection.Y);
 				Name = "To Break a Camp";
 			}
-
-        #endregion	
-
-        #region Properties
-
-			public Point BuildDirection { get; set; }    //Where from object wi	ll be camp
-
-			public Location CampLocation { get; set; }   //Where is the new camp in the world grid
 
         #endregion		
 		
@@ -84,7 +66,7 @@ namespace IndigoEngine.Actions
             Subject.CurrentActionFeedback += new ActionFeedback(() =>
             {
 				AgentManMadeShelterCamp addingCamp = new AgentManMadeShelterCamp();
-				addingCamp.CurrentLocation = CampLocation;
+				addingCamp.CurrentLocation = BuildingLocation;
 				addingCamp.Name = "Camp_by_" + Subject.Name;
 				if(
 					World.AskWorldForAddition(this, addingCamp) &&
@@ -98,17 +80,12 @@ namespace IndigoEngine.Actions
             });
         }
 
-        public override string ToString()
-        {
-            return "Action: " + Name;
-        }
-
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>
 		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
-			if(CampLocation == (argActionToCompare as ActionBreakCamp).CampLocation)
+			if(BuildingLocation == (argActionToCompare as ActionBuildShelterCamp).BuildingLocation)
 			{
 				return 0;
 			}

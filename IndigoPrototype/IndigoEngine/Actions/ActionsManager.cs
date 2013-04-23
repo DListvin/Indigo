@@ -73,7 +73,7 @@ namespace IndigoEngine.Actions
 			},	
 			//Action obtain fruit dictionary
 			{
-				typeof(ActionObtainFruit),
+				typeof(ActionObtainFood),
 				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
 				{
 					{
@@ -82,11 +82,11 @@ namespace IndigoEngine.Actions
 						{
 							{
 								typeof(AgentTree),
-								(sub, ob, par) => {return new ActionObtainFruit(sub, ob);}
+								(sub, ob, par) => {return new ActionObtainFoodFruit(sub, ob);}
 							},							
 							{
 								typeof(AgentItemFoodFruit),
-								(sub, ob, par) => {return new ActionObtainFruit(sub, ob);}
+								(sub, ob, par) => {return new ActionObtainFoodFruit(sub, ob);}
 							}
 						}
 					}
@@ -94,7 +94,7 @@ namespace IndigoEngine.Actions
 			},	
 			//Action obtain log dictionary
 			{
-				typeof(ActionObtainLog),
+				typeof(ActionObtainRes),
 				new Dictionary<Type, Dictionary<Type, Func<Agent, Agent, object[], ActionAbstract>>>()
 				{
 					{
@@ -103,11 +103,11 @@ namespace IndigoEngine.Actions
 						{
 							{
 								typeof(AgentTree),
-								(sub, ob, par) => {return new ActionObtainLog(sub, ob);}
+								(sub, ob, par) => {return new ActionObtainResLog(sub, ob);}
 							},
 							{
 								typeof(AgentItemResLog),
-								(sub, ob, par) => {return new ActionObtainLog(sub, ob);}
+								(sub, ob, par) => {return new ActionObtainResLog(sub, ob);}
 							}
 						}
 					}
@@ -138,14 +138,14 @@ namespace IndigoEngine.Actions
 		#region Dictionary itself. Dangerous! Do not open! 
 		private static Dictionary<Type, Dictionary<Type, Func<Agent, object[], ActionAbstract>>> UnaryActionsDataBase = new Dictionary<Type, Dictionary<Type, Func<Agent, object[], ActionAbstract>>>()
 		{
-			//Action break camp dictionary
+			//Action break shelter dictionary
 			{
-				typeof(ActionBreakCamp),
+				typeof(ActionBuildShelter),
 				new Dictionary<Type, Func<Agent, object[], ActionAbstract>>()
 				{
 					{
 						typeof(AgentLivingIndigo), 
-						(sub, par) => {return new ActionBreakCamp(sub, par);}
+						(sub, par) => {return new ActionBuildShelterCamp(sub, par);}
 					}
 				}
 			},
@@ -218,7 +218,7 @@ namespace IndigoEngine.Actions
 		{
 			logger.Trace("Getting action for action type {0}, subject: {1}, object: {2}", argActionType, argSubject.Name, argObject != null ? argObject.Name : "none");
 
-			if(argActionType.BaseType != typeof(ActionAbstract))
+			if(!argActionType.IsSubclassOf(typeof(ActionAbstract)))
 			{
 				logger.Error("Trying to get action for none-action type: {0}!", argActionType);
 				return null;

@@ -412,7 +412,7 @@ namespace IndigoEngine
 
             public bool AskWorldForDeletion(object sender, Agent obj)
             {
-                if (sender.GetType().BaseType != typeof(ActionAbstract)) //Checking sender type (only actions accepted)
+                if (!(sender is ActionAbstract)) //Checking sender type (only actions accepted)
 				{
                     return false;
 				}
@@ -429,7 +429,7 @@ namespace IndigoEngine
 
             public bool AskWorldForAddition(object sender, Agent obj)
             {
-                if (sender.GetType().BaseType != typeof(ActionAbstract)) //Checking sender type (only actions accepted)
+                if (!(sender is ActionAbstract)) //Checking sender type (only actions accepted)
 				{
                     return false;
 				}

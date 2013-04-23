@@ -7,6 +7,9 @@ using NLog;
 
 namespace IndigoEngine.Actions
 {
+	/// <summary>
+	/// Action for agent to do nothing at this iteration. Indigo gets +1 to aggressivnes
+	/// </summary>
     [Serializable]
 	[ActionInfo(
 					new Type[]

@@ -67,11 +67,6 @@ namespace IndigoEngine.Actions
 
         }
 
-        public override string ToString()
-        {
-            return "Action: drink ";
-        }
-
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>

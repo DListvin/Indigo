@@ -31,16 +31,16 @@ namespace IndigoEngine.Actions
 
 		public ActionAttack(Agent argSubj, Agent argObj, params object[] argHitPointsToTakeOff)
 			: base(argSubj, argObj)
+		{
+			if(argHitPointsToTakeOff.Length == 0)
 			{
-				if(argHitPointsToTakeOff.Length == 0)
-				{
-					HitPointsToTakeOff = 1;
-				}
-				else
-				{
-					HitPointsToTakeOff = (int)argHitPointsToTakeOff[0];
-				}
+				HitPointsToTakeOff = 1;
 			}
+			else
+			{
+				HitPointsToTakeOff = (int)argHitPointsToTakeOff[0];
+			}
+		}
 
 		#endregion
 

@@ -26,9 +26,11 @@ namespace IndigoEngine
 			{
 				get
 				{
-                    List<Type> actions = new List<Type>();
-                    actions.Add(typeof(ActionEat));
-                    actions.Add(typeof(ActionObtainFruit)); 
+                    List<Type> actions = new List<Type>()
+					{
+						typeof(ActionEat),
+						typeof(ActionObtainFood)
+					}; 
 					return new Need("eat", 1, 2, actions);
 				}
 			}
@@ -45,10 +47,12 @@ namespace IndigoEngine
 			{
 				get 
 				{
-                    List<Type> actions = new List<Type>();
-					actions.Add(typeof(ActionRest));
-                    actions.Add(typeof(ActionBreakCamp));
-                    actions.Add(typeof(ActionObtainLog)); 
+                    List<Type> actions = new List<Type>()
+					{
+						typeof(ActionRest),
+						typeof(ActionBuildShelter),
+						typeof(ActionObtainRes)
+					};
 					return new Need("camp", 2, 1, actions);
 				}
 			}

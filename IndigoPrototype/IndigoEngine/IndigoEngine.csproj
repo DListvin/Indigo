@@ -45,15 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\Action Obtain Resourse\ActionObtainFruit.cs" />
-    <Compile Include="Actions\Action Obtain Resourse\ActionObtainLog.cs" />
+    <Compile Include="Actions\Action Build\Action Build Shelter\ActionBuildShelter.cs" />
+    <Compile Include="Actions\Action Build\ActionBuild.cs" />
+    <Compile Include="Actions\Action Obtain\Action Obtain Food\ActionObtainFood.cs" />
+    <Compile Include="Actions\Action Obtain\Action Obtain Resource\ActionObtainRes.cs" />
+    <Compile Include="Actions\Action Obtain\Action Obtain Food\ActionObtainFoodFruit.cs" />
+    <Compile Include="Actions\Action Obtain\Action Obtain Resource\ActionObtainResLog.cs" />
+    <Compile Include="Actions\Action Obtain\ActionObtain.cs" />
     <Compile Include="Actions\ActionAbstract.cs" />
     <Compile Include="Actions\Action Attack\ActionAttack.cs" />
     <Compile Include="Actions\Action Do Nothing\ActionDoNothing.cs" />
     <Compile Include="Actions\Action Drink\ActionDrink.cs" />
     <Compile Include="Actions\Action Eat\ActionEat.cs" />
     <Compile Include="Actions\Action Go\ActionGo.cs" />
-    <Compile Include="Actions\Action Break Camp\ActionBreakCamp.cs" />
+    <Compile Include="Actions\Action Build\Action Build Shelter\ActionBuildShelterCamp.cs" />
     <Compile Include="Actions\Action Grow Fruit\ActionGrowFruit.cs" />
     <Compile Include="Actions\ActionsManager.cs" />
     <Compile Include="Actions\Action Rest\ActionRest.cs" />

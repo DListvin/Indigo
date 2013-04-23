@@ -31,7 +31,7 @@ namespace IndigoEngine.Actions
 				logger.Trace("Created new {0}", this);
 			}
 
-			public ActionInfoAttribute(Type[] argAcceptedSubjects, Type[] argAcceptedObjects, params object[] argSkills)//Skill[] argRequiredSkills)
+			public ActionInfoAttribute(Type[] argAcceptedSubjects, Type[] argAcceptedObjects, params object[] argSkills)
 				:this()
 			{
 				AcceptedSubjects = argAcceptedSubjects;

@@ -8,7 +8,7 @@ using NLog;
 namespace IndigoEngine.Actions
 {
     /// <summary>
-    /// Action to Obtain Resourse
+    /// Action to Obtain fruit
     /// </summary>
     [Serializable]
 	[ActionInfo(
@@ -25,13 +25,13 @@ namespace IndigoEngine.Actions
 					IsConflict = true,
 					RequiresObject = true
 				)]
-    class ActionObtainFruit : ActionAbstract
+    class ActionObtainFoodFruit : ActionObtainFood
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
         #region Constructors
 
-			public ActionObtainFruit(Agent argSubj, Agent argObj)
+			public ActionObtainFoodFruit(Agent argSubj, Agent argObj)
 				: base(argSubj, argObj)
 			{
 			}
@@ -55,13 +55,6 @@ namespace IndigoEngine.Actions
 					return false;
 				}
 			}
-			if(Object is AgentItemFoodFruit)
-			{
-				if(Object.CurrentLocation.HasOwner)
-				{
-					return false;
-				}
-			}
 
 			return true;
 		}
@@ -80,19 +73,7 @@ namespace IndigoEngine.Actions
 					Subject.Inventory.AddAgentToStorage(Object.Inventory.PopAgentByType(typeof(AgentItemFoodFruit)));
 				});
 			}
-			if(Object is AgentItemFoodFruit)
-			{
-				Subject.CurrentActionFeedback += new ActionFeedback(() =>
-				{
-					Subject.Inventory.AddAgentToStorage(Object);
-				});
-			}
 
-        }
-
-        public override string ToString()
-        {
-            return "Action: Obtain fruit";
         }
 
 		/// <summary>
@@ -100,7 +81,7 @@ namespace IndigoEngine.Actions
 		/// </summary>
 		public override int CompareTo(ActionAbstract argActionToCompare)
 		{
-			if(Object == (argActionToCompare as ActionObtainFruit).Object)
+			if(Object == (argActionToCompare as ActionObtainFoodFruit).Object)
 			{
 				return 0;
 			}

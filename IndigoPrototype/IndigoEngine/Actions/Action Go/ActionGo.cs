@@ -77,11 +77,6 @@ namespace IndigoEngine.Actions
             });
         }
 
-        public override string ToString()
-        {
-            return "Action: go";
-        }
-
 		/// <summary>
 		/// Override Action.CompareTo
 		/// </summary>

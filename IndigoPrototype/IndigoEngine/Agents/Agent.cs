@@ -161,7 +161,7 @@ namespace IndigoEngine.Agents
         protected virtual void MakeAction(Need argNeed)
         {
             bool worldResponseToAction = false;	//World response if the action is accepted.
-			ActionAbstract newAction;           //New action to create
+			ActionAbstract newAction = null;    //New action to create
             if (argNeed.SatisfyingActions.Count == 0)
 			{
 				logger.Error("Number of Action to satisfy need {0} is 0", argNeed);
@@ -218,7 +218,7 @@ namespace IndigoEngine.Agents
 
                 if (worldResponseToAction)
                 {
-					logger.Debug("Made action for {0}: {1}", this.Name, act.Name);
+					logger.Debug("Made action for {0}: {1}", this.Name, newAction.Name);
                     break;
                 }
             }
