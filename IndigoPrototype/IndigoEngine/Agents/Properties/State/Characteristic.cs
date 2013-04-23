@@ -43,7 +43,8 @@ namespace IndigoEngine.Agents
 					{
 						if (value <= MinValue)
 						{
-							throw (new Exception(String.Format("Maximum value of {0} is less or equal to minimum: {1}!", this, value)));
+							logger.Error("Maximum value of {0} is less or equal to minimum: {1}!", this, value);
+							return;
 						}
 						maxValue = value;
 						if (CurrentUnitValue > MaxValue)
@@ -63,7 +64,8 @@ namespace IndigoEngine.Agents
 					{
 						if (value >= MaxValue)
 						{
-							throw (new Exception(String.Format("Minimum value of {0} is more or equal to maximum: {1}!", this, value)));
+							logger.Error("Minimum value of {0} is more or equal to maximum: {1}!", this, value);
+							return;
 						}
 						minValue = value;
 						if (CurrentUnitValue < MinValue)
@@ -81,15 +83,14 @@ namespace IndigoEngine.Agents
 						{
 							return MinValue;
 						}
+						if(currentValue >= MaxValue)
+						{
+							return MaxValue;
+						}
 						return currentValue;
 					}
 					set
 					{
-						if(value >= MaxValue)
-						{
-							currentValue = MaxValue;
-							return;
-						}
 						currentValue = value;
 					}
 				}
@@ -131,6 +132,21 @@ namespace IndigoEngine.Agents
 			#endregion
 
         #endregion
+
+		/// <summary>
+		/// Set currentValue between borders. Use it in the end of the iteration
+		/// </summary>
+		public void Reduct()
+		{
+			if(currentValue > MaxValue)
+			{
+				currentValue = MaxValue;
+			}
+			if(currentValue < MinValue)
+			{
+				currentValue = MinValue;
+			}
+		}
 
         #region Static methods
 
