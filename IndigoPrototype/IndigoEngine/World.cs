@@ -199,6 +199,7 @@ namespace IndigoEngine
 				worldCommands = new List<worldCommand>();
 
 				GenerateForest(new Point(-5, -5), new Size(10, 10), 0.50);
+                GenerateForest(new Point(-15, 5), new Size(20, 20), 0.20);
 
 				/*//Terrific test init (for hard and cruel test)
             for (int i = 0; i < 3; ++i)
@@ -220,7 +221,7 @@ namespace IndigoEngine
 				currentAddingAgent.CurrentLocation = new Location(10, 10);
 				currentAddingAgent.CurrentState.Health.MaxValue = 100;
 				currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-				(currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+				(currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 20;
 				currentAddingAgent.Inventory.StorageSize = 3;
 				AddAgent(currentAddingAgent);			
 			
@@ -229,7 +230,7 @@ namespace IndigoEngine
 				currentAddingAgent.CurrentLocation = new Location(10, 15);
 				currentAddingAgent.CurrentState.Health.MaxValue = 100;
 				currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-				(currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+				(currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 20;
 				currentAddingAgent.Inventory.StorageSize = 3;
 				AddAgent(currentAddingAgent);
 			
@@ -238,9 +239,18 @@ namespace IndigoEngine
 				currentAddingAgent.CurrentLocation = new Location(15, 15);
 				currentAddingAgent.CurrentState.Health.MaxValue = 100;
 				currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
-				(currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 100;
+				(currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 20;
 				currentAddingAgent.Inventory.StorageSize = 3;
 				AddAgent(currentAddingAgent);
+
+                currentAddingAgent = new AgentLivingIndigo();
+                currentAddingAgent.Name = "Indigo4";
+                currentAddingAgent.CurrentLocation = new Location(-20, 0);
+                currentAddingAgent.CurrentState.Health.MaxValue = 100;
+                currentAddingAgent.CurrentState.Health.CurrentUnitValue = 100;
+                (currentAddingAgent as AgentLivingIndigo).AgentsRangeOfView = 10;
+                currentAddingAgent.Inventory.StorageSize = 3;
+                AddAgent(currentAddingAgent);
 
 				currentAddingAgent = new AgentItemFoodFruit();
 				currentAddingAgent.Name = "Fruit1";
@@ -262,6 +272,20 @@ namespace IndigoEngine
 				currentAddingAgent.CurrentState.Health.MaxValue = 200;
 				currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
 				AddAgent(currentAddingAgent);
+
+                currentAddingAgent = new AgentPuddle();
+                currentAddingAgent.Name = "Puddle2";
+                currentAddingAgent.CurrentLocation = new Location(-15, 0);
+                currentAddingAgent.CurrentState.Health.MaxValue = 200;
+                currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
+                AddAgent(currentAddingAgent);
+
+                currentAddingAgent = new AgentPuddle();
+                currentAddingAgent.Name = "Puddle3";
+                currentAddingAgent.CurrentLocation = new Location(-10, 16);
+                currentAddingAgent.CurrentState.Health.MaxValue = 200;
+                currentAddingAgent.CurrentState.Health.CurrentUnitValue = 200;
+                AddAgent(currentAddingAgent);
 
 				currentAddingAgent = new AgentItemResLog();
 				currentAddingAgent.Name = "Log1";
