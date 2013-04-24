@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Actions\Action Build\Action Build Shelter\ActionBuildShelter.cs" />
     <Compile Include="Actions\Action Build\ActionBuild.cs" />
+    <Compile Include="Actions\Action Go\ActionWander.cs" />
     <Compile Include="Actions\Action Obtain\Action Obtain Food\ActionObtainFood.cs" />
     <Compile Include="Actions\Action Obtain\Action Obtain Resource\ActionObtainRes.cs" />
     <Compile Include="Actions\Action Obtain\Action Obtain Food\ActionObtainFoodFruit.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Agents\AgentLiving.cs" />
     <Compile Include="Agents\AgentManMadeShelter.cs" />
     <Compile Include="Agents\AgentPuddle.cs" />
+    <Compile Include="Agents\Properties\Memory\TargetInfo.cs" />
     <Compile Include="Agents\Properties\Vision\Vision.cs" />
     <Compile Include="Agents\Properties\Vision\ITypicalVision.cs" />
     <Compile Include="Agents\Properties\Location\Location.cs" />

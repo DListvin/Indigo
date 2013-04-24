@@ -65,6 +65,14 @@ namespace IndigoEngine
 				}
 			}
 
+            public static Need NeedWander
+            {
+                get
+                {
+                    return new Need("wander", 8, 1, typeof(ActionWander));
+                }
+            }
+
 		#endregion
 
 		#region Tree needs

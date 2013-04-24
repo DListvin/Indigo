@@ -20,7 +20,7 @@ namespace IndigoEngine.Actions
 					new Type[]
 					{
 					},
-					IsConflict = true,
+					IsConflict = true, //Ow, really?
 					RequiresObject = false
 				)]
     class ActionGo : ActionAbstract

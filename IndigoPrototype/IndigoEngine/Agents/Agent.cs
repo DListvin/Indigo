@@ -144,6 +144,8 @@ namespace IndigoEngine.Agents
             }
             if (allNeed.Count == 0)
 			{
+                if (this is AgentLivingIndigo)
+                    return Needs.NeedWander; //Want them to go for a walk
                 return Needs.NeedNothing;
 			}
             allNeed.Sort(new Comparison<Need>(Need.Comparing));

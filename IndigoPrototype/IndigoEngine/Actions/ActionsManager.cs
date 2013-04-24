@@ -202,6 +202,18 @@ namespace IndigoEngine.Actions
 					}
 				}
 			},
+            //Action wander dictionary
+            {
+                typeof(ActionWander),
+                new Dictionary<Type, Func<Agent, object[], ActionAbstract>>()
+				{
+					{
+						typeof(AgentLivingIndigo), 
+						(sub, par) => {return new ActionWander(sub);}
+					}
+				}
+            }
+
 		};	
 		#endregion
 
