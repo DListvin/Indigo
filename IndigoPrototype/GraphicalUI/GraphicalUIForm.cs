@@ -57,7 +57,7 @@ namespace GraphicalUI
         }
 
         private void onModelTick(object sender, EventArgs e)	
-        {
+        {            
             UpdateMapInfoPanel();
             CrossthreadRefreshMapPanel();            
         }
@@ -79,6 +79,7 @@ namespace GraphicalUI
         /// <param name="e"></param>
         private void drawMap(PaintEventArgs e)
         {
+            labelModelTick.Text = "ModelTick = " + GraphicalUIShell.Model.ModelIterationTick.ToString();
             //Width of the panel
             int mapWidth = mapPanel.Width;
             //Height of the panel
@@ -296,6 +297,12 @@ namespace GraphicalUI
         private void clearInfobutton_Click(object sender, EventArgs e)
         {
             displayInfoAgents.Clear();
+        }
+
+        private void trackBarModelTick_Scroll(object sender, EventArgs e)
+        {
+            GraphicalUIShell.Model.ModelIterationTick = TimeSpan.FromMilliseconds(trackBarModelTick.Value * 40);
+            labelModelTick.Text = "ModelTick = " + GraphicalUIShell.Model.ModelIterationTick.ToString();
         }
     }
 }

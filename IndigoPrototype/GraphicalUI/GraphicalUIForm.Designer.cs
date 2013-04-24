@@ -30,12 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GrapgicalUIForm));
             this.modelControlPanel = new System.Windows.Forms.Panel();
+            this.clearInfobutton = new System.Windows.Forms.Button();
             this.modelPauseButton = new System.Windows.Forms.Button();
             this.modelStartButton = new System.Windows.Forms.Button();
             this.mapInfoPanel = new System.Windows.Forms.Panel();
+            this.trackBarModelTick = new System.Windows.Forms.TrackBar();
+            this.labelModelTick = new System.Windows.Forms.Label();
             this.mapPanel = new GraphicalUI.myDoubleBufferedPanel();
-            this.clearInfobutton = new System.Windows.Forms.Button();
             this.modelControlPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).BeginInit();
             this.SuspendLayout();
             // 
             // modelControlPanel
@@ -43,6 +46,8 @@
             this.modelControlPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.modelControlPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.modelControlPanel.Controls.Add(this.labelModelTick);
+            this.modelControlPanel.Controls.Add(this.trackBarModelTick);
             this.modelControlPanel.Controls.Add(this.clearInfobutton);
             this.modelControlPanel.Controls.Add(this.modelPauseButton);
             this.modelControlPanel.Controls.Add(this.modelStartButton);
@@ -50,6 +55,17 @@
             this.modelControlPanel.Name = "modelControlPanel";
             this.modelControlPanel.Size = new System.Drawing.Size(880, 81);
             this.modelControlPanel.TabIndex = 1;
+            // 
+            // clearInfobutton
+            // 
+            this.clearInfobutton.Enabled = false;
+            this.clearInfobutton.Location = new System.Drawing.Point(504, 4);
+            this.clearInfobutton.Name = "clearInfobutton";
+            this.clearInfobutton.Size = new System.Drawing.Size(75, 23);
+            this.clearInfobutton.TabIndex = 2;
+            this.clearInfobutton.Text = "ClearInfo";
+            this.clearInfobutton.UseVisualStyleBackColor = true;
+            this.clearInfobutton.Click += new System.EventHandler(this.clearInfobutton_Click);
             // 
             // modelPauseButton
             // 
@@ -82,6 +98,26 @@
             this.mapInfoPanel.Size = new System.Drawing.Size(376, 450);
             this.mapInfoPanel.TabIndex = 2;
             // 
+            // trackBarModelTick
+            // 
+            this.trackBarModelTick.Location = new System.Drawing.Point(3, 32);
+            this.trackBarModelTick.Maximum = 50;
+            this.trackBarModelTick.Minimum = 1;
+            this.trackBarModelTick.Name = "trackBarModelTick";
+            this.trackBarModelTick.Size = new System.Drawing.Size(157, 45);
+            this.trackBarModelTick.TabIndex = 3;
+            this.trackBarModelTick.Value = 50;
+            this.trackBarModelTick.Scroll += new System.EventHandler(this.trackBarModelTick_Scroll);
+            // 
+            // labelModelTick
+            // 
+            this.labelModelTick.AutoSize = true;
+            this.labelModelTick.Location = new System.Drawing.Point(166, 43);
+            this.labelModelTick.Name = "labelModelTick";
+            this.labelModelTick.Size = new System.Drawing.Size(60, 13);
+            this.labelModelTick.TabIndex = 4;
+            this.labelModelTick.Text = "ModelTick:";
+            // 
             // mapPanel
             // 
             this.mapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -100,17 +136,6 @@
             this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseMove);
             this.mapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseUp);
             // 
-            // clearInfobutton
-            // 
-            this.clearInfobutton.Enabled = false;
-            this.clearInfobutton.Location = new System.Drawing.Point(504, 4);
-            this.clearInfobutton.Name = "clearInfobutton";
-            this.clearInfobutton.Size = new System.Drawing.Size(75, 23);
-            this.clearInfobutton.TabIndex = 2;
-            this.clearInfobutton.Text = "ClearInfo";
-            this.clearInfobutton.UseVisualStyleBackColor = true;
-            this.clearInfobutton.Click += new System.EventHandler(this.clearInfobutton_Click);
-            // 
             // GrapgicalUIForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -126,6 +151,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GrapgicalUIForm_FormClosing);
             this.Load += new System.EventHandler(this.GrapgicalUIForm_Load);
             this.modelControlPanel.ResumeLayout(false);
+            this.modelControlPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -138,6 +165,8 @@
         private System.Windows.Forms.Button modelPauseButton;
         private System.Windows.Forms.Button modelStartButton;
         private System.Windows.Forms.Button clearInfobutton;
+        private System.Windows.Forms.Label labelModelTick;
+        private System.Windows.Forms.TrackBar trackBarModelTick;
     }
 }
 
