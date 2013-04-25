@@ -45,6 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionsNew\ActionAbstract.cs" />
+    <Compile Include="ActionsNew\InstructionCharacteristicChange.cs" />
+    <Compile Include="ActionsNew\IAtomInstruction.cs" />
+    <Compile Include="ActionsNew\InstructionDelete.cs" />
     <Compile Include="Actions\Action Build\Action Build Shelter\ActionBuildShelter.cs" />
     <Compile Include="Actions\Action Build\ActionBuild.cs" />
     <Compile Include="Actions\Action Go\ActionWander.cs" />
