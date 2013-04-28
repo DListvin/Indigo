@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Drawing;
 using IndigoEngine.Agents;
 using IndigoEngine.Actions;
 using NLog;
@@ -247,6 +248,14 @@ namespace IndigoEngine
         {
             return simulatingWorld.Agents.Count;
         }
+		
+        /// <summary>
+        /// IObservableModel
+        /// </summary>
+		public List<Agent> GetAgentsAt(Point argAgentLoc)
+		{
+			return simulatingWorld.GetAgentsAt(argAgentLoc);
+		}
 
         /// <summary>
         /// Quickly runs n steps forward

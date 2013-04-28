@@ -49,17 +49,17 @@ namespace IndigoEngine
 		#endregion
 
 		/// <summary>
-		/// Loking for agent at coordinates
+		/// Loking for agents at coordinates
 		/// </summary>
-		/// <param name="argAgentLoc">agent location</param>
-		/// <returns>Found agent or null</returns>
-		public Agent GetAgentAt(Point argAgentLoc)
+		/// <param name="argAgentLoc">some location</param>
+		/// <returns>Found agents</returns>
+		public List<Agent> GetAgentsAt(Point argAgentLoc)
 		{
-			logger.Debug("Finding agent at {0}", argAgentLoc);
-			return agents.FirstOrDefault(ag => 
+			logger.Debug("Finding agents at {0}", argAgentLoc);
+			return agents.Where(ag => 
 			{
-				return ag.CurrentLocation.Coords == argAgentLoc;
-			});
+				return ag.CurrentLocation.Coords == argAgentLoc && !ag.CurrentLocation.HasOwner;
+			}).ToList();
 		}
 
 		#region Map generating
@@ -124,7 +124,7 @@ namespace IndigoEngine
 								}
 								if(currentChance.Next(100) < chanceForNewTree)
 								{
-									if(GetAgentAt(new Point(i, j)) != null)
+									if(GetAgentsAt(new Point(i, j)).Count != 0)
 									{
 										continue;
 									}
@@ -457,7 +457,7 @@ namespace IndigoEngine
 				{
                     return false;
 				}
-				if(!obj.CurrentLocation.HasOwner && GetAgentAt(obj.CurrentLocation.Coords) != null) //Checking for adding in the place of some agent
+				if(!obj.CurrentLocation.HasOwner && GetAgentsAt(obj.CurrentLocation.Coords).Count != 0) //Checking for adding in the place of some agent
 				{
 					return false;
 				}

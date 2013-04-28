@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GrapgicalUIForm));
 			this.modelControlPanel = new System.Windows.Forms.Panel();
 			this.labelModelCoords = new System.Windows.Forms.Label();
@@ -39,6 +40,7 @@
 			this.modelStartButton = new System.Windows.Forms.Button();
 			this.mapInfoPanel = new System.Windows.Forms.Panel();
 			this.mapPanel = new System.Windows.Forms.Panel();
+			this.contextMenuSelectAgents = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.modelControlPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).BeginInit();
 			this.SuspendLayout();
@@ -155,9 +157,16 @@
 			this.mapPanel.TabIndex = 0;
 			this.mapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPanel_Paint);
 			this.mapPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseDown);
+			this.mapPanel.MouseEnter += new System.EventHandler(this.mapPanel_MouseEnter);
 			this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseMove);
 			this.mapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseUp);
 			this.mapPanel.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseWheel);
+			// 
+			// contextMenuSelectAgents
+			// 
+			this.contextMenuSelectAgents.AutoClose = false;
+			this.contextMenuSelectAgents.Name = "contextMenuSelectAgents";
+			this.contextMenuSelectAgents.Size = new System.Drawing.Size(61, 4);
 			// 
 			// GrapgicalUIForm
 			// 
@@ -191,6 +200,7 @@
         private System.Windows.Forms.TrackBar trackBarModelTick;
 		private System.Windows.Forms.Label labelUICoords;
 		private System.Windows.Forms.Label labelModelCoords;
+		private System.Windows.Forms.ContextMenuStrip contextMenuSelectAgents;
     }
 }
 

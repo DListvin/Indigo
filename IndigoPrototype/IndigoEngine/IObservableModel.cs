@@ -114,6 +114,13 @@ namespace IndigoEngine
 		/// Getting the number of agents in the world
 		/// </summary>
 		/// <returns></returns>
-		int GetAgentsAmount();
+		int GetAgentsAmount();		
+
+		/// <summary>
+		/// Loking for agent at coordinates
+		/// </summary>
+		/// <param name="argAgentLoc">some location</param>
+		/// <returns>Found agents</returns>
+		List<Agent> GetAgentsAt(Point argAgentLoc);
     }
 }
