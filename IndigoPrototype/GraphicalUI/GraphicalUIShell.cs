@@ -15,16 +15,9 @@ namespace GraphicalUI
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        //Attached model to observe
-        static IObservableModel model = null;
-
         #region Properties
 
-        public static IObservableModel Model
-        {
-            get { return model; }
-            set { model = value; }
-        }
+			public static IObservableModel Model { get; set; } //Attached model to observe
 
         #endregion
 
