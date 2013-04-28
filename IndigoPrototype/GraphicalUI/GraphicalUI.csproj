@@ -118,6 +118,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="LogoDemo.ico" />
+    <Content Include="Textures\fruit-tree64_transparent.png" />
+    <Content Include="Textures\tree64_transparent.png" />
     <None Include="Textures\water64.png" />
     <None Include="Textures\tree64.png" />
     <None Include="Textures\LogoDemo.ico" />

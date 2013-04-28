@@ -37,6 +37,23 @@ namespace GraphicalUI
 				aProp.SetValue(c, true, null);
 			}
 
+			public static int ComparingByDrawLevels(Agent ag1, Agent ag2)
+			{
+				int lvl1, lvl2;  //Draw levels of the agents
+				texturesLevelsDict.TryGetValue(ag1.GetType(), out lvl1);
+				texturesLevelsDict.TryGetValue(ag2.GetType(), out lvl2);
+
+				if(lvl1 > lvl2) 
+				{
+					return -1; 
+				}
+				if(lvl1 < lvl2) 
+				{
+					return 1;
+				}
+				return 0;
+			}
+
 		#endregion
 		
         private int textureSize = GraphicalUI.Properties.Resources.grass64.Width;  //Side of the texture (default)
@@ -75,10 +92,43 @@ namespace GraphicalUI
 				},
 				{
 					typeof(AgentTree),
-					GraphicalUI.Properties.Resources.tree64
+					GraphicalUI.Properties.Resources.tree64_transparent
 				},
 			}; 
 
+		#endregion
+
+		#region Agent's textures levels dictionary
+
+			//Dictionary for draw agents considering draw levels 0 - toppest level
+			private static Dictionary<Type, int> texturesLevelsDict = new Dictionary<Type, int>()
+			{
+				{
+					typeof(AgentLivingIndigo),
+					0
+				},			
+				{
+					typeof(AgentItemFoodFruit),
+					1
+				},		
+				{
+					typeof(AgentManMadeShelterCamp),
+					2
+				},	
+				{
+					typeof(AgentItemResLog),
+					1
+				},
+				{
+					typeof(AgentPuddle),
+					4
+				},
+				{
+					typeof(AgentTree),
+					3
+				}
+			};
+			
 		#endregion
 
 		#region Constructors
@@ -234,8 +284,12 @@ namespace GraphicalUI
 				
 				lock(GraphicalUIShell.Model.Agents) //Locking Agents for other threads
 				{
+					//Using draw levels
+					var sortedAgents = GraphicalUIShell.Model.Agents.ToList();
+					sortedAgents.Sort(new Comparison<Agent>(GrapgicalUIForm.ComparingByDrawLevels));
+
 					//Draws agents
-					foreach (Agent agent in GraphicalUIShell.Model.Agents)
+					foreach (var agent in sortedAgents)
 					{
 						if (!agent.CurrentLocation.HasOwner)
 						{
@@ -246,9 +300,9 @@ namespace GraphicalUI
 							}
 							if (agent.GetType() == typeof(AgentTree) && agent.Inventory.ExistsAgentByType(typeof(AgentItemFoodFruit)))
 							{
-								drawedImage = GraphicalUI.Properties.Resources.fruit_tree64;
+								drawedImage = GraphicalUI.Properties.Resources.fruit_tree64_transparent;
 							}
-							Point agentUICoord = GetUICoord(agent.CurrentLocation.Coords);
+							var agentUICoord = GetUICoord(agent.CurrentLocation.Coords);
 
 							if ((agentUICoord.X > drawBegin.X) && (agentUICoord.X < drawEnd.X) &&
 								(agentUICoord.Y > drawBegin.Y) && (agentUICoord.Y < drawEnd.Y))
@@ -258,7 +312,7 @@ namespace GraphicalUI
 						}
 					}
 				}
-				foreach (Agent agent in displayInfoAgents)
+				foreach (var agent in displayInfoAgents)
 				{
 					e.Graphics.DrawRectangle(new Pen(Brushes.DarkGreen), new Rectangle(GetUICoord(agent.CurrentLocation.Coords), new Size(currentTextureSize, currentTextureSize)));
 				}
