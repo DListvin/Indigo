@@ -71,11 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgentInfoForm.cs">
+    <Compile Include="AgentEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AgentInfoForm.Designer.cs">
-      <DependentUpon>AgentInfoForm.cs</DependentUpon>
+    <Compile Include="AgentEditForm.Designer.cs">
+      <DependentUpon>AgentEditForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphicalUIForm.cs">
       <SubType>Form</SubType>
@@ -86,8 +86,8 @@
     <Compile Include="GraphicalUIShell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AgentInfoForm.resx">
-      <DependentUpon>AgentInfoForm.cs</DependentUpon>
+    <EmbeddedResource Include="AgentEditForm.resx">
+      <DependentUpon>AgentEditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphicalUIForm.resx">
       <DependentUpon>GraphicalUIForm.cs</DependentUpon>

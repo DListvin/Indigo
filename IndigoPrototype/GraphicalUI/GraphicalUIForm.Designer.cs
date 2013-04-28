@@ -41,6 +41,7 @@
 			this.mapInfoPanel = new System.Windows.Forms.Panel();
 			this.mapPanel = new System.Windows.Forms.Panel();
 			this.contextMenuSelectAgents = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.contextMenuChooseEditAgents = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.modelControlPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).BeginInit();
 			this.SuspendLayout();
@@ -156,6 +157,7 @@
 			this.mapPanel.Size = new System.Drawing.Size(498, 450);
 			this.mapPanel.TabIndex = 0;
 			this.mapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPanel_Paint);
+			this.mapPanel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseDoubleClick);
 			this.mapPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseDown);
 			this.mapPanel.MouseEnter += new System.EventHandler(this.mapPanel_MouseEnter);
 			this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseMove);
@@ -167,6 +169,11 @@
 			this.contextMenuSelectAgents.AutoClose = false;
 			this.contextMenuSelectAgents.Name = "contextMenuSelectAgents";
 			this.contextMenuSelectAgents.Size = new System.Drawing.Size(61, 4);
+			// 
+			// contextMenuChooseEditAgents
+			// 
+			this.contextMenuChooseEditAgents.Name = "contextMenuChooseEditAgents";
+			this.contextMenuChooseEditAgents.Size = new System.Drawing.Size(61, 4);
 			// 
 			// GrapgicalUIForm
 			// 
@@ -181,6 +188,7 @@
 			this.Name = "GrapgicalUIForm";
 			this.Text = "Indigo";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GrapgicalUIForm_FormClosing);
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.GrapgicalUIForm_Paint);
 			this.modelControlPanel.ResumeLayout(false);
 			this.modelControlPanel.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).EndInit();
@@ -201,6 +209,7 @@
 		private System.Windows.Forms.Label labelUICoords;
 		private System.Windows.Forms.Label labelModelCoords;
 		private System.Windows.Forms.ContextMenuStrip contextMenuSelectAgents;
+		private System.Windows.Forms.ContextMenuStrip contextMenuChooseEditAgents;
     }
 }
 

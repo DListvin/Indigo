@@ -63,8 +63,8 @@ namespace GraphicalUI
         private bool leftMouseButtonInMapIsPressed = false;  //Flag for dragging the map (if true - DRAG NOW!)
         private int zoomModifyer = 0;    //Zoom modifyer (contains delta adding to the texture size)
         
-		private List<Agent> displayInfoAgents = new List<Agent>();       //Info about agents that must be displayed in the mapInfoPanel
-		private List<Agent> currentAgentsInTheCell = new List<Agent>();  //Agents that are in the mouse coords now (necessary for choosing between agents in context menu) 
+		public List<Agent> DisplayInfoAgents { get; set; }               //Info about agents that must be displayed in the mapInfoPanel
+		//private List<Agent> currentAgentsInTheCell = new List<Agent>();  //Agents that are in the mouse coords now (necessary for choosing between agents in context menu) 
 
 		#region Textures dictionary
 
@@ -137,6 +137,9 @@ namespace GraphicalUI
 			{
 				InitializeComponent();
 
+				//Initialising agents info
+				DisplayInfoAgents = new List<Agent>();
+
 				//Setting coordinates center to the panel center
 				shiftVector = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
@@ -162,6 +165,12 @@ namespace GraphicalUI
 			private void GrapgicalUIForm_FormClosing(object sender, FormClosingEventArgs e)
 			{		
 				GraphicalUIShell.Model.Stop();
+			}
+
+			private void GrapgicalUIForm_Paint(object sender, PaintEventArgs e)
+			{
+				mapPanel.Refresh();
+				mapInfoPanel.Refresh();
 			}
 
 		#endregion
@@ -252,11 +261,21 @@ namespace GraphicalUI
 			/// Event for refreshing the info panel
 			/// </summary>
 			private void mapInfoPanel_Paint(object sender, PaintEventArgs e)
-			{        
+			{   
 				mapInfoPanel.Controls[0].Text = "";
-				foreach (Agent ag in displayInfoAgents)
+				foreach (var ag in DisplayInfoAgents)
 				{
-					mapInfoPanel.Controls[0].Text += ag.ToString() + "\n\n";
+					if(GraphicalUIShell.Model.Agents.Contains(ag))
+					{
+						mapInfoPanel.Controls[0].Text += ag.ToString() + "\n\n";
+					}
+					else
+					{
+						DisplayInfoAgents.Remove(ag);
+						mapInfoPanel.Refresh();
+						mapPanel.Refresh();
+						break;             //Get out of here! Collection was modifiyed!
+					}
 				}   
 			}
 
@@ -312,7 +331,7 @@ namespace GraphicalUI
 						}
 					}
 				}
-				foreach (var agent in displayInfoAgents)
+				foreach (var agent in DisplayInfoAgents)
 				{
 					e.Graphics.DrawRectangle(new Pen(Brushes.DarkGreen), new Rectangle(GetUICoord(agent.CurrentLocation.Coords), new Size(currentTextureSize, currentTextureSize)));
 				}
@@ -347,6 +366,9 @@ namespace GraphicalUI
 
 		#region Main mouse events
 
+			/// <summary>
+			/// Used only for dragging
+			/// </summary>
 			private void mapPanel_MouseDown(object sender, MouseEventArgs e)
 			{
 				if (e.Button == MouseButtons.Left)
@@ -357,6 +379,9 @@ namespace GraphicalUI
 				}
 			}
 
+			/// <summary>
+			/// Used for ending dragging and for showing agent info in the agent panel
+			/// </summary>
 			private void mapPanel_MouseUp(object sender, MouseEventArgs e)
 			{
 				if (e.Button == MouseButtons.Left)
@@ -369,6 +394,9 @@ namespace GraphicalUI
 				}
 			}
 
+			/// <summary>
+			/// Used for dragging and for updating mouse coords in the map corner
+			/// </summary>
 			private void mapPanel_MouseMove(object sender, MouseEventArgs e)
 			{			
 				labelUICoords.Text = "UI coords: " + e.Location.ToString();
@@ -379,6 +407,37 @@ namespace GraphicalUI
 					shiftVector.X = mouseDownPoint.X - e.X;
 					shiftVector.Y = mouseDownPoint.Y - e.Y;
 					mapPanel.Refresh();
+				}
+			}
+
+			/// <summary>
+			/// Used for showing agent edit form
+			/// </summary>
+			private void mapPanel_MouseDoubleClick(object sender, MouseEventArgs e)
+			{				
+				var currentAgentsInTheCell = GraphicalUIShell.Model.GetAgentsAt(GetModelCoord(e.Location)); //Agents that are in the cell with mouse coords
+				if(currentAgentsInTheCell.Count == 1)
+				{
+					var newEditForm = new AgentEditForm(currentAgentsInTheCell[0]);
+					newEditForm.Show(this);
+
+					newEditForm.FormClosed += new FormClosedEventHandler( (obj, args) => 
+					{
+						this.Refresh();
+					});
+				}
+				if(currentAgentsInTheCell.Count > 1)
+				{
+					contextMenuChooseEditAgents.Items.Clear();
+
+					//Adding new context menu elements to choose between several agents
+					foreach (var ag in currentAgentsInTheCell)
+					{
+						var newMenuItemToAdd = new ToolStripMenuItem(ag.Name, null, new EventHandler(contextMenuEditAgentElement_Click));  
+						newMenuItemToAdd.Tag = ag;
+						contextMenuChooseEditAgents.Items.Add(newMenuItemToAdd);
+					}
+					contextMenuChooseEditAgents.Show(Cursor.Position);
 				}
 			}
 
@@ -435,7 +494,7 @@ namespace GraphicalUI
 
 			private void clearInfobutton_Click(object sender, EventArgs e)
 			{
-				displayInfoAgents.Clear();
+				DisplayInfoAgents.Clear();
 				mapInfoPanel.Refresh();
 				mapPanel.Refresh();
 			}
@@ -446,24 +505,25 @@ namespace GraphicalUI
 			/// <param name="argCoords">UI coords to find agent</param>
 			private void SelectAgentAt(Point argCoords)
 			{
-				currentAgentsInTheCell = GraphicalUIShell.Model.GetAgentsAt(GetModelCoord(argCoords)); //Agents that are in the cell with argCoords
+				var currentAgentsInTheCell = GraphicalUIShell.Model.GetAgentsAt(GetModelCoord(argCoords)); //Agents that are in the cell with argCoords
 				contextMenuSelectAgents.Items.Clear();
 				
 				//Adding new context menu elements to choose between several agents
 				foreach (var ag in currentAgentsInTheCell)
 				{
-					var newMenuItemToAdd = new ToolStripMenuItem(ag.Name, null, new EventHandler(contextMenuAgentElement_Click));  
+					var newMenuItemToAdd = new ToolStripMenuItem(ag.Name, null, new EventHandler(contextMenuSelectAgentElement_Click));  
 
-					if (displayInfoAgents.Contains(ag))
+					if (DisplayInfoAgents.Contains(ag))
 					{
 						newMenuItemToAdd.Checked = true;
 					}
+					newMenuItemToAdd.Tag = ag;
 					contextMenuSelectAgents.Items.Add(newMenuItemToAdd);
 				}
 
 				//Adding close element
 				contextMenuSelectAgents.Items.Add("-");
-				contextMenuSelectAgents.Items.Add(new ToolStripMenuItem("Ok", null, new EventHandler(contextMenuCloseElement_Click)));
+				contextMenuSelectAgents.Items.Add(new ToolStripMenuItem("Ok", null, new EventHandler(contextMenuSelectAgentCloseElement_Click)));
 
 				if(currentAgentsInTheCell.Count > 1)
 				{
@@ -472,25 +532,26 @@ namespace GraphicalUI
 
 				if(currentAgentsInTheCell.Count == 1)
 				{
-					contextMenuSelectAgents.Close();
-
-					if (displayInfoAgents.Contains(currentAgentsInTheCell[0]))
+					if (DisplayInfoAgents.Contains(currentAgentsInTheCell[0]))
 					{
-						displayInfoAgents.Remove(currentAgentsInTheCell[0]);
+						DisplayInfoAgents.Remove(currentAgentsInTheCell[0]);
 					}
 					else
 					{
-						displayInfoAgents.Add(currentAgentsInTheCell[0]);
+						DisplayInfoAgents.Add(currentAgentsInTheCell[0]);
 					}
-					mapInfoPanel.Refresh();
-					mapPanel.Refresh();
+					this.Refresh();
+				}
+				if(currentAgentsInTheCell.Count <= 1)
+				{				
+					contextMenuSelectAgents.Close();
 				}
 			}
 
 			/// <summary>
-			/// Event for click on context menu item to choose agents
+			/// Event for click on context menu item to choose between agents
 			/// </summary>
-			private void contextMenuAgentElement_Click(object sender, EventArgs e)
+			private void contextMenuSelectAgentElement_Click(object sender, EventArgs e)
 			{
 				var convertedSender = sender as ToolStripMenuItem; //Sender menu item
 				
@@ -500,7 +561,7 @@ namespace GraphicalUI
 			/// <summary>
 			/// Event for click on context menu close button 
 			/// </summary>
-			private void contextMenuCloseElement_Click(object sender, EventArgs e)
+			private void contextMenuSelectAgentCloseElement_Click(object sender, EventArgs e)
 			{
 				for(int i = 0; i < contextMenuSelectAgents.Items.Count; i++)
 				{			
@@ -508,26 +569,42 @@ namespace GraphicalUI
 					{
 						break;
 					}
+					
+					var agToOperate = (contextMenuSelectAgents.Items[i] as ToolStripMenuItem).Tag as Agent;
 							
-					if (displayInfoAgents.Contains(currentAgentsInTheCell[i]))
+					if (DisplayInfoAgents.Contains(agToOperate))
 					{
 						if(!(contextMenuSelectAgents.Items[i] as ToolStripMenuItem).Checked)
 						{
-							displayInfoAgents.Remove(currentAgentsInTheCell[i]);
+							DisplayInfoAgents.Remove(agToOperate);
 						}
 					}
 					else
 					{
 						if((contextMenuSelectAgents.Items[i] as ToolStripMenuItem).Checked)
 						{
-							displayInfoAgents.Add(currentAgentsInTheCell[i]);
+							DisplayInfoAgents.Add(agToOperate);
 						}
 					}
 				}
 
 				contextMenuSelectAgents.Close();
-				mapInfoPanel.Refresh();
-				mapPanel.Refresh();
+				this.Refresh();
+			}
+
+		#endregion
+
+		#region Agents editing context menu event
+
+			private void contextMenuEditAgentElement_Click(object sender, EventArgs e)
+			{				
+				var newEditForm = new AgentEditForm((sender as ToolStripMenuItem).Tag as Agent);
+				newEditForm.Show(this);
+
+				newEditForm.FormClosed += new FormClosedEventHandler( (obj, args) => 
+				{
+					this.Refresh();
+				});
 			}
 
 		#endregion
