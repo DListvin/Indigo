@@ -8,6 +8,7 @@ namespace IndigoEngine.Agents.Properties.Memory
     /// <summary>
     /// For stored information. Tring to remember, where to go).
     /// </summary>
+    [Serializable]
     class TargetInfo : NameableObject
     {
         #region Properties

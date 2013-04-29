@@ -213,6 +213,26 @@ namespace GraphicalUI
 				this.Refresh();
 			}
 
+			private void MainMenuFileSave_Click(object sender, EventArgs e)
+			{				
+				saveModelDialog.ShowDialog(this);
+                var path = saveModelDialog.FileName;
+
+				loadModelDialog.FileName = path;
+
+				GraphicalUIShell.Model.Save(path);
+			}
+
+			private void MainMenuFileLoad_Click(object sender, EventArgs e)
+			{		
+				loadModelDialog.ShowDialog(this);
+				var path = loadModelDialog.FileName;
+
+                GraphicalUIShell.Model.Load(path);
+
+				this.Refresh();
+			}
+
 		#endregion
 
 		#region Model tick events

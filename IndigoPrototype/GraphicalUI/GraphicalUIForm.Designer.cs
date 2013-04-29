@@ -44,9 +44,14 @@
 			this.contextMenuChooseEditAgents = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.MainMenu = new System.Windows.Forms.MenuStrip();
 			this.MainMenuFile = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainMenuFileSave = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainMenuFileLoad = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuFileClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuModelControl = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuModelControlAddAgent = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveModelDialog = new System.Windows.Forms.SaveFileDialog();
+			this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+			this.loadModelDialog = new System.Windows.Forms.OpenFileDialog();
 			this.modelControlPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).BeginInit();
 			this.MainMenu.SuspendLayout();
@@ -195,15 +200,31 @@
 			// MainMenuFile
 			// 
 			this.MainMenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuFileSave,
+            this.MainMenuFileLoad,
             this.MainMenuFileClose});
 			this.MainMenuFile.Name = "MainMenuFile";
 			this.MainMenuFile.Size = new System.Drawing.Size(37, 20);
 			this.MainMenuFile.Text = "File";
 			// 
+			// MainMenuFileSave
+			// 
+			this.MainMenuFileSave.Name = "MainMenuFileSave";
+			this.MainMenuFileSave.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuFileSave.Text = "Save";
+			this.MainMenuFileSave.Click += new System.EventHandler(this.MainMenuFileSave_Click);
+			// 
+			// MainMenuFileLoad
+			// 
+			this.MainMenuFileLoad.Name = "MainMenuFileLoad";
+			this.MainMenuFileLoad.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuFileLoad.Text = "Load";
+			this.MainMenuFileLoad.Click += new System.EventHandler(this.MainMenuFileLoad_Click);
+			// 
 			// MainMenuFileClose
 			// 
 			this.MainMenuFileClose.Name = "MainMenuFileClose";
-			this.MainMenuFileClose.Size = new System.Drawing.Size(103, 22);
+			this.MainMenuFileClose.Size = new System.Drawing.Size(152, 22);
 			this.MainMenuFileClose.Text = "Close";
 			this.MainMenuFileClose.Click += new System.EventHandler(this.MainMenuFileClose_Click);
 			// 
@@ -218,9 +239,26 @@
 			// MainMenuModelControlAddAgent
 			// 
 			this.MainMenuModelControlAddAgent.Name = "MainMenuModelControlAddAgent";
-			this.MainMenuModelControlAddAgent.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuModelControlAddAgent.Size = new System.Drawing.Size(129, 22);
 			this.MainMenuModelControlAddAgent.Text = "Add agent";
 			this.MainMenuModelControlAddAgent.Click += new System.EventHandler(this.MainMenuModelControlAddAgent_Click);
+			// 
+			// saveModelDialog
+			// 
+			this.saveModelDialog.Title = "Save model";
+			// 
+			// elementHost1
+			// 
+			this.elementHost1.Location = new System.Drawing.Point(0, 0);
+			this.elementHost1.Name = "elementHost1";
+			this.elementHost1.Size = new System.Drawing.Size(200, 100);
+			this.elementHost1.TabIndex = 0;
+			this.elementHost1.Text = "elementHost1";
+			this.elementHost1.Child = null;
+			// 
+			// loadModelDialog
+			// 
+			this.loadModelDialog.FileName = "openFileDialog1";
 			// 
 			// GrapgicalUIForm
 			// 
@@ -267,6 +305,11 @@
 		private System.Windows.Forms.ToolStripMenuItem MainMenuFileClose;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuModelControl;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuModelControlAddAgent;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuFileSave;
+		private System.Windows.Forms.SaveFileDialog saveModelDialog;
+		private System.Windows.Forms.Integration.ElementHost elementHost1;
+		private System.Windows.Forms.OpenFileDialog loadModelDialog;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuFileLoad;
     }
 }
 

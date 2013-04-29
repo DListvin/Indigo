@@ -41,9 +41,9 @@ namespace IndigoEngine
         private ModelState state = ModelState.Uninitialised; //Model state from ModelState enum
         IDictionary<long, IEnumerable<ActionAbstract>> storedActions;
         [NonSerialized] private Thread modelThread;  //This object controls working model in other process
-        private EventWaitHandle waitEvent = new AutoResetEvent(true); //Using for safe suspend and resume of model process
+        [NonSerialized] private EventWaitHandle waitEvent = new AutoResetEvent(true); //Using for safe suspend and resume of model process
 
-        public event EventHandler ModelTick;
+        [field:NonSerializedAttribute()] public event EventHandler ModelTick; //Shaytan for serialisation and event for model tick
 		
 		#region Constructors
 
@@ -321,12 +321,12 @@ namespace IndigoEngine
         public void Save(string path)
         {
             logger.Trace("Save({0}) entered", path);
-            FileStream stream;
-            BinaryFormatter formatter = new BinaryFormatter();
-            stream = new FileStream(path, FileMode.Create);
+
+            var formatter = new BinaryFormatter();
+            var stream = new FileStream(path, FileMode.Create);
+
             formatter.Serialize(stream, this);
             stream.Close();
-            Console.WriteLine("Model saved!");
             logger.Info("Model has been serialized to {0}", path);
         }
 
@@ -358,7 +358,6 @@ namespace IndigoEngine
             }
 
             stream.Close();
-            Console.WriteLine("Model loaded!");
             this.Pause();
             logger.Info("Model has been deserialized from {0}", path);
         }
