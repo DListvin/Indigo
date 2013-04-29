@@ -42,8 +42,14 @@
 			this.mapPanel = new System.Windows.Forms.Panel();
 			this.contextMenuSelectAgents = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.contextMenuChooseEditAgents = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.MainMenu = new System.Windows.Forms.MenuStrip();
+			this.MainMenuFile = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainMenuFileClose = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainMenuModelControl = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainMenuModelControlAddAgent = new System.Windows.Forms.ToolStripMenuItem();
 			this.modelControlPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).BeginInit();
+			this.MainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// modelControlPanel
@@ -140,9 +146,9 @@
 			this.mapInfoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.mapInfoPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.mapInfoPanel.Location = new System.Drawing.Point(517, 13);
+			this.mapInfoPanel.Location = new System.Drawing.Point(517, 28);
 			this.mapInfoPanel.Name = "mapInfoPanel";
-			this.mapInfoPanel.Size = new System.Drawing.Size(376, 450);
+			this.mapInfoPanel.Size = new System.Drawing.Size(376, 435);
 			this.mapInfoPanel.TabIndex = 2;
 			this.mapInfoPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mapInfoPanel_Paint);
 			// 
@@ -152,9 +158,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.mapPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.mapPanel.Location = new System.Drawing.Point(13, 13);
+			this.mapPanel.Location = new System.Drawing.Point(13, 28);
 			this.mapPanel.Name = "mapPanel";
-			this.mapPanel.Size = new System.Drawing.Size(498, 450);
+			this.mapPanel.Size = new System.Drawing.Size(498, 435);
 			this.mapPanel.TabIndex = 0;
 			this.mapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPanel_Paint);
 			this.mapPanel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseDoubleClick);
@@ -175,16 +181,59 @@
 			this.contextMenuChooseEditAgents.Name = "contextMenuChooseEditAgents";
 			this.contextMenuChooseEditAgents.Size = new System.Drawing.Size(61, 4);
 			// 
+			// MainMenu
+			// 
+			this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuFile,
+            this.MainMenuModelControl});
+			this.MainMenu.Location = new System.Drawing.Point(0, 0);
+			this.MainMenu.Name = "MainMenu";
+			this.MainMenu.Size = new System.Drawing.Size(905, 24);
+			this.MainMenu.TabIndex = 3;
+			this.MainMenu.Text = "menuStrip1";
+			// 
+			// MainMenuFile
+			// 
+			this.MainMenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuFileClose});
+			this.MainMenuFile.Name = "MainMenuFile";
+			this.MainMenuFile.Size = new System.Drawing.Size(37, 20);
+			this.MainMenuFile.Text = "File";
+			// 
+			// MainMenuFileClose
+			// 
+			this.MainMenuFileClose.Name = "MainMenuFileClose";
+			this.MainMenuFileClose.Size = new System.Drawing.Size(103, 22);
+			this.MainMenuFileClose.Text = "Close";
+			this.MainMenuFileClose.Click += new System.EventHandler(this.MainMenuFileClose_Click);
+			// 
+			// MainMenuModelControl
+			// 
+			this.MainMenuModelControl.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuModelControlAddAgent});
+			this.MainMenuModelControl.Name = "MainMenuModelControl";
+			this.MainMenuModelControl.Size = new System.Drawing.Size(94, 20);
+			this.MainMenuModelControl.Text = "Model control";
+			// 
+			// MainMenuModelControlAddAgent
+			// 
+			this.MainMenuModelControlAddAgent.Name = "MainMenuModelControlAddAgent";
+			this.MainMenuModelControlAddAgent.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuModelControlAddAgent.Text = "Add agent";
+			this.MainMenuModelControlAddAgent.Click += new System.EventHandler(this.MainMenuModelControlAddAgent_Click);
+			// 
 			// GrapgicalUIForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(905, 562);
+			this.Controls.Add(this.MainMenu);
 			this.Controls.Add(this.mapInfoPanel);
 			this.Controls.Add(this.modelControlPanel);
 			this.Controls.Add(this.mapPanel);
 			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MainMenuStrip = this.MainMenu;
 			this.Name = "GrapgicalUIForm";
 			this.Text = "Indigo";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GrapgicalUIForm_FormClosing);
@@ -192,7 +241,10 @@
 			this.modelControlPanel.ResumeLayout(false);
 			this.modelControlPanel.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).EndInit();
+			this.MainMenu.ResumeLayout(false);
+			this.MainMenu.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 
@@ -210,6 +262,11 @@
 		private System.Windows.Forms.Label labelModelCoords;
 		private System.Windows.Forms.ContextMenuStrip contextMenuSelectAgents;
 		private System.Windows.Forms.ContextMenuStrip contextMenuChooseEditAgents;
+		private System.Windows.Forms.MenuStrip MainMenu;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuFile;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuFileClose;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuModelControl;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuModelControlAddAgent;
     }
 }
 

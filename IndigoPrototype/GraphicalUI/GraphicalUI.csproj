@@ -71,11 +71,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgentEditForm.cs">
+    <Compile Include="FormAgentAdd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AgentEditForm.Designer.cs">
-      <DependentUpon>AgentEditForm.cs</DependentUpon>
+    <Compile Include="FormAgentAdd.Designer.cs">
+      <DependentUpon>FormAgentAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAgentEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAgentEdit.Designer.cs">
+      <DependentUpon>FormAgentEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphicalUIForm.cs">
       <SubType>Form</SubType>
@@ -86,8 +92,11 @@
     <Compile Include="GraphicalUIShell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AgentEditForm.resx">
-      <DependentUpon>AgentEditForm.cs</DependentUpon>
+    <EmbeddedResource Include="FormAgentAdd.resx">
+      <DependentUpon>FormAgentAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAgentEdit.resx">
+      <DependentUpon>FormAgentEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphicalUIForm.resx">
       <DependentUpon>GraphicalUIForm.cs</DependentUpon>

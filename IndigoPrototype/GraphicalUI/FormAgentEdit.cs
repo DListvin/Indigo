@@ -13,13 +13,13 @@ using NLog;
 
 namespace GraphicalUI
 {
-	public partial class AgentEditForm : Form
+	public partial class FormAgentEdit : Form
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();	
 
 		private Agent agentToEdit; //Agent to be presented and edited in this form
 
-		public AgentEditForm(Agent argAgentToEdit)
+		public FormAgentEdit(Agent argAgentToEdit)
 		{
 			InitializeComponent();
 

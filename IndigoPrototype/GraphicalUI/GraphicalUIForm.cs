@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -64,7 +65,6 @@ namespace GraphicalUI
         private int zoomModifyer = 0;    //Zoom modifyer (contains delta adding to the texture size)
         
 		public List<Agent> DisplayInfoAgents { get; set; }               //Info about agents that must be displayed in the mapInfoPanel
-		//private List<Agent> currentAgentsInTheCell = new List<Agent>();  //Agents that are in the mouse coords now (necessary for choosing between agents in context menu) 
 
 		#region Textures dictionary
 
@@ -140,6 +140,9 @@ namespace GraphicalUI
 				//Initialising agents info
 				DisplayInfoAgents = new List<Agent>();
 
+				//Setting tag for main menu adding agent element to avoid future exceptions. (Agents always adding to point (0, 0))
+				this.MainMenuModelControlAddAgent.Tag = new Point();
+
 				//Setting coordinates center to the panel center
 				shiftVector = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
@@ -171,6 +174,43 @@ namespace GraphicalUI
 			{
 				mapPanel.Refresh();
 				mapInfoPanel.Refresh();
+			}
+
+		#endregion
+
+		#region Menu events
+
+			private void MainMenuFileClose_Click(object sender, EventArgs e)
+			{
+				this.Close();
+			}
+
+			/// <summary>
+			/// Event for adding new agent into the model. Used by MainMenu and context agents selection menu
+			/// </summary>
+			private void MainMenuModelControlAddAgent_Click(object sender, EventArgs e)
+			{		
+				contextMenuSelectAgents.Close(); 
+
+				GraphicalUIShell.Model.Pause();
+				
+				var newAddingForm = new FormAgentAdd();
+				newAddingForm.ShowDialog(this);
+				
+				if(newAddingForm.AgentToAdd != null)
+				{
+					var convertedSenderToPoint = (Point)((sender as ToolStripMenuItem).Tag);
+					newAddingForm.AgentToAdd.CurrentLocation = new Location(convertedSenderToPoint.X, convertedSenderToPoint.Y);
+
+					lock(GraphicalUIShell.Model.Agents)
+					{
+						GraphicalUIShell.Model.AddAgent(newAddingForm.AgentToAdd);
+					}
+				}
+
+				GraphicalUIShell.Model.Resume();
+
+				this.Refresh();
 			}
 
 		#endregion
@@ -386,11 +426,12 @@ namespace GraphicalUI
 			{
 				if (e.Button == MouseButtons.Left)
 				{
+					contextMenuSelectAgents.Close();
 					leftMouseButtonInMapIsPressed = false;
 				}
 				if (e.Button == MouseButtons.Right)
 				{					
-					SelectAgentAt(e.Location);
+					ShowContextMenuFor(e.Location);
 				}
 			}
 
@@ -418,7 +459,7 @@ namespace GraphicalUI
 				var currentAgentsInTheCell = GraphicalUIShell.Model.GetAgentsAt(GetModelCoord(e.Location)); //Agents that are in the cell with mouse coords
 				if(currentAgentsInTheCell.Count == 1)
 				{
-					var newEditForm = new AgentEditForm(currentAgentsInTheCell[0]);
+					var newEditForm = new FormAgentEdit(currentAgentsInTheCell[0]);
 					newEditForm.Show(this);
 
 					newEditForm.FormClosed += new FormClosedEventHandler( (obj, args) => 
@@ -500,10 +541,10 @@ namespace GraphicalUI
 			}
 
 			/// <summary>
-			/// Adding agents to the context menu to select wich agent info to show or select the agent if it is alone
+			/// Showing the avaliable options for adding agents and checking thir info
 			/// </summary>
-			/// <param name="argCoords">UI coords to find agent</param>
-			private void SelectAgentAt(Point argCoords)
+			/// <param name="argCoords">UI coords to find agents</param>
+			private void ShowContextMenuFor(Point argCoords)
 			{
 				var currentAgentsInTheCell = GraphicalUIShell.Model.GetAgentsAt(GetModelCoord(argCoords)); //Agents that are in the cell with argCoords
 				contextMenuSelectAgents.Items.Clear();
@@ -520,32 +561,21 @@ namespace GraphicalUI
 					newMenuItemToAdd.Tag = ag;
 					contextMenuSelectAgents.Items.Add(newMenuItemToAdd);
 				}
+				
+				//Adding add agent element
+				if(currentAgentsInTheCell.Count != 0)
+				{
+					contextMenuSelectAgents.Items.Add("-");
+				}
+				var newMenuItemAddingAgent = new ToolStripMenuItem("Add agent", null, new EventHandler(MainMenuModelControlAddAgent_Click)); //Using the same event as in the menu
+				newMenuItemAddingAgent.Tag = GetModelCoord(argCoords);
+				contextMenuSelectAgents.Items.Add(newMenuItemAddingAgent);
 
 				//Adding close element
 				contextMenuSelectAgents.Items.Add("-");
 				contextMenuSelectAgents.Items.Add(new ToolStripMenuItem("Ok", null, new EventHandler(contextMenuSelectAgentCloseElement_Click)));
 
-				if(currentAgentsInTheCell.Count > 1)
-				{
-					contextMenuSelectAgents.Show(Cursor.Position);
-				}
-
-				if(currentAgentsInTheCell.Count == 1)
-				{
-					if (DisplayInfoAgents.Contains(currentAgentsInTheCell[0]))
-					{
-						DisplayInfoAgents.Remove(currentAgentsInTheCell[0]);
-					}
-					else
-					{
-						DisplayInfoAgents.Add(currentAgentsInTheCell[0]);
-					}
-					this.Refresh();
-				}
-				if(currentAgentsInTheCell.Count <= 1)
-				{				
-					contextMenuSelectAgents.Close();
-				}
+				contextMenuSelectAgents.Show(Cursor.Position);
 			}
 
 			/// <summary>
@@ -565,7 +595,7 @@ namespace GraphicalUI
 			{
 				for(int i = 0; i < contextMenuSelectAgents.Items.Count; i++)
 				{			
-					if(contextMenuSelectAgents.Items[i] as ToolStripMenuItem == null) //This is close element
+					if(contextMenuSelectAgents.Items[i] as ToolStripMenuItem == null) //This is separator element, agents ending here
 					{
 						break;
 					}
@@ -598,7 +628,7 @@ namespace GraphicalUI
 
 			private void contextMenuEditAgentElement_Click(object sender, EventArgs e)
 			{				
-				var newEditForm = new AgentEditForm((sender as ToolStripMenuItem).Tag as Agent);
+				var newEditForm = new FormAgentEdit((sender as ToolStripMenuItem).Tag as Agent);
 				newEditForm.Show(this);
 
 				newEditForm.FormClosed += new FormClosedEventHandler( (obj, args) => 

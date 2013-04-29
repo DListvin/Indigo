@@ -20,6 +20,8 @@ namespace IndigoEngine.Agents
 			public AgentLivingIndigo()
 				: base()
 			{
+				AgentsRangeOfView = 20;
+
 				#region Adding skills
 
 					SkillsList.Add(Skills.Woodcutting);

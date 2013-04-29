@@ -1,6 +1,6 @@
 ﻿namespace GraphicalUI
 {
-	partial class AgentEditForm
+	partial class FormAgentEdit
 	{
 		/// <summary>
 		/// Required designer variable.
