@@ -10,9 +10,9 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// Most simple action, component of other actions
     /// </summary>
-    interface IAtomicInstruction
+    public interface IAtomicInstruction
     {
-        Agent TargetAgent { get; } //TODO: not agent, but some interface.  I dont think so.K
+        //Agent TargetAgent { get; } //TODO: not agent, but some interface.  I dont think so.K
     }
 }
 

@@ -9,13 +9,13 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// Instuctions such add, delete, etc object
     /// </summary>
-    class GlobalInstruction : IAtomicInstruction
+    public class GlobalInstruction : IAtomicInstruction
     {
         public Agent TargetAgent { get; private set; }
         OperationWorld worldOperation;      
 
         #region Constuctors
-        GlobalInstruction(Agent agent, OperationWorld operation)
+        public GlobalInstruction(Agent agent, OperationWorld operation)
         {
             TargetAgent = agent;
             worldOperation = operation;
@@ -26,7 +26,7 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// type of operation, that world must perform
     /// </summary>
-    enum OperationWorld 
+    public enum OperationWorld 
     { 
         addAgent, 
         deleteAgent, 

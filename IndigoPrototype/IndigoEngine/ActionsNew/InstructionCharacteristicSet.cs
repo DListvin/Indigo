@@ -9,15 +9,15 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// An instruction to change state
     /// </summary>
-    class InstructionCharacteristicSet : AbstractRegularInstruction
+    class InstructionCharacteristicSet : RegularInstructionAbstract
     {
         string characteristicName;
         int value;
 
         #region Constructors
 
-        public InstructionCharacteristicSet(Agent target, string characteristicName, int value)
-            : base(target)
+        public InstructionCharacteristicSet(string characteristicName, int value)
+            : base()
         {
             this.characteristicName = characteristicName;
             this.value = value;
@@ -27,7 +27,7 @@ namespace IndigoEngine.ActionsNew
 
         #region AbstractRegularInstruction realisation
 
-        public override void Perform()
+        public override void Perform(Agent TargetAgent)
         {
             Characteristic ch = TargetAgent.CurrentState.FindByName(characteristicName);
             if (ch == null)

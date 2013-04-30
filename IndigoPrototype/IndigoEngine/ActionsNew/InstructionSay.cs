@@ -6,17 +6,17 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine.ActionsNew
 {
-    class InstructionSay : AbstractRegularInstruction
+    class InstructionSay : RegularInstructionAbstract
     {
         string speach;
-        InstructionSay(Agent agent, string speach)
-            : base(agent)
+        InstructionSay(string speach)
+            : base()
         {
             this.speach = speach;
         }
 
 
-        public override void Perform()
+        public override void Perform(Agent TargetAgent)
         {
             throw new NotImplementedException();
         }

@@ -8,29 +8,27 @@ using System.Drawing;
 namespace IndigoEngine.ActionsNew
 {
     //Elementary instuction to movement
-    class InstructionGo : AbstractRegularInstruction
+    class InstructionGo : RegularInstructionAbstract
     {
-        Point Direction;
+        Location end;
 
         #region Constructors
-        public InstructionGo(Agent argTargetAgent, Location argDirectionEnd)
-            : base(argTargetAgent)
+        public InstructionGo(Location argDirectionEnd)
+            : base()
         {
-            Direction = Location.Normilize(argDirectionEnd, TargetAgent.CurrentLocation);
+            end = argDirectionEnd;
         }
-
-        public InstructionGo(Agent argTargetAgent)
-            : base(argTargetAgent)
+        public InstructionGo(Agent argDirectionEnd)
+            : base()
         {
-            Random rand = new Random();
-            Direction = new Point(rand.Next(2), rand.Next(2));
+            end = argDirectionEnd.CurrentLocation;
         }
         #endregion
 
         #region IAtomInstuction realisation
-        public override void Perform()
+        public override void Perform(Agent TargetAgent)
         {
-            TargetAgent.CurrentLocation += Direction;
+            TargetAgent.CurrentLocation += Location.Normilize(end, TargetAgent.CurrentLocation);
         }
         #endregion
     }

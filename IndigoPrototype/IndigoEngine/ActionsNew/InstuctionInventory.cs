@@ -6,19 +6,19 @@ using IndigoEngine.Agents;
 
 namespace IndigoEngine.ActionsNew
 {
-    class InstuctionInventory : AbstractRegularInstruction
+    class InstuctionInventory : RegularInstructionAbstract
     {
         Agent Object;
         OperationInventory inventoryOp;
 
-        InstuctionInventory(Agent Subject, Agent Object, OperationInventory inventoryOperation)
-            : base(Subject)
+        public InstuctionInventory(Agent Object, OperationInventory inventoryOperation)
+            : base()
         {
             this.Object = Object;
             inventoryOp = inventoryOperation;
         }
 
-        public override void Perform()
+        public override void Perform(Agent TargetAgent)
         {
             if (inventoryOp == OperationInventory.takeIn)
             {
@@ -34,6 +34,6 @@ namespace IndigoEngine.ActionsNew
     enum OperationInventory
     {
         takeIn,
-        takeOut
+        takeOut,
     }
 }
