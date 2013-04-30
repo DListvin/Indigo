@@ -118,11 +118,13 @@ namespace IndigoEngine.Agents
 			{
 				/*Need mainNeed = EstimateMainNeed();
 				MakeAction(mainNeed);*/
-                logger.Debug("Desiding for {0}", this.Name);
-                return MakeAction(EstimateMainCharacteristic());
-				
+                if (this is AgentLivingIndigo)
+                {
+                    logger.Debug("Desiding for {0}", this.Name);
+                    return MakeAction(EstimateMainCharacteristic());
+                }
 			}
-            return null;
+            return ActionsNew.Actions.DoNothing(this);
 		}
 
         /// <summary>

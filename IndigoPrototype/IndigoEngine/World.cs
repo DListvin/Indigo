@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using IndigoEngine.Agents;
-using IndigoEngine.Actions;
+using IndigoEngine.ActionsNew;
 using NLog;
 
 namespace IndigoEngine
@@ -13,7 +13,7 @@ namespace IndigoEngine
     /// World - logical moments in model.
     /// </summary>
     [Serializable]
-    public class World : IWorldToAction, IWorldToAgent
+    public class World : IWorldToAgent
     {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -21,7 +21,7 @@ namespace IndigoEngine
 
         private List<Agent> agents;               //List of all agents in the world
         private List<ActionAbstract> actions;     //List of all actions, that must be performed (refreshing each loop iteration)
-        private List<worldCommand> worldCommands; // List of Delegates, to add or Delete agents at right place in MainLoop
+        private List<GlobalInstruction> worldGlobalInstruction; // List of Delegates, to add or Delete agents at right place in MainLoop
 
 		#region Constructors
 
@@ -158,20 +158,21 @@ namespace IndigoEngine
 			{    
 				UpdateAgentFeelings();
 
-				Actions.Clear();
+				actions.Clear();
+                worldGlobalInstruction.Clear();
 
 				foreach (Agent agent in Agents)
 				{
-					agent.Decide();
+					actions.Add( agent.Decide());
 				}
 
 				//SolveActionConflicts();
 
-				foreach (ActionAbstract action in Actions)
-				{
-					action.CalculateFeedbacks();
-				}
+                foreach (ActionAbstract action in Actions)
+                {
 
+                    worldGlobalInstruction.AddRange( action.CompleteRegular());
+                }
 				foreach (Agent agent in Agents)
 				{
 					agent.StateRecompute();
@@ -179,13 +180,38 @@ namespace IndigoEngine
 
                 lock (Agents) //No other thread can access Agenst while this thread in within this block
                 {
-                    foreach (worldCommand com in worldCommands)
+                    foreach (GlobalInstruction GI in worldGlobalInstruction)
                     {
-                        com.DynamicInvoke();
+                        PerformGlobalInstrution(GI);
                     }
                 }
-				worldCommands.Clear();
 			}
+
+            /// <summary>
+            /// Performing of one global instruction
+            /// </summary>
+            /// <param name="GI">Global Instruction</param>
+            private void PerformGlobalInstrution(GlobalInstruction GI)
+            {
+                if (GI.worldOperation == OperationWorld.addAgent)
+                    AddAgent(GI.TargetAgent);
+                if (GI.worldOperation == OperationWorld.deleteAgent)
+                    DeleteAgent(GI.TargetAgent);
+                if (GI.worldOperation == OperationWorld.DverMneZapili)
+                {
+                    Func<Agent> corpseFunc;   //Func to get corpse of the deleting agent
+                    Agent corpse;             //Corpse of the deleting agent
+                    if (WorldRules.CorpseDictionary.TryGetValue(GI.TargetAgent.GetType(), out corpseFunc))
+                    {
+                        corpse = corpseFunc();
+                        corpse.CurrentLocation = GI.TargetAgent.CurrentLocation;
+                        corpse.Name = GI.TargetAgent.Name + "_corpse";
+                        AddAgent(corpse);
+                    }
+                    GI.TargetAgent.Inventory.DropAll();
+                    DeleteAgent(GI.TargetAgent);
+                }
+            }
 
 			/// <summary>
 			/// Here we basicly create world.
@@ -196,7 +222,7 @@ namespace IndigoEngine
 
 				Agents = new List<Agent>();
 				Actions = new List<ActionAbstract>();
-				worldCommands = new List<worldCommand>();
+                worldGlobalInstruction = new List<GlobalInstruction>();
 
 				GenerateForest(new Point(-5, -5), new Size(10, 10), 0.50);
                 GenerateForest(new Point(-15, 5), new Size(20, 20), 0.20);
@@ -344,10 +370,10 @@ namespace IndigoEngine
 								return !a.CurrentLocation.HasOwner && a != agent && Agent.Distance(a, agent) < agent.AgentsRangeOfView;
 							}));
 							//Adding actions
-							agent.CurrentVision.CurrentView.AddRange(actions.Where(a =>
+							/*agent.CurrentVision.CurrentView.AddRange(actions.Where(a =>
 							{
-								return !a.Subject.CurrentLocation.HasOwner && Agent.Distance(agent, a.Subject) < agent.AgentsRangeOfView;
-							}));
+								return !a. && Agent.Distance(agent, a.Subject) < agent.AgentsRangeOfView;
+							}));*/
 						}
 					}
 				}
@@ -382,7 +408,7 @@ namespace IndigoEngine
 
             public Exception AskWorldForAction(ActionAbstract action)
             {
-                action.World = this;
+                /*action.World = this;
 				if(action.CheckForLegitimacy() != null) //Checking action for legitimacy
 				{
 					return action.CheckForLegitimacy();
@@ -401,10 +427,11 @@ namespace IndigoEngine
 				}))
 				{	
 					return new ConflictException();
-				}
+				}*/
 				Actions.Add(action);
 
 				return null;
+           
             }
 			
 			public bool AskWorldForEuthanasia(Agent sender)
@@ -413,61 +440,9 @@ namespace IndigoEngine
 				{
                     return false;
 				}
-                worldCommands.Add(() =>
-                {
-					Func<Agent> corpseFunc;   //Func to get corpse of the deleting agent
-					Agent corpse;             //Corpse of the deleting agent
-					if(WorldRules.CorpseDictionary.TryGetValue(sender.GetType(), out corpseFunc))
-					{
-						corpse = corpseFunc();
-						corpse.CurrentLocation = sender.CurrentLocation;
-						corpse.Name = sender.Name + "_corpse";
-						AddAgent(corpse);
-					}
-					sender.Inventory.DropAll();
-					DeleteAgent(sender);	
-                });
+                worldGlobalInstruction.Add(new GlobalInstruction(sender, OperationWorld.DverMneZapili));
 				return true;
 			}
-
-        #endregion
-
-        #region IWorldToAction realisation
-
-            public bool AskWorldForDeletion(object sender, Agent obj)
-            {
-                if (!(sender is ActionAbstract)) //Checking sender type (only actions accepted)
-				{
-                    return false;
-				}
-                if (!agents.Contains(obj))  //Checking existing of the agent to delete
-				{
-                    return false;
-				}
-                worldCommands.Add(() =>
-                {
-					DeleteAgent(obj);
-                });
-                return true;
-            }
-
-            public bool AskWorldForAddition(object sender, Agent obj)
-            {
-                if (!(sender is ActionAbstract)) //Checking sender type (only actions accepted)
-				{
-                    return false;
-				}
-				if(!obj.CurrentLocation.HasOwner && GetAgentAt(obj.CurrentLocation.Coords) != null) //Checking for adding in the place of some agent
-				{
-					return false;
-				}
-                worldCommands.Add(() =>
-                {
-                    AddAgent(obj);
-                });
-                
-                return true;
-            }
 
         #endregion
 

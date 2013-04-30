@@ -85,6 +85,8 @@ namespace IndigoEngine.Agents
                 if (end.HasOwner || currentLocation.HasOwner)
                     throw new Exception("Location.Normalize: Some of args has owner");
                 Point dir = new Point(end.Coords.X - currentLocation.Coords.X, end.Coords.Y - currentLocation.Coords.Y);
+                if (dir.X == 0 && dir.Y == 0)
+                    return dir;
                 if (Math.Abs(dir.X) > Math.Abs(dir.Y))
                 {
                     return new Point((dir.X < 0) ? -1 : 1, 0);

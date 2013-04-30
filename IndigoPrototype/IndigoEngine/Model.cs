@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using IndigoEngine.Agents;
-using IndigoEngine.Actions;
+using IndigoEngine.ActionsNew;
 using NLog;
 using System.IO;
 using System.Runtime.Serialization;

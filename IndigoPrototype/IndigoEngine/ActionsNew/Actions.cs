@@ -14,10 +14,21 @@ namespace IndigoEngine.ActionsNew
     public static class Actions
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        static Dictionary<Characteristic, Func<ActionAbstract>> CharacteristicToAction;
+        static List<IAtomicInstruction> instructions;
+        static IObservable<List<IAtomicInstruction>> lookout;
+
+        /// <summary>
+        /// this is for correct work of GetActionsEstimating and GetBestActionEstimating. Not finised yet
+        /// </summary>
+        public static void Init()
+        {
+            instructions = new List<IAtomicInstruction>();
+        }
 
         public static ActionAbstract Go(Agent agent, Location endPoint)
         {
-            var instructions = new List<IAtomicInstruction>();
+            instructions = new List<IAtomicInstruction>();
             instructions.Add( new InstructionGo(endPoint));
             return new ActionAbstract(agent, instructions);
         }
@@ -56,6 +67,16 @@ namespace IndigoEngine.ActionsNew
             camp.CurrentLocation = agent.CurrentLocation + Direction;
             return new ActionAbstract(agent, instructions);
         }
+
+        public static ActionAbstract DoNothing(Agent agent)
+        {
+            var instructions = new List<IAtomicInstruction>();
+            return new ActionAbstract(agent, instructions);
+        }
+
+        /// <summary>
+        /// Get all Actions that estimate this characteristic
+        /// </summary>
         public static List<ActionAbstract> GetActionsEstimating(Agent agent, Characteristic characteristic)
         {
             var ans = new List<ActionAbstract>();
@@ -63,9 +84,13 @@ namespace IndigoEngine.ActionsNew
             return ans;
 
         }
+
+        /// <summary>
+        /// Get the best Action that estimate this characteristic
+        /// </summary>
         public static ActionAbstract GetBestActionEstimating(Agent agent, Characteristic characteristic)
         {
-            return Go(agent, new Location(0, 0));
+            return Go(agent, new Location(0, -10));
         }
     }
 }

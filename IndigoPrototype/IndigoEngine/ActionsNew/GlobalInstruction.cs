@@ -12,7 +12,7 @@ namespace IndigoEngine.ActionsNew
     public class GlobalInstruction : IAtomicInstruction
     {
         public Agent TargetAgent { get; private set; }
-        OperationWorld worldOperation;      
+        public OperationWorld worldOperation { get; private set; }      
 
         #region Constuctors
         public GlobalInstruction(Agent agent, OperationWorld operation)

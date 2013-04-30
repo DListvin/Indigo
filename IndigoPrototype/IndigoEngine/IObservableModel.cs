@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using IndigoEngine.Agents;
 using System.Drawing;
-using IndigoEngine.Actions;
+using IndigoEngine.ActionsNew;
 
 namespace IndigoEngine
 {

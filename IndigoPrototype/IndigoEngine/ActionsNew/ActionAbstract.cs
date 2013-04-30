@@ -11,7 +11,7 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// All Actions is that
     /// </summary>
-    public class ActionAbstract
+    public class ActionAbstract: NameableObject
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
