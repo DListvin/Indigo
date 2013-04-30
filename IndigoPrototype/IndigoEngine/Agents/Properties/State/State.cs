@@ -70,6 +70,20 @@ namespace IndigoEngine.Agents
 
         #endregion
 		
+        /// <summary>
+        /// Find Characteristic by its name
+        /// </summary>
+        /// <param name="name"> name of Characteristic</param>
+        /// <returns></returns>
+        public Characteristic FindByName(string name)
+        {
+            foreach (var ch in this)
+            {
+                if (ch.Name == name)
+                    return ch;
+            }
+            return null;
+        }
 
 		/// <summary>
 		/// Set currentValue in each characteristic between borders. Use it in the end of the iteration

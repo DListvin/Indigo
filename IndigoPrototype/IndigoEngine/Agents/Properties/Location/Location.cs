@@ -76,6 +76,26 @@ namespace IndigoEngine.Agents
 				return result;
 			}
 
+            /// <summary>
+            /// From direction gives increment to position
+            /// </summary>
+            /// <returns>Point like (0,1) (-1,0) or (1,-1)</returns>
+            public static Point Normilize(Location end, Location currentLocation)
+            {
+                if (end.HasOwner || currentLocation.HasOwner)
+                    throw new Exception("Location.Normalize: Some of args has owner");
+                Point dir = new Point(end.Coords.X - currentLocation.Coords.X, end.Coords.Y - currentLocation.Coords.Y);
+                if (Math.Abs(dir.X) > Math.Abs(dir.Y))
+                {
+                    return new Point((dir.X < 0) ? -1 : 1, 0);
+                }
+                if (Math.Abs(dir.Y) > Math.Abs(dir.X))
+                {
+                    return new Point(0, (dir.Y < 0) ? -1 : 1);
+                }
+                return new Point((dir.X < 0) ? -1 : 1, (dir.Y < 0) ? -1 : 1);
+            }
+
 		#endregion
 
         #region Constructors

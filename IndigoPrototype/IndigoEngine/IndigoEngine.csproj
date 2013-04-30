@@ -45,10 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionsNew\AbstractRegularInstruction.cs" />
     <Compile Include="ActionsNew\ActionAbstract.cs" />
+    <Compile Include="ActionsNew\GlobalInstruction.cs" />
     <Compile Include="ActionsNew\InstructionCharacteristicChange.cs" />
-    <Compile Include="ActionsNew\IAtomInstruction.cs" />
-    <Compile Include="ActionsNew\InstructionDelete.cs" />
+    <Compile Include="ActionsNew\InstructionCharacteristicSet.cs" />
+    <Compile Include="ActionsNew\IAtomicInstruction.cs" />
+    <Compile Include="ActionsNew\InstructionGo.cs" />
+    <Compile Include="ActionsNew\InstructionSay.cs" />
+    <Compile Include="ActionsNew\InstuctionInventory.cs" />
     <Compile Include="Actions\Action Build\Action Build Shelter\ActionBuildShelter.cs" />
     <Compile Include="Actions\Action Build\ActionBuild.cs" />
     <Compile Include="Actions\Action Go\ActionWander.cs" />

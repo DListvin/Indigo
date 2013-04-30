@@ -95,7 +95,7 @@ namespace IndigoEngine.Agents
 					if(ag.GetType() == agentType)
 					{
 						ItemList.Remove(ag);
-						break;;
+						break;
 					}
 				}
 			}
@@ -114,7 +114,7 @@ namespace IndigoEngine.Agents
 		/// </summary>
 		public Agent PopAgent(Agent argAgent)
 		{	
-			ItemList.Remove(argAgent); 
+			ItemList.Remove(argAgent);
 			return argAgent;
 		}
 

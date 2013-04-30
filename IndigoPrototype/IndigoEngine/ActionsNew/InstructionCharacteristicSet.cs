@@ -9,18 +9,18 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// An instruction to change state
     /// </summary>
-    class InstructionCharacteristicChange : AbstractRegularInstruction
+    class InstructionCharacteristicSet : AbstractRegularInstruction
     {
         string characteristicName;
-        int delta;
+        int value;
 
         #region Constructors
 
-        public InstructionCharacteristicChange(Agent target, string characteristicName, int value)
+        public InstructionCharacteristicSet(Agent target, string characteristicName, int value)
             : base(target)
         {
             this.characteristicName = characteristicName;
-            delta = value;
+            this.value = value;
         }
 
         #endregion
@@ -31,8 +31,8 @@ namespace IndigoEngine.ActionsNew
         {
             Characteristic ch = TargetAgent.CurrentState.FindByName(characteristicName);
             if (ch == null)
-                throw new Exception("InstructionCharacteristicChange.Perform: Target Agent hasn't " + characteristicName + "characteristic!");
-            ch.CurrentPercentValue += delta;
+               throw new Exception("InstructionCharacteristicSet.Perform: Target Agent hasn't " + characteristicName + "characteristic!");
+            ch.CurrentPercentValue = value;
         }
 
         #endregion

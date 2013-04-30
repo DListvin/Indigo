@@ -19,7 +19,7 @@ namespace IndigoEngine.Actions
 		#region Static methods	
 
 			/// <summary>
-			/// From direction gives increment to position
+			/// From direction gives increment to position. Must not be here. See location. Kostya.
 			/// </summary>
 			/// <returns>Point like (0,1) (-1,0) or (1,-1)</returns>
 			protected static Point Normilize(Point end, Point location)
