@@ -206,6 +206,10 @@ namespace IndigoEngine.Agents
 				return result;
 			}
 
+            public static int Comparing(Characteristic char1, Characteristic char2)
+            {
+                return char1.CurrentPercentValue.CompareTo( char2.CurrentPercentValue);
+            }
         #endregion
 
         #region ObjectMethodsOverride

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using NLog;
-using IndigoEngine.Actions;
+using IndigoEngine.ActionsNew;
 
 namespace IndigoEngine.Agents
 {
@@ -51,8 +51,9 @@ namespace IndigoEngine.Agents
 				public Vision CurrentVision { get; set; }                  //Agent's field ov view. Includes all agents & actions, that current agent can see
 				public Memory CurrentMemory { get; set; }                  //Agent's memory
 				public List<Skill> SkillsList { get; set; }                //List of skills that are available to agent
-
-				/// <summary>
+                protected Dictionary<Characteristic, Need> NeedFromCharacteristic { get; set; } // Agent's spesific association Needs from Characteristic
+				
+                /// <summary>
 				/// Agent's range of view, relative to CurrentVision. Necessary for easier agent management
 				/// </summary>
 				public int AgentsRangeOfView
@@ -67,7 +68,6 @@ namespace IndigoEngine.Agents
 					}
 				}
 
-                protected Dictionary<Characteristic, Need> NeedFromCharacteristic { get; set; } // Agent's spesific association Needs from Characteristic
 
 			#endregion
 
@@ -104,7 +104,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalAgent
 		/// </summary>
-		public virtual void Decide()
+		public virtual ActionAbstract Decide()
 		{
             //Kostya's logick here
             //World must control everything, that I'm trying to do
@@ -116,43 +116,37 @@ namespace IndigoEngine.Agents
 			Attribute isDeciding = Attribute.GetCustomAttribute(this.GetType(), typeof(DecidingAttribute));  // getting attributes for this class
 			if(isDeciding != null)
 			{
-				Need mainNeed = EstimateMainNeed();
-				MakeAction(mainNeed);
-				logger.Debug("Desided for {0}", this.Name);
+				/*Need mainNeed = EstimateMainNeed();
+				MakeAction(mainNeed);*/
+                logger.Debug("Desiding for {0}", this.Name);
+                return MakeAction(EstimateMainCharacteristic());
+				
 			}
+            return null;
 		}
 
         /// <summary>
         /// Calculate one main need of agent at this moment
         /// </summary>
         /// <returns> main need</returns>
-        protected virtual Need EstimateMainNeed()
+        protected virtual Characteristic EstimateMainCharacteristic()
         {
-            List<Need> allNeed = new List<Need>();
-            Need need = new Need();
+            List<Characteristic> allCharacteristic = new List<Characteristic>();
+            Characteristic characteristic = new Characteristic();
             foreach (Characteristic ch in CurrentState)
             {
                 if (ch.CurrentPercentValue < ch.CriticalPercentValue)
                 {
-                    if (!NeedFromCharacteristic.TryGetValue(ch, out need))
-                    {
-						logger.Error("Dictionary of the {0} doesn't have info about needs for {1}", this.Name, ch.Name);
-                        throw new Exception("Ditionary in Agent has error. Cant find need by characteristic!");
-                    }
-                    allNeed.Add(need);
+                    allCharacteristic.Add(characteristic);
                 }
             }
-            if (allNeed.Count == 0)
+            if (allCharacteristic.Count == 0)
 			{
-                if (this is AgentLivingIndigo)
-                    return Needs.NeedWander; //Want them to go for a walk
-                return Needs.NeedNothing;
+                return null;
 			}
-            allNeed.Sort(new Comparison<Need>(Need.Comparing));
+            allCharacteristic.Sort(new Comparison<Characteristic>(Characteristic.Comparing));
 
-			logger.Debug("Estimated main need for {0} it is {1}", this.Name, allNeed[0].Name);
-
-            return allNeed[0];
+            return allCharacteristic[0];
 
         }
 		
@@ -160,70 +154,9 @@ namespace IndigoEngine.Agents
         /// Calculate the best decision of action to satisfy need
         /// </summary>
         /// <param name="argNeed">need, that must be satisfied</param>
-        protected virtual void MakeAction(Need argNeed)
+        protected virtual ActionAbstract MakeAction(Characteristic argCharacteristic)
         {
-            Exception worldResponseToAction = new Exception();	//World response if the action is accepted.
-			ActionAbstract newAction = null;                    //New action to create
-            if (argNeed.SatisfyingActions.Count == 0)
-			{
-				logger.Error("Number of Action to satisfy need {0} is 0", argNeed);
-				return;
-			}
-
-            foreach (Type act in argNeed.SatisfyingActions)
-            {
-				Attribute actionInfo = Attribute.GetCustomAttribute(act, typeof(ActionInfoAttribute));  // getting attributes for this class
-				if(actionInfo == null)
-				{
-					logger.Error("Failed to get action info attribute for {0}", act.GetType());
-					return;
-				}
-				ActionInfoAttribute currentInfo = actionInfo as ActionInfoAttribute; //Converting attribute to ActionInfo			
-
-                if (currentInfo.RequiresObject)
-                {
-                    foreach (Agent ag in Inventory.ItemList.Concat(CurrentVision.CurrentViewAgents))
-                    {
-                        if (!currentInfo.AcceptedObjects.Contains(ag.GetType()))
-                        {
-                            continue;
-                        }
-                        if (Distance(this, ag) > Math.Sqrt(2))
-                        {
-							actionInfo = Attribute.GetCustomAttribute(typeof(ActionGo), typeof(ActionInfoAttribute));  // getting attributes for this class
-							if(actionInfo == null)
-							{
-								logger.Error("Failed to get action info attribute for ActionGo");
-								return;
-							}
-							currentInfo = actionInfo as ActionInfoAttribute;
-							newAction = ActionsManager.GetActionForCurrentParticipants(typeof(ActionGo), currentInfo, this, null, ag.CurrentLocation.Coords);
-							worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
-                            if (worldResponseToAction == null)
-							{
-                                break;
-							}
-                        }
-						newAction = ActionsManager.GetActionForCurrentParticipants(act, currentInfo, this, ag);
-                        worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
-                        if (worldResponseToAction == null)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-					newAction = ActionsManager.GetActionForCurrentParticipants(act, currentInfo, this, null);
-					worldResponseToAction = HomeWorld.AskWorldForAction(newAction);
-                }
-
-                if (worldResponseToAction == null)
-                {
-					logger.Debug("Made action for {0}: {1}", this.Name, newAction.Name);
-                    break;
-                }
-            }
+            return ActionsNew.Actions.GetBestActionEstimating(this, argCharacteristic);
 
         }
 		
@@ -234,34 +167,20 @@ namespace IndigoEngine.Agents
         {
 			logger.Trace("Base state recomputing for {0}", this);
 
-			PerformFeedback();
 			CurrentState.Reduct();
 
             if (CurrentState.Health.CurrentUnitValue == this.CurrentState.Health.MinValue)
 			{
 				HomeWorld.AskWorldForEuthanasia(this);
 			}
-			foreach(ActionAbstract act in CurrentVision.CurrentViewActions)
+			/*foreach(ActionAbstract act in CurrentVision.CurrentViewActions)
 			{
 				CurrentMemory.StoreAction(act.Subject, act);
-			}
+			}*/
 
 			logger.Debug("Base state recomputed for {0}", this.Name);
 			logger.Trace("{0}", this);
 
-        }
-
-		/// <summary>
-		/// ITypicalAgent
-		/// </summary>
-        private void PerformFeedback()
-        {
-            if (CurrentActionFeedback != null)
-			{
-                CurrentActionFeedback.Invoke();
-				CurrentActionFeedback = null;
-			}			
-			logger.Debug("Performed action feedback for {0}", this.Name);
         }
 
         #region ObjectMethodsOverride

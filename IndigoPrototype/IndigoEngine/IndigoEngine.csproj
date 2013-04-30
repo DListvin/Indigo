@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionsNew\AbstractRegularInstruction.cs" />
+    <Compile Include="ActionsNew\Actions.cs" />
+    <Compile Include="ActionsNew\RegularInstructionAbstract.cs" />
     <Compile Include="ActionsNew\ActionAbstract.cs" />
     <Compile Include="ActionsNew\GlobalInstruction.cs" />
     <Compile Include="ActionsNew\InstructionCharacteristicChange.cs" />

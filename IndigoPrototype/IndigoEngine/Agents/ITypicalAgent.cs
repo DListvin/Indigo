@@ -62,11 +62,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Making a decision about action in the current phase
 		/// </summary>
-		void Decide();	
+		ActionsNew.ActionAbstract Decide();	
 		
-        /// <summary>
-        /// Modify it's charecterictics each turn.
-        /// </summary>
-        void StateRecompute();
 	}
 }

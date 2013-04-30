@@ -45,7 +45,7 @@ namespace IndigoEngine.Agents
          /// </summary>
         /// <param name="agentType">type of agent</param>
         /// <returns> agent with type agentType</returns>
-        Agent GetAgentByType(Type agentType);
+        List<Agent> GetAgentByType(Type agentType, int argCountToGet);
 
 		/// <summary>
 		/// Getting the specified agent from the storage

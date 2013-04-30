@@ -87,7 +87,9 @@ namespace IndigoEngine.Agents
         ///  ITypicalItemStorage
         /// </summary>
         public void DeleteAgentsByType(Type agentType, int argCountToDelete = 1)
-        {	
+        {
+            if (argCountToDelete <= 0)
+                return;
 			for(int i = 0; i < argCountToDelete; i++)
 			{
 				foreach(Agent ag in ItemList)
@@ -104,9 +106,14 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalItemStorage
 		/// </summary>
-        public Agent GetAgentByType(Type agentType)
+        public List<Agent> GetAgentByType(Type agentType, int argCountToGet = 1)
         {
-            return ItemList.Find(ag => { return ag.GetType() == agentType; });
+            if (argCountToGet <= 0)
+                return null;
+            var ans = ItemList.FindAll(ag => { return ag.GetType() == agentType; });
+            while (ans.Count > argCountToGet)
+                ans.RemoveAt(0);
+            return ans;
         }
 
 		/// <summary>
