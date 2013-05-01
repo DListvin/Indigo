@@ -18,18 +18,20 @@ namespace IndigoEngine.ActionsNew
         private static Logger logger = LogManager.GetCurrentClassLogger();
         //static Dictionary<Characteristic, Func<ActionAbstract>> CharacteristicToAction;
         static BindingList<IAtomicInstruction> instructions;
-
+        static Dictionary<string, List<Type>> ActionAgentConformity;
         /// <summary>
         /// this is for correct work of GetActionsEstimating and GetBestActionEstimating. Not finised yet
         /// </summary>
         public static void Init()
         {
+            ActionAgentConformity = new Dictionary<string, List<Type>>();
             instructions = new BindingList<IAtomicInstruction>();
-            //CharacteristicToAction = new Dictionary<Characteristic, Func<ActionAbstract>>();
+           
+            // CharacteristicToAction = new Dictionary<Characteristic, Func<ActionAbstract>>();
             //CharacteristicToAction.Add( Characteristics.FoodSatiety, 
-            /*instructions.ListChanged += new ListChangedEventHandler(instructions_ListChanged);
+            instructions.ListChanged += new ListChangedEventHandler(instructions_ListChanged);
 
-            Type t = typeof(Actions);
+           /* Type t = typeof(Actions);
             MethodInfo[] MArr = t.GetMethods();
             foreach (MethodInfo MI in MArr)
             {
@@ -45,8 +47,15 @@ namespace IndigoEngine.ActionsNew
                          {
                              List<object> param = new List<object>();
                              foreach (var p in PArr)
-                                 param.Add(p.
-                             MI.Invoke(new AgentLivingIndigo(), param.ToArray());
+                             {
+                                 Type argType = p.ParameterType;
+                                 if(!argType.IsAbstract)
+                                     param.Add(Activator.CreateInstance(argType));
+                                 else
+                                     param.Add(new AgentLivingIndigo());
+
+                             }
+                             MI.Invoke(null,param.ToArray());
                          }
                      }
                 }
@@ -62,14 +71,18 @@ namespace IndigoEngine.ActionsNew
         {
             instructions.Clear();
             instructions.Add( new InstructionGo(endPoint));
-            return new ActionAbstract(agent, instructions.ToList());
+            var ans = new ActionAbstract("Go",agent, instructions.ToList());
+            ActionAgentConformity.Add(ans.Name, new List<Type>(){ typeof(AgentLiving)});
+            return ans;
         }
 
         public static ActionAbstract Go(Agent agent, Agent endPoint)
         {
             instructions.Clear();
             instructions.Add(new InstructionGo(endPoint));
-            return new ActionAbstract(agent, instructions.ToList());
+            var ans = new ActionAbstract("Go", agent, instructions.ToList());
+            ActionAgentConformity.Add(ans.Name, new List<Type>() { typeof(AgentLiving) });
+            return ans;
         }
 
         public static ActionAbstract Eat(Agent agent, Agent food)
@@ -77,7 +90,9 @@ namespace IndigoEngine.ActionsNew
             instructions.Clear();
             instructions.Add(new InstructionCharacteristicSet(Characteristics.FoodSatiety, 100));
             instructions.Add(new GlobalInstruction( food, OperationWorld.deleteAgent));
-            return new ActionAbstract(agent, instructions.ToList());
+            var ans = new ActionAbstract("Eat", agent, instructions.ToList());
+            ActionAgentConformity.Add(ans.Name, new List<Type>() { typeof(AgentLiving) });
+            return ans;
         }
 
         public static ActionAbstract BreakCamp(Agent agent, Point Direction)
@@ -89,31 +104,31 @@ namespace IndigoEngine.ActionsNew
             AgentManMadeShelterCamp camp = new AgentManMadeShelterCamp();
             instructions.Add(new GlobalInstruction(camp, OperationWorld.addAgent));
             camp.CurrentLocation = agent.CurrentLocation + Direction;
-            return new ActionAbstract(agent, instructions.ToList());
+            return new ActionAbstract("BreakCamp", agent, instructions.ToList());
         }
 
         public static ActionAbstract DoNothing(Agent agent)
         {
             instructions.Clear();
-            return new ActionAbstract(agent, instructions.ToList());
+            return new ActionAbstract("DoNothing", agent, instructions.ToList());
         }
 
         public static ActionAbstract Rest(Agent agent)
         {
             instructions.Clear();
             instructions.Add(new InstructionCharacteristicChange(Characteristics.Stamina, 1));
-            return new ActionAbstract(agent, instructions.ToList());
+            return new ActionAbstract("Rest", agent, instructions.ToList());
         }
 
         public static List<ActionAbstract> Drink(Agent agent, Agent drinkableAgent)
         {
             var ans = new List<ActionAbstract>();
             instructions.Clear();
-            instructions.Add(new InstructionCharacteristicSet(Characteristics.WaterSatiety, 100)); // gont like string here
-            ans.Add(new ActionAbstract(agent, instructions.ToList()));
+            instructions.Add(new InstructionCharacteristicSet(Characteristics.WaterSatiety, 100));
+            ans.Add(new ActionAbstract("DrinkSubject", agent, instructions.ToList()));
             instructions = new BindingList<IAtomicInstruction>(); // warning!!!
             instructions.Add(new InstructionCharacteristicChange(Characteristics.Health, -1));
-            ans.Add(new ActionAbstract(drinkableAgent, instructions.ToList()));
+            ans.Add(new ActionAbstract("DrinkObject", drinkableAgent, instructions.ToList()));
             return ans;
         }
 
@@ -121,29 +136,28 @@ namespace IndigoEngine.ActionsNew
         {
             var ans = new List<ActionAbstract>();
             instructions.Clear();
-            instructions.Add(new InstructionCharacteristicChange(Characteristics.Peacefulness, 1)); //need to refact
-            instructions.Add(new InstructionCharacteristicChange(Characteristics.Stamina, -1)); //need to refact
-            instructions.Add(new InstructionCharacteristicChange(Characteristics.Strenght, -1)); //need to refact
-            ans.Add(new ActionAbstract(agent, instructions.ToList()));
+            instructions.Add(new InstructionCharacteristicChange(Characteristics.Peacefulness, 1)); 
+            instructions.Add(new InstructionCharacteristicChange(Characteristics.Stamina, -1)); 
+            instructions.Add(new InstructionCharacteristicChange(Characteristics.Strenght, -1));
+            ans.Add(new ActionAbstract("AtackSubject",agent, instructions.ToList()));
 
             instructions = new BindingList<IAtomicInstruction>(); // warning!!!
             instructions.Add(new InstructionCharacteristicChange(Characteristics.Health, -1));
-            ans.Add(new ActionAbstract(victimAgent, instructions.ToList()));
+            ans.Add(new ActionAbstract("AtackObject",victimAgent, instructions.ToList()));
             return ans;
         }
 
-        public static List<ActionAbstract> Obtain(Agent agent, Agent subject, Agent resourse = null)
+        public static List<ActionAbstract> Obtain(Agent agent, Agent Object, Agent resourse)
         {
             var ans = new List<ActionAbstract>();
             instructions.Clear();
-            if (resourse != null)
-                instructions.Add(new InstuctionInventory(resourse, OperationInventory.takeOut));
-            ans.Add(new ActionAbstract(subject, instructions.ToList()));
+            instructions.Add(new InstuctionInventory(resourse, OperationInventory.takeOut));
+            ans.Add(new ActionAbstract("ObtainObject",Object, instructions.ToList()));
 
             instructions = new BindingList<IAtomicInstruction>();
             instructions.Add(new InstuctionInventory(resourse, OperationInventory.takeIn));
             instructions.Add(new InstructionCharacteristicChange(Characteristics.Strenght, -1));
-            ans.Add(new ActionAbstract(agent, instructions.ToList()));
+            ans.Add(new ActionAbstract("ObtainSubject", agent, instructions.ToList()));
             return ans;
         }
         
@@ -157,7 +171,6 @@ namespace IndigoEngine.ActionsNew
             var ans = new List<ActionAbstract>();
             ans.Add(Actions.Go(agent, new Location(0,0)));
             return ans;
-
         }
 
         /// <summary>
