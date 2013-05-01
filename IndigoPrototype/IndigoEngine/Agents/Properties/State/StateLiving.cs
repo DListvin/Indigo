@@ -18,24 +18,13 @@ namespace IndigoEngine.Agents
 
 			public StateLiving()
 				: base()
-			{
-				Strenght = new Characteristic();
-				Strenght.Name = "Strenght";
-
-				Stamina = new Characteristic();
-				Stamina.Name = "Stamina";
-
-				Intelligence = new Characteristic();
-				Intelligence.Name = "Intelligence";
-
-				FoodSatiety = new Characteristic();
-				FoodSatiety.Name = "FoodSatiety";
-
-				WaterSatiety = new Characteristic();
-				WaterSatiety.Name = "WaterSatiety";
-
-				Peacefulness = new Characteristic();
-				Peacefulness.Name = "Peacefulness";
+			{                
+				Strenght = Characteristics.Strenght;
+				Stamina = Characteristics.Stamina;
+				Intelligence = Characteristics.Intelligence;
+				FoodSatiety = Characteristics.FoodSatiety;
+				WaterSatiety = Characteristics.WaterSatiety;
+                Peacefulness = Characteristics.Peacefulness;
 			}
 
         #endregion

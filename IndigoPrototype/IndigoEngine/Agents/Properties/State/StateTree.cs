@@ -16,10 +16,7 @@ namespace IndigoEngine.Agents
 
 			public StateTree()
 			{
-				Prolificacy = new Characteristic();
-				Prolificacy.Name = "Prolificacy";
-                Prolificacy.CriticalPercentValue = 10;
-                Prolificacy.CurrentUnitValue = Prolificacy.MaxValue;
+                Prolificacy = Characteristics.Prolificacy;
 
 				logger.Info("Created new {0}", this.GetType());
 				logger.Trace("Created new {0}", this);

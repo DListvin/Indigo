@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionsNew\Actions.cs" />
+    <Compile Include="ActionsNew\IHaveEffectInstruction.cs" />
     <Compile Include="ActionsNew\RegularInstructionAbstract.cs" />
     <Compile Include="ActionsNew\ActionAbstract.cs" />
     <Compile Include="ActionsNew\GlobalInstruction.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Agents\AgentManMadeShelter.cs" />
     <Compile Include="Agents\AgentPuddle.cs" />
     <Compile Include="Agents\Properties\Memory\TargetInfo.cs" />
+    <Compile Include="Agents\Properties\State\Characteristics.cs" />
     <Compile Include="Agents\Properties\Vision\Vision.cs" />
     <Compile Include="Agents\Properties\Vision\ITypicalVision.cs" />
     <Compile Include="Agents\Properties\Location\Location.cs" />

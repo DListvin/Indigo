@@ -26,6 +26,11 @@ namespace IndigoEngine.Agents
         {
             CurrentUnitValue = MaxValue;
         }
+        public Characteristic(string name)
+            : this()
+        {
+            Name = name;
+        }
 
         #endregion
 
@@ -128,6 +133,14 @@ namespace IndigoEngine.Agents
 						CurrentUnitValue = MinValue + (int)(Math.Abs((float)(MaxValue - MinValue)) * (float)value / 100f);
 					}
 				}
+                public int CriticalUnitValue
+                {
+                    get 
+                    {
+                        return CriticalPercentValue * maxValue;
+                    }
+                }
+
 
 			#endregion
 

@@ -18,8 +18,7 @@ namespace IndigoEngine.Agents
 
 			public State()
 			{
-				Health = new Characteristic();
-				Health.Name = "Health";
+                Health = Characteristics.Health;
 			}
 
         #endregion
