@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NLog;
-using IndigoEngine.Actions;
+using IndigoEngine.ActionsOld;
 
 namespace IndigoEngine.Agents
 {

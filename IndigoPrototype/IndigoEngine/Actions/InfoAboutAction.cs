@@ -5,7 +5,7 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine.ActionsOld
 {
 	/// <summary>
 	/// Class to store some info about action (accepted subjects, required skills e.c.)

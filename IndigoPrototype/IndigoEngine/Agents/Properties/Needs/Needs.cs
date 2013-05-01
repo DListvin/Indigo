@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using IndigoEngine.Actions;
+using IndigoEngine.ActionsOld;
+using IndigoEngine.Agents;
 using NLog;
 
 namespace IndigoEngine
@@ -14,14 +15,14 @@ namespace IndigoEngine
 
 		#region Indigo needs
 
-			public static Need NeedAttack
+        public static Need NeedAttack
 			{
-				get
-				{
-					return new Need("attack", 4, 1, typeof(ActionAttack));
-				}
+                get
+                {
+                    return new Need("attack", 4, 1, typeof(ActionAttack));
+                }
 			}
-
+        
 			public static Need NeedEat
 			{
 				get
@@ -29,7 +30,7 @@ namespace IndigoEngine
                     List<Type> actions = new List<Type>()
 					{
 						typeof(ActionEat),
-						typeof(ActionObtainFood)
+						typeof(ActionObtain)
 					}; 
 					return new Need("eat", 1, 2, actions);
 				}

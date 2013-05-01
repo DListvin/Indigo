@@ -6,7 +6,7 @@ using System.Drawing;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine.ActionsOld
 {
     /// <summary>
     /// Action to build some shelter. Necessary for structure

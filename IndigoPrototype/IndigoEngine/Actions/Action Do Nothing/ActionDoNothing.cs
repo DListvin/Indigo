@@ -5,7 +5,7 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine.ActionsOld
 {
 	/// <summary>
 	/// Action for agent to do nothing at this iteration. Indigo gets +1 to aggressivnes

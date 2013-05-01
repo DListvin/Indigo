@@ -5,7 +5,7 @@ using System.Text;
 using IndigoEngine.Agents;
 using NLog;
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine.ActionsOld
 {
 	/// <summary>
 	/// Action for tree to grow a fruit on itself

@@ -6,7 +6,7 @@ using IndigoEngine.Agents;
 using System.Drawing;
 using NLog;
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine.ActionsOld
 {
     /// <summary>
     /// basic class for action

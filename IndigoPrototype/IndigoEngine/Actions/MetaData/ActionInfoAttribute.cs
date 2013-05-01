@@ -6,7 +6,7 @@ using IndigoEngine.Agents;
 using NLog;
 
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine.ActionsOld
 {
 	/// <summary>
 	/// Attribute to store meta action info: accepted agents and other requirements

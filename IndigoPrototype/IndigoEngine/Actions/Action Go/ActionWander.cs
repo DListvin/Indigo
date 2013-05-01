@@ -7,7 +7,7 @@ using System.Drawing;
 using NLog;
 using IndigoEngine.Agents.Properties.Memory;
 
-namespace IndigoEngine.Actions
+namespace IndigoEngine.ActionsOld
 {
     /// <summary>
     /// Action to wander around the world, if nothing to do.
