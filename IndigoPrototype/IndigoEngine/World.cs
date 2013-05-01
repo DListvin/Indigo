@@ -21,7 +21,7 @@ namespace IndigoEngine
 
         private List<Agent> agents;               //List of all agents in the world
         private List<ActionAbstract> actions;     //List of all actions, that must be performed (refreshing each loop iteration)
-        private List<GlobalInstruction> worldGlobalInstruction; // List of Delegates, to add or Delete agents at right place in MainLoop
+        private List<GlobalInstruction> worldGlobalInstructions; // List of Instructions, to add or Delete agents at right place in MainLoop
 
 		#region Constructors
 
@@ -128,13 +128,15 @@ namespace IndigoEngine
 									{
 										continue;
 									}
-									AgentTree currentAddingAgent = new AgentTree();
-									currentAddingAgent.Name = "Tree_at_" + i.ToString() + "_" + j.ToString();
-									currentAddingAgent.CurrentLocation = new Location(i, j);
-									AddAgent(currentAddingAgent);
-
-									newTrees.Add(new Point(i, j));
-									totalTreesAdded++;
+                                    if (GetAgentAt(new Point(i, j)) == null)
+                                    {
+                                        AgentTree currentAddingAgent = new AgentTree();
+                                        currentAddingAgent.Name = "Tree_at_" + i.ToString() + "_" + j.ToString();
+                                        currentAddingAgent.CurrentLocation = new Location(i, j);
+                                        AddAgent(currentAddingAgent);
+                                        newTrees.Add(new Point(i, j));
+                                        totalTreesAdded++;
+                                    }
 								}
 							}
 						}
@@ -159,7 +161,7 @@ namespace IndigoEngine
 				UpdateAgentFeelings();
 
 				actions.Clear();
-                worldGlobalInstruction.Clear();
+                worldGlobalInstructions.Clear();
 
 				foreach (Agent agent in Agents)
 				{
@@ -171,7 +173,7 @@ namespace IndigoEngine
                 foreach (ActionAbstract action in Actions)
                 {
 
-                    worldGlobalInstruction.AddRange( action.CompleteRegular());
+                    worldGlobalInstructions.AddRange( action.CompleteRegular());
                 }
 				foreach (Agent agent in Agents)
 				{
@@ -180,7 +182,7 @@ namespace IndigoEngine
 
                 lock (Agents) //No other thread can access Agenst while this thread in within this block
                 {
-                    foreach (GlobalInstruction GI in worldGlobalInstruction)
+                    foreach (GlobalInstruction GI in worldGlobalInstructions)
                     {
                         PerformGlobalInstrution(GI);
                     }
@@ -197,7 +199,7 @@ namespace IndigoEngine
                     AddAgent(GI.TargetAgent);
                 if (GI.worldOperation == OperationWorld.deleteAgent)
                     DeleteAgent(GI.TargetAgent);
-                if (GI.worldOperation == OperationWorld.DverMneZapili)
+                if (GI.worldOperation == OperationWorld.DverMneZapili) // kill agent and add corpse of agent
                 {
                     Func<Agent> corpseFunc;   //Func to get corpse of the deleting agent
                     Agent corpse;             //Corpse of the deleting agent
@@ -218,14 +220,12 @@ namespace IndigoEngine
 			/// </summary>
 			public void Initialise()
 			{
+                ActionsNew.Actions.Init();
 				Agent currentAddingAgent; //Agent, that is adding to the world now. This variable is necessary to configure the agent
 
 				Agents = new List<Agent>();
 				Actions = new List<ActionAbstract>();
-                worldGlobalInstruction = new List<GlobalInstruction>();
-
-				GenerateForest(new Point(-5, -5), new Size(10, 10), 0.50);
-                GenerateForest(new Point(-15, 5), new Size(20, 20), 0.20);
+                worldGlobalInstructions = new List<GlobalInstruction>();
 
 				/*//Terrific test init (for hard and cruel test)
             for (int i = 0; i < 3; ++i)
@@ -336,6 +336,10 @@ namespace IndigoEngine
 				currentAddingAgent.Name = "Tree_at_" + 1.ToString() + "_" + 1.ToString();
 				currentAddingAgent.CurrentLocation = new Location(1, 1);
 				AddAgent(currentAddingAgent);
+
+                GenerateForest(new Point(-5, -5), new Size(10, 10), 0.50);
+                GenerateForest(new Point(-15, 5), new Size(20, 20), 0.20);
+                GenerateForest(new Point(-30, 5), new Size(50, 50), 0.03);
 			}
 		
 			/// <summary>
@@ -440,7 +444,7 @@ namespace IndigoEngine
 				{
                     return false;
 				}
-                worldGlobalInstruction.Add(new GlobalInstruction(sender, OperationWorld.DverMneZapili));
+                worldGlobalInstructions.Add(new GlobalInstruction(sender, OperationWorld.DverMneZapili));
 				return true;
 			}
 
