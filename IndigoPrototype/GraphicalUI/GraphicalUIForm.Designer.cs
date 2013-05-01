@@ -50,7 +50,6 @@
 			this.MainMenuModelControl = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuModelControlAddAgent = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveModelDialog = new System.Windows.Forms.SaveFileDialog();
-			this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
 			this.loadModelDialog = new System.Windows.Forms.OpenFileDialog();
 			this.modelControlPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarModelTick)).BeginInit();
@@ -251,15 +250,6 @@
 			this.saveModelDialog.RestoreDirectory = true;
 			this.saveModelDialog.Title = "Save model";
 			// 
-			// elementHost1
-			// 
-			this.elementHost1.Location = new System.Drawing.Point(0, 0);
-			this.elementHost1.Name = "elementHost1";
-			this.elementHost1.Size = new System.Drawing.Size(200, 100);
-			this.elementHost1.TabIndex = 0;
-			this.elementHost1.Text = "elementHost1";
-			this.elementHost1.Child = null;
-			// 
 			// loadModelDialog
 			// 
 			this.loadModelDialog.DefaultExt = "mdl";
@@ -314,7 +304,6 @@
 		private System.Windows.Forms.ToolStripMenuItem MainMenuModelControlAddAgent;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuFileSave;
 		private System.Windows.Forms.SaveFileDialog saveModelDialog;
-		private System.Windows.Forms.Integration.ElementHost elementHost1;
 		private System.Windows.Forms.OpenFileDialog loadModelDialog;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuFileLoad;
     }
