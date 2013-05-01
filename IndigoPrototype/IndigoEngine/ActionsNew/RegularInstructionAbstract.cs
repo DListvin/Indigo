@@ -9,7 +9,7 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// usual Instructions, which can be perform inside agent
     /// </summary>
-    abstract class RegularInstructionAbstract : IAtomicInstruction
+    public abstract class RegularInstructionAbstract : IAtomicInstruction
     {
         public abstract void Perform(Agent TargetAgent);
 

@@ -9,17 +9,17 @@ namespace IndigoEngine.ActionsNew
     /// <summary>
     /// An instruction to change state
     /// </summary>
-    class InstructionCharacteristicChange : RegularInstructionAbstract
+    class InstructionCharacteristicChange : RegularInstructionAbstract, IHaveEffectInstruction
     {
-        string characteristicName;
+        public Characteristic Characteristic { get; private set; }
         int delta;
 
         #region Constructors
 
-        public InstructionCharacteristicChange(string characteristicName, int value)
+        public InstructionCharacteristicChange(Characteristic characteristic, int value)
             : base()
         {
-            this.characteristicName = characteristicName;
+            Characteristic = characteristic;
             delta = value;
         }
 
@@ -29,12 +29,27 @@ namespace IndigoEngine.ActionsNew
 
         public override void Perform(Agent TargetAgent)
         {
-            Characteristic ch = TargetAgent.CurrentState.FindByName(characteristicName);
+            Characteristic ch = TargetAgent.CurrentState.FindByName(Characteristic.Name);
             if (ch == null)
-                throw new Exception("InstructionCharacteristicChange.Perform: Target Agent hasn't " + characteristicName + "characteristic!");
+                throw new Exception("InstructionCharacteristicChange.Perform: Target Agent hasn't " + Characteristic.Name + "characteristic!");
             ch.CurrentPercentValue += delta;
         }
 
         #endregion
+
+        public bool PositiveEffect 
+        {
+            get
+            {
+                return delta < 0;
+            }
+        }
+        public bool NegativeEffect
+        {
+            get
+            {
+                return delta > 0;
+            }
+        }
     }
 }

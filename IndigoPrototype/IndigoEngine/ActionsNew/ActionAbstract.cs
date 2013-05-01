@@ -14,14 +14,29 @@ namespace IndigoEngine.ActionsNew
     public class ActionAbstract: NameableObject
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
         List<IAtomicInstruction> Instructions;
+        public List<Characteristic> PositiveEffect { get; private set; }
+        public List<Characteristic> NegativeEffect { get; private set; }
         Agent Target;
 
         public ActionAbstract(Agent argTarget, List<IAtomicInstruction> instructions)
         {
             Target = argTarget;
             Instructions = instructions;
+            PositiveEffect = new List<Characteristic>();
+            NegativeEffect = new List<Characteristic>();
+
+            //PositiveEffect and NegativeEffect init (it can be more optimal)
+            foreach (var instr in instructions)
+            {
+                if (instr is IHaveEffectInstruction)
+                {
+                    if ((instr as IHaveEffectInstruction).PositiveEffect)
+                        PositiveEffect.Add((instr as IHaveEffectInstruction).Characteristic);
+                    else if ((instr as IHaveEffectInstruction).NegativeEffect)
+                        NegativeEffect.Add((instr as IHaveEffectInstruction).Characteristic);
+                }
+            }
         }
 
         /// <summary>

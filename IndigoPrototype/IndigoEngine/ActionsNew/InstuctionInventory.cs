@@ -26,7 +26,7 @@ namespace IndigoEngine.ActionsNew
             }
             if (inventoryOp == OperationInventory.takeOut)
             {
-                TargetAgent.Inventory.PopAgent(Object).CurrentLocation = Object.CurrentLocation;
+                TargetAgent.Inventory.PopAgent(Object);
             }
         }
     }
