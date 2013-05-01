@@ -141,13 +141,18 @@ namespace GraphicalUI
 				DisplayInfoAgents = new List<Agent>();
 
 				//Setting tag for main menu adding agent element to avoid future exceptions. (Agents always adding to point (0, 0))
-				this.MainMenuModelControlAddAgent.Tag = new Point();
+				MainMenuModelControlAddAgent.Tag = new Point();
 
 				//Setting coordinates center to the panel center
 				shiftVector = new Point(- mapPanel.Width / 2, - mapPanel.Height / 2);
 
-				//Model tick linking
+				//Model ticks linking
 				GraphicalUIShell.Model.ModelTick += new EventHandler(onModelTick);
+				GraphicalUIShell.Model.ModelInitialised += new EventHandler(onModelInitialised);
+				GraphicalUIShell.Model.ModelPaused += new EventHandler(onModelPaused);
+				GraphicalUIShell.Model.ModelRunning += new EventHandler(onModelRunning);
+				GraphicalUIShell.Model.ModelStopped += new EventHandler(onModelStopped);
+				GraphicalUIShell.Model.ModelError += new EventHandler(onModelError) + new EventHandler(onModelStopped);
 
 				//Setting double buffering
 				SetDoubleBuffered(this.mapPanel);
@@ -174,6 +179,9 @@ namespace GraphicalUI
 			{
 				mapPanel.Refresh();
 				mapInfoPanel.Refresh();
+
+				labelModelTick.Text = "ModelTick = " + GraphicalUIShell.Model.ModelIterationTick.ToString();
+				trackBarModelTick.Value = (int)(GraphicalUIShell.Model.ModelIterationTick.TotalMilliseconds / 40);
 			}
 
 		#endregion
@@ -214,33 +222,72 @@ namespace GraphicalUI
 			}
 
 			private void MainMenuFileSave_Click(object sender, EventArgs e)
-			{				
+			{
+				saveModelDialog.FileOk += new CancelEventHandler((ob, args) => 
+				{
+					var path = saveModelDialog.FileName;
+					loadModelDialog.FileName = path.Split('\\').Last();
+
+					GraphicalUIShell.Model.Save(path);
+				});		
+
 				saveModelDialog.ShowDialog(this);
-                var path = saveModelDialog.FileName;
-
-				loadModelDialog.FileName = path;
-
-				GraphicalUIShell.Model.Save(path);
 			}
 
 			private void MainMenuFileLoad_Click(object sender, EventArgs e)
-			{		
+			{
+				loadModelDialog.FileOk += new CancelEventHandler((ob, args) => 
+				{
+					var path = loadModelDialog.FileName;
+					GraphicalUIShell.Model.Load(path);
+
+					this.Refresh();
+				});
+
 				loadModelDialog.ShowDialog(this);
-				var path = loadModelDialog.FileName;
-
-                GraphicalUIShell.Model.Load(path);
-
-				this.Refresh();
 			}
 
 		#endregion
 
-		#region Model tick events
+		#region Model events
+
+			private void onModelInitialised(object sender, EventArgs e)
+			{
+				modelStartButton.Text = "Start";
+				modelPauseButton.Text = "Pause";
+				modelPauseButton.Enabled = false;
+
+				this.Refresh();
+			}
+
+			private void onModelPaused(object sender, EventArgs e)
+			{
+				modelPauseButton.Text = "Resume";
+			}
+
+			private void onModelRunning(object sender, EventArgs e)
+			{
+				modelStartButton.Text = "Stop!";
+				modelPauseButton.Enabled = true;
+				modelPauseButton.Text = "Pause";
+			}
+
+			private void onModelStopped(object sender, EventArgs e)
+			{
+				modelStartButton.Text = "Initialize";
+				modelPauseButton.Text = "Pause";
+				modelPauseButton.Enabled = false;
+			}
+
+			private void onModelError(object sender, EventArgs e)
+			{
+				MessageBox.Show("Error in model occured!");
+			}
 			
 			/// <summary>
 			/// The model tick event itself
 			/// </summary>
-			private void onModelTick(object sender, EventArgs e)	
+			private void onModelTick(object sender, EventArgs e)
 			{            
 				CrossthreadRefreshMapInfoPanel();
 				CrossthreadRefreshMapPanel();            
@@ -311,9 +358,7 @@ namespace GraphicalUI
 			/// Event for refreshing the map panel
 			/// </summary>
 			private void mapPanel_Paint(object sender, PaintEventArgs e)
-			{				
-				labelModelTick.Text = "ModelTick = " + GraphicalUIShell.Model.ModelIterationTick.ToString();
-				
+			{								
 				drawMap(e);
 			}
 
@@ -510,21 +555,14 @@ namespace GraphicalUI
 			{
 				if (GraphicalUIShell.Model.State == ModelState.Initialised)
 				{                
-					modelStartButton.Text = "Stop!";
-					modelPauseButton.Text = "Pause";
-					modelPauseButton.Enabled = true;
 					GraphicalUIShell.Model.Start();
 				}
 				else if (GraphicalUIShell.Model.State == ModelState.Running || GraphicalUIShell.Model.State == ModelState.Paused || GraphicalUIShell.Model.State == ModelState.Error)
 				{                
-					modelStartButton.Text = "Initialize";
-					modelPauseButton.Enabled = false;
 					GraphicalUIShell.Model.Stop();
 				}
 				else if (GraphicalUIShell.Model.State == ModelState.Uninitialised)
 				{                
-					modelStartButton.Text = "Start";
-					modelPauseButton.Enabled = false;
 					GraphicalUIShell.Model.Initialise();
 				}
 			}
@@ -534,12 +572,10 @@ namespace GraphicalUI
 				if (GraphicalUIShell.Model.State == ModelState.Running)
 				{
 					GraphicalUIShell.Model.Pause();
-					modelPauseButton.Text = "Resume";
 				}
 				else if (GraphicalUIShell.Model.State == ModelState.Paused)
 				{
 					GraphicalUIShell.Model.Resume();
-					modelPauseButton.Text = "Pause";
 				}
 			}     
 			

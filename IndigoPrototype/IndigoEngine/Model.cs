@@ -33,17 +33,33 @@ namespace IndigoEngine
     [Serializable]
     public class Model : IObservableModel
     {
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		#region Fields
 
-        private World simulatingWorld;                       //Shows, what world is simulating in the model
-        private long passedModelIterations;                  //Info about how many iterations of main loop have passed
-        private TimeSpan modelIterationTick;                 //Info about time interval betwin loop iterations
-        private ModelState state = ModelState.Uninitialised; //Model state from ModelState enum
-        IDictionary<long, IEnumerable<ActionAbstract>> storedActions;
-        [NonSerialized] private Thread modelThread;  //This object controls working model in other process
-        [NonSerialized] private EventWaitHandle waitEvent = new AutoResetEvent(true); //Using for safe suspend and resume of model process
+			private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        [field:NonSerializedAttribute()] public event EventHandler ModelTick; //Shaytan for serialisation and event for model tick
+			private World simulatingWorld;                       //Shows, what world is simulating in the model
+			private long passedModelIterations;                  //Info about how many iterations of main loop have passed
+			private TimeSpan modelIterationTick;                 //Info about time interval betwin loop iterations
+			[NonSerialized] private ModelState state = ModelState.Uninitialised; //Model state from ModelState enum
+			IDictionary<long, IEnumerable<ActionAbstract>> storedActions;
+			[NonSerialized] private Thread modelThread;  //This object controls working model in other process
+			[NonSerialized] private EventWaitHandle waitEvent = new AutoResetEvent(true); //Using for safe suspend and resume of model process
+
+			#region Events
+
+				[field:NonSerializedAttribute()] public event EventHandler ModelTick; //Shaytan for serialisation and event for model tick
+
+				[field:NonSerializedAttribute()] public event EventHandler ModelInitialised;  //Event for model is initialised
+				[field:NonSerializedAttribute()] public event EventHandler ModelPaused;       //Event for model is paused
+				[field:NonSerializedAttribute()] public event EventHandler ModelRunning;      //Event for model is running now
+				[field:NonSerializedAttribute()] public event EventHandler ModelStopped;      //Event for model is stopped
+				[field:NonSerializedAttribute()] public event EventHandler ModelError;        //Event for model has crashed	
+
+			#endregion
+
+			private bool IsLoadingModelNow = false; //Shows if model is loading now(We shouldn't create new world in Initialise() in this case)
+
+		#endregion
 		
 		#region Constructors
 
@@ -91,23 +107,32 @@ namespace IndigoEngine
         #endregion
 
         #region Model management
-
-		    /// <summary>
-		    /// IObservableModel
-		    /// </summary>
+			
+			/// <summary>
+			/// IObservableModel
+			/// </summary>
+			/// <param name="argIsAfterLoading"></param>
             public void Initialise()
             {
                 logger.Trace("Initialise method entered; ModelState now is {0}", State.ToString());
 
 				if(State == ModelState.Error || State == ModelState.Uninitialised)
 				{
-					simulatingWorld = new World();
+					if(!IsLoadingModelNow)
+					{
+						simulatingWorld = new World();
+					}
 					PassedModelIterations = 0;
 					TurnsToStore = 100;
 					ModelIterationTick = TimeSpan.FromSeconds(2);
 					modelThread = new Thread(MainLoop); //Specify the function to be performed in other process
                     storedActions = new Dictionary<long, IEnumerable<ActionAbstract>>();
                     State = ModelState.Initialised;
+
+					if(ModelInitialised != null)
+					{
+						ModelInitialised(this, new EventArgs());
+					}
 
                     logger.Info("Model initialised");
 				}
@@ -127,6 +152,11 @@ namespace IndigoEngine
                     logger.Trace("Starting model thread");
                     modelThread.Start(); //Start process
                     logger.Info("Model thread started");
+
+					if(ModelRunning != null)
+					{
+						ModelRunning(this, new EventArgs());
+					}
                 }
             }
 		
@@ -140,6 +170,11 @@ namespace IndigoEngine
 				if(State == ModelState.Running)
 				{
 					State = ModelState.Paused;
+
+					if(ModelPaused != null)
+					{
+						ModelPaused(this, new EventArgs());
+					}
 				}
             }
 		
@@ -154,6 +189,11 @@ namespace IndigoEngine
 			    {
 				    State = ModelState.Running;
                     waitEvent.Set(); //Tells model thread to stop waiting
+
+					if(ModelRunning != null)
+					{
+						ModelRunning(this, new EventArgs());
+					}
 			    }
             }
 		
@@ -172,6 +212,10 @@ namespace IndigoEngine
 					modelThread.Join(); //Waiting for other process to end
                     logger.Info("Model thread joined successfuly");
 					State = ModelState.Uninitialised;
+					if(ModelStopped != null)
+					{
+						ModelStopped(this, new EventArgs());
+					}
 				}
             }
 
@@ -221,6 +265,10 @@ namespace IndigoEngine
                 logger.Error("Error {0} occupied in main loop", e.Message);
                 Console.WriteLine(e.Message);
                 State = ModelState.Error;
+				if(ModelError != null)
+				{
+					ModelError(this, new EventArgs());
+				}
                 throw e;
             }
         }
@@ -288,9 +336,10 @@ namespace IndigoEngine
 					ModelTick(this, null);
 				}
 
-                if (prevState == ModelState.Running)
+                if (prevState == ModelState.Running) //instead of State = prevState;
+				{
                     Resume();
-                //instead of State = prevState;
+				}
                 logger.Info("Jumped {0} iterations forward, current iteration is {1}", n, PassedModelIterations);
             }
             catch (Exception e)
@@ -298,6 +347,10 @@ namespace IndigoEngine
                 logger.Error("Error {0} occupied in main loop during StepNIterationsForward", e.Message);
                 Console.WriteLine(e.Message);
                 State = ModelState.Error;
+				if(ModelError != null)
+				{
+					ModelError(this, new EventArgs());
+				}
             }
         }
 
@@ -337,9 +390,14 @@ namespace IndigoEngine
         public void Load(string path)
         {
             logger.Trace("Load({0}) entered", path);
+						
+			this.Stop();
+			IsLoadingModelNow = true;
+            this.Initialise();
+
             FileStream stream = new FileStream(path, FileMode.Open);
             BinaryFormatter formatter = new BinaryFormatter();
-            Model loaded = (Model)formatter.Deserialize(stream);
+            Model loaded = formatter.Deserialize(stream) as Model;
 
             lock (simulatingWorld)
             {
@@ -350,15 +408,13 @@ namespace IndigoEngine
 
             this.modelIterationTick = loaded.modelIterationTick;
 
-            this.state = loaded.state;
-
             lock (storedActions)
             {
                 this.storedActions = loaded.storedActions;
             }
 
             stream.Close();
-            this.Pause();
+			IsLoadingModelNow = false;
             logger.Info("Model has been deserialized from {0}", path);
         }
 
@@ -373,7 +429,9 @@ namespace IndigoEngine
                 //Coping container, cause in main loop it will be cleared by reference
                 List<ActionAbstract> temp = new List<ActionAbstract>();
                 foreach (ActionAbstract action in simulatingWorld.Actions)
+				{
                     temp.Add(action);
+				}
 
                 Actions.Add(PassedModelIterations, temp);
 

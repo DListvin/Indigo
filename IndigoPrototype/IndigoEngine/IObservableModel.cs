@@ -24,6 +24,31 @@ namespace IndigoEngine
         /// </summary>
         event EventHandler ModelTick;
 
+		/// <summary>
+		/// Event for model is initialised
+		/// </summary>
+		event EventHandler ModelInitialised; 
+
+		/// <summary>
+		/// Event for model is paused
+		/// </summary>
+		event EventHandler ModelPaused; 
+
+		/// <summary>
+		/// Event for model is running now
+		/// </summary>
+		event EventHandler ModelRunning; 
+
+		/// <summary>
+		/// Event for model is stopped
+		/// </summary>
+		event EventHandler ModelStopped; 
+
+		/// <summary>
+		/// Event for model has crashed	
+		/// </summary>
+		event EventHandler ModelError;
+
         /// <summary>
         /// Collection of (iteration, actionCollection). Stores actions for some number of turns.
         /// </summary>

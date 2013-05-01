@@ -210,21 +210,21 @@
 			// MainMenuFileSave
 			// 
 			this.MainMenuFileSave.Name = "MainMenuFileSave";
-			this.MainMenuFileSave.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuFileSave.Size = new System.Drawing.Size(103, 22);
 			this.MainMenuFileSave.Text = "Save";
 			this.MainMenuFileSave.Click += new System.EventHandler(this.MainMenuFileSave_Click);
 			// 
 			// MainMenuFileLoad
 			// 
 			this.MainMenuFileLoad.Name = "MainMenuFileLoad";
-			this.MainMenuFileLoad.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuFileLoad.Size = new System.Drawing.Size(103, 22);
 			this.MainMenuFileLoad.Text = "Load";
 			this.MainMenuFileLoad.Click += new System.EventHandler(this.MainMenuFileLoad_Click);
 			// 
 			// MainMenuFileClose
 			// 
 			this.MainMenuFileClose.Name = "MainMenuFileClose";
-			this.MainMenuFileClose.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuFileClose.Size = new System.Drawing.Size(103, 22);
 			this.MainMenuFileClose.Text = "Close";
 			this.MainMenuFileClose.Click += new System.EventHandler(this.MainMenuFileClose_Click);
 			// 
@@ -245,6 +245,10 @@
 			// 
 			// saveModelDialog
 			// 
+			this.saveModelDialog.DefaultExt = "mdl";
+			this.saveModelDialog.FileName = "Default";
+			this.saveModelDialog.Filter = "Model files|*.mdl|All extensions|*.*";
+			this.saveModelDialog.RestoreDirectory = true;
 			this.saveModelDialog.Title = "Save model";
 			// 
 			// elementHost1
@@ -258,7 +262,10 @@
 			// 
 			// loadModelDialog
 			// 
+			this.loadModelDialog.DefaultExt = "mdl";
 			this.loadModelDialog.FileName = "openFileDialog1";
+			this.loadModelDialog.Filter = "Model files|*.mdl|All extensions|*.*";
+			this.loadModelDialog.RestoreDirectory = true;
 			// 
 			// GrapgicalUIForm
 			// 
