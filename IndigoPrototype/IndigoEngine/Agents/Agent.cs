@@ -104,7 +104,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// ITypicalAgent
 		/// </summary>
-		public virtual ActionAbstract Decide()
+        public virtual ActionAbstract Decide()
 		{
             //Kostya's logick here
             //World must control everything, that I'm trying to do

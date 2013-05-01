@@ -224,7 +224,7 @@ namespace IndigoEngine
 				Agent currentAddingAgent; //Agent, that is adding to the world now. This variable is necessary to configure the agent
 
 				Agents = new List<Agent>();
-				Actions = new List<ActionAbstract>();
+                Actions = new List<ActionAbstract>();
                 worldGlobalInstructions = new List<GlobalInstruction>();
 
 				/*//Terrific test init (for hard and cruel test)

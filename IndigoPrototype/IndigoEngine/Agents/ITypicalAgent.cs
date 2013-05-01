@@ -62,7 +62,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Making a decision about action in the current phase
 		/// </summary>
-		ActionsNew.ActionAbstract Decide();	
+        ActionsNew.ActionAbstract Decide();	
 		
 	}
 }

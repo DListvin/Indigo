@@ -41,14 +41,14 @@ namespace IndigoEngine.ActionsNew
         {
             get
             {
-                return delta < 0;
+                return delta > 0;
             }
         }
         public bool NegativeEffect
         {
             get
             {
-                return delta > 0;
+                return delta < 0;
             }
         }
     }
