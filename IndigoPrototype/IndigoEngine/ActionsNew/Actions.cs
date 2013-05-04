@@ -23,13 +23,14 @@ namespace IndigoEngine.ActionsNew
 
         /// <summary>
         /// this is for correct work of GetActionsEstimating and GetBestActionEstimating
-        /// It is function for init and perform only one time before all game will be ranning
+        /// It is function for init and perform only one time before all game will be running
         /// </summary>
         public static void Init()
         {
             ActionAgentConformity = new Dictionary<string, List<Type>>();
             instructions = new BindingList<IAtomicInstruction>();
-            instructions.ListChanged += new ListChangedEventHandler(instructions_ListChanged); // event handler fill CharactActionConformity disctionary
+            var EventHandler = new ListChangedEventHandler(instructions_ListChanged);
+            instructions.ListChanged += EventHandler; // event handler fill CharactActionConformity disctionary
             CharactActionConformity = new Dictionary<Characteristic, List<Func<Agent, List<ActionForOneAgent>>>>();
 
             MethodInfo[] methodInfo = typeof(Actions).GetMethods();
@@ -61,6 +62,7 @@ namespace IndigoEngine.ActionsNew
                     }
                 }
             }
+            instructions.ListChanged -= EventHandler;
         }
 
         /// <summary>

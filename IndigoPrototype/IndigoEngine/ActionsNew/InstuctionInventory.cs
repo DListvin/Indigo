@@ -8,7 +8,7 @@ namespace IndigoEngine.ActionsNew
 {
     class InstuctionInventory : RegularInstructionAbstract
     {
-        Agent Object;
+        Agent Object; //What to take in or take out
         OperationInventory inventoryOp;
 
         public InstuctionInventory(Agent Object, OperationInventory inventoryOperation)
@@ -18,6 +18,10 @@ namespace IndigoEngine.ActionsNew
             inventoryOp = inventoryOperation;
         }
 
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="TargetAgent">Inventory owner</param>
         public override void Perform(Agent TargetAgent)
         {
             if (inventoryOp == OperationInventory.takeIn)
