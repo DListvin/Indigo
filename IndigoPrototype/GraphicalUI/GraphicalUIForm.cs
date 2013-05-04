@@ -64,7 +64,7 @@ namespace GraphicalUI
         private bool leftMouseButtonInMapIsPressed = false;  //Flag for dragging the map (if true - DRAG NOW!)
         private int zoomModifyer = 0;    //Zoom modifyer (contains delta adding to the texture size)
         
-		public List<Agent> DisplayInfoAgents { get; set; }               //Info about agents that must be displayed in the mapInfoPanel
+		public List<Agent> DisplayInfoAgents { get; set; }   //Info about agents that must be displayed in the mapInfoPanel
 
 		#region Textures dictionary
 

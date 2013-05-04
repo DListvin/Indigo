@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using IndigoEngine.Agents;
 using NLog;
 
 namespace MapEditor.Map
@@ -12,6 +13,11 @@ namespace MapEditor.Map
 		private static Logger logger = LogManager.GetCurrentClassLogger();		
 
 		#region Properties 
+
+			/// <summary>
+			/// Owner grid
+			/// </summary>
+			public HexagonalGrid Owner { get; private set; }
 			
 			/// <summary>
 			/// Cell hex coordinates
@@ -25,14 +31,54 @@ namespace MapEditor.Map
 			{
 				get
 				{
-					return HexagonCoord.GetXYCoords(HexCoorinates.M, HexCoorinates.R, HexCoorinates.L, Owner.EdgeLenght);
+					return HexagonCoord.GetXYCoords(HexCoorinates.M, HexCoorinates.R, HexCoorinates.L, Owner.EdgeLenght, new Point());
 				}
 			}
 
 			/// <summary>
-			/// Owner grid
+			/// Agent that is in the cell now
 			/// </summary>
-			public HexagonalGrid Owner { get; private set; }
+			public Agent InnerAgent { get; set; }
+
+		#endregion
+
+		#region Constructors
+
+			/// <summary>
+			/// Constructor for hex coords (numbers)
+			/// </summary>
+			public HexagonCell(HexagonalGrid argOwner, int argM = 0, int argR = 0, int argL = 0)
+			{	
+				Owner = argOwner;
+				HexCoorinates = new HexagonCoord(argM, argR, argL);
+
+				//Default initialisation for none-parametrised properties
+				InnerAgent = null;
+			}
+
+			/// <summary>
+			/// Constructor for hex coords (class)
+			/// </summary>
+			public HexagonCell(HexagonalGrid argOwner, HexagonCoord argHexCoords)
+				:this(argOwner, argHexCoords.M, argHexCoords.R, argHexCoords.L)
+			{	
+			}
+			
+			/// <summary>
+			/// Constructor for XY coords (numbers)
+			/// </summary>
+			public HexagonCell(HexagonalGrid argOwner, int argX = 0, int argY = 0)
+				:this(argOwner, HexagonCoord.GetHexCoords(argX, argY, argOwner.EdgeLenght, new Point()))
+			{	
+			}
+			
+			/// <summary>
+			/// Constructor for XY coords (class)
+			/// </summary>
+			public HexagonCell(HexagonalGrid argOwner, Point argXYcoords)
+				:this(argOwner, HexagonCoord.GetHexCoords(argXYcoords.X, argXYcoords.Y, argOwner.EdgeLenght, new Point()))
+			{	
+			}
 
 		#endregion
 
@@ -69,42 +115,5 @@ namespace MapEditor.Map
 
 			return result;
 		}
-
-		#region Constructors
-
-			/// <summary>
-			/// Constructor for hex coords (numbers)
-			/// </summary>
-			public HexagonCell(HexagonalGrid argOwner, int argM = 0, int argR = 0, int argL = 0)
-			{	
-				Owner = argOwner;
-				HexCoorinates = new HexagonCoord(argM, argR, argL);
-			}
-
-			/// <summary>
-			/// Constructor for hex coords (class)
-			/// </summary>
-			public HexagonCell(HexagonalGrid argOwner, HexagonCoord argHexCoords)
-				:this(argOwner, argHexCoords.M, argHexCoords.R, argHexCoords.L)
-			{	
-			}
-			
-			/// <summary>
-			/// Constructor for XY coords (numbers)
-			/// </summary>
-			public HexagonCell(HexagonalGrid argOwner, int argX = 0, int argY = 0)
-				:this(argOwner, HexagonCoord.GetHexCoords(argX, argY, argOwner.EdgeLenght))
-			{	
-			}
-			
-			/// <summary>
-			/// Constructor for XY coords (class)
-			/// </summary>
-			public HexagonCell(HexagonalGrid argOwner, Point argXYcoords)
-				:this(argOwner, HexagonCoord.GetHexCoords(argXYcoords.X, argXYcoords.Y, argOwner.EdgeLenght))
-			{	
-			}
-
-		#endregion
 	}
 }

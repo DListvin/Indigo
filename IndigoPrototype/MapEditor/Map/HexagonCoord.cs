@@ -23,12 +23,13 @@ namespace MapEditor.Map
 			/// <param name="argR">R coord</param>
 			/// <param name="argL">L coord</param>
 			/// <param name="argEdgeLenght">Hex edge lenght</param>
+			/// <param name="argShiftVector">Shift vector for XY coords, need for optimisation</param>
 			/// <returns>Point: XY coordinates</returns>
-			public static Point GetXYCoords(double argM, double argR, double argL, double argEdgeLenght)
+			public static Point GetXYCoords(double argM, double argR, double argL, double argEdgeLenght, Point argShiftVector)
 			{
 				logger.Trace("Getting X and Y coords for {0}, {1}, {2} with edge lenght {3}", argM, argR, argL, argEdgeLenght);
 
-				var result = new Point((int)(Math.Sqrt(3) * argEdgeLenght * (argM/2 + argR)), (int)(1.5 * argEdgeLenght * argM));
+				var result = new Point((int)Math.Round(Math.Sqrt(3) * argEdgeLenght * (argM/2 + argR)) + argShiftVector.X, (int)Math.Round(1.5 * argEdgeLenght * argM) + argShiftVector.Y);
 
 				logger.Trace("Result is {0}", result);
 
@@ -41,12 +42,16 @@ namespace MapEditor.Map
 			/// <param name="argX">X coord</param>
 			/// <param name="argY">Y coord</param>
 			/// <param name="argEdgeLenght">Hex edge lenght</param>
+			/// <param name="argShiftVector">Shift vector for XY coords, need for optimisation</param>
 			/// <returns>HexagonCoord: hex coordinates</returns>
-			public static HexagonCoord GetHexCoords(double argX, double argY, double argEdgeLenght)
+			public static HexagonCoord GetHexCoords(double argX, double argY, double argEdgeLenght, Point argShiftVector)
 			{
 				logger.Trace("Getting hex coords for {0}, {1} with edge lenght {2}", argX, argY, argEdgeLenght);
 
-				var result = new HexagonCoord((int)(2d/3d * argY / argEdgeLenght), (int)((Math.Sqrt(3)/3d * argX - argY/3d ) / argEdgeLenght), (int)(-(Math.Sqrt(3)/3d * argX + argY/3d) / argEdgeLenght));
+				argX += (double)argShiftVector.X;
+				argY += (double)argShiftVector.Y;
+
+				var result = new HexagonCoord((int)Math.Round(2d/3d * argY / argEdgeLenght), (int)Math.Round((Math.Sqrt(3)/3d * argX - argY/3d ) / argEdgeLenght), (int)Math.Round(-(Math.Sqrt(3)/3d * argX + argY/3d) / argEdgeLenght));
 
 				logger.Trace("Result is {0}", result);
 

@@ -33,6 +33,7 @@
 			this.MainMenuFileClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuEditorTerrainToolbar = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainMenuEditorDeselectCells = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainEditorPanel = new System.Windows.Forms.Panel();
 			this.MainMenu.SuspendLayout();
 			this.SuspendLayout();
@@ -66,7 +67,8 @@
 			// MainMenuEditor
 			// 
 			this.MainMenuEditor.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MainMenuEditorTerrainToolbar});
+            this.MainMenuEditorTerrainToolbar,
+            this.MainMenuEditorDeselectCells});
 			this.MainMenuEditor.Name = "MainMenuEditor";
 			this.MainMenuEditor.Size = new System.Drawing.Size(50, 20);
 			this.MainMenuEditor.Text = "Editor";
@@ -78,8 +80,16 @@
 			this.MainMenuEditorTerrainToolbar.Text = "Terrain toolbar";
 			this.MainMenuEditorTerrainToolbar.Click += new System.EventHandler(this.MainMenuEditorTerrainToolbar_Click);
 			// 
+			// MainMenuEditorDeselectCells
+			// 
+			this.MainMenuEditorDeselectCells.Name = "MainMenuEditorDeselectCells";
+			this.MainMenuEditorDeselectCells.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuEditorDeselectCells.Text = "Deselect cells";
+			this.MainMenuEditorDeselectCells.Click += new System.EventHandler(this.MainMenuEditorDeselectCells_Click);
+			// 
 			// MainEditorPanel
 			// 
+			this.MainEditorPanel.AllowDrop = true;
 			this.MainEditorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -88,6 +98,8 @@
 			this.MainEditorPanel.Name = "MainEditorPanel";
 			this.MainEditorPanel.Size = new System.Drawing.Size(786, 431);
 			this.MainEditorPanel.TabIndex = 1;
+			this.MainEditorPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainEditorPanel_DragDrop);
+			this.MainEditorPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainEditorPanel_DragEnter);
 			this.MainEditorPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MainEditorPanel_Paint);
 			this.MainEditorPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainEditorPanel_MouseDown);
 			this.MainEditorPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainEditorPanel_MouseMove);
@@ -95,6 +107,7 @@
 			// 
 			// MainWindow
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -120,6 +133,7 @@
 		private System.Windows.Forms.Panel MainEditorPanel;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuEditor;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuEditorTerrainToolbar;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuEditorDeselectCells;
 	}
 }
 

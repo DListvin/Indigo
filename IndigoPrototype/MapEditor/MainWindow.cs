@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MapEditor.Map;
+using IndigoEngine.Agents;
 using NLog;
 
 namespace MapEditor
@@ -37,14 +38,53 @@ namespace MapEditor
 			}
 
 		#endregion
+	
 
-		private HexagonalGrid editingGrid;  //Grid to edit in the editor		
+		//Map dragging
         private Point shiftVector;          //shift from basic point (0, 0) to drag the grid and to understand which area must be drawn
         private Point dragVector;           //shift from drag begining point to drag the grid 
         private Point mouseDownPoint;       //Point where we started dragging the map
 
+		//Cells selecting
+		private List<HexagonCell> selectedCells; //List of selected cells
+
+		//Events
+		public event MouseEventHandler MouseCoordsChanged; //Event for coords of the mouse changed in the owner window
+
 		//Flags		
         private bool leftMouseButtonInMapIsPressed = false;  //Flag for dragging the map (if true - DRAG NOW!)
+
+		#region Textures dictionary
+
+			public static Dictionary<Type, Image> texturesDict = new Dictionary<Type, Image>()
+			{
+				{
+					typeof(AgentLivingIndigo),
+					MapEditor.Properties.Resources.indigo_suit64
+				},			
+				{
+					typeof(AgentItemFoodFruit),
+					MapEditor.Properties.Resources.fruit64
+				},		
+				{
+					typeof(AgentManMadeShelterCamp),
+					MapEditor.Properties.Resources.camp64
+				},	
+				{
+					typeof(AgentItemResLog),
+					MapEditor.Properties.Resources.log64
+				},
+				{
+					typeof(AgentPuddle),
+					MapEditor.Properties.Resources.water64
+				},
+				{
+					typeof(AgentTree),
+					MapEditor.Properties.Resources.tree64_transparent
+				},
+			}; 
+
+		#endregion
 
 		#region Constructors
 
@@ -55,10 +95,35 @@ namespace MapEditor
 				//Setting double buffering
 				SetDoubleBuffered(MainEditorPanel);
 
+				//Setting grid
+				EditingGrid = new HexagonalGrid();
+
+				//Setting variables for map dragging
 				shiftVector = new Point(MainEditorPanel.Width / 2, MainEditorPanel.Height / 2);
 				dragVector = new Point(0, 0);
 
-				editingGrid = new HexagonalGrid();
+				//Detting variables for cells selecting
+				selectedCells = new List<HexagonCell>();
+			}
+
+		#endregion
+
+		#region Properties
+		
+			/// <summary>
+			/// Grid to edit in the editor	
+			/// </summary>
+			public HexagonalGrid EditingGrid { get; set; }
+
+			/// <summary>
+			/// Total shifting from base point(0, 0), including current drugging
+			/// </summary>
+			private Point totalShiftVector
+			{
+				get
+				{
+					return new Point(shiftVector.X + dragVector.X, shiftVector.Y + dragVector.Y);
+				}
 			}
 
 		#endregion
@@ -76,19 +141,37 @@ namespace MapEditor
 				newToolBar.Show(this);
 			}
 
+			private void MainMenuEditorDeselectCells_Click(object sender, EventArgs e)
+			{
+				selectedCells.Clear();
+				MainEditorPanel.Refresh();
+			}
+
 		#endregion
 
 		#region Editor main panel draw
 
 			private void MainEditorPanel_Paint(object sender, PaintEventArgs e)
 			{
-				var totalShiftVector = new Point();
-				totalShiftVector.X = shiftVector.X + dragVector.X;
-				totalShiftVector.Y = shiftVector.Y + dragVector.Y;
-
-				foreach(var cell in editingGrid)
+				foreach(var cell in EditingGrid)
 				{
-					e.Graphics.DrawLines(new Pen(Brushes.Black), cell.GetCorners(totalShiftVector));
+					var penToDraw = selectedCells.Contains(cell) ? new Pen(Brushes.Red, 3) : new Pen(Brushes.Black);
+					e.Graphics.DrawLines(penToDraw, cell.GetCorners(totalShiftVector));
+					
+					var currentTextureSize = MapEditor.Properties.Resources.grass64.Width;
+
+					Image drawedImage;
+					if(cell.InnerAgent == null)
+					{
+						drawedImage = MapEditor.Properties.Resources.grass64;
+					}
+					else
+					{
+						texturesDict.TryGetValue(cell.InnerAgent.GetType(), out drawedImage);
+					}
+
+					var imageCoords = new Point((cell.XYCoordinates.X + totalShiftVector.X - EditingGrid.EdgeLenght / 2), (cell.XYCoordinates.Y + totalShiftVector.Y - EditingGrid.EdgeLenght / 2));
+					e.Graphics.DrawImage(drawedImage, imageCoords.X, imageCoords.Y, currentTextureSize, currentTextureSize);
 				}
 			}
 
@@ -114,21 +197,21 @@ namespace MapEditor
 			/// </summary>
 			private void MainEditorPanel_MouseMove(object sender, MouseEventArgs e)
 			{			
-				//TODO: add coordinates monitoring
-
-				//labelUICoords.Text = "UI coords: " + e.Location.ToString();
-				//labelModelCoords.Text = "Model coords: " + GetModelCoord(e.Location).ToString();
-
 				if (leftMouseButtonInMapIsPressed)
 				{
 					dragVector.X = e.X - mouseDownPoint.X;
 					dragVector.Y = e.Y - mouseDownPoint.Y ;
 					MainEditorPanel.Refresh();
 				}
+				if(MouseCoordsChanged != null)
+				{
+					var newMouseEventArgs = new MouseEventArgs(e.Button, e.Clicks, e.X - totalShiftVector.X, e.Y - totalShiftVector.Y, e.Delta);
+					MouseCoordsChanged(this, newMouseEventArgs);
+				}
 			}
 
 			/// <summary>
-			/// Used for ending dragging 
+			/// Used for ending dragging and for cells selecting
 			/// </summary>
 			private void MainEditorPanel_MouseUp(object sender, MouseEventArgs e)
 			{
@@ -139,6 +222,49 @@ namespace MapEditor
 					dragVector = new Point(0, 0);
 					leftMouseButtonInMapIsPressed = false;
 				}
+				if (e.Button == MouseButtons.Right)
+				{
+					var cellToSelect = EditingGrid.GetCellByXYCoord(e.X - totalShiftVector.X, e.Y - totalShiftVector.Y);
+					if(cellToSelect != null)
+					{
+						if(selectedCells.Contains(cellToSelect))
+						{
+							selectedCells.Remove(cellToSelect);
+						}
+						else
+						{
+							selectedCells.Add(cellToSelect);
+						}
+					}
+					MainEditorPanel.Refresh();
+				}
+			}
+
+		#endregion
+
+		#region Editor main panel drag and drop from toolbars		
+
+			private void MainEditorPanel_DragEnter(object sender, DragEventArgs e)
+			{
+				if(e.AllowedEffect.HasFlag(DragDropEffects.Move))
+				{
+					e.Effect = DragDropEffects.Move;
+				}
+			}
+
+			private void MainEditorPanel_DragDrop(object sender, DragEventArgs e)
+			{
+				var agentDropped = e.Data.GetData(e.Data.GetFormats()[0]) as Agent; //Getting dropped data
+
+				var newCoords = MainEditorPanel.PointToClient(new Point(e.X, e.Y)); //Getting client coords from screen
+				var cellToEdit = EditingGrid.GetCellByXYCoord(newCoords.X - totalShiftVector.X, newCoords.Y - totalShiftVector.Y);//Getting cell from coords to add agent in it
+				if(cellToEdit != null)
+				{
+					cellToEdit.InnerAgent = agentDropped;
+					EditingGrid.AddOrReplaceCell(cellToEdit);
+				}
+
+				MainEditorPanel.Refresh();
 			}
 
 		#endregion

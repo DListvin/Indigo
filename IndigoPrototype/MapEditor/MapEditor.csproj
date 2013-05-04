@@ -75,6 +75,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ToolBarWindow.resx">
       <DependentUpon>ToolBarWindow.cs</DependentUpon>
@@ -91,6 +92,29 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IndigoEngine\IndigoEngine.csproj">
+      <Project>{41A0E5A7-0309-4B97-8F23-1ADC1B921448}</Project>
+      <Name>IndigoEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Textures\camp64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Textures\fruit-tree64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Textures\fruit-tree64_transparent.png" />
+    <Content Include="Textures\tree64_transparent.png" />
+    <None Include="Textures\water64.png" />
+    <None Include="Textures\tree64.png" />
+    <None Include="Textures\LogoDemo.ico" />
+    <None Include="Textures\log64.png" />
+    <None Include="Textures\indigo-suit64.png" />
+    <None Include="Textures\grass64.png" />
+    <None Include="Textures\fruit64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

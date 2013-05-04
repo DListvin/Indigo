@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using NLog;
 
 namespace MapEditor.Map
@@ -16,7 +17,12 @@ namespace MapEditor.Map
 			///  Grid itself: list of cells, each of them knows it's coords and other information
 			///  Sorted by radius
 			/// </summary>
-			public List<HexagonCell> Grid { get; private set; } 
+			//public List<HexagonCell> Grid { get; private set; } 
+			
+			/// <summary>
+			///  Grid itself: dictionary with coords(M, R)(third coordinate is automatic), each of cells knows it's coords and other information
+			/// </summary>
+			public Dictionary<int, Dictionary<int, HexagonCell>> Grid { get; private set; }
 
 			/// <summary>
 			/// Hexagon edge lenght for the grid
@@ -31,7 +37,7 @@ namespace MapEditor.Map
 			{
 				EdgeLenght = argEdgeLength;
 
-				Grid = new List<HexagonCell>();
+				Grid = new Dictionary<int, Dictionary<int, HexagonCell>>();
 
 				var deltas = new int[][] //Deltas for hex coordinates to generate hex with radius argRadius
 				{
@@ -50,7 +56,7 @@ namespace MapEditor.Map
 					var left = r;   //Left coord of hexas
 
 					var newCell = new HexagonCell(this, main, right, left);
-					Grid.Add(newCell);
+					AddCell(newCell);
 
 					for(int i = 0; i < 6; i++)
 					{
@@ -65,7 +71,7 @@ namespace MapEditor.Map
 							right += deltas[i][1];
 							left += deltas[i][2];
 							newCell = new HexagonCell(this, main, right, left);
-							Grid.Add(newCell);
+							AddCell(newCell);
 						}
 					}
 				}
@@ -75,15 +81,106 @@ namespace MapEditor.Map
 
 		#endregion
 
+		#region Operation with hole grid
+
+			public void AddCell(HexagonCell argCellToAdd)
+			{			
+				logger.Trace("Adding new cell {0} to the grid {1}", argCellToAdd, this);	
+
+				if(Grid.ContainsKey(argCellToAdd.HexCoorinates.M))
+				{
+					Dictionary<int, HexagonCell> rCoordsDict;     //Dictionary with M coord as adding cell M coord
+					Grid.TryGetValue(argCellToAdd.HexCoorinates.M, out rCoordsDict);
+					if(rCoordsDict == null)
+					{
+						rCoordsDict = new Dictionary<int,HexagonCell>();
+					}	
+									
+					if(rCoordsDict.ContainsKey(argCellToAdd.HexCoorinates.R))
+					{						
+						logger.Error("Tried to add two cells in one coords!");
+						return;
+					}
+					else
+					{						
+						var resultDictToAdd = rCoordsDict;   //New dictionary with M coord as adding cell M coord and with adding cell in it
+						resultDictToAdd.Add(argCellToAdd.HexCoorinates.R, argCellToAdd);
+						Grid.Remove(argCellToAdd.HexCoorinates.M);
+						Grid.Add(argCellToAdd.HexCoorinates.M, resultDictToAdd);
+					}
+				}
+				else
+				{
+					Grid.Add(argCellToAdd.HexCoorinates.M, null);
+					AddCell(argCellToAdd);
+				}
+
+				logger.Debug("Added new cell {0} to the grid {1}", argCellToAdd, this);
+			}
+
+			/// <summary>
+			/// Adding the cell or replacing existed
+			/// </summary>
+			/// <param name="argCellToAdd">Cell to add or replace</param>
+			public void AddOrReplaceCell(HexagonCell argCellToAdd)
+			{			
+				logger.Trace("Replacing cell {0} in the grid {1}", argCellToAdd, this);	
+
+				if(Grid.ContainsKey(argCellToAdd.HexCoorinates.M))
+				{
+					Dictionary<int, HexagonCell> rCoordsDict;     //Dictionary with M coord as adding cell M coord
+					Grid.TryGetValue(argCellToAdd.HexCoorinates.M, out rCoordsDict);
+									
+					if(rCoordsDict != null && rCoordsDict.ContainsKey(argCellToAdd.HexCoorinates.R))
+					{						
+						rCoordsDict.Remove(argCellToAdd.HexCoorinates.R);
+					}
+				}
+
+				AddCell(argCellToAdd);
+
+				logger.Debug("Replaced cell {0} in the grid {1}", argCellToAdd, this);
+			}
+
+
+		#endregion
+
+		#region Operations with cells
+
+			public HexagonCell GetCellByXYCoord(int argX, int argY)
+			{
+				var hexCoords = HexagonCoord.GetHexCoords(argX, argY, EdgeLenght, new Point());
+				return GetCellByHexCoord(hexCoords.M, hexCoords.R, hexCoords.L);
+			}
+
+			public HexagonCell GetCellByHexCoord(int argM, int argR, int argL)
+			{
+				Dictionary<int, HexagonCell> mCoordDict;
+				Grid.TryGetValue(argM, out mCoordDict);
+				if(mCoordDict == null)
+				{
+					return null;
+				}
+
+				HexagonCell result;
+				mCoordDict.TryGetValue(argR, out result);
+				
+				return result;
+			}
+
+		#endregion
 		
         /// <summary>
         /// IEnumerator for foreach
         /// </summary>
         public IEnumerator<HexagonCell> GetEnumerator()
         {
-            foreach(var cell in Grid)
+            foreach(var mCoordDict in Grid.Values)
             {
-                yield return cell;
+				foreach(var rCoordDict in mCoordDict.Values)
+				{
+					yield return rCoordDict;
+				}
             }
         }
 	}
