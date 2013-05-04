@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.MainMenu = new System.Windows.Forms.MenuStrip();
 			this.MainMenuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuFileClose = new System.Windows.Forms.ToolStripMenuItem();
@@ -35,7 +36,11 @@
 			this.MainMenuEditorTerrainToolbar = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenuEditorDeselectCells = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainEditorPanel = new System.Windows.Forms.Panel();
+			this.contextMenuCell = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.contextMenuCellSelect = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextMenuCellClearAgents = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
+			this.contextMenuCell.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// MainMenu
@@ -105,6 +110,28 @@
 			this.MainEditorPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainEditorPanel_MouseMove);
 			this.MainEditorPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainEditorPanel_MouseUp);
 			// 
+			// contextMenuCell
+			// 
+			this.contextMenuCell.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuCellSelect,
+            this.contextMenuCellClearAgents});
+			this.contextMenuCell.Name = "contextMenuCell";
+			this.contextMenuCell.Size = new System.Drawing.Size(153, 70);
+			// 
+			// contextMenuCellSelect
+			// 
+			this.contextMenuCellSelect.Name = "contextMenuCellSelect";
+			this.contextMenuCellSelect.Size = new System.Drawing.Size(152, 22);
+			this.contextMenuCellSelect.Text = "Select";
+			this.contextMenuCellSelect.Click += new System.EventHandler(this.contextMenuCellSelect_Click);
+			// 
+			// contextMenuCellClearAgents
+			// 
+			this.contextMenuCellClearAgents.Name = "contextMenuCellClearAgents";
+			this.contextMenuCellClearAgents.Size = new System.Drawing.Size(152, 22);
+			this.contextMenuCellClearAgents.Text = "Clear agents";
+			this.contextMenuCellClearAgents.Click += new System.EventHandler(this.contextMenuCellClearAgents_Click);
+			// 
 			// MainWindow
 			// 
 			this.AllowDrop = true;
@@ -120,6 +147,7 @@
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.MainMenu.ResumeLayout(false);
 			this.MainMenu.PerformLayout();
+			this.contextMenuCell.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -134,6 +162,9 @@
 		private System.Windows.Forms.ToolStripMenuItem MainMenuEditor;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuEditorTerrainToolbar;
 		private System.Windows.Forms.ToolStripMenuItem MainMenuEditorDeselectCells;
+		private System.Windows.Forms.ContextMenuStrip contextMenuCell;
+		private System.Windows.Forms.ToolStripMenuItem contextMenuCellSelect;
+		private System.Windows.Forms.ToolStripMenuItem contextMenuCellClearAgents;
 	}
 }
 

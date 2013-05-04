@@ -224,25 +224,16 @@ namespace MapEditor
 				}
 				if (e.Button == MouseButtons.Right)
 				{
-					var cellToSelect = EditingGrid.GetCellByXYCoord(e.X - totalShiftVector.X, e.Y - totalShiftVector.Y);
-					if(cellToSelect != null)
-					{
-						if(selectedCells.Contains(cellToSelect))
-						{
-							selectedCells.Remove(cellToSelect);
-						}
-						else
-						{
-							selectedCells.Add(cellToSelect);
-						}
-					}
-					MainEditorPanel.Refresh();
+					var cellUnderMouse = EditingGrid.GetCellByXYCoord(e.X - totalShiftVector.X, e.Y - totalShiftVector.Y);
+					contextMenuCellSelect.Checked = selectedCells.Contains(cellUnderMouse) ? true : false;
+					contextMenuCell.Tag = cellUnderMouse;
+					contextMenuCell.Show(Cursor.Position);
 				}
 			}
 
 		#endregion
 
-		#region Editor main panel drag and drop from toolbars		
+		#region Editor main panel drag and drop from toolbars
 
 			private void MainEditorPanel_DragEnter(object sender, DragEventArgs e)
 			{
@@ -265,6 +256,39 @@ namespace MapEditor
 				}
 
 				MainEditorPanel.Refresh();
+			}
+
+		#endregion
+
+		#region Context menu cell events
+
+			private void contextMenuCellSelect_Click(object sender, EventArgs e)
+			{		
+				var convertedSender = sender as ToolStripMenuItem;
+				var cellToSelect = convertedSender.Owner.Tag as HexagonCell;
+				if(cellToSelect != null)
+				{
+					if(selectedCells.Contains(cellToSelect))
+					{
+						selectedCells.Remove(cellToSelect);
+					}
+					else
+					{
+						selectedCells.Add(cellToSelect);
+					}
+				}
+				MainEditorPanel.Refresh();	
+			}
+
+			private void contextMenuCellClearAgents_Click(object sender, EventArgs e)
+			{			
+				var convertedSender = sender as ToolStripMenuItem;
+				var cellToClear = convertedSender.Owner.Tag as HexagonCell;
+				if(cellToClear != null)
+				{
+					cellToClear.InnerAgent = null;
+				}
+				MainEditorPanel.Refresh();	
 			}
 
 		#endregion
