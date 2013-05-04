@@ -32,6 +32,7 @@
 			this.labelHexCoords = new System.Windows.Forms.Label();
 			this.tabAgentsAdding = new System.Windows.Forms.TabPage();
 			this.tabMainTools = new System.Windows.Forms.TabControl();
+			this.tabTiles = new System.Windows.Forms.TabPage();
 			this.tabMainTools.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -65,12 +66,22 @@
 			// 
 			// tabMainTools
 			// 
+			this.tabMainTools.Controls.Add(this.tabTiles);
 			this.tabMainTools.Controls.Add(this.tabAgentsAdding);
 			this.tabMainTools.Location = new System.Drawing.Point(13, 47);
 			this.tabMainTools.Name = "tabMainTools";
 			this.tabMainTools.SelectedIndex = 0;
 			this.tabMainTools.Size = new System.Drawing.Size(204, 465);
 			this.tabMainTools.TabIndex = 2;
+			// 
+			// tabTiles
+			// 
+			this.tabTiles.Location = new System.Drawing.Point(4, 22);
+			this.tabTiles.Name = "tabTiles";
+			this.tabTiles.Size = new System.Drawing.Size(196, 439);
+			this.tabTiles.TabIndex = 1;
+			this.tabTiles.Text = "Tiles";
+			this.tabTiles.UseVisualStyleBackColor = true;
 			// 
 			// ToolBarWindow
 			// 
@@ -101,5 +112,6 @@
 		private System.Windows.Forms.Label labelHexCoords;
 		private System.Windows.Forms.TabPage tabAgentsAdding;
 		private System.Windows.Forms.TabControl tabMainTools;
+		private System.Windows.Forms.TabPage tabTiles;
 	}
 }

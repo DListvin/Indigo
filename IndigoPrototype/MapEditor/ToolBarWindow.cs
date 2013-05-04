@@ -22,14 +22,14 @@ namespace MapEditor
 			{
 				InitializeComponent();
 
-				//Adding agents to toolbar
-
+				//Initialising toolbars
 				var toolDefaultHeight = MapEditor.Properties.Resources.grass64.Width; //Default height of each tool
-
+				
+				//Adding agents to toolbar
 				foreach(var texture in MainWindow.texturesDict)
 				{
 					var newToolPanel = new Panel();
-					newToolPanel.Name = "toolpanel" + texture.Key.Name.Split('.').Last();
+					newToolPanel.Name = "AgentsToolPanel" + texture.Key.Name.Split('.').Last();
 					newToolPanel.Size = new Size(tabAgentsAdding.Size.Width, toolDefaultHeight);
 					newToolPanel.Location = new Point(0, tabAgentsAdding.Controls.Count * toolDefaultHeight);
 					newToolPanel.BackgroundImage = texture.Value;
@@ -37,6 +37,20 @@ namespace MapEditor
 					newToolPanel.MouseDown += new MouseEventHandler(agentTool_MouseDown);   
 					newToolPanel.Tag = texture.Key;
 					tabAgentsAdding.Controls.Add(newToolPanel);
+				}
+
+				//Adding tiles to toolbar
+				foreach(var tile in new MapTiles())
+				{
+					var newToolPanel = new Panel();
+					newToolPanel.Name = "TileToolPanel" + tile.Name;
+					newToolPanel.Size = new Size(tabTiles.Size.Width, toolDefaultHeight);
+					newToolPanel.Location = new Point(0, tabTiles.Controls.Count * toolDefaultHeight);
+					newToolPanel.BackgroundImage = tile.TileImage;
+					newToolPanel.BackgroundImageLayout = ImageLayout.Center;
+					//newToolPanel.MouseDown += new MouseEventHandler(agentTool_MouseDown);   
+					newToolPanel.Tag = tile;
+					tabTiles.Controls.Add(newToolPanel);
 				}
 			}
 

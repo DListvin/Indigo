@@ -52,7 +52,11 @@ namespace MapEditor
 		public event MouseEventHandler MouseCoordsChanged; //Event for coords of the mouse changed in the owner window
 
 		//Flags		
-        private bool leftMouseButtonInMapIsPressed = false;  //Flag for dragging the map (if true - DRAG NOW!)
+        private bool middleMouseButtonInMapIsPressed = false;  //Flag for dragging the map (if true - DRAG NOW!)
+        private bool leftMouseButtonInMapIsPressed = false;    //Flag for drawing on the map (if true - DRAW NOW!)
+
+		//Map editing
+		private TileBrush currentTileBrush; //Tile brush to draw on the map
 
 		#region Textures dictionary
 
@@ -101,6 +105,9 @@ namespace MapEditor
 				//Setting variables for map dragging
 				shiftVector = new Point(MainEditorPanel.Width / 2, MainEditorPanel.Height / 2);
 				dragVector = new Point(0, 0);
+
+				//Setting variables for edditing
+				currentTileBrush = new TileBrush();
 
 				//Detting variables for cells selecting
 				selectedCells = new List<HexagonCell>();
@@ -189,10 +196,14 @@ namespace MapEditor
 			/// </summary>
 			private void MainEditorPanel_MouseDown(object sender, MouseEventArgs e)
 			{
-				if (e.Button == MouseButtons.Left)
+				if (e.Button == MouseButtons.Middle)
 				{
 					mouseDownPoint.X = e.X ;
 					mouseDownPoint.Y = e.Y ;
+					middleMouseButtonInMapIsPressed = true;
+				}
+				if(e.Button == MouseButtons.Left)
+				{
 					leftMouseButtonInMapIsPressed = true;
 				}
 			}
@@ -202,11 +213,21 @@ namespace MapEditor
 			/// </summary>
 			private void MainEditorPanel_MouseMove(object sender, MouseEventArgs e)
 			{			
-				if (leftMouseButtonInMapIsPressed)
+				if (middleMouseButtonInMapIsPressed)
 				{
 					dragVector.X = e.X - mouseDownPoint.X;
 					dragVector.Y = e.Y - mouseDownPoint.Y ;
 					MainEditorPanel.Refresh();
+				}		
+				if (leftMouseButtonInMapIsPressed)
+				{
+					var currentCell = EditingGrid.GetCellByXYCoord(e.X - totalShiftVector.X, e.Y - totalShiftVector.Y);
+					if(currentCell != null)
+					{
+						currentCell.PresentedTile = currentTileBrush.CurrentTile;
+						EditingGrid.AddOrReplaceCell(currentCell);
+						MainEditorPanel.Refresh();
+					}
 				}
 				if(MouseCoordsChanged != null)
 				{
@@ -220,11 +241,15 @@ namespace MapEditor
 			/// </summary>
 			private void MainEditorPanel_MouseUp(object sender, MouseEventArgs e)
 			{
-				if (e.Button == MouseButtons.Left)
+				if (e.Button == MouseButtons.Middle)
 				{
 					shiftVector.X += dragVector.X;
 					shiftVector.Y += dragVector.Y;
 					dragVector = new Point(0, 0);
+					middleMouseButtonInMapIsPressed = false;
+				}
+				if (e.Button == MouseButtons.Left)
+				{
 					leftMouseButtonInMapIsPressed = false;
 				}
 				if (e.Button == MouseButtons.Right)
