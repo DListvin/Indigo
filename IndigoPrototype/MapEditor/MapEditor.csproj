@@ -56,6 +56,8 @@
     <Compile Include="Map\HexagonalGrid.cs" />
     <Compile Include="Map\HexagonCell.cs" />
     <Compile Include="Map\HexagonCoord.cs" />
+    <Compile Include="Map\Map objects\Tiles\MapTile.cs" />
+    <Compile Include="Map\Map objects\Tiles\MapTiles.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolBarWindow.cs">

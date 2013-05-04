@@ -159,19 +159,24 @@ namespace MapEditor
 					e.Graphics.DrawLines(penToDraw, cell.GetCorners(totalShiftVector));
 					
 					var currentTextureSize = MapEditor.Properties.Resources.grass64.Width;
+					var imageCoords = new Point((cell.XYCoordinates.X + totalShiftVector.X - EditingGrid.EdgeLenght / 2), (cell.XYCoordinates.Y + totalShiftVector.Y - EditingGrid.EdgeLenght / 2));
 
-					Image drawedImage;
+					//Drawing tile
+					var drawedImage = cell.PresentedTile.TileImage;
+					
+					e.Graphics.DrawImage(drawedImage, imageCoords.X, imageCoords.Y, currentTextureSize, currentTextureSize);
+
+					//Drawing agent
 					if(cell.InnerAgent == null)
 					{
-						drawedImage = MapEditor.Properties.Resources.grass64;
+						continue;
 					}
 					else
 					{
 						texturesDict.TryGetValue(cell.InnerAgent.GetType(), out drawedImage);
+						e.Graphics.DrawImage(drawedImage, imageCoords.X, imageCoords.Y, currentTextureSize, currentTextureSize);
 					}
 
-					var imageCoords = new Point((cell.XYCoordinates.X + totalShiftVector.X - EditingGrid.EdgeLenght / 2), (cell.XYCoordinates.Y + totalShiftVector.Y - EditingGrid.EdgeLenght / 2));
-					e.Graphics.DrawImage(drawedImage, imageCoords.X, imageCoords.Y, currentTextureSize, currentTextureSize);
 				}
 			}
 
@@ -193,7 +198,7 @@ namespace MapEditor
 			}
 
 			/// <summary>
-			/// Used for dragging and for updating mouse coords in the map corner
+			/// Used for dragging and for updating mouse coords in the tool bar
 			/// </summary>
 			private void MainEditorPanel_MouseMove(object sender, MouseEventArgs e)
 			{			

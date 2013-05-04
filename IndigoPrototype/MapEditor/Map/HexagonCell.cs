@@ -40,6 +40,11 @@ namespace MapEditor.Map
 			/// </summary>
 			public Agent InnerAgent { get; set; }
 
+			/// <summary>
+			/// Tile that is presented in this cell
+			/// </summary>
+			public MapTile PresentedTile { get; set; }
+
 		#endregion
 
 		#region Constructors
@@ -53,6 +58,7 @@ namespace MapEditor.Map
 				HexCoorinates = new HexagonCoord(argM, argR, argL);
 
 				//Default initialisation for none-parametrised properties
+				PresentedTile = MapTiles.Grass;
 				InnerAgent = null;
 			}
 
