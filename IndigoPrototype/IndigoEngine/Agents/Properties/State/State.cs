@@ -96,6 +96,21 @@ namespace IndigoEngine.Agents
 		}
 
         /// <summary>
+        /// Gets state norm as multiplication of all characteristics norms
+        /// </summary>
+        /// <returns></returns>
+        public double Norm()
+        {
+            double res = 1;
+
+            foreach (var ch in this)
+            {
+                res *= ch.Norm();
+            }
+            return res;
+        }
+
+        /// <summary>
         /// IEnumerator for foreach
         /// </summary>
         /// <returns></returns>

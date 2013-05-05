@@ -19,12 +19,18 @@ namespace IndigoEngine.Agents
         private int criticalPercentValue = 20; //Minimum value of the satisfied characteristic 
         private int currentValue;              //Current value of the characteristic
 
+        private int alpha = 3; //Norm parameters
+        private int beta = 3;
+        private double A2 = 100;
+        private double B1, B2; //Norm formula koeffs, here to calculate them once.        
+
         #region Constructors
 
         public Characteristic()
             : base()
         {
             CurrentUnitValue = MaxValue;
+            CalculateNormKoeffs();
         }
         public Characteristic(string name)
             : this()
@@ -137,7 +143,7 @@ namespace IndigoEngine.Agents
                 {
                     get 
                     {
-                        return CriticalPercentValue * maxValue;
+                        return CriticalPercentValue * maxValue / 100;
                     }
                 }
 
@@ -160,6 +166,29 @@ namespace IndigoEngine.Agents
 				currentValue = MinValue;
 			}
 		}
+
+        /// <summary>
+        /// Here we pre-calculate koeffs for norm formula.
+        /// </summary>
+        private void CalculateNormKoeffs()
+        {
+            B1 = Math.Pow(CriticalUnitValue - MinValue, -alpha);
+            B2 = (A2 - 1) * Math.Pow(MaxValue - CriticalUnitValue, -beta);            
+        }
+
+        /// <summary>
+        /// Returns norm for single characteristic (between 0 and 1)
+        /// </summary>
+        /// <returns></returns>
+        public double Norm()
+        {
+            double unnormalised = 0;
+            if (CurrentUnitValue <= CriticalUnitValue)
+                unnormalised = B1 * Math.Pow(CurrentUnitValue - MinValue, alpha);
+            else
+                unnormalised = A2 - B2 * Math.Pow(MaxValue - CurrentUnitValue, beta);
+            return unnormalised / A2;
+        }
 
         #region Static methods
 
