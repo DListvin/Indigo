@@ -20,6 +20,7 @@ namespace MapEditor
 		public event EventHandler TabTilesSelected;   //Tab with tiles selected
 		public event EventHandler TabTilesDeSelected; //Tab with tiles deselected
 		public event EventHandler TileChanged;        //Selected tile changed
+		public event EventHandler BrushSizeChanged;   //Brush size changed
 
 		#region Constructors
 
@@ -57,6 +58,15 @@ namespace MapEditor
 					newToolPanel.Tag = tile;
 					tabTiles.Controls.Add(newToolPanel);
 				}
+
+				var brushTrackBar = new TrackBar();
+				brushTrackBar.Name = "BrushTrackBar";
+				brushTrackBar.Size = new Size(tabTiles.Size.Width, toolDefaultHeight);
+				brushTrackBar.Location = new Point(0, tabTiles.Controls.Count * toolDefaultHeight);
+				brushTrackBar.Minimum = 1;
+				brushTrackBar.Maximum = 5;
+				brushTrackBar.ValueChanged += new EventHandler(brushTrackBar_ValueChanged);
+				tabTiles.Controls.Add(brushTrackBar);
 			}
 
 		#endregion
@@ -136,21 +146,34 @@ namespace MapEditor
 				chooseTile(convertedSender);
 			}
 
+			void brushTrackBar_ValueChanged(object sender, EventArgs e)
+			{
+				if(BrushSizeChanged != null)
+				{
+					BrushSizeChanged(tabTiles.Controls.Find("BrushTrackBar", false).First(), new EventArgs());
+				}
+			}
+
 			private void chooseTile(Panel argContainer)
 			{
-				foreach(Panel panel in tabTiles.Controls)
+				foreach(var panel in tabTiles.Controls)
 				{
+					var convertedPanel = panel as Panel;
+					if(convertedPanel == null)
+					{
+						continue;
+					}
 					if(panel == argContainer)
 					{
-						panel.BackColor = Color.Red;
+						convertedPanel.BackColor = Color.Red;
 						if(TileChanged != null)
 						{
-							TileChanged(panel, new EventArgs());
+							TileChanged(convertedPanel, new EventArgs());
 						}
 					}
 					else
 					{
-						panel.BackColor = Color.White;
+						convertedPanel.BackColor = Color.White;
 					}
 				}
 			}

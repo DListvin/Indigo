@@ -142,6 +142,63 @@ namespace MapEditor.Map
 				logger.Debug("Replaced cell {0} in the grid {1}", argCellToAdd, this);
 			}
 
+			/// <summary>
+			/// Getting list of cell neighbours with given radius, including the center cell
+			/// </summary>
+			/// <param name="argCellCenter">Cell from wich to count radius</param>
+			/// <param name="argRadius">Radius (1 - returning argCellCenter)</param>
+			/// <returns></returns>
+			public List<HexagonCell> GetCellNeighboursOfRadius(HexagonCell argCellCenter, int argRadius)
+			{
+				var result = new List<HexagonCell>();
+
+				var deltas = new int[][] //Deltas for hex coordinates to find hex with radius argRadius
+				{
+					new int[] {1, 0, -1}, 
+					new int[] {0, 1, -1}, 
+					new int[] {-1, 1, 0}, 
+					new int[] {-1, 0, 1}, 
+					new int[] {0, -1, 1}, 
+					new int[] {1, -1, 0}
+				};				
+
+				HexagonCell currentAddingCell = null; //Current adding cell for checking if there is no shuch cell in the grid
+
+				for(int r = 0; r < argRadius; r++)
+				{
+					var main = argCellCenter.HexCoorinates.M;   //Main coord of hexas
+					var right = argCellCenter.HexCoorinates.R - r; //Right coord of hexas
+					var left = argCellCenter.HexCoorinates.L + r;   //Left coord of hexas
+
+					currentAddingCell = GetCellByHexCoord(main, right, left);
+					if(currentAddingCell != null)
+					{
+						result.Add(currentAddingCell);
+					}
+
+					for(int i = 0; i < 6; i++)
+					{
+						var NumberOfHexasInEdge = r; //We like go throw some hexagons to reach current
+						if (i==5)
+						{
+							NumberOfHexasInEdge--;
+						}
+						for(int j = 0; j < NumberOfHexasInEdge; j++)
+						{
+							main += deltas[i][0];
+							right += deltas[i][1];
+							left += deltas[i][2];
+							currentAddingCell = GetCellByHexCoord(main, right, left);
+							if(currentAddingCell != null)
+							{
+								result.Add(currentAddingCell);
+							}
+						}
+					}
+				}
+
+				return result;
+			}
 
 		#endregion
 

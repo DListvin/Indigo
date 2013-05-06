@@ -113,8 +113,6 @@ namespace MapEditor.Map
 				new Point(xCenterCoord + xShiftCoord, yCenterCoord + edgeLenght + yShiftCoord),
 				new Point((int)(xCenterCoord - edgeLenght * sin60 + xShiftCoord), (int)(yCenterCoord + edgeLenght * cos60 + yShiftCoord)),
 				new Point((int)(xCenterCoord - edgeLenght * sin60 + xShiftCoord), (int)(yCenterCoord - edgeLenght * cos60 + yShiftCoord)),
-
-				new Point(xCenterCoord + xShiftCoord, yCenterCoord - edgeLenght + yShiftCoord), //Seventh corner is equal to first, need for drawing optimisation to draw closed figure
 			}; 
 
 			logger.Trace("Result is {0}", result);

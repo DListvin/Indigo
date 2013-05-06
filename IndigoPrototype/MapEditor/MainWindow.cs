@@ -56,7 +56,8 @@ namespace MapEditor
         private bool leftMouseButtonInMapIsPressed = false;    //Flag for drawing on the map (if true - DRAW NOW!)
 
 		//Map editing
-		private TileBrush currentTileBrush; //Tile brush to draw on the map
+		private TileBrush currentTileBrush;      //Tile brush to draw on the map
+		private List<HexagonCell> brushCovering; //List of cells that are covered with brush(need for tiles drawing and brush drawing)
 
 		#region Textures dictionary
 
@@ -108,6 +109,7 @@ namespace MapEditor
 
 				//Setting variables for edditing
 				currentTileBrush = null;
+				brushCovering = new List<HexagonCell>();
 
 				//Detting variables for cells selecting
 				selectedCells = new List<HexagonCell>();
@@ -148,6 +150,7 @@ namespace MapEditor
 				newToolBar.TileChanged += new EventHandler(newToolBar_TileChanged);
 				newToolBar.TabTilesSelected += new EventHandler(newToolBar_TabTilesSelected);
 				newToolBar.TabTilesDeSelected += new EventHandler(newToolBar_TabTilesDeSelected);
+				newToolBar.BrushSizeChanged += new EventHandler(newToolBar_BrushSizeChanged);
 				newToolBar.Show(this);
 			}
 
@@ -166,17 +169,17 @@ namespace MapEditor
 				foreach(var cell in EditingGrid)
 				{
 					var penToDraw = selectedCells.Contains(cell) ? new Pen(Brushes.Red, 3) : new Pen(Brushes.Black);
-					e.Graphics.DrawLines(penToDraw, cell.GetCorners(totalShiftVector));
+					e.Graphics.DrawPolygon(penToDraw, cell.GetCorners(totalShiftVector));
 					
 					var currentTextureSize = MapEditor.Properties.Resources.grass64.Width;
 					var imageCoords = new Point((cell.XYCoordinates.X + totalShiftVector.X - EditingGrid.EdgeLenght / 2), (cell.XYCoordinates.Y + totalShiftVector.Y - EditingGrid.EdgeLenght / 2));
 
-					//Drawing tile
+					//Drawing tiles
 					var drawedImage = cell.PresentedTile.TileImage;
 					
 					e.Graphics.DrawImage(drawedImage, imageCoords.X, imageCoords.Y, currentTextureSize, currentTextureSize);
 
-					//Drawing agent
+					//Drawing agents
 					if(cell.InnerAgent == null)
 					{
 						continue;
@@ -186,7 +189,14 @@ namespace MapEditor
 						texturesDict.TryGetValue(cell.InnerAgent.GetType(), out drawedImage);
 						e.Graphics.DrawImage(drawedImage, imageCoords.X, imageCoords.Y, currentTextureSize, currentTextureSize);
 					}
+				}
 
+				//Drawing brush
+				foreach(var cell in brushCovering)
+				{		
+					var currentBrushColor = Color.FromArgb(250/100*50, 0, 0, 0);
+					var currentBrush = new SolidBrush(currentBrushColor);			
+					e.Graphics.FillPolygon(currentBrush, cell.GetCorners(totalShiftVector));
 				}
 			}
 
@@ -215,28 +225,44 @@ namespace MapEditor
 			/// Used for dragging and for updating mouse coords in the tool bar
 			/// </summary>
 			private void MainEditorPanel_MouseMove(object sender, MouseEventArgs e)
-			{			
-				if (middleMouseButtonInMapIsPressed)
+			{		
+				var currentCell = EditingGrid.GetCellByXYCoord(e.X - totalShiftVector.X, e.Y - totalShiftVector.Y);  //Current cell that is covered with mouse
+				if(currentTileBrush != null && currentCell != null)
 				{
-					dragVector.X = e.X - mouseDownPoint.X;
-					dragVector.Y = e.Y - mouseDownPoint.Y ;
+					brushCovering = EditingGrid.GetCellNeighboursOfRadius(currentCell, currentTileBrush.Size);
+
+					#region Left mouse button for tile drawing
+
+						if (leftMouseButtonInMapIsPressed)
+						{	
+							foreach(var cell in brushCovering)
+							{
+								cell.PresentedTile = currentTileBrush.CurrentTile;
+								EditingGrid.AddOrReplaceCell(cell);
+							}
+						}
+
+					#endregion
+
 					MainEditorPanel.Refresh();
-				}		
-				if (leftMouseButtonInMapIsPressed)
-				{
-					var currentCell = EditingGrid.GetCellByXYCoord(e.X - totalShiftVector.X, e.Y - totalShiftVector.Y);
-					if(currentTileBrush != null && currentCell != null)
-					{
-						currentCell.PresentedTile = currentTileBrush.CurrentTile;
-						EditingGrid.AddOrReplaceCell(currentCell);
-						MainEditorPanel.Refresh();
-					}
 				}
+
 				if(MouseCoordsChanged != null)
 				{
 					var newMouseEventArgs = new MouseEventArgs(e.Button, e.Clicks, e.X - totalShiftVector.X, e.Y - totalShiftVector.Y, e.Delta);
 					MouseCoordsChanged(this, newMouseEventArgs);
 				}
+
+				#region Middle mouse button for dragging
+
+					if (middleMouseButtonInMapIsPressed)
+					{
+						dragVector.X = e.X - mouseDownPoint.X;
+						dragVector.Y = e.Y - mouseDownPoint.Y ;
+						MainEditorPanel.Refresh();
+					}
+							
+				#endregion
 			}
 
 			/// <summary>
@@ -342,6 +368,15 @@ namespace MapEditor
 			void newToolBar_TabTilesDeSelected(object sender, EventArgs e)
 			{
 				currentTileBrush = null;
+			}
+
+			void newToolBar_BrushSizeChanged(object sender, EventArgs e)
+			{
+				var convertedSender = sender as TrackBar;
+				if (currentTileBrush != null)
+				{
+					currentTileBrush.Size = convertedSender.Value;
+				}
 			}
 
 		#endregion
