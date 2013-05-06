@@ -107,7 +107,7 @@ namespace MapEditor
 				dragVector = new Point(0, 0);
 
 				//Setting variables for edditing
-				currentTileBrush = new TileBrush();
+				currentTileBrush = null;
 
 				//Detting variables for cells selecting
 				selectedCells = new List<HexagonCell>();
@@ -145,6 +145,9 @@ namespace MapEditor
 			private void MainMenuEditorTerrainToolbar_Click(object sender, EventArgs e)
 			{
 				var newToolBar = new ToolBarWindow();
+				newToolBar.TileChanged += new EventHandler(newToolBar_TileChanged);
+				newToolBar.TabTilesSelected += new EventHandler(newToolBar_TabTilesSelected);
+				newToolBar.TabTilesDeSelected += new EventHandler(newToolBar_TabTilesDeSelected);
 				newToolBar.Show(this);
 			}
 
@@ -222,7 +225,7 @@ namespace MapEditor
 				if (leftMouseButtonInMapIsPressed)
 				{
 					var currentCell = EditingGrid.GetCellByXYCoord(e.X - totalShiftVector.X, e.Y - totalShiftVector.Y);
-					if(currentCell != null)
+					if(currentTileBrush != null && currentCell != null)
 					{
 						currentCell.PresentedTile = currentTileBrush.CurrentTile;
 						EditingGrid.AddOrReplaceCell(currentCell);
@@ -319,6 +322,26 @@ namespace MapEditor
 					cellToClear.InnerAgent = null;
 				}
 				MainEditorPanel.Refresh();	
+			}
+
+		#endregion
+
+		#region Toolbar events
+
+			private void newToolBar_TileChanged(object sender, EventArgs e)
+			{
+				var convertedSender = sender as Panel;
+				currentTileBrush.CurrentTile = convertedSender.Tag as MapTile;
+			}
+
+			void newToolBar_TabTilesSelected(object sender, EventArgs e)
+			{
+				currentTileBrush = new TileBrush();
+			}
+
+			void newToolBar_TabTilesDeSelected(object sender, EventArgs e)
+			{
+				currentTileBrush = null;
 			}
 
 		#endregion

@@ -73,6 +73,7 @@
 			this.tabMainTools.SelectedIndex = 0;
 			this.tabMainTools.Size = new System.Drawing.Size(204, 465);
 			this.tabMainTools.TabIndex = 2;
+			this.tabMainTools.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabMainTools_Selecting);
 			// 
 			// tabTiles
 			// 

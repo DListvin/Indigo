@@ -7,6 +7,7 @@ namespace MapEditor.Map
 {
 	/// <summary>
 	/// Class that contains some static fields that represents tiles
+	/// It is "static" but we can create an instanse to use GetEnumerator()
 	/// </summary>
 	public class MapTiles
 	{
@@ -36,6 +37,9 @@ namespace MapEditor.Map
 			}
 		}
 
+		/// <summary>
+		/// Enumerates all tiles
+		/// </summary>
 		public IEnumerator<MapTile> GetEnumerator()
 		{
             foreach (System.Reflection.PropertyInfo ch in typeof(MapTiles).GetProperties(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance| System.Reflection.BindingFlags.Public).Where(field =>

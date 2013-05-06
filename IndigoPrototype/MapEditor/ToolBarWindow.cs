@@ -16,6 +16,11 @@ namespace MapEditor
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();		
 
+		//Events
+		public event EventHandler TabTilesSelected;   //Tab with tiles selected
+		public event EventHandler TabTilesDeSelected; //Tab with tiles deselected
+		public event EventHandler TileChanged;        //Selected tile changed
+
 		#region Constructors
 
 			public ToolBarWindow()
@@ -23,7 +28,7 @@ namespace MapEditor
 				InitializeComponent();
 
 				//Initialising toolbars
-				var toolDefaultHeight = MapEditor.Properties.Resources.grass64.Width; //Default height of each tool
+				var toolDefaultHeight = MapEditor.Properties.Resources.grass64.Width + 2; //Default height of each tool
 				
 				//Adding agents to toolbar
 				foreach(var texture in MainWindow.texturesDict)
@@ -48,7 +53,7 @@ namespace MapEditor
 					newToolPanel.Location = new Point(0, tabTiles.Controls.Count * toolDefaultHeight);
 					newToolPanel.BackgroundImage = tile.TileImage;
 					newToolPanel.BackgroundImageLayout = ImageLayout.Center;
-					//newToolPanel.MouseDown += new MouseEventHandler(agentTool_MouseDown);   
+					newToolPanel.MouseClick += new MouseEventHandler(tileTool_MouseClick);   
 					newToolPanel.Tag = tile;
 					tabTiles.Controls.Add(newToolPanel);
 				}
@@ -61,6 +66,11 @@ namespace MapEditor
 			private void ToolBarWindow_Load(object sender, EventArgs e)
 			{			
 				(Owner as MainWindow).MouseCoordsChanged += new MouseEventHandler(MainEditor_MouseMove);
+				if(TabTilesSelected != null)
+				{
+					TabTilesSelected(this, new EventArgs());
+				}
+				chooseTile(tabTiles.Controls[0] as Panel);
 			}
 
 			private void ToolBarWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -81,16 +91,68 @@ namespace MapEditor
 
 		#endregion
 
-		#region Drag and drop events
+		#region Tab panel events
+
+			private void tabMainTools_Selecting(object sender, TabControlCancelEventArgs e)
+			{
+				if(tabMainTools.SelectedIndex == 0)
+				{
+					if(TabTilesSelected != null)
+					{
+						TabTilesSelected(this, new EventArgs());		
+					}		
+					chooseTile(tabTiles.Controls[0] as Panel);
+				}
+				else
+				{					
+					if(TabTilesDeSelected != null)
+					{
+						TabTilesDeSelected(this, new EventArgs());		
+					}	
+				}
+			}
+
+		#endregion
+
+		#region Agents tool events
 
 			private void agentTool_MouseDown(object sender, MouseEventArgs e)
 			{
-				var convertedSender = sender as Panel;				
+				var convertedSender = sender as Panel;		
 
 				//Getting new agent for this tool
 				System.Reflection.ConstructorInfo ci = (convertedSender.Tag as Type).GetConstructor(new Type[] { });
 				var newAg = ci.Invoke(new object[] { }) as Agent;
 				convertedSender.DoDragDrop(newAg, DragDropEffects.Move);
+			}
+
+		#endregion
+
+		#region Tile tool events		
+			
+			private void tileTool_MouseClick(object sender, MouseEventArgs e)
+			{
+				var convertedSender = sender as Panel;				
+				chooseTile(convertedSender);
+			}
+
+			private void chooseTile(Panel argContainer)
+			{
+				foreach(Panel panel in tabTiles.Controls)
+				{
+					if(panel == argContainer)
+					{
+						panel.BackColor = Color.Red;
+						if(TileChanged != null)
+						{
+							TileChanged(panel, new EventArgs());
+						}
+					}
+					else
+					{
+						panel.BackColor = Color.White;
+					}
+				}
 			}
 
 		#endregion
