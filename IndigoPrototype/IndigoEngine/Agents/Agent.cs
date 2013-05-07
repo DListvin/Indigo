@@ -124,7 +124,7 @@ namespace IndigoEngine.Agents
                     return MakeAction(EstimateMainCharacteristic());
                 }
 			}
-            return ActionsNew.Actions.DoNothing(this);
+            return ActionsNew.Actions.DoNothing(new List<Agent>(){this});
 		}
 
         /// <summary>
@@ -158,7 +158,9 @@ namespace IndigoEngine.Agents
         /// <param name="argNeed">need, that must be satisfied</param>
         protected virtual ActionAbstract MakeAction(Characteristic argCharacteristic)
         {
-            List<ActionAbstract> allActions = ActionsNew.Actions.GetActionsEstimating(this, argCharacteristic);
+            if (argCharacteristic == null)
+                return ActionsNew.Actions.DoNothing(new List<Agent>() { this });
+            List<Func<List<Agent>, ActionAbstract>> allActions = ActionsNew.Actions.GetActionsEstimating(this, argCharacteristic);
             return ActionsNew.Actions.GetBestActionEstimating(this, argCharacteristic);
 
         }
