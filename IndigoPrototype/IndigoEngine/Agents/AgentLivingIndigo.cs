@@ -21,24 +21,22 @@ namespace IndigoEngine.Agents
 				: base()
 			{
 				#region Adding skills
-
 					SkillsList.Add(Skills.Woodcutting);
 					SkillsList.Add(Skills.Gathering);
 					SkillsList.Add(Skills.Communicationing);
 					SkillsList.Add(Skills.CampConstructing);
-
 				#endregion
 				
 				#region Adding needs
-
 					NeedFromCharacteristic.Add(CurrentState.Peacefulness, Needs.NeedAttack);
 					NeedFromCharacteristic.Add(CurrentState.Health,       Needs.NeedRest);
 					NeedFromCharacteristic.Add(CurrentState.FoodSatiety,  Needs.NeedEat);
 					NeedFromCharacteristic.Add(CurrentState.Stamina,      Needs.NeedRest);
 					NeedFromCharacteristic.Add(CurrentState.Strenght,     Needs.NeedRest);
 					NeedFromCharacteristic.Add(CurrentState.WaterSatiety, Needs.NeedDrink);
-
 				#endregion
+
+                    Quality = new Quality(Qualities.Destroyable, Qualities.Desideable, Qualities.Moving, Qualities.Createable);
 			}
 
         #endregion

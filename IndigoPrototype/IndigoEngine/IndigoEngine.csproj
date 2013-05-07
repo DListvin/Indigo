@@ -75,6 +75,7 @@
     <Compile Include="Actions\Action Grow Fruit\ActionGrowFruit.cs" />
     <Compile Include="Actions\ActionsManager.cs" />
     <Compile Include="Actions\Action Rest\ActionRest.cs" />
+    <Compile Include="ActionsNew\ActionInfo.cs" />
     <Compile Include="Actions\Exceptions\ConflictException.cs" />
     <Compile Include="Actions\Exceptions\NotLegimateExeception.cs" />
     <Compile Include="Actions\Exceptions\ResourceRequiredException.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Agents\Properties\State\StateLiving.cs" />
     <Compile Include="Agents\Properties\Memory\StoredInformation.cs" />
     <Compile Include="Agents\Properties\State\StateTree.cs" />
+    <Compile Include="Agents\Quality.cs" />
     <Compile Include="IObservableModel.cs" />
     <Compile Include="Actions\ITypicalAction.cs" />
     <Compile Include="Agents\Properties\Needs\ITypicalNeed.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="WorldRules.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

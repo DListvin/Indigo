@@ -51,6 +51,7 @@ namespace IndigoEngine.Agents
 				public Vision CurrentVision { get; set; }                  //Agent's field ov view. Includes all agents & actions, that current agent can see
 				public Memory CurrentMemory { get; set; }                  //Agent's memory
 				public List<Skill> SkillsList { get; set; }                //List of skills that are available to agent
+                public Quality Quality;                                    //Agent's permanent quality like thinkable and others 
                 protected Dictionary<Characteristic, Need> NeedFromCharacteristic { get; set; } // Agent's spesific association Needs from Characteristic
 				
                 /// <summary>

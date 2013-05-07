@@ -28,6 +28,7 @@ namespace IndigoEngine.Agents
 
 				NeedFromCharacteristic.Add(CurrentState.Health,      Needs.NeedNothing);
 				NeedFromCharacteristic.Add(CurrentState.Prolificacy, Needs.NeedGrowFruit);
+                Quality = new Agents.Quality(Qualities.Createable, Qualities.Desideable, Qualities.Destroyable);
 
 				logger.Info("Created new {0}", this.GetType());
 				logger.Trace("Created new {0}", this);

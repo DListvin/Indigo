@@ -20,6 +20,7 @@ namespace IndigoEngine.Agents
 				: base()
 			{
 				NeedFromCharacteristic.Add(CurrentState.Health, Needs.NeedNothing);
+                Quality = new Quality(Qualities.Destroyable);
 			}
 
 		#endregion
