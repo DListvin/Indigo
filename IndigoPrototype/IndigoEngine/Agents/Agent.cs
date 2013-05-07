@@ -161,7 +161,7 @@ namespace IndigoEngine.Agents
         {
             if (argCharacteristic == null)
                 return ActionsNew.Actions.DoNothing( this );
-            List<ActoinFunc> allActions = ActionsNew.Actions.GetActionsEstimating(this, argCharacteristic);
+            List<ActionFunc> allActions = ActionsNew.Actions.GetActionsEstimating(this, argCharacteristic);
             return ActionsNew.Actions.GetBestActionEstimating(this, argCharacteristic);
 
         }

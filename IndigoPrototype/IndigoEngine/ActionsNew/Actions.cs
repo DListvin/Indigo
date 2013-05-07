@@ -10,7 +10,7 @@ using NLog;
 
 namespace IndigoEngine.ActionsNew
 {
-    public delegate ActionAbstract ActoinFunc(params Agent[] agents);
+    public delegate ActionAbstract ActionFunc(params Agent[] agents);
 
     /// <summary>
     /// All existing actions here
@@ -21,7 +21,7 @@ namespace IndigoEngine.ActionsNew
 
         static BindingList<IAtomicInstruction> instructions; // subsideary variable for Action creating
         static Dictionary<string, List<Type>> ActionAgentConformity; // Dictionary of Action and Agent Conformity
-        static Dictionary<Characteristic, List<ActoinFunc>> CharactActionConformity; // Dictionary of Action and Characteristic Conformity
+        static Dictionary<Characteristic, List<ActionFunc>> CharactActionConformity; // Dictionary of Action and Characteristic Conformity
 
         /// <summary>
         /// this is for correct work of GetActionsEstimating and GetBestActionEstimating
@@ -33,7 +33,7 @@ namespace IndigoEngine.ActionsNew
             instructions = new BindingList<IAtomicInstruction>();
             var EventHandler = new ListChangedEventHandler(instructions_ListChanged);
             instructions.ListChanged += EventHandler; // event handler fill CharactActionConformity disctionary
-            CharactActionConformity = new Dictionary<Characteristic, List<ActoinFunc>>();
+            CharactActionConformity = new Dictionary<Characteristic, List<ActionFunc>>();
 
             MethodInfo[] methodInfo = typeof(Actions).GetMethods();
             foreach (MethodInfo MI in methodInfo)
@@ -83,14 +83,14 @@ namespace IndigoEngine.ActionsNew
                     {
                         if (CharactActionConformity.ContainsKey(ICC.Characteristic))
                         {
-                            var ActionsList = new List<ActoinFunc>();
+                            var ActionsList = new List<ActionFunc>();
                             CharactActionConformity.TryGetValue(ICC.Characteristic, out ActionsList);
-                            ActionsList.Add(sender as ActoinFunc);
+                            ActionsList.Add(sender as ActionFunc);
                         }
                         else
                         {
                             CharactActionConformity.Add(ICC.Characteristic,
-                                new List<ActoinFunc>() { sender as ActoinFunc });                            
+                                new List<ActionFunc>() { sender as ActionFunc });                            
                         }
                     }
                 }
@@ -227,9 +227,9 @@ namespace IndigoEngine.ActionsNew
         /// <summary>
         /// Get all Actions that estimate this characteristic
         /// </summary>
-        public static List<ActoinFunc> GetActionsEstimating(Agent agent, Characteristic characteristic)
+        public static List<ActionFunc> GetActionsEstimating(Agent agent, Characteristic characteristic)
         {
-            var ans = new List<ActoinFunc>();
+            var ans = new List<ActionFunc>();
             if (CharactActionConformity.TryGetValue(characteristic, out ans))
                 return ans;
             logger.Error("Actions.GetActionsEstimating(): CharactActionConformity dictionary hasn't key " + characteristic.Name);
