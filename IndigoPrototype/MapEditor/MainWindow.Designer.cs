@@ -39,6 +39,7 @@
 			this.contextMenuCell = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.contextMenuCellSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuCellClearAgents = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainMenuFileNew = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
 			this.contextMenuCell.SuspendLayout();
 			this.SuspendLayout();
@@ -57,6 +58,7 @@
 			// MainMenuFile
 			// 
 			this.MainMenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuFileNew,
             this.MainMenuFileClose});
 			this.MainMenuFile.Name = "MainMenuFile";
 			this.MainMenuFile.Size = new System.Drawing.Size(37, 20);
@@ -65,7 +67,7 @@
 			// MainMenuFileClose
 			// 
 			this.MainMenuFileClose.Name = "MainMenuFileClose";
-			this.MainMenuFileClose.Size = new System.Drawing.Size(103, 22);
+			this.MainMenuFileClose.Size = new System.Drawing.Size(152, 22);
 			this.MainMenuFileClose.Text = "Close";
 			this.MainMenuFileClose.Click += new System.EventHandler(this.MainMenuFileClose_Click);
 			// 
@@ -132,6 +134,13 @@
 			this.contextMenuCellClearAgents.Text = "Clear agents";
 			this.contextMenuCellClearAgents.Click += new System.EventHandler(this.contextMenuCellClearAgents_Click);
 			// 
+			// MainMenuFileNew
+			// 
+			this.MainMenuFileNew.Name = "MainMenuFileNew";
+			this.MainMenuFileNew.Size = new System.Drawing.Size(152, 22);
+			this.MainMenuFileNew.Text = "New";
+			this.MainMenuFileNew.Click += new System.EventHandler(this.MainMenuFileNew_Click);
+			// 
 			// MainWindow
 			// 
 			this.AllowDrop = true;
@@ -165,6 +174,7 @@
 		private System.Windows.Forms.ContextMenuStrip contextMenuCell;
 		private System.Windows.Forms.ToolStripMenuItem contextMenuCellSelect;
 		private System.Windows.Forms.ToolStripMenuItem contextMenuCellClearAgents;
+		private System.Windows.Forms.ToolStripMenuItem MainMenuFileNew;
 	}
 }
 

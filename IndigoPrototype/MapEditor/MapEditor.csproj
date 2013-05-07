@@ -58,6 +58,12 @@
     <Compile Include="Map\HexagonCoord.cs" />
     <Compile Include="Map\Map objects\Tiles\MapTile.cs" />
     <Compile Include="Map\Map objects\Tiles\MapTiles.cs" />
+    <Compile Include="NewFileWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewFileWindow.Designer.cs">
+      <DependentUpon>NewFileWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TileBrush.cs" />
@@ -69,6 +75,9 @@
     </Compile>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewFileWindow.resx">
+      <DependentUpon>NewFileWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

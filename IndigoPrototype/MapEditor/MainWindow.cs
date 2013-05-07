@@ -139,6 +139,17 @@ namespace MapEditor
 
 		#region Menu event handlers
 
+			private void MainMenuFileNew_Click(object sender, EventArgs e)
+			{
+				var newGridWindow = new NewFileWindow();
+				newGridWindow.ShowDialog(this);
+				if(newGridWindow.GridSize > 0)
+				{
+					EditingGrid = new HexagonalGrid(newGridWindow.GridSize);
+					MainEditorPanel.Refresh();
+				}
+			}
+
 			private void MainMenuFileClose_Click(object sender, EventArgs e)
 			{
 				this.Close();

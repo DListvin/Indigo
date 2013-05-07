@@ -33,7 +33,7 @@ namespace MapEditor.Map
 
 		#region Constructors
 
-			public HexagonalGrid(int argEdgeLength = 50, int argRadius = 5)
+			public HexagonalGrid(int argRadius = 5, int argEdgeLength = 50)
 			{
 				EdgeLenght = argEdgeLength;
 
