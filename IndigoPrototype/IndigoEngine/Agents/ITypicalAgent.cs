@@ -22,7 +22,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Operations with agent inventory
 		/// </summary>
-		ItemStorage Inventory { get; set; }
+		Storing Inventory { get; set; }
 		
 		/// <summary>
 		/// Operations with action feeeback
@@ -42,7 +42,7 @@ namespace IndigoEngine.Agents
 		/// <summary>
 		/// Operations with agent's memory
 		/// </summary>
-		Memory CurrentMemory { get; set; }
+		Mindful CurrentMemory { get; set; }
 
 		/// <summary>
 		/// Operations with list of skills that are available to agent

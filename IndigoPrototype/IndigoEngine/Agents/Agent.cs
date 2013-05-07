@@ -28,10 +28,10 @@ namespace IndigoEngine.Agents
 			{
 				CurrentState = new State();			
 				CurrentLocation = new Location();
-				Inventory = new ItemStorage();
+				Inventory = new Storing();
 				Inventory.Owner = this;
 				HomeWorld = null;				
-				CurrentMemory = new Memory();
+				CurrentMemory = new Mindful();
 				CurrentVision = new Vision();
 				CurrentVision.Owner = this;
                 NeedFromCharacteristic = new Dictionary<Characteristic, Need>();
@@ -45,11 +45,11 @@ namespace IndigoEngine.Agents
 				
 				public State CurrentState { get; set; }                    //Current state of the agent
 				public Location CurrentLocation { get; set; }              //Agent location in the world grid - (X, Y), or agent - owner
-				public ItemStorage Inventory { get; set; }                 //Agent inventory
+				public Storing Inventory { get; set; }                 //Agent inventory
 				public ActionFeedback CurrentActionFeedback { get; set; }  //Current action result, that is needed to be perform
 				public IWorldToAgent HomeWorld { get; set; }               //Agent's world				
 				public Vision CurrentVision { get; set; }                  //Agent's field ov view. Includes all agents & actions, that current agent can see
-				public Memory CurrentMemory { get; set; }                  //Agent's memory
+				public Mindful CurrentMemory { get; set; }                  //Agent's memory
 				public List<Skill> SkillsList { get; set; }                //List of skills that are available to agent
                 public Quality Quality;                                    //Agent's permanent quality like thinkable and others 
                 protected Dictionary<Characteristic, Need> NeedFromCharacteristic { get; set; } // Agent's spesific association Needs from Characteristic

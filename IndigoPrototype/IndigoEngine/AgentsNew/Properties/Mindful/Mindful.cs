@@ -5,13 +5,13 @@ using System.Text;
 using NLog;
 using IndigoEngine.ActionsOld;
 
-namespace IndigoEngine.Agents
+namespace IndigoEngine.AgentsNew
 {
 	/// <summary>
 	/// Memory of the agents
 	/// </summary>
     [Serializable]
-    public class Mindful
+    public class Mindful : Quality
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

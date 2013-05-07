@@ -1,0 +1,266 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using NLog;
+
+namespace IndigoEngine.AgentsNew
+{
+	/// <summary>
+	/// Class for some characteristic of the agent
+	/// </summary>
+    [Serializable]
+    public class Characteristic : NameableObject, ITypicalCharacteristic
+    {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        private int maxValue = 100;            //Maximum value of the characteristic
+        private int minValue = 0;              //Minimum value of the characteristic
+        private int criticalPercentValue = 20; //Minimum value of the satisfied characteristic 
+        private int currentValue;              //Current value of the characteristic
+
+        private int alpha = 3; //Norm parameters
+        private int beta = 3;
+        private double A2 = 100;
+        private double B1, B2; //Norm formula koeffs, here to calculate them once.        
+
+        #region Constructors
+
+        public Characteristic()
+            : base()
+        {
+            CurrentUnitValue = MaxValue;
+            CalculateNormKoeffs();
+        }
+        public Characteristic(string name)
+            : this()
+        {
+            Name = name;
+        }
+
+        #endregion
+
+        #region Properties
+
+			#region ITypicalCharacteristic realisation
+
+				public int MaxValue
+				{
+					get
+					{
+						return maxValue;
+					}
+					set
+					{
+						if (value <= MinValue)
+						{
+							logger.Error("Maximum value of {0} is less or equal to minimum: {1}!", this, value);
+							return;
+						}
+						maxValue = value;
+						if (CurrentUnitValue > MaxValue)
+						{
+							CurrentUnitValue = MaxValue;
+						}
+					}
+				}
+
+				public int MinValue
+				{
+					get
+					{
+						return minValue;
+					}
+					set
+					{
+						if (value >= MaxValue)
+						{
+							logger.Error("Minimum value of {0} is more or equal to maximum: {1}!", this, value);
+							return;
+						}
+						minValue = value;
+						if (CurrentUnitValue < MinValue)
+						{
+							CurrentUnitValue = MinValue;
+						}
+					}
+				}
+
+				public int CurrentUnitValue
+				{
+					get
+					{
+						if(currentValue <= MinValue)
+						{
+							return MinValue;
+						}
+						if(currentValue >= MaxValue)
+						{
+							return MaxValue;
+						}
+						return currentValue;
+					}
+					set
+					{
+						currentValue = value;
+					}
+				}
+
+				public int CriticalPercentValue
+				{
+					get
+					{
+						return criticalPercentValue;
+					}
+					set
+					{
+						if (value < 0)
+						{
+							criticalPercentValue = 0;
+							return;
+						}
+						if (value > 100)
+						{
+							criticalPercentValue = 100;
+							return;
+						}
+						criticalPercentValue = value;
+					}
+				}
+
+				public int CurrentPercentValue
+				{
+					get
+					{
+						return (int)(((float)CurrentUnitValue / Math.Abs((float)(MaxValue - MinValue))) * 100f);
+					}
+					set
+					{
+						CurrentUnitValue = MinValue + (int)(Math.Abs((float)(MaxValue - MinValue)) * (float)value / 100f);
+					}
+				}
+                public int CriticalUnitValue
+                {
+                    get 
+                    {
+                        return CriticalPercentValue * maxValue / 100;
+                    }
+                }
+
+
+			#endregion
+
+        #endregion
+
+		/// <summary>
+		/// Set currentValue between borders. Use it in the end of the iteration
+		/// </summary>
+		public void Reduct()
+		{
+			if(currentValue > MaxValue)
+			{
+				currentValue = MaxValue;
+			}
+			if(currentValue < MinValue)
+			{
+				currentValue = MinValue;
+			}
+		}
+
+        /// <summary>
+        /// Here we pre-calculate koeffs for norm formula.
+        /// </summary>
+        private void CalculateNormKoeffs()
+        {
+            B1 = Math.Pow(CriticalUnitValue - MinValue, -alpha);
+            B2 = (A2 - 1) * Math.Pow(MaxValue - CriticalUnitValue, -beta);            
+        }
+
+        /// <summary>
+        /// Returns norm for single characteristic (between 0 and 1)
+        /// </summary>
+        /// <returns></returns>
+        public double Norm()
+        {
+            double unnormalised = 0;
+            if (CurrentUnitValue <= CriticalUnitValue)
+                unnormalised = B1 * Math.Pow(CurrentUnitValue - MinValue, alpha);
+            else
+                unnormalised = A2 - B2 * Math.Pow(MaxValue - CurrentUnitValue, beta);
+            return unnormalised / A2;
+        }
+
+        #region Static methods
+
+			public static Characteristic operator +(Characteristic argChar1, Characteristic argChar2)
+			{
+				Characteristic result = new Characteristic();
+				if (argChar1.Name != argChar2.Name)
+				{
+					throw (new Exception(String.Format("You are trying to add 2 different characteristics: {0} and {1}", argChar1.Name, argChar2.Name)));
+				}
+				if (argChar1.MinValue != argChar2.MinValue || argChar1.MaxValue != argChar2.MaxValue)
+				{
+					throw (new Exception(String.Format("You are trying to add 2 characteristics with different borders: {0} and {1}", argChar1, argChar2)));
+				}
+				if (argChar1.CriticalPercentValue != argChar2.CriticalPercentValue)
+				{
+					throw (new Exception(String.Format("You are trying to add 2 characteristics with different critical values: {0} and {1}", argChar1.CriticalPercentValue, argChar2.CriticalPercentValue)));
+				}
+				result.CurrentUnitValue = (argChar1.CurrentUnitValue + argChar2.CurrentUnitValue);
+
+				return result;
+			}
+
+			public static Characteristic operator -(Characteristic argChar1, Characteristic argChar2)
+			{
+				Characteristic result = new Characteristic();
+				if (argChar1.Name != argChar2.Name)
+				{
+					throw (new Exception(String.Format("You are trying to substract 2 different characteristics: {0} and {1}", argChar1.Name, argChar2.Name)));
+				}
+				if (argChar1.MinValue != argChar2.MinValue || argChar1.MaxValue != argChar2.MaxValue)
+				{
+					throw (new Exception(String.Format("You are trying to substract 2 characteristics with different borders: {0} and {1}", argChar1, argChar2)));
+				}
+				if (argChar1.CriticalPercentValue != argChar2.CriticalPercentValue)
+				{
+					throw (new Exception(String.Format("You are trying to substract 2 characteristics with different critical values: {0} and {1}", argChar1.CriticalPercentValue, argChar2.CriticalPercentValue)));
+				}
+				result.CurrentUnitValue = (argChar1.CurrentUnitValue - argChar2.CurrentUnitValue);
+
+				return result;
+			}
+
+			public static Characteristic operator +(Characteristic argChar1, int argValue)
+			{
+				Characteristic result = argChar1;
+				result.CurrentUnitValue = argChar1.CurrentUnitValue + argValue;
+
+				return result;
+			}
+
+			public static Characteristic operator -(Characteristic argChar1, int argValue)
+			{
+				Characteristic result = argChar1;
+				result.CurrentUnitValue = argChar1.CurrentUnitValue - argValue;
+
+				return result;
+			}
+
+            public static int Comparing(Characteristic char1, Characteristic char2)
+            {
+                return char1.CurrentPercentValue.CompareTo( char2.CurrentPercentValue);
+            }
+        #endregion
+
+        #region ObjectMethodsOverride
+
+            public override string ToString()
+            {
+                return Name + ": " + MinValue.ToString() + "." + CurrentUnitValue.ToString() + "." + MaxValue.ToString();
+            }
+
+        #endregion
+    }
+}
