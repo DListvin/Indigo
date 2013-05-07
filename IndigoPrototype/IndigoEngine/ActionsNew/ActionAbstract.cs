@@ -8,20 +8,23 @@ namespace IndigoEngine.ActionsNew
     public class ActionAbstract : NameableObject
     {
         List<ActionForOneAgent> actions;
+        ActionInfo actionInfo;
 
         public ActionAbstract()
         {
             actions = new List<ActionForOneAgent>();
+            actionInfo = new ActionInfo();
         }
 
         public ActionAbstract(List<ActionForOneAgent> argActionsForOneAgent)
         {
             actions = argActionsForOneAgent;
         }
-        public ActionAbstract(ActionForOneAgent argActionsForOneAgent)
+        public ActionAbstract(params ActionForOneAgent[] argActionsForOneAgent)
         {
             actions = new List<ActionForOneAgent>();
-            actions.Add(argActionsForOneAgent);
+            foreach (ActionForOneAgent AOA in argActionsForOneAgent)
+                actions.Add(AOA);
         }
         public void Add(ActionForOneAgent argActionsForOneAgent)
         {
