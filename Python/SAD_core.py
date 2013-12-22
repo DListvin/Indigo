@@ -10,10 +10,10 @@
 #-------------------------------------------------------------------------------
 
 from xml.dom import minidom
-
+agents = [];
 
 def main():
-    agents = [];
+
     a = Agent()
     a.TypeName = 'Man';
     p = Characteristic('Stupidity')
@@ -43,6 +43,7 @@ def main():
     print(a.Properties[1].Value)
 
     pass
+
 
 def GetAgentById(id):
     return agents[id];
@@ -87,11 +88,11 @@ class ActionMove(Action):
 
 class Condition:
     Conditions = [] #List of conditions
-    def Calculate():
-        res = true
-        for i in Conditions:
-            if i.Calculate() != true:
-                res = false
+    def Calculate(self):
+        res = True
+        for i in self.Conditions:
+            if i.Calculate() != True:
+                res = False
         return res
 
 class Comparison(Condition):
