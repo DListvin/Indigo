@@ -23,18 +23,19 @@ class Core_model:
 
     def Init(self):
         simulatingWorld = World()
+        state = ModelState.Initialised
 
     def Start(self):
-        pass
+        self.state = ModelState.Running
 
     def Pause(self):
-        pass
+        self.state = ModelState.Paused
 
     def Resume(self):
-        pass
+        self.state = ModelState.Running
 
     def Stop(self):
-        pass
+        self.state = ModelState.Stopping
 
     def MainLoop(self):
         while True:
@@ -65,11 +66,11 @@ class World:
         p2 = Characteristic('Location')
         p2.Value = [0]
         Go = ActionMove()
-        Go.Duration = 2;
-        Go.Name = 'Go';
+        Go.Duration = 2
+        Go.Name = 'Go'
         c = Comparison()
-        c.CompType = 0;
-        Go.Condition = c;
+        c.CompType = 0
+        Go.Condition = c
         p3 = Subjectivity('You shall pass!', Go)
         a.Properties = [p, p2, p3]
         self.agents = [self.agents, a]

@@ -22,11 +22,11 @@ def main():
     p2.Value = [0]
 
     Go = ActionMove()
-    Go.Duration = 2;
-    Go.Name = 'Go';
+    Go.Duration = 2
+    Go.Name = 'Go'
     c = Comparison()
-    c.CompType = 0;
-    Go.Condition = c;
+    c.CompType = 0
+    Go.Condition = c
 
     p3 = Subjectivity('You shall pass!', Go)
 
