@@ -1,6 +1,7 @@
 __author__ = 'Zurk'
 from SAD_core import *
-
+from threading import Thread
+import queue
 
 class ModelState:
     Uninitialised = 0
@@ -11,38 +12,44 @@ class ModelState:
     Error = -1
 
 
-class Core_model:
+class Core_model(Thread):
     simulatingWorld = None             #Shows, what world is simulating in the model
-    passedModelIterations = 0       #Info about how many iterations of main loop have passed
-    modelIterationTick = 500          #Info about time interval between loop iterations in mc
+    passedModelIterations = 0          #Info about how many iterations of main loop have passed
+    modelIterationTick = 500           #Info about time interval between loop iterations in mc
     state = ModelState.Uninitialised   #Model state from ModelState enum
     storedActions = None               #Actions from agent to perform after thinking loop
+    active_queues = []
 
-    def __init__(self):
-        self.Init()
+    def __init__(self, active_queues):
+        Thread.__init__(self)
+        self.Init(active_queues)
 
-    def Init(self):
-        simulatingWorld = World()
-        state = ModelState.Initialised
+    def Init(self, active_queues):
+        self.simulatingWorld = World()
+        self.state = ModelState.Initialised
+        self.mailbox = queue.Queue()
+        active_queues.append(self.mailbox)
+        self.active_queues = active_queues
 
-    def Start(self):
-        self.state = ModelState.Running
+    def run(self):
+        self.MainLoop()
 
-    def Pause(self):
-        self.state = ModelState.Paused
-
-    def Resume(self):
-        self.state = ModelState.Running
-
-    def Stop(self):
+    def stop(self):
         self.state = ModelState.Stopping
+        self.active_queues.remove(self.mailbox)
+        self.mailbox.put("shutdown")
+        self.join()
 
     def MainLoop(self):
         while True:
+            try:
+                self.state = self.mailbox.get_nowait()
+            except:
+                pass
             if self.state == ModelState.Stopping:
                 break
             if self.state == ModelState.Paused:
-                pass
+                self.state = self.mailbox.get()
             if self.state == ModelState.Running:
                 self.simulatingWorld.MainLoopIteration()
                 self.passedModelIterations += 1
@@ -58,9 +65,9 @@ class World:
 
     #Here we basically create world
     def Init(self):
-    # Create one Stupid  Man TOO LONG. Must be in other place
+    # Create one Man TOO LONG. Must be in other place
         a = Agent()
-        a.TypeName = 'Man';
+        a.TypeName = 'Man'
         p = Characteristic('Stupidity')
         p.Value = 100
         p2 = Characteristic('Location')
@@ -75,11 +82,16 @@ class World:
         a.Properties = [p, p2, p3]
         self.agents = [self.agents, a]
 
-        state = ModelState.Initialised
-
     # Here is the one iteration of main loop
     def MainLoopIteration(self):
+        #Get All Periodicity and Reactivity specified actions(without thinking)
+        #Execute it
+        #Get All feeling specified actions
+        #Execute it
+        #Get All thinking specified actions
+        #Non-conflict execution
         pass
+
 
     # Clears agents FieldOfView and than fills it with agents and action within range of view
     def UpdateAgentFeelings(self):
