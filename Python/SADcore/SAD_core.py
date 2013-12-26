@@ -34,11 +34,11 @@ def main():
     agents = [agents, a]
     print(a.Properties[1].Value)
     action = a.Think()
-    action.Do();
+    action.Perform();
     action = a.Think()
-    action.Do();
+    action.Perform();
     action = a.Think()
-    action.Do();
+    action.Perform();
     print(a.Properties[1].Value)
 
     pass

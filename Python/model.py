@@ -59,41 +59,60 @@ class Model(Thread):
 
 
 class World:
-    agents = None         #List of all agents in the world
-    actions = None        #List of all actions, that must be performed (refreshing each loop iteration)
-    worldCommands = None  #List of Delegates, to add or Delete agents at right place in MainLoop
+    agents = []         #List of all agents in the world
+    worldCommands = []  #List of Delegates, to add or Delete agents at right place in MainLoop
 
     def __init__(self):
         self.Init()
 
     #Here we basically create world
     def Init(self):
-    # Create one Man TOO LONG. Must be in other place
-        a = Agent()
+    # Create one Man TOO LONG. Must be in other place in XML
+        a = Indigo()
         a.TypeName = 'Man'
-        p = Characteristic('Stupidity')
+        p = Characteristic('Folly')
         p.Value = 100
         p2 = Characteristic('Location')
         p2.Value = [0]
-        Go = ActionMove()
-        Go.Duration = 2
+        Go = Action()
         Go.Name = 'Go'
-        c = Comparison()
+        Go.Duration = 1
+        Go.Actions = [ CharacteristicChange('Location', 1), CharacteristicChange('Location', -1)]
+        c = NoComparison()
         c.CompType = 0
         Go.Condition = c
-        p3 = Subjectivity('You shall pass!', Go)
+        p3 = Subjectivity('You shall pass!', 'Go')
         a.Properties = [p, p2, p3]
-        self.agents = [self.agents, a]
+        self.agents.append(a)
 
     # Here is the one iteration of main loop
     def MainLoopIteration(self):
-        #Get All Periodicity and Reactivity specified actions(without thinking)
+        curActions = []
+        #Get All Periodicity specified actions(without thinking)
+        for agent in self.agents:
+            curActions.append(agent.GetActionsByType(Periodicity))
         #Execute it
+        for action in curActions:
+            if action:
+                action.Perform()
+
         #Get All feeling specified actions
+        curActions = []
+        for agent in self.agents:
+            curActions.append(agent.GetActionsByType(Feeling))
         #Execute it
+        for action in curActions:
+            if action:
+                action.Perform()
+
         #Get All thinking specified actions
+        curActions = []
+        for agent in self.agents:
+            if isinstance(agent, Indigo):
+                curActions.append(agent.Think())
         #Non-conflict execution
-        pass
+        for action in curActions:
+            action.Perform()
 
     def GetAgentById(self,id):
         return self.agents[id]

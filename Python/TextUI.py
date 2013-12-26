@@ -1,4 +1,4 @@
-from model import *
+from Model import Model, ModelState
 
 active_queues = []
 

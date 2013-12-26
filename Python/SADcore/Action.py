@@ -7,7 +7,7 @@ class Action:
     Actions = [] #List of actions
     Arguments = [] #List of arguments
 
-    def Do(self):
+    def Perform(self):
         pass
 
 
@@ -15,7 +15,7 @@ class CharacteristicChange(Action):
     def __init__(self, characteristic, delta):
         self.characteristic = characteristic
         self.delta = delta
-    def Do(self):
+    def Perform(self):
         self.characteristic += self.delta # this methods(like += ) must be override in Characteristic
 
 
@@ -23,8 +23,8 @@ class CharacteristicSet(Action):
     def __init__(self, characteristic, value):
         self.characteristic = characteristic
         self.value = value
-    def Do(self):
-        self.characteristic = self.value # this methods(like += ) must be override in Characteristic
+    def Perform(self):
+        self.characteristic = self.value
 
 
 class AddAgent(Action):
@@ -41,10 +41,3 @@ class AddToMemory(Action):
     def __init__(self, agent, flashback):
         self.agent = agent
         self.flashback = flashback
-
-
-class Think(Action):
-    def __init__(self, agent, brainType):
-        self.agent = agent
-        self.brainType = brainType
-

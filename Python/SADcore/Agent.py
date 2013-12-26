@@ -20,7 +20,8 @@ class Agent:
                 result.append(p)
         return result
 
-
+#Agent with brain. Can rename later
+class Indigo(Agent):
     def Think(self):
         for p in self.Properties:
             if isinstance(p, Subjectivity):
