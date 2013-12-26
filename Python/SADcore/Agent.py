@@ -1,4 +1,5 @@
 __author__ = 'Zurk'
+from SADcore.Property import *
 
 class Agent:
     TypeName = [] #Name of type (Man, dog, rain, axe...)
