@@ -1,8 +1,4 @@
-import threading
-import queue
-import time
-import os
-from core_model import *
+from model import *
 
 active_queues = []
 
@@ -33,6 +29,6 @@ def broadcast_event(data):
         q.put(data)
 
 
-model = Core_model(active_queues)
+model = Model(active_queues)
 TestUIShell.model = model
 TestUIShell.run()

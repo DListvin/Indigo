@@ -1,7 +1,7 @@
 __author__ = 'Zurk'
-from SAD_core import *
 from threading import Thread
 import queue
+
 
 class ModelState:
     Uninitialised = 0
@@ -12,7 +12,7 @@ class ModelState:
     Error = -1
 
 
-class Core_model(Thread):
+class Model(Thread):
     simulatingWorld = None             #Shows, what world is simulating in the model
     passedModelIterations = 0          #Info about how many iterations of main loop have passed
     modelIterationTick = 500           #Info about time interval between loop iterations in mc
@@ -92,6 +92,8 @@ class World:
         #Non-conflict execution
         pass
 
+    def GetAgentById(self,id):
+        return self.agents[id]
 
     # Clears agents FieldOfView and than fills it with agents and action within range of view
     def UpdateAgentFeelings(self):
