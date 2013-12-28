@@ -2,7 +2,7 @@ __author__ = 'Zurk'
 from SADcore.Property import *
 
 class Agent:
-    TypeName = [] #Name of type (Man, dog, rain, axe...)
+    Type = [] #Name of type (Man, dog, rain, axe...)
     ID = [] #Unique id, primary key
     Properties = [] #List of properties
 

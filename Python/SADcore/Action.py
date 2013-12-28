@@ -11,6 +11,13 @@ class Action:
         pass
 
 
+class Argument:
+    def __init__(self, name, value, type):
+        self.name = name
+        self.value = value
+        self.type = type
+
+
 class CharacteristicChange(Action):
     def __init__(self, characteristic, delta):
         self.characteristic = characteristic
