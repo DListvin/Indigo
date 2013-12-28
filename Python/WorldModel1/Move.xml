@@ -1,0 +1,45 @@
+<!-- Test world model Move action description -->
+<Action Name="Move" Duration="1">
+    <Arguments>
+        <Argument Type="Agent" Name ="self"/>
+        <Argument Type="Int" Name="directionX"/>
+        <Argument Type="Int" Name="directionY"/>
+    </Arguments>
+    <Actions>
+        <Action Name="MoveRight">
+            <Condition>
+                <Comparison Arg1="targetX" Arg2="0" Sign=">"/>
+            </Condition>
+            <Actions>
+                <ValueModification PropName="LocationX" Modifier="1"/>
+            </Actions>
+        </Action>
+
+        <Action Name="MoveLeft">
+            <Condition>
+                <Comparison Arg1="targetX" Arg2="0" Sign="<"/>
+            </Condition>
+            <Actions>
+                <ValueModification PropName="LocationX" Modifier="-1"/>
+            </Actions>
+        </Action>
+
+        <Action Name="MoveUp">
+            <Condition>
+                <Comparison Arg1="targetY" Arg2="0" Sign=">"/>
+            </Condition>
+            <Actions>
+                <ValueModification PropName="LocationY" Modifier="1"/>
+            </Actions>
+        </Action>
+
+        <Action Name="MoveDown">
+            <Condition>
+                <Comparison Arg1="targetY" Arg2="0" Sign="<"/>
+            </Condition>
+            <Actions>
+                <ValueModification PropName="LocationY" Modifier="-1"/>
+            </Actions>
+        </Action>
+    </Actions>
+</Action>

@@ -1,0 +1,4 @@
+<!-- Test world model Man agent that can move description -->
+<Agent Name="MovingMan">
+    <Property Name="Moving"/>
+</Agent>

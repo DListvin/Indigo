@@ -1,0 +1,10 @@
+<!-- Test world model Moving property description -->
+<Property Name = "Moving">
+    <SubProperties>
+        <Property Name = "Localizable"/>
+        <Characterictic Name="MovingSpeed">
+            <Value Type="Int" Min ="1" Max = "3"/>
+        </Characterictic>
+        <Objectivity Action="Move"/>
+    </SubProperties>
+</Property>
