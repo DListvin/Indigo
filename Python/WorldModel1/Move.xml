@@ -26,7 +26,11 @@
 
         <Action Name="MoveUp">
             <Condition>
+<<<<<<< HEAD
                 <Comparison Arg1="targetY" Arg2="0" Sign="$dt"/>
+=======
+                <Comparison Arg1="targetY" Arg2="0" Sign=">"/>
+>>>>>>> origin/master
             </Condition>
             <Actions>
                 <ValueModification PropName="LocationY" Modifier="1"/>
@@ -35,7 +39,11 @@
 
         <Action Name="MoveDown">
             <Condition>
+<<<<<<< HEAD
                 <Comparison Arg1="targetY" Arg2="0" Sign="$lt"/>
+=======
+                <Comparison Arg1="targetY" Arg2="0" Sign="<"/>
+>>>>>>> origin/master
             </Condition>
             <Actions>
                 <ValueModification PropName="LocationY" Modifier="-1"/>
