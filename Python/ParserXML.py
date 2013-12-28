@@ -124,7 +124,6 @@ class ParseModelXML:
     def parseComparison(self, root):
         pass
 
-
 P = ParseModelXML()
 P.parse(os.getcwd() + '\WorldModel1\Moving.xml')
 print([os.getcwd() + 'WorldModel\Move.xml'])
