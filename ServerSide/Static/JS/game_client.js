@@ -87,16 +87,12 @@ socket.onmessage = function(event){
 			for(var tile_num in jsonData.chunks[chunk_num].tiles)
 			{
 				var tile = jsonData.chunks[chunk_num].tiles[tile_num];
-				//alert();
 				stage.children[tile_num].setTexture(tile.t == 0 ? tileTexture : tileWhiteTexture);
-				//alert();
 			}
 		}
 
 	}
 }
-
-
 
 
 function animate() 
