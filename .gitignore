@@ -35,8 +35,8 @@ x64/
 *.log
 *.vspscc
 *.vssscc
-.builds
-.pyc
+*.builds
+*.pyc
 
 # Visual C++ cache files
 ipch/
