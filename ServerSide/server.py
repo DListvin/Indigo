@@ -23,14 +23,7 @@ class PlotApplication(WebSocketApplication):
     def on_close(self, reason):
         print "Connection Closed!!!", reason
 
-
-def static_wsgi_app(environ, start_response):
-    start_response("200 OK", [("Content-Type", "text/html")])
-    return open("HTML/index.html").readlines()
-
-
 resource = Resource({
-    '/': static_wsgi_app,
     '/data': PlotApplication
 })  
 
