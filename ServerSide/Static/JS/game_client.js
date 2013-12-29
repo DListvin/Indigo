@@ -26,11 +26,6 @@ var tileWhiteTexture = PIXI.Texture.fromImage("http://zurkserv.myftp.org:1234/St
 var socket = new WebSocket("ws://zurkserv.myftp.org:1234/data");
 socket.onmessage = function(event){		
 	var jsonData = JSON.parse(event.data);
-	//alert(event.data);
-	//for (var i = stage.children.length - 1; i >= 0; i--) 
-	//{
-	//	stage.removeChild(stage.children[i]);
-	//}
 
 	if(stage.children.length == 0)
 	{
