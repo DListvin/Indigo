@@ -3,7 +3,7 @@ from SADcore.Agent import *
 from SADcore.Property import *
 from SADcore.Condition import *
 from SADcore.Action import *
-import os
+from copy import deepcopy
 import glob
 import xml.etree.ElementTree as ET
 
@@ -21,10 +21,18 @@ class ParseModelXML:
             getattr(self, 'parse' + root.tag)(root)
 
     def parseAgent(self, root):
-        self.agents.append(Agent())
+        try:
+            intellectual = root.attrib['intellectual'] == 'yes'
+        except:
+            intellectual = False
+        if intellectual:
+            a = Indigo()
+        else:
+            a = Agent()
         Agent.Type = root.attrib['Type']
         for child in root:
-            self.agents[-1].Properties = self.parseProperties(child)
+            a.Properties = self.parseProperties(child)
+        self.agents.append(a)
 
     def parseProperties(self, root):
         properties = []
@@ -43,7 +51,7 @@ class ParseModelXML:
             indx = len(self.actions) - 1
 
         for child in root:
-            self.properties[indx].Propertires = self.parseSubProperties(child)
+            self.properties[indx].Properties = self.parseSubProperties(child)
         return self.properties[indx]
 
     def parseSubProperties(self,root):
@@ -102,7 +110,7 @@ class ParseModelXML:
         return self.actions[indx]
 
     def parseArguments(self,root):
-        arguments = []
+        arguments = Arguments()
         for child in root:
             arguments.append(self.parseArgument(child))
         return arguments
@@ -144,10 +152,24 @@ class ParseModelXML:
     #TODO: here is ambiguity do not know from which agent take property
     def parseCharacteristicChange(self,root):
         c = CharacteristicChange()
-        c.Arguments.append(Argument(root.attrib['PropName'], [], 'Characteristic'))
-        c.Arguments.append(Argument('Modifier', int(root.attrib['Modifier']), 'int'))
+        c.arguments.append(Argument(root.attrib['PropName'], [], 'Characteristic'))
+        c.arguments.append(Argument('Modifier', int(root.attrib['Modifier']), 'int'))
         return c
 
-P = ParseModelXML()
-P.parse('WorldModel1')
-print('WorldModel\Move.xml]')
+    def createAgent(self, type):
+        for agent in self.agents:
+            if agent.Type == type:
+                return self.createAgentFromTemplate(agent)
+        raise Exception('ParseModelXML.createAgent: No such agent type')
+
+    def createAction(self, name):
+        for action in self.actions:
+            if action.Name == name:
+                return self.createActionFromTemplate(action)
+        raise Exception('ParseModelXML.createAction: No action with such name')
+
+    def createAgentFromTemplate(self, agent):
+        return deepcopy(agent)
+
+    def createActionFromTemplate(self, action):
+        return deepcopy(action)

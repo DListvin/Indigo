@@ -5,7 +5,16 @@ class Property:
         self.Name = name
 
     Name = [] #Unique name
-    Properties = [] #One or many subproperties
+    Properties = [] #One or many subproperties or properties
+
+    def getAllObjectivity(self):
+        if self.Properties == []:
+            return self.Action
+        allObjectivity = []
+        for prop in self.Properties:
+            if isinstance(prop, Objectivity):
+                allObjectivity.append(prop.getAllObjectivity())
+        return allObjectivity
 
 
 class Characteristic(Property):
