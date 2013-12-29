@@ -1,15 +1,15 @@
 __author__ = 'Zurk'
-
+from SADcore.Action import Arguments
 
 class Condition:
-    Conditions = [] #List of conditions
-    Args = []
-    GetAgentById = []# This is function from world to have access to all agents
+    def __init__(self):
+        self.Conditions = [] #List of conditions
+        self.arguments = Arguments()
 
     def Calculate(self):
         res = True
         for i in self.Conditions:
-            if i.Calculate() != True:
+            if not i.Calculate():
                 res = False
         return res
 
@@ -20,9 +20,15 @@ class HaveProperty(Condition):
 
 
 class Comparison(Condition):
-    CompType = []
+    def __init__(self):
+        Condition.__init__(self)
+        self.CompType = []
 
     def Calculate(self):
-        #swich CompType
-        return self.GetAgentById(self.Args[0]).GetCharacteristicByName(self.Args[2]).Value <= \
-               self.GetAgentById(self.Args[1]).GetCharacteristicByName(self.Args[2]).Value
+        signs = {
+            '<': self.arguments[0] < self.arguments[1],
+            '>': self.arguments[0] > self.arguments[1],
+            '=': self.arguments[0] == self.arguments[1],
+            '!=': self.arguments[0] != self.arguments[1]
+        }
+        return signs[self.CompType]

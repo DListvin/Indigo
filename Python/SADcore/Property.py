@@ -53,6 +53,9 @@ class Characteristic(Property):
         if not (self.Min is None):
             self.Value = max(self.min, self.Value)
 
+    def __str__(self):
+        return 'Characteristic: Type-'+self.Type+' Name-'+self.Name+' Value-'+str(self.Value)
+
 
 class Objectivity(Property):
     actionName = [] #Name of action which may be applied to agent
