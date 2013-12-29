@@ -1,5 +1,6 @@
 __author__ = 'Zurk'
 
+
 class Condition:
     Conditions = [] #List of conditions
     Args = []
@@ -25,11 +26,3 @@ class Comparison(Condition):
         #swich CompType
         return self.GetAgentById(self.Args[0]).GetCharacteristicByName(self.Args[2]).Value <= \
                self.GetAgentById(self.Args[1]).GetCharacteristicByName(self.Args[2]).Value
-
-
-class NoComparison(Condition):
-    CompType = []
-
-    def Calculate(self):
-        #swich CompType
-        return self.GetAgentById(self.Args[0]).GetCharacteristicByName(self.Args[1]).Value <= self.Args[2]

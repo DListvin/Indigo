@@ -3,7 +3,8 @@ from SADcore.Agent import *
 from SADcore.Property import *
 from SADcore.Condition import *
 from SADcore.Action import *
-import os
+from copy import deepcopy
+import glob
 import xml.etree.ElementTree as ET
 
 class ParseModelXML:
@@ -12,16 +13,26 @@ class ParseModelXML:
         self.agents = []
         self.properties = []
 
-    def parse(self, path):
-        xml = ET.parse(path)
-        root = xml.getroot()
-        getattr(self, 'parse' + root.tag)(root)
+    def parse(self, folderPath):
+        paths = glob.glob(folderPath +'\*.xml')
+        for path in paths:
+            xml = ET.parse(path)
+            root = xml.getroot()
+            getattr(self, 'parse' + root.tag)(root)
 
     def parseAgent(self, root):
-        self.agents.append(Agent())
+        try:
+            intellectual = root.attrib['intellectual'] == 'yes'
+        except:
+            intellectual = False
+        if intellectual:
+            a = Indigo()
+        else:
+            a = Agent()
         Agent.Type = root.attrib['Type']
         for child in root:
-            self.agents[-1].Properties = self.parseProperties(child)
+            a.Properties = self.parseProperties(child)
+        self.agents.append(a)
 
     def parseProperties(self, root):
         properties = []
@@ -32,15 +43,15 @@ class ParseModelXML:
     def parseProperty(self, root):
         #check that properties has not property with such name
         name = root.attrib['Name']
-        for indx in range(1, len(self.properties)):
+        for indx in range(0, len(self.properties)):
             if self.properties[indx].Name == name:
                break
         else:
             self.properties.append(Property(name))
-            indx = -1
+            indx = len(self.actions) - 1
 
         for child in root:
-            self.properties[indx].Propertires = self.parseSubProperties(child)
+            self.properties[indx].Properties = self.parseSubProperties(child)
         return self.properties[indx]
 
     def parseSubProperties(self,root):
@@ -50,12 +61,13 @@ class ParseModelXML:
         return subProperties
 
     def parseCharacteristic(self,root):
-        c = Characteristic(Property(root.attrib['Name']))
-        c.Value = Property(root[0].attrib['Type'])
+        c = Characteristic(root.attrib['Name'])
+        c.Type = root[0].attrib['Type']
         try:
-            c.Value = Property(root[0].attrib['Value'])
+            c.Value = int(root[0].attrib['Default'])
         except:
-            pass
+            #TODO: generate warning: no Default value
+            c.Value = None
         try:
             c.Min = Property(root[0].attrib['Min'])
             c.Max = Property(root[0].attrib['Min'])
@@ -63,37 +75,43 @@ class ParseModelXML:
             pass
         return c
 
-    #TODO: code parser for other subproperties
-
     def parseObjectivity(self,root):
-        pass
+        obj = Objectivity([], root.attrib['Action'])
+        return obj
+
+    #TODO: code parser for other subproperties
 
     def parseAction(self, root):
         #check that actions has not action with such name
         name = root.attrib['Name']
-        for indx in range(1, len(self.actions)):
+        for indx in range(0, len(self.actions)):
             if self.actions[indx].Name == name:
                break
         else:
             self.actions.append(Action())
-            indx = -1
+            indx = len(self.actions) - 1
         self.actions[indx].Name = name
         try:
-            self.actions[indx].Duration = int(root[0].attrib['Duration'])
+            self.actions[indx].Duration = int(root.attrib['Duration'])
         except:
             self.actions[indx].Duration = 1
 
         switchParam = {
-            'Arguments': self.actions[indx].Arguments,
-            'Condition': self.actions[indx].Condition,
-            'Actions': self.actions[indx].Actions
+            'Arguments': [],
+            'Condition': [],
+            'Actions': []
         }
         for child in root:
             switchParam[child.tag] = getattr(self, 'parse' + child.tag)(child)
+
+        self.actions[indx].arguments = switchParam['Arguments']
+        self.actions[indx].Condition = switchParam['Condition']
+        self.actions[indx].Actions =  switchParam['Actions']
+
         return self.actions[indx]
 
     def parseArguments(self,root):
-        arguments = []
+        arguments = Arguments()
         for child in root:
             arguments.append(self.parseArgument(child))
         return arguments
@@ -109,7 +127,7 @@ class ParseModelXML:
     def parseActions(self,root):
         actions = []
         for child in root:
-            actions.append(self.parseAction(child))
+            actions.append(getattr(self, 'parse' + child.tag)(child))
         return actions
 
     def parseCondition(self,root):
@@ -120,10 +138,39 @@ class ParseModelXML:
 
     #TODO: code parser for all elementary actions
     #TODO: code parser for all elementary conditions
-
     def parseComparison(self, root):
-        pass
+        c = Comparison()
+        c.CompType = root.attrib['Sign']
+        c.Args.append(Argument(root.attrib['Arg1'], [],[]))
+        try:
+            Arg2Value = int(root.attrib['Arg2'])
+            c.Args.append(Argument('const', Arg2Value, 'int'))
+        except:
+            Arg2Name = root.attrib['Arg2']
+            c.Args.append(Argument(Arg2Name, [],[]))
+        return  c
 
-P = ParseModelXML()
-P.parse(os.getcwd() + '\WorldModel1\Moving.xml')
-print([os.getcwd() + 'WorldModel\Move.xml'])
+    #TODO: here is ambiguity do not know from which agent take property
+    def parseCharacteristicChange(self,root):
+        c = CharacteristicChange()
+        c.arguments.append(Argument([], root.attrib['PropName'], 'Characteristic'))
+        c.arguments.append(Argument('Modifier', int(root.attrib['Modifier']), 'int'))
+        return c
+
+    def createAgent(self, type):
+        for agent in self.agents:
+            if agent.Type == type:
+                return self.createAgentFromTemplate(agent)
+        raise Exception('ParseModelXML.createAgent: No such agent type')
+
+    def createAction(self, name):
+        for action in self.actions:
+            if action.Name == name:
+                return self.createActionFromTemplate(action)
+        raise Exception('ParseModelXML.createAction: No action with such name')
+
+    def createAgentFromTemplate(self, agent):
+        return deepcopy(agent)
+
+    def createActionFromTemplate(self, action):
+        return deepcopy(action)

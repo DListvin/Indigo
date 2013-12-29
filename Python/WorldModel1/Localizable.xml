@@ -1,11 +1,11 @@
 <!-- Test world model Localizable Property description -->
 <Property Name = "Localizable">
     <SubProperties>
-        <Characterictic Name = "LocationX">
-            <Value Type="Int" Default = "0"/>
-        </Characterictic>
-        <Characterictic Name = "LocationY">
-            <Value Type="Int" Default = "0"/>
-        </Characterictic>
+        <Characteristic Name = "LocationX">
+            <Value Type="int" Default = "0"/>
+        </Characteristic>
+        <Characteristic Name = "LocationY">
+            <Value Type="int" Default = "0"/>
+        </Characteristic>
     </SubProperties>
 </Property>

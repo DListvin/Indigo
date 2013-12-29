@@ -2,43 +2,59 @@
 <Action Name="Move" Duration="1">
     <Arguments>
         <Argument Type="Agent" Name ="self"/>
-        <Argument Type="Int" Name="directionX"/>
-        <Argument Type="Int" Name="directionY"/>
+        <Argument Type="int" Name="directionX"/>
+        <Argument Type="int" Name="directionY"/>
     </Arguments>
     <Actions>
         <Action Name="MoveRight">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionX"/>
+            </Arguments>
             <Condition>
-                <Comparison Arg1="targetX" Arg2="0" Sign="$dt"/>
+                <Comparison Arg1="directionX" Arg2="0" Sign="$dt"/>
             </Condition>
             <Actions>
-                <ValueModification PropName="LocationX" Modifier="1"/>
+                <CharacteristicChange PropName="LocationX" Modifier="1"/>
             </Actions>
         </Action>
 
         <Action Name="MoveLeft">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionX"/>
+            </Arguments>
             <Condition>
-                <Comparison Arg1="targetX" Arg2="0" Sign="$lt"/>
+                <Comparison Arg1="directionX" Arg2="0" Sign="$lt"/>
             </Condition>
             <Actions>
-                <ValueModification PropName="LocationX" Modifier="-1"/>
+                <CharacteristicChange PropName="LocationX" Modifier="-1"/>
             </Actions>
         </Action>
 
         <Action Name="MoveUp">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionY"/>
+            </Arguments>
             <Condition>
-                <Comparison Arg1="targetY" Arg2="0" Sign="$dt"/>
+                <Comparison Arg1="directionY" Arg2="0" Sign="$dt"/>
             </Condition>
             <Actions>
-                <ValueModification PropName="LocationY" Modifier="1"/>
+                <CharacteristicChange PropName="LocationY" Modifier="1"/>
             </Actions>
         </Action>
 
         <Action Name="MoveDown">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionY"/>
+            </Arguments>
             <Condition>
-                <Comparison Arg1="targetY" Arg2="0" Sign="$lt"/>
+                <Comparison Arg1="directionY" Arg2="0" Sign="$lt"/>
             </Condition>
             <Actions>
-                <ValueModification PropName="LocationY" Modifier="-1"/>
+                <CharacteristicChange PropName="LocationY" Modifier="-1"/>
             </Actions>
         </Action>
     </Actions>

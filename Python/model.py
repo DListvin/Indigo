@@ -4,6 +4,7 @@ import queue
 from SADcore.Agent import *
 from SADcore.Property import *
 from SADcore.Condition import *
+from ParserXML import ParseModelXML
 from SADcore.Action import *
 
 class ModelState:
@@ -61,6 +62,8 @@ class Model(Thread):
 class World:
     agents = []         #List of all agents in the world
     worldCommands = []  #List of Delegates, to add or Delete agents at right place in MainLoop
+    curActions = []     #List of current actions in world at this iteration. Every iteration Refreshed
+    templates = []      #world templates of all. Special class, that can create agents, actions, properties, that exists in world
 
     def __init__(self):
         self.Init()
@@ -68,21 +71,11 @@ class World:
     #Here we basically create world
     def Init(self):
     # Create one Man TOO LONG. Must be in other place in XML
-        a = Indigo()
-        a.TypeName = 'Man'
-        p = Characteristic('Folly')
-        p.Value = 100
-        p2 = Characteristic('Location')
-        p2.Value = [0]
-        Go = Action()
-        Go.Name = 'Go'
-        Go.Duration = 1
-        Go.Actions = [ CharacteristicChange('Location', 1), CharacteristicChange('Location', -1)]
-        c = NoComparison()
-        c.CompType = 0
-        Go.Condition = c
-        p3 = Subjectivity('You shall pass!', 'Go')
-        a.Properties = [p, p2, p3]
+        self.templates = ParseModelXML()
+        self.templates.parse('WorldModel1')
+        a = self.templates.createAgent('MovingMan')
+        #TODO: here must be not self, but WordToAgent(self)
+        a.myWorld = self
         self.agents.append(a)
 
     # Here is the one iteration of main loop
@@ -112,14 +105,16 @@ class World:
                 curActions.append(agent.Think())
         #Non-conflict execution
         for action in curActions:
-            action.Perform()
+            if action:
+                action.Perform()
+
+    # Function for agent, that ask to get action with name
+    def getAction(self, name):
+        return self.templates.createAction(name)
 
     def GetAgentById(self,id):
         return self.agents[id]
 
-    # Clears agents FieldOfView and than fills it with agents and action within range of view
-    def UpdateAgentFeelings(self):
-        pass
 
     #Deleting agent from the world completely. Nobody should use any other ways of deleting some agent, except this method
     def DeleteAgent(self):
