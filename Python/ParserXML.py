@@ -98,7 +98,7 @@ class ParseModelXML:
 
         switchParam = {
             'Arguments': [],
-            'Condition': [],
+            'Condition': Arguments(),
             'Actions': []
         }
         for child in root:
@@ -131,24 +131,37 @@ class ParseModelXML:
         return actions
 
     def parseCondition(self,root):
-        conditions = []
+        condition = Condition()
+        self.condArgs = Arguments()
         for child in root:
-            conditions.append(getattr(self, 'parse' + child.tag)(child))
-        return  conditions
+            condition.Conditions.append(getattr(self, 'parse' + child.tag)(child))
+        condition.arguments = self.condArgs
+        self.condArgs = Arguments()
+        return condition
 
     #TODO: code parser for all elementary actions
     #TODO: code parser for all elementary conditions
     def parseComparison(self, root):
+        signs = {
+            '$lt': '<',
+            '$dt': '>',
+            '=':   '=',
+            '!=': '!='
+        }
         c = Comparison()
-        c.CompType = root.attrib['Sign']
-        c.Args.append(Argument(root.attrib['Arg1'], [],[]))
+        c.CompType = signs[root.attrib['Sign']]
+        arg = Argument(root.attrib['Arg1'], [],[])
+        c.arguments.append(arg)
+        self.condArgs.append(arg)
         try:
             Arg2Value = int(root.attrib['Arg2'])
-            c.Args.append(Argument('const', Arg2Value, 'int'))
+            arg = Argument('const', Arg2Value, 'int')
         except:
             Arg2Name = root.attrib['Arg2']
-            c.Args.append(Argument(Arg2Name, [],[]))
-        return  c
+            arg = Argument(Arg2Name, [],[])
+            self.condArgs.append(arg)
+        c.arguments.append(arg)
+        return c
 
     #TODO: here is ambiguity do not know from which agent take property
     def parseCharacteristicChange(self,root):
