@@ -19,9 +19,9 @@ class Argument:
 
 
 class CharacteristicChange(Action):
-    def __init__(self, characteristic, delta):
-        self.characteristic = characteristic
-        self.delta = delta
+    def __init__(self):
+        self.characteristic = []
+        self.delta = []
     def Perform(self):
         self.characteristic += self.delta # this methods(like += ) must be override in Characteristic
 
