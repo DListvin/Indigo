@@ -30,12 +30,35 @@ class Indigo(Agent):
         if not self.init:
             self.initSubjectivity()
             self.init = True
+            self.steps = 0
         for p in self.posibleActions:
             if p.actionName == 'Move':
                 action = self.myWorld.getAction(p.actionName)
                 action.arguments.set('self', self)
-                action.arguments.set('directionX', 10)
-                action.arguments.set('directionY', 10)
+                if self.steps < 5:
+                    action.arguments.set('directionX', 1)
+                    action.arguments.set('directionY', 0)
+                elif self.steps < 10:
+                    action.arguments.set('directionX', 0)
+                    action.arguments.set('directionY', 1)
+                elif self.steps < 15:
+                    action.arguments.set('directionX', -1)
+                    action.arguments.set('directionY', 0)
+                elif self.steps < 20:
+                    action.arguments.set('directionX', 0)
+                    action.arguments.set('directionY', -1)
+                else:
+                    self.steps = 0
+                    action.arguments.set('directionX', 0)
+                    action.arguments.set('directionY', 0)
+                self.steps += 1
+                for p in self.Properties:
+                    temp = p.getByName('LocationX')
+                    if not (temp is None):
+                        print(temp)
+                    temp = p.getByName('LocationY')
+                    if not (temp is None):
+                        print(temp)
                 return action
 
     def initSubjectivity(self):
