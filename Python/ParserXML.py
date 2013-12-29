@@ -61,12 +61,13 @@ class ParseModelXML:
         return subProperties
 
     def parseCharacteristic(self,root):
-        c = Characteristic(Property(root.attrib['Name']))
-        c.Value = Property(root[0].attrib['Type'])
+        c = Characteristic(root.attrib['Name'])
+        c.Type = root[0].attrib['Type']
         try:
-            c.Value = Property(root[0].attrib['Value'])
+            c.Value = int(root[0].attrib['Default'])
         except:
-            pass
+            #TODO: generate warning: no Default value
+            c.Value = None
         try:
             c.Min = Property(root[0].attrib['Min'])
             c.Max = Property(root[0].attrib['Min'])
@@ -103,7 +104,7 @@ class ParseModelXML:
         for child in root:
             switchParam[child.tag] = getattr(self, 'parse' + child.tag)(child)
 
-        self.actions[indx].Arguments = switchParam['Arguments']
+        self.actions[indx].arguments = switchParam['Arguments']
         self.actions[indx].Condition = switchParam['Condition']
         self.actions[indx].Actions =  switchParam['Actions']
 
@@ -152,7 +153,7 @@ class ParseModelXML:
     #TODO: here is ambiguity do not know from which agent take property
     def parseCharacteristicChange(self,root):
         c = CharacteristicChange()
-        c.arguments.append(Argument(root.attrib['PropName'], [], 'Characteristic'))
+        c.arguments.append(Argument([], root.attrib['PropName'], 'Characteristic'))
         c.arguments.append(Argument('Modifier', int(root.attrib['Modifier']), 'int'))
         return c
 
