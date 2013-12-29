@@ -2,11 +2,15 @@
 <Action Name="Move" Duration="1">
     <Arguments>
         <Argument Type="Agent" Name ="self"/>
-        <Argument Type="Int" Name="directionX"/>
-        <Argument Type="Int" Name="directionY"/>
+        <Argument Type="int" Name="directionX"/>
+        <Argument Type="int" Name="directionY"/>
     </Arguments>
     <Actions>
         <Action Name="MoveRight">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionX"/>
+            </Arguments>
             <Condition>
                 <Comparison Arg1="directionX" Arg2="0" Sign="$dt"/>
             </Condition>
@@ -16,6 +20,10 @@
         </Action>
 
         <Action Name="MoveLeft">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionX"/>
+            </Arguments>
             <Condition>
                 <Comparison Arg1="directionX" Arg2="0" Sign="$lt"/>
             </Condition>
@@ -25,6 +33,10 @@
         </Action>
 
         <Action Name="MoveUp">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionY"/>
+            </Arguments>
             <Condition>
                 <Comparison Arg1="directionY" Arg2="0" Sign="$dt"/>
             </Condition>
@@ -34,6 +46,10 @@
         </Action>
 
         <Action Name="MoveDown">
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+                <Argument Type="int" Name="directionY"/>
+            </Arguments>
             <Condition>
                 <Comparison Arg1="directionY" Arg2="0" Sign="$lt"/>
             </Condition>

@@ -2,10 +2,10 @@
 <Property Name = "Localizable">
     <SubProperties>
         <Characteristic Name = "LocationX">
-            <Value Type="Int" Default = "0"/>
+            <Value Type="int" Default = "0"/>
         </Characteristic>
         <Characteristic Name = "LocationY">
-            <Value Type="Int" Default = "0"/>
+            <Value Type="int" Default = "0"/>
         </Characteristic>
     </SubProperties>
 </Property>
