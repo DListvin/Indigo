@@ -1,16 +1,5 @@
 __author__ = 'Zurk'
 
-class Action:
-    Name = []
-    Duration = [] #How many turns it take
-    Condition = [] # action applicability condition
-    Actions = [] #List of actions
-    arguments = [] #List of arguments
-
-    #TODO: code Perform function
-    def Perform(self):
-        pass
-
 class Arguments(list):
     def set(self, name, value):
         for arg in self:
@@ -20,39 +9,88 @@ class Arguments(list):
                 break
         else:
             raise Exception('Arguments.set: No such argument name')
+
+    def getValue(self, name):
+        try:
+            return self.getArgument(name).value
+        except:
+            raise Exception('Arguments.getValue: No such argument name')
+
+    def getValueByType(self, type):
+        try:
+            return self.getArgumentByType(type).value
+        except:
+            raise Exception('Arguments.getValueByType: No argument with such type')
+
+    def getArgument(self, name):
+        for arg in self:
+            if arg.name == name:
+                return arg
+        else:
+            return None
+
+    def getArgumentByType(self, type):
+        for arg in self:
+            if arg.type == type:
+                return arg
+        else:
+            return None
+
+
 class Argument:
     def __init__(self, name, value, type):
         self.name = name
         self.value = value
         self.type = type
 
+
+class Action:
+    def __init__(self):
+        self.Name = []
+        self.Duration = []               #How many turns it take
+        self.Condition = []              #action applicability condition
+        self.Actions = []                #List of actions
+        self.arguments = Arguments()     #Arguments list of arguments
+
+    #TODO: code Perform function
+    def Perform(self):
+        for action in self.Actions:
+            if isinstance(action, CharacteristicChange):
+                agent = self.arguments.getValueByType('Agent')
+                action.arguments.append(Argument('Agent', agent, 'Agent'))
+            else:
+                for arg in action.arguments:
+                    action.arguments.set(arg.name, self.arguments.getValue(arg.name))
+            action.Perform()
+
+
 #TODO: must be recode all to Arguments no characteristic or delta
 class CharacteristicChange(Action):
     def __init__(self):
-        self.characteristic = []
-        self.delta = []
+        Action.__init__(self)
+
     def Perform(self):
-        self.characteristic += self.delta # this methods(like += ) must be override in Characteristic
+        # it must be checked. that it all is links and += will works
+        agent = self.arguments.getValueByType('Agent')
+        ch = agent.GetPropertyByName(self.arguments.getValueByType('Characteristic'))
+        ch += self.arguments.getValueByType('int')
+
 
 class CharacteristicSet(Action):
-    def __init__(self, characteristic, value):
-        self.characteristic = characteristic
-        self.value = value
     def Perform(self):
-        self.characteristic = self.value
+        pass
 
 
 class AddAgent(Action):
-    def __init__(self, agent):
-        self.agent = agent
+    def Perform(self):
+        pass
 
 
 class DeleteAgent(Action):
-    def __init__(self, agent):
-        self.agent = agent
+    def Perform(self):
+        pass
 
 
 class AddToMemory(Action):
-    def __init__(self, agent, flashback):
-        self.agent = agent
-        self.flashback = flashback
+    def Perform(self):
+        pass
