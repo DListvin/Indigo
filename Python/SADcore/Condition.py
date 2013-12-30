@@ -1,9 +1,9 @@
 __author__ = 'Zurk'
-from SADcore.Action import Arguments
 
 class Condition:
     def __init__(self):
         self.Conditions = [] #List of conditions
+        from SADcore.Action import Arguments
         self.arguments = Arguments()
 
     def Calculate(self):
