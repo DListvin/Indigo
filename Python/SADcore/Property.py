@@ -45,10 +45,10 @@ class Characteristic(Property):
     """
     def __init__(self, name):
         Property.__init__(self, name)
-            self.Type = [] # Variable type of value
-            self.Value = []
-            self.Max = None
-            self.Min = None
+        self.Type = [] # Variable type of value
+        self.Value = []
+        self.Max = None
+        self.Min = None
 
     #arithmetic functions
     def __iadd__(self, other):

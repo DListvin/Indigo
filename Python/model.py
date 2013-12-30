@@ -3,7 +3,7 @@ from threading import Thread
 import queue, sys
 from SADcore.Agent import *
 from SADcore.Property import *
-from ParserXML import ParseModelXML
+from WorldTemplates import WorldTemplates
 from time import sleep, time
 
 
@@ -17,40 +17,56 @@ class ModelState:
 
 
 class Model(Thread):
-    simulatingWorld = None             #Shows, what world is simulating in the model
-    passedModelIterations = 0          #Info about how many iterations of main loop have passed
-    modelIterationTick = 1             #Info about time interval between loop iterations in c
-    state = ModelState.Uninitialised   #Model state from ModelState enum
-    storedActions = None               #Actions from agent to perform after thinking loop
-    active_queues = []
-
     def __init__(self, active_queues):
+        """
+        init function for Model links queue
+        @type active_queues: list
+        @param active_queues: list of active queues from someone interface
+        """
         Thread.__init__(self)
-        self.Init(active_queues)
-
-    def Init(self, active_queues):
         self.simulatingWorld = World()
+        #Shows, what world is simulating in the model
+        self.passedModelIterations = 0
+        #Info about how many iterations of main loop have passed
+        self.modelIterationTick = 1
+        #Info about time interval between loop iterations in c
         self.state = ModelState.Initialised
+        #Model state from ModelState enum
         self.mailbox = queue.Queue()
+        #active queue to listen model commands
         active_queues.append(self.mailbox)
         self.active_queues = active_queues
 
     def run(self):
+        """
+        Thread function overriding
+        @return: None
+        """
         self.MainLoop()
 
     def stop(self):
-        self.state = ModelState.Stopping
+        """
+        Stop model function
+        finish work, shutdown thread and join
+        @return: None
+        """
         self.active_queues.remove(self.mailbox)
         self.mailbox.put("shutdown")
         self.join()
 
     def MainLoop(self):
+        """
+        Main Model Loop
+        @todo: rewrite with switch dictionary and run necessary according to it
+        @return: None
+        """
         while True:
             try:
                 self.state = self.mailbox.get_nowait()
             except:
                 pass
             if self.state == ModelState.Stopping:
+                self.stop()
                 break
             if self.state == ModelState.Paused:
                 self.state = self.mailbox.get()
@@ -66,28 +82,41 @@ class Model(Thread):
 
 
 class World:
-    agents = []         #List of all agents in the world
-    worldCommands = []  #List of Delegates, to add or Delete agents at right place in MainLoop
-    curActions = []     #List of current actions in world at this iteration. Every iteration Refreshed
-    templates = []      #world templates of all. Special class, that can create agents, actions, properties, that exists in world
+    """
+    Just World
+    @type templates:WorldTemplates
+    """
+    agents = []
+    #List of all agents in the world
+    worldCommands = []
+    #List of Delegates, to add or Delete agents at right place in MainLoop
+    #curActions = []
+    #List of current actions in world at this iteration. Every iteration Refreshed
+    templates = []
+    #world templates of all. Special class, that can create agents, actions, properties, that exists in world
 
     def __init__(self):
         self.Init()
 
-    #Here we basically create world
     def Init(self):
-    # Create one Man TOO LONG. Must be in other place in XML
-        self.templates = ParseModelXML()
-        self.templates.parse('WorldModel1')
+        """
+        Here we basically create world
+        @return: None
+        """
+        self.templates = WorldTemplates()
+        self.templates.parseWorldFromXML('WorldModel1')
         a = self.templates.createAgent('MovingMan')
-        #TODO: here must be not self, but WordToAgent(self)
+        #TODO: here must be not self, but WorldToAgent(self)
         a.myWorld = self
         self.agents.append(a)
 
-    # Here is the one iteration of main loop
     def MainLoopIteration(self):
-        curActions = []
+        """
+        Here is the one iteration of main loop
+        @return: None
+        """
         #Get All Periodicity specified actions(without thinking)
+        curActions = []
         for agent in self.agents:
             curActions.append(agent.GetActionsByType(Periodicity))
         #Execute it
@@ -111,17 +140,30 @@ class World:
         for action in curActions:
             if action:
                 action.Perform()
-    # Function for agent, that ask to get action with name
+    #
     def getAction(self, name):
+        """
+        Function for agent, that ask to get action with name
+        @param name: action name
+        @type:str
+        @return: action
+        @rtype:Action
+        """
         return self.templates.createAction(name)
 
     def GetAgentById(self,id):
         return self.agents[id]
 
-    #Deleting agent from the world completely. Nobody should use any other ways of deleting some agent, except this method
     def DeleteAgent(self):
+        """
+        Deleting agent from the world completely. Nobody should use any other ways of deleting some agent, except this method
+        @return:None
+        """
         pass
 
-    #Adding agent to the world. Nobody should use any other ways of adding some agent, except this method
     def AddAgent(self):
+        """
+        Adding agent to the world. Nobody should use any other ways of adding some agent, except this method
+        @return:None
+        """
         pass
