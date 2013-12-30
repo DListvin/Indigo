@@ -43,17 +43,33 @@ class Argument:
         self.value = value
         self.type = type
 
+    #Here we can make type comparison
+    def __gt__(self, other):
+        return self.value > other.value
+
+    def __lt__(self, other):
+        return self.value < other.value
+
+    def __eq__(self, other):
+        return self.value == other.value
+
+    def __ne__(self, other):
+        return self.value != other.value
+
+
 
 class Action:
     def __init__(self):
         self.Name = []
         self.Duration = []               #How many turns it take
-        self.Condition = []              #action applicability condition
+        self.Condition = []            #action applicability condition
         self.Actions = []                #List of actions
         self.arguments = Arguments()     #Arguments list of arguments
 
-    #TODO: code Perform function
     def Perform(self):
+        if self.Condition:
+            if not self.Condition.Calculate():
+                return
         for action in self.Actions:
             if isinstance(action, CharacteristicChange):
                 agent = self.arguments.getValueByType('Agent')
@@ -61,6 +77,8 @@ class Action:
             else:
                 for arg in action.arguments:
                     action.arguments.set(arg.name, self.arguments.getValue(arg.name))
+                for arg in action.Condition.arguments:
+                    action.Condition.arguments.set(arg.name, self.arguments.getValue(arg.name))
             action.Perform()
 
 

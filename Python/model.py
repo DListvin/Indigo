@@ -1,11 +1,11 @@
 __author__ = 'Zurk'
 from threading import Thread
-import queue
+import queue, sys
 from SADcore.Agent import *
 from SADcore.Property import *
-from SADcore.Condition import *
 from ParserXML import ParseModelXML
-from SADcore.Action import *
+from time import sleep, time
+
 
 class ModelState:
     Uninitialised = 0
@@ -19,7 +19,7 @@ class ModelState:
 class Model(Thread):
     simulatingWorld = None             #Shows, what world is simulating in the model
     passedModelIterations = 0          #Info about how many iterations of main loop have passed
-    modelIterationTick = 500           #Info about time interval between loop iterations in mc
+    modelIterationTick = 1             #Info about time interval between loop iterations in c
     state = ModelState.Uninitialised   #Model state from ModelState enum
     storedActions = None               #Actions from agent to perform after thinking loop
     active_queues = []
@@ -55,8 +55,14 @@ class Model(Thread):
             if self.state == ModelState.Paused:
                 self.state = self.mailbox.get()
             if self.state == ModelState.Running:
+                timeStart = time()
                 self.simulatingWorld.MainLoopIteration()
                 self.passedModelIterations += 1
+                timeToSleep =self.modelIterationTick - (time() - timeStart)
+                if(timeToSleep < 0.0001):
+                    sys.stderr.write('MainLoop: To many calculations! timeToSleep = ' + str(timeToSleep))
+                    #May be it must write to another place
+                sleep(max(0,timeToSleep))
 
 
 class World:
@@ -88,7 +94,6 @@ class World:
         for action in curActions:
             if action:
                 action.Perform()
-
         #Get All feeling specified actions
         curActions = []
         for agent in self.agents:
@@ -97,7 +102,6 @@ class World:
         for action in curActions:
             if action:
                 action.Perform()
-
         #Get All thinking specified actions
         curActions = []
         for agent in self.agents:
@@ -107,14 +111,12 @@ class World:
         for action in curActions:
             if action:
                 action.Perform()
-
     # Function for agent, that ask to get action with name
     def getAction(self, name):
         return self.templates.createAction(name)
 
     def GetAgentById(self,id):
         return self.agents[id]
-
 
     #Deleting agent from the world completely. Nobody should use any other ways of deleting some agent, except this method
     def DeleteAgent(self):
