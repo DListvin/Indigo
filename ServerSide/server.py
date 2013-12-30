@@ -27,6 +27,5 @@ resource = Resource({
     '/data': PlotApplication
 })  
 
-if __name__ == "__main__":
-    server = WebSocketServer(('0.0.0.0', 2345), resource, debug=True)
-    server.serve_forever()
+server = WebSocketServer(('0.0.0.0', 2345), resource, debug=True)
+server.serve_forever()

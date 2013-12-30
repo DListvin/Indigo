@@ -24,17 +24,17 @@ var tileTexture = PIXI.Texture.fromImage("http://zurkserv.myftp.org:1234/Static/
 var tileWhiteTexture = PIXI.Texture.fromImage("http://zurkserv.myftp.org:1234/Static/Images/isometr_white.png");
 
 var socket = new WebSocket("ws://zurkserv.myftp.org:1234/data");
-socket.onmessage = function(event){		
+socket.onmessage = function(event)
+{		
 	var jsonData = JSON.parse(event.data);
 
 	if(stage.children.length == 0)
 	{
 		for(var chunk_num in jsonData.chunks)
 		{
-			var tile_num = 0;
-			for(var i = 0; i < ChunkLenght; i++)
+			for(var i = 0, tile_num = 0; i < ChunkLenght; i++)
 			{
-				for(var j = 0; j < (i < ChunkSize ? ChunkSize + i : ChunkLenght - 1 - (i - ChunkSize)); j++)
+				for(var j = 0; j < (i < ChunkSize ? ChunkSize + i : ChunkLenght - 1 - (i - ChunkSize)); j++, tile_num++)
 				{
 					var tile = jsonData.chunks[chunk_num].tiles[tile_num];
 
@@ -73,11 +73,9 @@ socket.onmessage = function(event){
 						this.setTexture(tileTexture);
 					}
 					stage.addChild(new_tile);
-					tile_num++;
 				}
 			}
 		}
-
 		setInterval(function(){socket.send("refresh")}, 1000);
 	}
 	else
@@ -87,6 +85,10 @@ socket.onmessage = function(event){
 			for(var tile_num in jsonData.chunks[chunk_num].tiles)
 			{
 				var tile = jsonData.chunks[chunk_num].tiles[tile_num];
+				if(chunk_num == 0 && tile_num == 0)
+				{
+					//alert(tile.t);
+				}
 				stage.children[tile_num].setTexture(tile.t == 0 ? tileTexture : tileWhiteTexture);
 			}
 		}

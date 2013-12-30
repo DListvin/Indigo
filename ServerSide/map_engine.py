@@ -3,10 +3,10 @@ import json
 import time
 
 class Map:
-	mapData = []
 
 	def __init__(self, seed):
-		random.seed(seed)	
+		random.seed(seed)
+		self.mapData = []		
 		self.mapData.append(Chunk(seed))
 
 	def ToJson(self):
@@ -27,7 +27,6 @@ ChunkSize = 16
 ChunkLenght = ChunkSize * 2 - 1
 
 class Chunk:
-	chunkData = []
 
 	def __init__(self, seed):
 		self.chunkData = []
@@ -52,8 +51,7 @@ class Chunk:
 
 
 class Tile:
-	tileType = 0
-
+	
 	def __init__(self, argTileType):
 		self.tileType = argTileType
 
