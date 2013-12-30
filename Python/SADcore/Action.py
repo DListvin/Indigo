@@ -1,6 +1,11 @@
 __author__ = 'Zurk'
+from SADcore.Condition import Condition
 
 class Arguments(list):
+    """
+    Special list for arguments
+    Has specialized functions to access argument or its value
+    """
     def set(self, name, value):
         for arg in self:
             if arg.name == name:
@@ -38,6 +43,9 @@ class Arguments(list):
 
 
 class Argument:
+    """
+    class of action and condition arguments
+    """
     def __init__(self, name, value, type):
         self.name = name
         self.value = value
@@ -45,45 +53,71 @@ class Argument:
 
     #Here we can make type comparison
     def __gt__(self, other):
+        """
+        @type other: Argument
+        """
         return self.value > other.value
 
     def __lt__(self, other):
+        """
+        @type other: Argument
+        """
         return self.value < other.value
 
     def __eq__(self, other):
+        """
+        @type other: Argument
+        """
         return self.value == other.value
 
     def __ne__(self, other):
+        """
+        @type other: Argument
+        """
         return self.value != other.value
 
 
-
 class Action:
+    """
+    class of Action
+    """
     def __init__(self):
-        self.Name = []
-        self.Duration = []               #How many turns it take
-        self.Condition = []            #action applicability condition
-        self.Actions = []                #List of actions
-        self.arguments = Arguments()     #Arguments list of arguments
+        self.name = []
+        #Action name
+        self.duration = []
+        #How many turns it take
+        self.condition = Condition()
+        #action applicability condition
+        self.actions = []
+        #List of actions
+        self.arguments = Arguments()
+        #Arguments list of arguments
 
     def Perform(self):
-        if self.Condition:
-            if not self.Condition.Calculate():
+        """
+        Main Action function
+        @return:Nome
+        """
+        if self.condition:
+            if not self.condition.Calculate():
                 return
-        for action in self.Actions:
+        for action in self.actions:
             if isinstance(action, CharacteristicChange):
                 agent = self.arguments.getValueByType('Agent')
                 action.arguments.append(Argument('Agent', agent, 'Agent'))
             else:
                 for arg in action.arguments:
                     action.arguments.set(arg.name, self.arguments.getValue(arg.name))
-                for arg in action.Condition.arguments:
-                    action.Condition.arguments.set(arg.name, self.arguments.getValue(arg.name))
+                for arg in action.condition.arguments:
+                    action.condition.arguments.set(arg.name, self.arguments.getValue(arg.name))
             action.Perform()
 
 
 #TODO: must be recode all to Arguments no characteristic or delta
 class CharacteristicChange(Action):
+    """
+    elementary action CharacteristicChange
+    """
     def __init__(self):
         Action.__init__(self)
 
@@ -95,6 +129,9 @@ class CharacteristicChange(Action):
 
 
 class CharacteristicSet(Action):
+    """
+    elementary action CharacteristicSet
+    """
     def Perform(self):
         pass
 
