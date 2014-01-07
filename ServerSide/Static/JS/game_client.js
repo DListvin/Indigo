@@ -1,14 +1,20 @@
 //CONSTANTS
-
 var StageXSize = $(window).width();
 var StageYSize = $(window).height();
-var HexXStep = 225;     //222 for scale 1
-var HexYStep = 73;      //69 for scale 1
-var HexRowShift = 147;  //145 for scale 1
-var HexScale = 0.2;
+var HexXStep = 225;     //225 for scale 1
+var HexYStep = 73;      //73 for scale 1
+var HexRowShift = 150;  //150 for scale 1 
+var HexScale = 0.07;
+
+var chunkXShift = 4573; // 4573 for scale 1
+var chunkYShift = 1170; // 1170 for scale 1
+var chunkzxShift = 1278; //1278 for scale 1
+var chunkzyShift = -76; //-76 for scale 1
 
 var ChunkSize = 16;
 var ChunkLenght = ChunkSize * 2 - 1;
+var chunkTilesCount = (ChunkSize * ChunkSize) * 2 + (ChunkSize - 2) * (ChunkSize - 1) - 1;
+var StageXShift = HexXStep * ChunkSize;
 
 //CONSTANTS
 
@@ -26,12 +32,22 @@ var tileWhiteTexture = PIXI.Texture.fromImage("http://zurkserv.myftp.org:1234/St
 var socket = new WebSocket("ws://zurkserv.myftp.org:1234/data");
 socket.onmessage = function(event)
 {		
+	//alert(event.data);
 	var jsonData = JSON.parse(event.data);
-
+	//alert(jsonData.chunks[0].tiles[0].t);
 	if(stage.children.length == 0)
 	{
 		for(var chunk_num in jsonData.chunks)
 		{
+			var chunk = jsonData.chunks[chunk_num];
+
+			var zxShift = chunkzxShift * -chunk.z;
+			var xShift = chunk.x * chunkXShift + zxShift;
+
+			var ySgn = chunk.z > chunk.y ? 1 : -1;
+			var zyShift = chunk.z == 0 ? 0 : chunkzyShift * Math.abs(chunk.z);
+			var yShift = ((Math.abs(chunk.y) + Math.abs(chunk.z)) * chunkYShift + zyShift) * ySgn;
+
 			for(var i = 0, tile_num = 0; i < ChunkLenght; i++)
 			{
 				for(var j = 0; j < (i < ChunkSize ? ChunkSize + i : ChunkLenght - 1 - (i - ChunkSize)); j++, tile_num++)
@@ -40,8 +56,8 @@ socket.onmessage = function(event)
 
 					var new_tile = tile.t == 0 ? new PIXI.Sprite(tileTexture) : new PIXI.Sprite(tileWhiteTexture);
 					var shift = i < ChunkSize ? i : ChunkLenght - i - 0.5 + 0.5 * (i - ChunkSize);
-					new_tile.position.x = 450 + j * HexXStep * HexScale - shift * HexRowShift * HexScale;
-					new_tile.position.y = i * HexYStep * HexScale;
+					new_tile.position.x = 400 + (j * HexXStep - shift * HexRowShift + xShift + StageXShift) * HexScale;
+					new_tile.position.y = 200 + (i * HexYStep + yShift) * HexScale;
 
 					new_tile.anchor.x = 0;
 					new_tile.anchor.y = 0;
@@ -85,11 +101,10 @@ socket.onmessage = function(event)
 			for(var tile_num in jsonData.chunks[chunk_num].tiles)
 			{
 				var tile = jsonData.chunks[chunk_num].tiles[tile_num];
-				if(chunk_num == 0 && tile_num == 0)
-				{
-					//alert(tile.t);
-				}
-				stage.children[tile_num].setTexture(tile.t == 0 ? tileTexture : tileWhiteTexture);
+				//alert(chunkTilesCount);
+				//alert(stage.children[chunk_num * chunkTilesCount + tile_num]);
+				//alert(stage.children[chunk_num * chunkTilesCount + tile_num]);
+				stage.children[Number(chunk_num * chunkTilesCount) + Number(tile_num)].setTexture(tile.t == 0 ? tileTexture : tileWhiteTexture);
 			}
 		}
 

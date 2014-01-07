@@ -21,7 +21,7 @@ class PlotApplication(WebSocketApplication):
         self.ws.send(newMap.ToJson())
 
     def on_close(self, reason):
-        print "Connection Closed!!!", reason
+        print("Connection Closed!!!", reason)
 
 resource = Resource({
     '/data': PlotApplication
