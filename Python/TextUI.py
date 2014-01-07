@@ -1,15 +1,39 @@
 from Model import Model, ModelState
 
 active_queues = []
+#list of active queues to models. Now can be just one active queue
+
+def broadcast_event(data):
+    """
+    broadcasts event to all active queues
+    Now can be just one active queue
+    @param data: some information to broadcast. anything that you want
+    @return: no return
+    """
+    for q in active_queues:
+        q.put(data)
+
 
 class TestUIShell:
-    listOfCommands = []           #List of available commands
-    model = []                    #Attached model to observe
-    listOfSubscribedCommands = [] #List of commands run on world tick event.
-    isRunning = True              #Exit flag
-    #Main loop for UI
+    """
+    Text interface of world model. Static class
+    @type model:Model
+    """
+    listOfCommands = []
+    #List of available commands
+    model = []
+    #Attached model to observe
+    listOfSubscribedCommands = []
+    #List of commands run on world tick event.
+    isRunning = True
+    #Exit flag
+
     @staticmethod
     def run():
+        """
+        run shell function
+        @return: no return
+        """
         TestUIShell.model.start()
         while TestUIShell.isRunning:
             try:
@@ -24,11 +48,7 @@ class TestUIShell:
                 pass
 
 
-def broadcast_event(data):
-    for q in active_queues:
-        q.put(data)
-
-
+#here is a entry point
 model = Model(active_queues)
 TestUIShell.model = model
 TestUIShell.run()

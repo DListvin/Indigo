@@ -5,22 +5,35 @@ from SADcore.Condition import *
 from SADcore.Action import *
 from copy import deepcopy
 import glob
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as et
 
-class ParseModelXML:
+class WorldTemplates:
+    """
+    Class of world templates
+    it can parse XML world presentation to internal presentation(templates)
+    and make actions and agents from template
+    """
     def __init__(self):
         self.actions = []
         self.agents = []
         self.properties = []
 
-    def parse(self, folderPath):
+    def parseWorldFromXML(self, folderPath):
+        """
+        Main XML world presentation parser function
+        @param folderPath: path to folder with world. Take from it only .xml files
+        @return: None
+        """
         paths = glob.glob(folderPath +'\*.xml')
         for path in paths:
-            xml = ET.parse(path)
+            xml = et.parse(path)
             root = xml.getroot()
             getattr(self, 'parse' + root.tag)(root)
 
     def parseAgent(self, root):
+        """
+        @rtype: Agent
+        """
         try:
             intellectual = root.attrib['intellectual'] == 'yes'
         except:
@@ -29,7 +42,7 @@ class ParseModelXML:
             a = Indigo()
         else:
             a = Agent()
-        Agent.Type = root.attrib['Type']
+        a.Type = root.attrib['Type']
         for child in root:
             a.Properties = self.parseProperties(child)
         self.agents.append(a)
@@ -41,6 +54,9 @@ class ParseModelXML:
         return properties
 
     def parseProperty(self, root):
+        """
+        @rtype: Property
+        """
         #check that properties has not property with such name
         name = root.attrib['Name']
         for indx in range(0, len(self.properties)):
@@ -55,12 +71,18 @@ class ParseModelXML:
         return self.properties[indx]
 
     def parseSubProperties(self,root):
+        """
+        @rtype: Property
+        """
         subProperties = []
         for child in root:
             subProperties.append(getattr(self, 'parse' + child.tag)(child))
         return subProperties
 
     def parseCharacteristic(self,root):
+        """
+        @rtype: Characteristic
+        """
         c = Characteristic(root.attrib['Name'])
         c.Type = root[0].attrib['Type']
         try:
@@ -76,25 +98,31 @@ class ParseModelXML:
         return c
 
     def parseObjectivity(self,root):
+        """
+        @rtype: Objectivity
+        """
         obj = Objectivity([], root.attrib['Action'])
         return obj
 
     #TODO: code parser for other subproperties
 
     def parseAction(self, root):
+        """
+        @rtype: Action
+        """
         #check that actions has not action with such name
         name = root.attrib['Name']
         for indx in range(0, len(self.actions)):
-            if self.actions[indx].Name == name:
+            if self.actions[indx].name == name:
                break
         else:
             self.actions.append(Action())
             indx = len(self.actions) - 1
-        self.actions[indx].Name = name
+        self.actions[indx].name = name
         try:
-            self.actions[indx].Duration = int(root.attrib['Duration'])
+            self.actions[indx].duration = int(root.attrib['duration'])
         except:
-            self.actions[indx].Duration = 1
+            self.actions[indx].duration = 1
 
         switchParam = {
             'Arguments': [],
@@ -105,18 +133,24 @@ class ParseModelXML:
             switchParam[child.tag] = getattr(self, 'parse' + child.tag)(child)
 
         self.actions[indx].arguments = switchParam['Arguments']
-        self.actions[indx].Condition = switchParam['Condition']
-        self.actions[indx].Actions =  switchParam['Actions']
+        self.actions[indx].condition = switchParam['Condition']
+        self.actions[indx].actions =  switchParam['Actions']
 
         return self.actions[indx]
 
     def parseArguments(self,root):
+        """
+        @rtype: Arguments
+        """
         arguments = Arguments()
         for child in root:
             arguments.append(self.parseArgument(child))
         return arguments
 
     def parseArgument(self,root):
+        """
+        @rtype: Argument
+        """
         argument = Argument(root.attrib['Name'], [], root.attrib['Type'])
         try:
             argument.value = root.attrib['Value']
@@ -131,6 +165,9 @@ class ParseModelXML:
         return actions
 
     def parseCondition(self,root):
+        """
+        @rtype: Condition
+        """
         condition = Condition()
         self.condArgs = Arguments()
         for child in root:
@@ -142,6 +179,9 @@ class ParseModelXML:
     #TODO: code parser for all elementary actions
     #TODO: code parser for all elementary conditions
     def parseComparison(self, root):
+        """
+        @rtype: Comparison
+        """
         signs = {
             '$lt': '<',
             '$dt': '>',
@@ -165,20 +205,37 @@ class ParseModelXML:
 
     #TODO: here is ambiguity do not know from which agent take property
     def parseCharacteristicChange(self,root):
+        """
+        @rtype: CharacteristicChange
+        """
         c = CharacteristicChange()
         c.arguments.append(Argument([], root.attrib['PropName'], 'Characteristic'))
         c.arguments.append(Argument('Modifier', int(root.attrib['Modifier']), 'int'))
         return c
 
     def createAgent(self, type):
+        """
+        create agent from template
+        @param type: agent type
+        @type type:str
+        @return: agent
+        @rtype:Agent
+        """
         for agent in self.agents:
             if agent.Type == type:
                 return self.createAgentFromTemplate(agent)
         raise Exception('ParseModelXML.createAgent: No such agent type')
 
     def createAction(self, name):
+        """
+        create action from template
+        @param name: action name
+        @type name:str
+        @return: action
+        @rtype:Action
+        """
         for action in self.actions:
-            if action.Name == name:
+            if action.name == name:
                 return self.createActionFromTemplate(action)
         raise Exception('ParseModelXML.createAction: No action with such name')
 
