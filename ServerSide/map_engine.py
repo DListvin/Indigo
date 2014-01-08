@@ -11,6 +11,7 @@ class Map:
 			#newSeed = seed * seed / 42 + seed / (i + 1)
 			#newSeed = i
 			#self.mapData.append(Chunk(newSeed, 0, 0, 0))
+			#random.randrange(1000000)
 		self.mapData.append(Chunk(random.randrange(1000000), 0, 0, 0))
 		self.mapData.append(Chunk(random.randrange(1000000), 0, 1, -1))
 		self.mapData.append(Chunk(random.randrange(1000000), 1, 0, -1))
@@ -18,6 +19,9 @@ class Map:
 		self.mapData.append(Chunk(random.randrange(1000000), 0, -1, 1))
 		self.mapData.append(Chunk(random.randrange(1000000), -1, 0, 1))
 		self.mapData.append(Chunk(random.randrange(1000000), -1, 1, 0))
+		self.mapData.append(Chunk(random.randrange(1000000), 1, 1, -2))
+		self.mapData.append(Chunk(random.randrange(1000000), -1, -1, 2))
+		self.mapData.append(Chunk(random.randrange(1000000), 0, -2, 2))
 
 	def ToJson(self):
 		jsonString = '{"chunks":['

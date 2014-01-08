@@ -1,15 +1,16 @@
 //CONSTANTS
 var StageXSize = $(window).width();
 var StageYSize = $(window).height();
-var HexXStep = 225;     //225 for scale 1
-var HexYStep = 73;      //73 for scale 1
-var HexRowShift = 150;  //150 for scale 1 
-var HexScale = 0.07;
+var HexXStep = 225;     //225 for scale 1 x step from one hex to another
+var HexYStep = 73;      //73 for scale 1 y step from one hex row to another
+var HexRowShift = 150;  //150 for scale 1 shift for hex rows in chunk
+var HexScale = 0.1;    //map scale
 
-var chunkXShift = 4573; // 4573 for scale 1
-var chunkYShift = 1170; // 1170 for scale 1
-var chunkzxShift = 1278; //1278 for scale 1
-var chunkzyShift = -76; //-76 for scale 1
+//This for chunk size = 16, may be should be some formulas
+var chunkXShift = 4573; // 4573 for scale 1 x shift from one chunk to another
+var chunkYShift = 1170; // 1170 for scale 1 y shift from one chunk to another
+var chunkzxShift = 1278; //1278 for scale 1 shift to compensate isometric x shift
+var chunkzyShift = -76; //-76 for scale 1 shift to compensate isometric y shift
 
 var ChunkSize = 16;
 var ChunkLenght = ChunkSize * 2 - 1;
@@ -18,13 +19,50 @@ var StageXShift = HexXStep * ChunkSize;
 
 //CONSTANTS
 
-$(window).resize(resize)
+//GLOBAL FLAGS AND VARIABLES
+
+var mouseDownFlag = false;
+var xMouseDown = 0;
+var yMouseDown = 0;
+
+//GLOBAL FLAGS AND VARIABLES
+
+$(window).resize(resize);
 $("body").css("overflow", "hidden");
+$(document).mousedown(function(interactionData)
+{
+	xMouseDown = interactionData.pageX;
+	yMouseDown = interactionData.pageY;
+	mouseDownFlag = true;
+});
+$(document).mouseup(function(interactionData)
+{
+	mouseDownFlag = false;
+});
 
 var stage = new PIXI.Stage(0x66FF99, true);
 var renderer = PIXI.autoDetectRenderer(StageXSize, StageYSize);
 document.body.appendChild(renderer.view);
 requestAnimationFrame(animate);
+
+$(document).mousemove(function(interactionData)
+{
+	if(mouseDownFlag)
+	{
+		for(var child_num in stage.children)
+		{
+			var child = stage.children[child_num];
+
+			var deltaX = xMouseDown - interactionData.pageX;
+			var deltaY = yMouseDown - interactionData.pageY;
+
+			child.position.x -= deltaX;		
+			child.position.y -= deltaY;	
+		}
+		xMouseDown = interactionData.pageX;	
+		yMouseDown = interactionData.pageY;
+	}
+});
 
 var tileTexture = PIXI.Texture.fromImage("http://zurkserv.myftp.org:1234/Static/Images/isometr.png");
 var tileWhiteTexture = PIXI.Texture.fromImage("http://zurkserv.myftp.org:1234/Static/Images/isometr_white.png");
