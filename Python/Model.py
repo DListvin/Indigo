@@ -1,8 +1,13 @@
 __author__ = 'Zurk'
+import sys, os
+SADPath = os.path.abspath('./SADCore/')
+if not SADPath in sys.path:
+    sys.path.append(SADPath)
+
 from threading import Thread
-import queue, sys
-from SADcore.Agent import *
-from SADcore.Property import *
+from Queue import Queue
+from Agent import *
+from Property import *
 from WorldTemplates import WorldTemplates
 from time import sleep, time
 
@@ -32,7 +37,7 @@ class Model(Thread):
         #Info about time interval between loop iterations in c
         self.state = ModelState.Initialised
         #Model state from ModelState enum
-        self.mailbox = queue.Queue()
+        self.mailbox = Queue()
         #active queue to listen model commands
         active_queues.append(self.mailbox)
         self.active_queues = active_queues

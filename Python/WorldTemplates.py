@@ -1,8 +1,12 @@
 __author__ = 'Zurk'
-from SADcore.Agent import *
-from SADcore.Property import *
-from SADcore.Condition import *
-from SADcore.Action import *
+import sys, os
+SADPath = os.path.abspath('./SADCore/')
+if not SADPath in sys.path:
+    sys.path.append(SADPath)
+from Agent import *
+from Property import *
+from Condition import *
+from Action import *
 from copy import deepcopy
 import glob
 import xml.etree.ElementTree as et

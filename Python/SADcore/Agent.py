@@ -1,5 +1,9 @@
 __author__ = 'Zurk'
-from SADcore.Property import *
+import sys, os
+SADPath = os.path.abspath('./SADCore/')
+if not SADPath in sys.path:
+    sys.path.append(SADPath)
+from Property import *
 
 
 class Agent:

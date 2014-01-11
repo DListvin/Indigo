@@ -1,9 +1,13 @@
 __author__ = 'Zurk'
+import sys, os
+SADPath = os.path.abspath('./SADCore/')
+if not SADPath in sys.path:
+    sys.path.append(SADPath)
 
 class Condition:
     def __init__(self):
         self.Conditions = [] #List of conditions
-        from SADcore.Action import Arguments
+        from Action import Arguments
         self.arguments = Arguments()
 
     def Calculate(self):
