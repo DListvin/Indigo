@@ -36,13 +36,17 @@ class TestUIShell:
         """
         TestUIShell.model.start()
         while TestUIShell.isRunning:
-                string = raw_input("Comand me!\n")
+            try:
+                string = raw_input("Command me!\n")
                 if string == '-start':
                     broadcast_event(ModelState.Running)
                 if string == '-stop':
                     broadcast_event(ModelState.Stopping)
+                    TestUIShell.isRunning = False
                 if string == '-pause':
                     broadcast_event(ModelState.Paused)
+            except:
+                pass
 
 
 

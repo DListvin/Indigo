@@ -57,7 +57,6 @@ class Model(Thread):
         """
         self.active_queues.remove(self.mailbox)
         self.mailbox.put("shutdown")
-        self.join()
 
     def MainLoop(self):
         """
