@@ -21,7 +21,7 @@ class Map:
 		self.mapData.append(Chunk(random.randrange(1000000), -1, 1, 0))
 		self.mapData.append(Chunk(random.randrange(1000000), 1, 1, -2))
 		self.mapData.append(Chunk(random.randrange(1000000), -1, -1, 2))
-		self.mapData.append(Chunk(random.randrange(1000000), 0, -2, 2))
+		#self.mapData.append(Chunk(random.randrange(1000000), 0, -2, 2))
 
 	def ToJson(self):
 		jsonString = '{"chunks":['
