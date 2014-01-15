@@ -1,7 +1,6 @@
 import gevent
 import random
 import json
-import time
 
 from map_engine import Map
 from geventwebsocket import WebSocketServer, WebSocketApplication, Resource
