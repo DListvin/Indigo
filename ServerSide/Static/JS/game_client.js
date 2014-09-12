@@ -7,7 +7,6 @@ var serverPort = 1234;
 var ChunkSize = 16;
 var ChunkLenght = ChunkSize * 2 - 1;
 var chunkTilesCount = (ChunkSize * ChunkSize) * 2 + (ChunkSize - 2) * (ChunkSize - 1) - 1;
-var StageXShift = HexXStep * ChunkSize;
 
 //For chunk drawing
 var StageXSize = $(window).width();
@@ -16,6 +15,7 @@ var HexXStep = 225;     //225 for scale 1 x step from one hex to another
 var HexYStep = 73;      //73 for scale 1 y step from one hex row to another
 var HexRowShift = 150;  //150 for scale 1 shift for hex rows in chunk
 var HexScale = 0.1;    //map scale
+var StageXShift = HexXStep * ChunkSize;
 
 //For map drawing
 //This for chunk size = 16, may be should be some formulas
