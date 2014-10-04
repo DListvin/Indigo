@@ -49,8 +49,10 @@ class Chunk:
 		for i in xrange(ChunkLenght):
 			for j in xrange(ChunkSize + i if i < ChunkSize else ChunkLenght - 1 - (i - ChunkSize)):	
 				newTile = (seed * (i + 1) / (j + 1) + seed % (j + i + 1))  % 2
+				newAgentsList = []
+				newAgentsList.append(Agent(0))
 				#newTile = seed % 2
-				self.chunkData.append(Tile(newTile))
+				self.chunkData.append(Tile(newTile, newAgentsList))
 
 	def ToJson(self):
 		jsonString = '{"x":' + str(self.x) + ',"y":' + str(self.y) + ',"z":' + str(self.z)
@@ -68,8 +70,26 @@ class Chunk:
 
 class Tile:
 
-	def __init__(self, argTileType):
+	def __init__(self, argTileType, argAgentsList):
 		self.tileType = argTileType
+		self.agentsList = argAgentsList
 
 	def ToJson(self):
-		return '{"t":' + str(self.tileType) + '}'
+		jsonString = '{"t":' + str(self.tileType) + ',"a":['
+
+		firstTime = True
+		for agent in self.agentsList:
+			if(not firstTime):
+				jsonString += ","
+			firstTime = False
+			jsonString += agent.ToJson()
+		jsonString += "]}"
+		return jsonString
+
+class Agent:
+
+	def __init__(self, argAgentType):
+		self.agentType = argAgentType
+
+	def ToJson(self):
+		return '{"t":' + str(self.agentType) + '}'

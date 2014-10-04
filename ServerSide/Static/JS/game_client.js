@@ -27,6 +27,7 @@ var chunkzyShift = -76; //-76 for scale 1 shift to compensate isometric y shift
 //For map drawing
 var tileTexture = PIXI.Texture.fromImage("http://" + serverName + ":" + serverPort + "/Static/Images/isometr.png");
 var tileWhiteTexture = PIXI.Texture.fromImage("http://" + serverName + ":" + serverPort + "/Static/Images/isometr_white.png");
+var agentTexture = PIXI.Texture.fromImage("http://" + serverName + ":" + serverPort + "/Static/Images/agent.png");
 
 //</editor-fold>
 
@@ -148,6 +149,21 @@ socket.onmessage = function(event)
 						this.setTexture(tileTexture);
 					};
 					stage.addChild(new_tile);
+					
+					for(var agent in tile.a)
+					{
+						var new_agent = new PIXI.Sprite(agentTexture);
+						
+						new_agent.position.x = new_tile.position.x
+						new_agent.position.y = new_tile.position.y
+						
+						new_agent.anchor.x = 0;
+						new_agent.anchor.y = 0;
+						new_agent.scale.x = HexScale;
+						new_agent.scale.y = HexScale;
+						
+						stage.addChild(new_agent);
+					}
 					// </editor-fold>
 				}
 			}
