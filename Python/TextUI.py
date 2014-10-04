@@ -49,7 +49,6 @@ class TestUIShell:
                 pass
 
 
-
 #here is a entry point
 model = Model(active_queues)
 TestUIShell.model = model

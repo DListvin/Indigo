@@ -1,0 +1,68 @@
+<!-- Test world model Move action description -->
+<Actions>
+    <Action Name="MoveUpRight">
+        <Arguments>
+            <Argument Type="Agent" Name ="self"/>
+            <Argument Type="int" Name="val"/>
+        </Arguments>
+        <Actions>
+            <CharacteristicChange PropName="LocationX" Modifier="1"/>
+            <CharacteristicChange PropName="LocationZ" Modifier="-1"/>
+        </Actions>
+    </Action>
+
+    <Action Name="MoveRight">
+        <Arguments>
+            <Argument Type="Agent" Name ="self"/>
+            <Argument Type="int" Name="val"/>
+        </Arguments>
+        <Actions>
+            <CharacteristicChange PropName="LocationX" Modifier="1"/>
+            <CharacteristicChange PropName="LocationY" Modifier="-1"/>
+        </Actions>
+    </Action>
+
+    <Action Name="MoveDownRight">
+        <Arguments>
+            <Argument Type="Agent" Name ="self"/>
+            <Argument Type="int" Name="val"/>
+        </Arguments>
+        <Actions>
+            <CharacteristicChange PropName="LocationY" Modifier="-1"/>
+            <CharacteristicChange PropName="LocationZ" Modifier="1"/>
+        </Actions>
+    </Action>
+
+    <Action Name="MoveDownLeft">
+        <Arguments>
+            <Argument Type="Agent" Name ="self"/>
+            <Argument Type="int" Name="val"/>
+        </Arguments>
+        <Actions>
+            <CharacteristicChange PropName="LocationX" Modifier="-1"/>
+            <CharacteristicChange PropName="LocationZ" Modifier="1"/>
+        </Actions>
+    </Action>
+
+    <Action Name="MoveLeft">
+        <Arguments>
+            <Argument Type="Agent" Name ="self"/>
+            <Argument Type="int" Name="val"/>
+        </Arguments>
+        <Actions>
+            <CharacteristicChange PropName="LocationX" Modifier="-1"/>
+            <CharacteristicChange PropName="LocationY" Modifier="1"/>
+        </Actions>
+    </Action>
+
+    <Action Name="MoveUpLeft">
+        <Arguments>
+            <Argument Type="Agent" Name ="self"/>
+            <Argument Type="int" Name="val"/>
+        </Arguments>
+        <Actions>
+            <CharacteristicChange PropName="LocationY" Modifier="1"/>
+            <CharacteristicChange PropName="LocationZ" Modifier="-1"/>
+        </Actions>
+    </Action>
+</Actions>

@@ -58,35 +58,34 @@ class Indigo(Agent):
             self.initSubjectivity()
             self.init = True
             self.steps = 0
-        for p in self.posibleActions:
-            if p.actionName == 'Move':
-                action = self.myWorld.getAction(p.actionName)
-                action.arguments.set('self', self)
-                if self.steps < 5:
-                    action.arguments.set('directionX', 1)
-                    action.arguments.set('directionY', 0)
-                elif self.steps < 10:
-                    action.arguments.set('directionX', 0)
-                    action.arguments.set('directionY', 1)
-                elif self.steps < 15:
-                    action.arguments.set('directionX', -1)
-                    action.arguments.set('directionY', 0)
-                elif self.steps < 20:
-                    action.arguments.set('directionX', 0)
-                    action.arguments.set('directionY', -1)
-                else:
-                    self.steps = 0
-                    action.arguments.set('directionX', 0)
-                    action.arguments.set('directionY', 0)
-                self.steps += 1
-                for p in self.Properties:
-                    temp = p.getByName('LocationX')
-                    if not (temp is None):
-                        print(temp)
-                    temp = p.getByName('LocationY')
-                    if not (temp is None):
-                        print(temp)
-                return action
+
+        if self.steps < 5:
+            action = self.myWorld.getAction('MoveUpRight')
+            action.arguments.set('self', self)
+        elif self.steps < 10:
+            action = self.myWorld.getAction('MoveRight')
+            action.arguments.set('self', self)
+        elif self.steps < 15:
+            action = self.myWorld.getAction('MoveDownLeft')
+            action.arguments.set('self', self)
+        elif self.steps < 20:
+            action = self.myWorld.getAction('MoveLeft')
+            action.arguments.set('self', self)
+        else:
+            self.steps = 0
+            action = None
+        self.steps += 1
+        for p in self.Properties:
+            temp = p.getByName('LocationX')
+            if not (temp is None):
+                print(temp)
+            temp = p.getByName('LocationY')
+            if not (temp is None):
+                print(temp)
+            temp = p.getByName('LocationZ')
+            if not (temp is None):
+                print(temp)
+        return action
 
     def initSubjectivity(self):
         self.posibleActions = []

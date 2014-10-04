@@ -1,0 +1,6 @@
+<!-- Test world model Man agent that can move description -->
+<Agent Type="MovingMan" intellectual="yes">
+    <Properties>
+        <Property Name="Moving"/>
+    </Properties>
+</Agent>
