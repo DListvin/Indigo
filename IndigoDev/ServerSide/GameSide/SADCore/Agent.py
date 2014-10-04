@@ -1,6 +1,6 @@
 __author__ = 'Zurk'
 import sys, os
-SADPath = os.path.abspath('./SADCore/')
+SADPath = os.path.abspath('./GameSide/SADCore/')
 if not SADPath in sys.path:
     sys.path.append(SADPath)
 from Property import *
@@ -91,3 +91,8 @@ class Indigo(Agent):
         self.posibleActions = []
         for prop in self.Properties:
             self.posibleActions += prop.getAllByType(Objectivity)
+
+    def ToJson(self):
+        if self.Type == "MovingMan":
+            return '{"t":' + str(1) + '}'
+        return '{"t":' + str(self.Type) + '}'

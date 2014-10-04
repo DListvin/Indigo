@@ -50,6 +50,6 @@ class TestUIShell:
 
 
 #here is a entry point
-model = Model(active_queues)
+model = Model(213,active_queues)
 TestUIShell.model = model
 TestUIShell.run()

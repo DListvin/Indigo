@@ -1,12 +1,13 @@
 __author__ = 'Zurk'
 import sys, os
-SADPath = os.path.abspath('./SADCore/')
+SADPath = os.path.abspath('./GameSide/SADCore/')
 if not SADPath in sys.path:
     sys.path.append(SADPath)
 
 from WorldTemplates import WorldTemplates
 from Agent import *
 from Property import *
+from MapEngine import *
 
 
 class World:
@@ -31,8 +32,9 @@ class World:
         Here we basically create world
         @return: None
         """
+        self.map = Map(1)
         self.templates = WorldTemplates()
-        self.templates.parseWorldFromXML('WorldModelHex')
+        self.templates.parseWorldFromXML('./GameSide/WorldModelHex')
         a = self.templates.createAgent('MovingMan')
         #TODO: here must be not self, but WorldToAgent(self)
         a.myWorld = self

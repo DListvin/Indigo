@@ -1,6 +1,6 @@
 __author__ = 'Zurk'
 import sys, os
-SADPath = os.path.abspath('./SADCore/')
+SADPath = os.path.abspath('./GameSide/SADCore/')
 if not SADPath in sys.path:
     sys.path.append(SADPath)
 from Agent import *
@@ -28,7 +28,15 @@ class WorldTemplates:
         @param folderPath: path to folder with world. Take from it only .xml files
         @return: None
         """
-        paths = glob.glob(folderPath +'\*.xml')
+        paths = glob.glob(folderPath +'/*.xml')
+        #print paths
+        paths = glob.glob('/home/indigo/Documents/Indigo/IndigoDev/ServerSide/GameSide/WorldModelHex/*.xml');
+        #print paths
+        #print "\n\n\n!!!!!!!!!!!!!\n" 
+        #print paths
+        #print glob.glob(folderPath)
+        #print os.getcwd()
+        #print folderPath +'\*.xml'
         for path in paths:
             xml = et.parse(path)
             root = xml.getroot()

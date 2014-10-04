@@ -14,7 +14,7 @@ var StageYSize = $(window).height();
 var HexXStep = 225;     //225 for scale 1 x step from one hex to another
 var HexYStep = 73;      //73 for scale 1 y step from one hex row to another
 var HexRowShift = 150;  //150 for scale 1 shift for hex rows in chunk
-var HexScale = 0.1;    //map scale
+var HexScale = 0.25;    //map scale
 var StageXShift = HexXStep * ChunkSize;
 
 //For map drawing
@@ -36,6 +36,12 @@ var agentTexture = PIXI.Texture.fromImage("http://" + serverName + ":" + serverP
 //Renderer engine init
 var stage = new PIXI.Stage(0x66FF99, true);
 var renderer = PIXI.autoDetectRenderer(StageXSize, StageYSize);
+var mapContainer = new PIXI.DisplayObjectContainer();
+var agentsContainer = new PIXI.DisplayObjectContainer();
+mapContainer.visible = true;
+agentsContainer.visible = true;
+stage.addChild(mapContainer);
+stage.addChild(agentsContainer);
 document.body.appendChild(renderer.view);
 requestAnimationFrame(animate);
     
@@ -94,7 +100,7 @@ var socket = new WebSocket("ws://" + serverName + ":" + serverPort + "/data");
 socket.onmessage = function(event)
 {		
 	var jsonData = JSON.parse(event.data);
-	if(stage.children.length === 0)
+	if(mapContainer.children.length === 0)
 	{
 		for(var chunk_num in jsonData.chunks)
 		{
@@ -148,7 +154,7 @@ socket.onmessage = function(event)
 					{
 						this.setTexture(tileTexture);
 					};
-					stage.addChild(new_tile);
+					mapContainer.addChild(new_tile);
 					
 					for(var agent in tile.a)
 					{
@@ -162,7 +168,7 @@ socket.onmessage = function(event)
 						new_agent.scale.x = HexScale;
 						new_agent.scale.y = HexScale;
 						
-						stage.addChild(new_agent);
+						agentsContainer.addChild(new_agent);
 					}
 					// </editor-fold>
 				}
@@ -172,13 +178,35 @@ socket.onmessage = function(event)
 		setInterval(function(){socket.send("refresh");}, 1000);
 	}
 	else
-	{
+	{	
+		while(agentsContainer.children.length > 0)
+		{ 
+  			var child = agentsContainer.getChildAt(0);
+ 			agentsContainer.removeChild(child);
+		}
+		
 		for(var chunk_num in jsonData.chunks)
 		{
 			for(var tile_num in jsonData.chunks[chunk_num].tiles)
 			{
 				var tile = jsonData.chunks[chunk_num].tiles[tile_num];
-				stage.children[Number(chunk_num * chunkTilesCount) + Number(tile_num)].setTexture(tile.t === 0 ? tileTexture : tileWhiteTexture);
+				var child = mapContainer.children[Number(chunk_num * chunkTilesCount) + Number(tile_num)];
+				child.setTexture(tile.t === 0 ? tileTexture : tileWhiteTexture);
+				
+				for(var agent in tile.a)
+				{
+					var new_agent = new PIXI.Sprite(agentTexture);
+					
+					new_agent.position.x = child.position.x
+					new_agent.position.y = child.position.y
+					
+					new_agent.anchor.x = 0;
+					new_agent.anchor.y = 0;
+					new_agent.scale.x = HexScale;
+					new_agent.scale.y = HexScale;
+					
+					agentsContainer.addChild(new_agent);
+				}
 			}
 		}
 

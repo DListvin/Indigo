@@ -1,6 +1,6 @@
 __author__ = 'Zurk'
 import sys, os
-SADPath = os.path.abspath('./SADCore/')
+SADPath = os.path.abspath('./GameSide/SADCore/')
 if not SADPath in sys.path:
     sys.path.append(SADPath)
 
@@ -22,7 +22,7 @@ class ModelState:
 
 
 class Model(Thread):
-    def __init__(self, active_queues):
+    def __init__(self, seed, active_queues):
         """
         init function for Model links queue
         @type active_queues: list
@@ -83,3 +83,18 @@ class Model(Thread):
                     sys.stderr.write('MainLoop: To many calculations! timeToSleep = ' + str(timeToSleep))
                     #May be it must write to another place
                 sleep(max(0, timeToSleep))
+
+    def ToJson(self):
+        #jsonString = '{"chunks":['
+        #firstTime = True
+
+        #for chunk in self.mapData:
+        #    if(not firstTime):
+        #        jsonString += ","
+        #    firstTime = False
+        #    jsonString += chunk.ToJson()
+
+        #jsonString += "]}"
+
+        #return jsonString
+        return ""
