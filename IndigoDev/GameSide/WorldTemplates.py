@@ -1,12 +1,7 @@
-__author__ = 'Zurk'
-import sys, os
-SADPath = os.path.abspath('./GameSide/SADCore/')
-if not SADPath in sys.path:
-    sys.path.append(SADPath)
-from Agent import *
-from Property import *
-from Condition import *
-from Action import *
+from GameSide.SADCore.Action import *
+from GameSide.SADCore.Condition import *
+from GameSide.SADCore.Indigo import *
+from GameSide.SADCore.Property import *
 from copy import deepcopy
 import glob
 import xml.etree.ElementTree as et
@@ -29,14 +24,6 @@ class WorldTemplates:
         @return: None
         """
         paths = glob.glob(folderPath +'/*.xml')
-        #print paths
-        paths = glob.glob('/home/indigo/Documents/Indigo/IndigoDev/ServerSide/GameSide/WorldModelHex/*.xml');
-        #print paths
-        #print "\n\n\n!!!!!!!!!!!!!\n" 
-        #print paths
-        #print glob.glob(folderPath)
-        #print os.getcwd()
-        #print folderPath +'\*.xml'
         for path in paths:
             xml = et.parse(path)
             root = xml.getroot()
@@ -46,6 +33,7 @@ class WorldTemplates:
         """
         @rtype: Agent
         """
+        #TODO: refactor with key in d construction
         try:
             intellectual = root.attrib['intellectual'] == 'yes'
         except:
@@ -82,7 +70,7 @@ class WorldTemplates:
             self.properties[indx].Properties = self.parseSubProperties(child)
         return self.properties[indx]
 
-    def parseSubProperties(self,root):
+    def parseSubProperties(self, root):
         """
         @rtype: Property
         """
@@ -150,7 +138,7 @@ class WorldTemplates:
 
         return self.actions[indx]
 
-    def parseArguments(self,root):
+    def parseArguments(self, root):
         """
         @rtype: Arguments
         """
@@ -225,7 +213,7 @@ class WorldTemplates:
         c.arguments.append(Argument('Modifier', int(root.attrib['Modifier']), 'int'))
         return c
 
-    def createAgent(self, type):
+    def CreateAgent(self, type):
         """
         create agent from template
         @param type: agent type
@@ -235,10 +223,10 @@ class WorldTemplates:
         """
         for agent in self.agents:
             if agent.Type == type:
-                return self.createAgentFromTemplate(agent)
-        raise Exception('ParseModelXML.createAgent: No such agent type')
+                return deepcopy(agent)
+        raise Exception('ParseModelXML.CreateAgent: No such agent type')
 
-    def createAction(self, name):
+    def CreateAction(self, name):
         """
         create action from template
         @param name: action name
@@ -248,11 +236,11 @@ class WorldTemplates:
         """
         for action in self.actions:
             if action.name == name:
-                return self.createActionFromTemplate(action)
-        raise Exception('ParseModelXML.createAction: No action with such name')
+                return deepcopy(action)
+        raise Exception('ParseModelXML.CreateAction: No action with such name')
 
-    def createAgentFromTemplate(self, agent):
-        return deepcopy(agent)
-
-    def createActionFromTemplate(self, action):
-        return deepcopy(action)
+#    def CreateAgentFromTemplate(self, agent):
+#        return deepcopy(agent)
+#
+#    def CreateActionFromTemplate(self, action):
+#        return deepcopy(action)

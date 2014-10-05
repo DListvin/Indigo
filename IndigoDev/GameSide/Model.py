@@ -1,15 +1,7 @@
-__author__ = 'Zurk'
-import sys, os
-SADPath = os.path.abspath('./GameSide/SADCore/')
-if not SADPath in sys.path:
-    sys.path.append(SADPath)
-
 from threading import Thread
-from Queue import Queue
-from World import *
-
-
+from multiprocessing import Queue
 from time import sleep, time
+from World import *
 
 
 class ModelState:
@@ -22,14 +14,14 @@ class ModelState:
 
 
 class Model(Thread):
-    def __init__(self, seed, active_queues):
+    def __init__(self, seed, activeQueues):
         """
         init function for Model links queue
-        @type active_queues: list
-        @param active_queues: list of active queues from someone interface
+        @type activeQueues: list
+        @param activeQueues: list of active queues from someone interface
         """
         Thread.__init__(self)
-        self.simulatingWorld = World()
+        self.simulatingWorld = World(seed)
         #Shows, what world is simulating in the model
         self.passedModelIterations = 0
         #Info about how many iterations of main loop have passed
@@ -39,8 +31,8 @@ class Model(Thread):
         #Model state from ModelState enum
         self.mailbox = Queue()
         #active queue to listen model commands
-        active_queues.append(self.mailbox)
-        self.active_queues = active_queues
+        activeQueues.append(self.mailbox)
+        self.activeQueues = activeQueues
 
     def run(self):
         """
@@ -55,7 +47,7 @@ class Model(Thread):
         finish work, shutdown thread and join
         @return: None
         """
-        self.active_queues.remove(self.mailbox)
+        self.activeQueues.remove(self.mailbox)
         self.mailbox.put("shutdown")
 
     def MainLoop(self):
@@ -83,18 +75,3 @@ class Model(Thread):
                     sys.stderr.write('MainLoop: To many calculations! timeToSleep = ' + str(timeToSleep))
                     #May be it must write to another place
                 sleep(max(0, timeToSleep))
-
-    def ToJson(self):
-        #jsonString = '{"chunks":['
-        #firstTime = True
-
-        #for chunk in self.mapData:
-        #    if(not firstTime):
-        #        jsonString += ","
-        #    firstTime = False
-        #    jsonString += chunk.ToJson()
-
-        #jsonString += "]}"
-
-        #return jsonString
-        return ""

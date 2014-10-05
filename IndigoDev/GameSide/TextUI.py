@@ -1,7 +1,6 @@
-from Model import Model, ModelState
+from GameSide.Model import Model, ModelState
 
-active_queues = []
-#list of active queues to models. Now can be just one active queue
+active_queues = [] #list of active queues to models. Now can be just one active queue
 
 def broadcast_event(data):
     """
@@ -49,7 +48,8 @@ class TestUIShell:
                 pass
 
 
-#here is a entry point
-model = Model(213,active_queues)
-TestUIShell.model = model
-TestUIShell.run()
+if(__name__ == '__main__'):
+    #here is a entry point for Text User Interface
+    model = Model(213,active_queues)
+    TestUIShell.model = model
+    TestUIShell.run()

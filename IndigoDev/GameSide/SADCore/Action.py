@@ -1,8 +1,4 @@
 __author__ = 'Zurk'
-import sys, os
-SADPath = os.path.abspath('./SADCore/')
-if not SADPath in sys.path:
-    sys.path.append(SADPath)
 from Condition import Condition
 
 class Arguments(list):

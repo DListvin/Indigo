@@ -1,18 +1,17 @@
-import sys, os
-SADPath = os.path.abspath('./GameSide/')
-if not SADPath in sys.path:
-    sys.path.append(SADPath)
 import gevent
 import random
 import json
 
-from  Model import *
+from GameSide.Model import *
 from geventwebsocket import WebSocketServer, WebSocketApplication, Resource
 
 activeQueues = []
 model = None
 
 class PlotApplication(WebSocketApplication):
+    """
+    Class for WebSocket Communication
+    """
     def on_open(self):
         global model
         random.seed()
@@ -21,11 +20,11 @@ class PlotApplication(WebSocketApplication):
         model.start()
         for q in activeQueues:
             q.put(ModelState.Running)
-        model.simulatingWorld.map.SortAgents(model.simulatingWorld.agents)
+        model.simulatingWorld.map.sortAgents(model.simulatingWorld.agents)
         self.ws.send(model.simulatingWorld.map.ToJson())
 
     def on_message(self, message):    
-        model.simulatingWorld.map.SortAgents(model.simulatingWorld.agents)
+        model.simulatingWorld.map.sortAgents(model.simulatingWorld.agents)
         self.ws.send(model.simulatingWorld.map.ToJson())
 
     def on_close(self, reason):
@@ -35,5 +34,6 @@ resource = Resource({
     '/data': PlotApplication
 })  
 
-server = WebSocketServer(('0.0.0.0', 2345), resource, debug=True)
-server.serve_forever()
+if __name__ == '__main__':
+    server = WebSocketServer(('0.0.0.0', 2345), resource, debug=True)
+    server.serve_forever()

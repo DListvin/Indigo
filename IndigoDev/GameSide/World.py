@@ -1,13 +1,10 @@
 __author__ = 'Zurk'
-import sys, os
-SADPath = os.path.abspath('./GameSide/SADCore/')
-if not SADPath in sys.path:
-    sys.path.append(SADPath)
-
 from WorldTemplates import WorldTemplates
-from Agent import *
-from Property import *
 from MapEngine import *
+from SADCore.Agent import *
+from SADCore.Indigo import *
+from SADCore.Property import *
+
 
 
 class World:
@@ -24,18 +21,15 @@ class World:
     templates = []
     #world templates of all. Special class, that can create agents, actions, properties, that exists in world
 
-    def __init__(self):
-        self.Init()
-
-    def Init(self):
+    def __init__(self, seed):
         """
         Here we basically create world
         @return: None
         """
-        self.map = Map(1)
+        self.map = Map(seed)
         self.templates = WorldTemplates()
-        self.templates.parseWorldFromXML('./GameSide/WorldModelHex')
-        a = self.templates.createAgent('MovingMan')
+        self.templates.parseWorldFromXML('WorldModelHex')
+        a = self.templates.CreateAgent('MovingMan')
         #TODO: here must be not self, but WorldToAgent(self)
         a.myWorld = self
         self.agents.append(a)
@@ -45,32 +39,25 @@ class World:
         Here is the one iteration of main loop
         @return: None
         """
-        #Get All Periodicity specified actions(without thinking)
         curActions = []
+        #Get All Periodicity specified actions(without thinking)
         for agent in self.agents:
             curActions.append(agent.GetActionsByType(Periodicity))
-        #Execute it
-        for action in curActions:
-            if action:
-                action.Perform()
+
         #Get All feeling specified actions
-        curActions = []
         for agent in self.agents:
             curActions.append(agent.GetActionsByType(Feeling))
-        #Execute it
-        for action in curActions:
-            if action:
-                action.Perform()
+
         #Get All thinking specified actions
-        curActions = []
         for agent in self.agents:
             if isinstance(agent, Indigo):
                 curActions.append(agent.Think())
-        #Non-conflict execution
+
+        #Execute all actions in list. Order is important!
         for action in curActions:
             if action:
                 action.Perform()
-    #
+
     def getAction(self, name):
         """
         Function for agent, that ask to get action with name
@@ -79,7 +66,7 @@ class World:
         @return: action
         @rtype:Action
         """
-        return self.templates.createAction(name)
+        return self.templates.CreateAction(name)
 
     def GetAgentById(self, id):
         return self.agents[id]
