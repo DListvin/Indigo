@@ -10,7 +10,7 @@ def broadcast_event(data):
     @return: no return
     """
     for q in active_queues:
-        q.put(data)
+        q.send(data)
 
 
 class TestUIShell:

@@ -1,5 +1,5 @@
 from threading import Thread
-from multiprocessing import Queue
+from multiprocessing import Pipe
 from time import sleep, time
 from World import *
 
@@ -12,9 +12,12 @@ class ModelState:
     Stopping = 4
     Error = -1
 
+class ModelMsg:
+    Refresh = 0
+
 
 class Model(Thread):
-    def __init__(self, seed, activeQueues):
+    def __init__(self, seed, activeQueues, modelRefresh):
         """
         init function for Model links queue
         @type activeQueues: list
@@ -29,10 +32,13 @@ class Model(Thread):
         #Info about time interval between loop iterations in c
         self.state = ModelState.Initialised
         #Model state from ModelState enum
-        self.mailbox = Queue()
+        mailbox = Pipe()
+        self.mailbox = mailbox[0]
         #active queue to listen model commands
-        activeQueues.append(self.mailbox)
+        activeQueues.append(mailbox[1])
         self.activeQueues = activeQueues
+        # function that runs for model refresh on client side for each model tick
+        self.modelRefresh = modelRefresh
 
     def run(self):
         """
@@ -48,7 +54,7 @@ class Model(Thread):
         @return: None
         """
         self.activeQueues.remove(self.mailbox)
-        self.mailbox.put("shutdown")
+        self.mailbox.send("shutdown")
 
     def MainLoop(self):
         """
@@ -57,18 +63,17 @@ class Model(Thread):
         @return: None
         """
         while True:
-            try:
-                self.state = self.mailbox.get_nowait()
-            except:
-                pass
+            if self.mailbox.poll():
+                self.state = self.mailbox.recv()
             if self.state == ModelState.Stopping:
                 self.stop()
                 break
             if self.state == ModelState.Paused:
-                self.state = self.mailbox.get()
+                self.state = self.mailbox.recv()
             if self.state == ModelState.Running:
                 timeStart = time()
                 self.simulatingWorld.MainLoopIteration()
+                self.modelRefresh()
                 self.passedModelIterations += 1
                 timeToSleep =self.modelIterationTick - (time() - timeStart)
                 if(timeToSleep < 0.0001):

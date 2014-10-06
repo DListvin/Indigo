@@ -3,6 +3,7 @@ from GameSide.SADCore.Condition import *
 from GameSide.SADCore.Indigo import *
 from GameSide.SADCore.Property import *
 from copy import deepcopy
+import os
 import glob
 import xml.etree.ElementTree as et
 
@@ -23,7 +24,8 @@ class WorldTemplates:
         @param folderPath: path to folder with world. Take from it only .xml files
         @return: None
         """
-        paths = glob.glob(folderPath +'/*.xml')
+
+        paths = glob.glob(os.path.dirname(os.path.realpath(__file__)) + '/' + folderPath +'/*.xml')
         for path in paths:
             xml = et.parse(path)
             root = xml.getroot()

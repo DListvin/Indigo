@@ -97,6 +97,11 @@ $(document).mousemove(function(interactionData)
 // </editor-fold>
 
 var socket = new WebSocket("ws://" + serverName + ":" + serverPort + "/data");
+window.onbeforeunload = function()
+{
+	websocket.onclose = function () {}; // disable onclose handler first
+	websocket.close()
+};
 socket.onmessage = function(event)
 {		
 	var jsonData = JSON.parse(event.data);
@@ -175,7 +180,7 @@ socket.onmessage = function(event)
 			}
 			// </editor-fold>
 		}
-		setInterval(function(){socket.send("refresh");}, 1000);
+		//setInterval(function(){socket.send("refresh");}, 1000);
 	}
 	else
 	{	
