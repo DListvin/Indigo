@@ -24,7 +24,7 @@ class Map:
         else:
             collNumber = argY + ChunkSize - 1
 
-        for i in range(rawNumber):
+        for i in xrange(rawNumber):
             collNumber += ChunkSize + i if i < ChunkSize else ChunkLength - 1 - (i - ChunkSize)
 
         return collNumber
@@ -59,20 +59,6 @@ class Map:
             locCoord = Map.coordsGridLocalToNumber(x,y,z)
             self.mapData[0].chunkData[locCoord].agentsList.append(agent)
 
-    def ToJson(self):
-        jsonString = '{"chunks":['
-        firstTime = True
-
-        for chunk in self.mapData:
-            if(not firstTime):
-                jsonString += ","
-            firstTime = False
-            jsonString += chunk.ToJson()
-
-        jsonString += "]}"
-
-        return jsonString
-
 
 class Chunk:
     def __init__(self, seed, x, y, z):
@@ -86,34 +72,9 @@ class Chunk:
                 newAgentsList = []
                 self.chunkData.append(Tile(newTile, newAgentsList))
 
-    def ToJson(self):
-        jsonString = '{"x":' + str(self.x) + ',"y":' + str(self.y) + ',"z":' + str(self.z)
-        jsonString += ',"tiles":['
-        firstTime = True
-        for tile in self.chunkData:
-            if(not firstTime):
-                jsonString += ","
-            firstTime = False
-            jsonString += tile.ToJson()
-        jsonString += "]}"
-
-        return jsonString
-
 
 class Tile:
 
     def __init__(self, argTileType, argAgentsList):
         self.tileType = argTileType
         self.agentsList = argAgentsList
-
-    def ToJson(self):
-        jsonString = '{"t":' + str(self.tileType) + ',"a":['
-
-        firstTime = True
-        for agent in self.agentsList:
-            if(not firstTime):
-                jsonString += ","
-            firstTime = False
-            jsonString += agent.ToJson()
-        jsonString += "]}"
-        return jsonString

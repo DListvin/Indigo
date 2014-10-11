@@ -3,6 +3,7 @@ import random
 import json
 
 from GameSide.Model import *
+from ToJson import *
 from geventwebsocket import WebSocketServer, WebSocketApplication, Resource
 
 class PlotApplication(WebSocketApplication):
@@ -22,7 +23,7 @@ class PlotApplication(WebSocketApplication):
 
         for socket in sockets:
             if not socket.closed:
-                socket.send(model.simulatingWorld.map.ToJson())
+                socket.send(MapToJson(model.simulatingWorld.map))
 
     def on_open(self):
         global connectionsCount
