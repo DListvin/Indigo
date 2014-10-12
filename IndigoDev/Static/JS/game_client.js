@@ -15,6 +15,8 @@ var HexXStep = 225;     //225 for scale 1 x step from one hex to another
 var HexYStep = 73;      //73 for scale 1 y step from one hex row to another
 var HexRowShift = 150;  //150 for scale 1 shift for hex rows in chunk
 var HexScale = 0.25;    //map scale
+var HexScreenWidth = HexScale * 10; //Screen width in hexes
+var HexScreenHeight = HexScale * 10; //Screen height in hexes
 var StageXShift = HexXStep * ChunkSize;
 
 //For map drawing
@@ -106,11 +108,73 @@ socket.onmessage = function(event)
 {		
 	var jsonData = JSON.parse(event.data);
 	if(mapContainer.children.length === 0)
-	{
-		for(var chunk_num in jsonData.chunks)
+	{		
+		for (var i = 0, tileNum = 0; i < HexScreenHeight; i++)
+		{
+			for(var j = 0; j < HexScreenWidth; j++, tileNum++)
+			{                                 
+				// <editor-fold desc="Tile creation">
+				var tile = jsonData.map[tileNum];     
+				var newTile = tile.t === 0 ? new PIXI.Sprite(tileTexture) : new PIXI.Sprite(tileWhiteTexture);
+				var shift = i % 2 ? 1 : 0;
+				newTile.position.x = 400 + (j * HexXStep - shift * HexRowShift) * HexScale;
+				newTile.position.y = 200 + (i * HexYStep) * HexScale;
+
+				newTile.anchor.x = 0;
+				newTile.anchor.y = 0;
+				newTile.scale.x = HexScale;
+				newTile.scale.y = HexScale;
+
+				newTile.hitArea = new PIXI.Polygon([
+					149, 256 - 91,
+					162, 256 - 91,
+					249, 256 - 71,
+					255, 256 - 68,
+					233, 256 - 24,
+					229, 256 - 21,
+					213, 256 - 19,
+					117, 256 - 0,
+					105, 256 - 0,
+					10, 256 - 22,
+					31, 256 - 68,
+					35, 256 - 70
+				]);
+
+				newTile.setInteractive(true);
+				newTile.mouseover = newTile.touchstart = function (interactionData)
+				{
+					this.setTexture(tileWhiteTexture);
+				};
+				newTile.mouseout = newTile.touchend = function (interactionData)
+				{
+					this.setTexture(tileTexture);
+				};
+				mapContainer.addChild(newTile);
+
+				for(var agent in tile.a)
+				{
+					var new_agent = new PIXI.Sprite(agentTexture);
+
+					new_agent.position.x = newTile.position.x
+					new_agent.position.y = newTile.position.y
+
+					new_agent.anchor.x = 0;
+					new_agent.anchor.y = 0;
+					new_agent.scale.x = HexScale;
+					new_agent.scale.y = HexScale;
+
+					agentsContainer.addChild(new_agent);
+				}
+				// </editor-fold>
+			}
+			
+		}
+		
+		/*
+		for(var tile_num in jsonData.map)
 		{
 			// <editor-fold desc="Chunk creation">
-			var chunk = jsonData.chunks[chunk_num];
+			var tile = jsonData.map[tile_num];
 
 			var zxShift = chunkzxShift * -chunk.z;
 			var xShift = chunk.x * chunkXShift + zxShift;
@@ -181,6 +245,7 @@ socket.onmessage = function(event)
 			// </editor-fold>
 		}
 		//setInterval(function(){socket.send("refresh");}, 1000);
+		*/
 	}
 	else
 	{	

@@ -23,7 +23,7 @@ class PlotApplication(WebSocketApplication):
 
         for socket in sockets:
             if not socket.closed:
-                socket.send(MapToJson(model.simulatingWorld.map))
+                socket.send(MapToJson(model.simulatingWorld.map, 0, 0, 0, 10, 10))
 
     def on_open(self):
         global connectionsCount
