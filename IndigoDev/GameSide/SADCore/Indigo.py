@@ -32,16 +32,17 @@ class Indigo(Agent):
             self.steps = 0
             action = None
         self.steps += 1
-        for p in self.Properties:
-            temp = p.getByName('LocationX')
-            if not (temp is None):
-                print(temp)
-            temp = p.getByName('LocationY')
-            if not (temp is None):
-                print(temp)
-            temp = p.getByName('LocationZ')
-            if not (temp is None):
-                print(temp)
+#TODO: Zurk should probably delete it
+#        for p in self.Properties:
+#            temp = p.getByName('LocationX')
+#            if not (temp is None):
+#                print(temp)
+#            temp = p.getByName('LocationY')
+#            if not (temp is None):
+#                print(temp)
+#            temp = p.getByName('LocationZ')
+#            if not (temp is None):
+#                print(temp)
         return action
 
     def initSubjectivity(self):

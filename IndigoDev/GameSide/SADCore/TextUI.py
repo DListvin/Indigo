@@ -20,7 +20,7 @@ class TestUIShell:
     """
     listOfCommands = []
     #List of available commands
-    model = []
+    Model = []
     #Attached model to observe
     listOfSubscribedCommands = []
     #List of commands run on world tick event.
@@ -50,6 +50,6 @@ class TestUIShell:
 
 if(__name__ == '__main__'):
     #here is a entry point for Text User Interface
-    model = Model(213,active_queues)
-    TestUIShell.model = model
+    Model = Model(213,active_queues)
+    TestUIShell.model = Model
     TestUIShell.run()

@@ -14,9 +14,9 @@ var StageYSize = $(window).height();
 var HexXStep = 225;     //225 for scale 1 x step from one hex to another
 var HexYStep = 73;      //73 for scale 1 y step from one hex row to another
 var HexRowShift = 150;  //150 for scale 1 shift for hex rows in chunk
-var HexScale = 0.25;    //map scale
-var HexScreenWidth = HexScale * 10; //Screen width in hexes
-var HexScreenHeight = HexScale * 10; //Screen height in hexes
+var HexScale =1;    //map scale
+var HexScreenWidth = Math.floor(10 / HexScale); //Screen width in hexes
+var HexScreenHeight = Math.floor(17 / HexScale); //Screen height in hexes
 var StageXShift = HexXStep * ChunkSize;
 
 //For map drawing
@@ -53,6 +53,7 @@ var xMouseDown = 0;
 var yMouseDown = 0;
 
 //for chunk refreshing
+var pixelCoords = [0, 0];
 var centralChunkCoords = [0, 0, 0];
 
 // </editor-fold>
@@ -67,43 +68,26 @@ function resize()
 }
 // </editor-fold>
 
-// <editor-fold desc="Map dragging events">
-$(document).mousedown(function(interactionData)
-{
-	xMouseDown = interactionData.pageX;
-	yMouseDown = interactionData.pageY;
-	mouseDownFlag = true;
-});
-$(document).mouseup(function(interactionData)
-{
-	mouseDownFlag = false;
-});
-$(document).mousemove(function(interactionData)
-{
-	if(mouseDownFlag)
-	{
-		for(var child_num in stage.children)
-		{
-			var child = stage.children[child_num];
-
-			var deltaX = xMouseDown - interactionData.pageX;
-			var deltaY = yMouseDown - interactionData.pageY;
-
-			child.position.x -= deltaX;		
-			child.position.y -= deltaY;	
-		}
-		xMouseDown = interactionData.pageX;	
-		yMouseDown = interactionData.pageY;
-	}
-});
-// </editor-fold>
 
 var socket = new WebSocket("ws://" + serverName + ":" + serverPort + "/data");
+
 window.onbeforeunload = function()
 {
-	websocket.onclose = function () {}; // disable onclose handler first
-	websocket.close()
+	socket.onclose = function () {}; // disable onclose handler first
+	socket.close();
 };
+
+socket.onopen = function()
+{
+	var clientInfo = {
+		'method' : 'refresh',
+		'coords' : centralChunkCoords,
+		'height' : HexScreenHeight,
+		'width' : HexScreenWidth
+	};
+	socket.send(JSON.stringify(clientInfo));
+};
+
 socket.onmessage = function(event)
 {		
 	var jsonData = JSON.parse(event.data);
@@ -116,9 +100,9 @@ socket.onmessage = function(event)
 				// <editor-fold desc="Tile creation">
 				var tile = jsonData.map[tileNum];     
 				var newTile = tile.t === 0 ? new PIXI.Sprite(tileTexture) : new PIXI.Sprite(tileWhiteTexture);
-				var shift = i % 2 ? 1 : 0;
-				newTile.position.x = 400 + (j * HexXStep - shift * HexRowShift) * HexScale;
-				newTile.position.y = 200 + (i * HexYStep) * HexScale;
+				var shift = i % 2 ? -(i - 1)/4 + 1.5: 1 - (i / 4);
+				newTile.position.x = /*400 + */(j * HexXStep + shift * HexRowShift) * HexScale;
+				newTile.position.y = /*200 + */(i * HexYStep) * HexScale;
 
 				newTile.anchor.x = 0;
 				newTile.anchor.y = 0;
@@ -169,83 +153,6 @@ socket.onmessage = function(event)
 			}
 			
 		}
-		
-		/*
-		for(var tile_num in jsonData.map)
-		{
-			// <editor-fold desc="Chunk creation">
-			var tile = jsonData.map[tile_num];
-
-			var zxShift = chunkzxShift * -chunk.z;
-			var xShift = chunk.x * chunkXShift + zxShift;
-
-			var ySgn = chunk.z > chunk.y ? 1 : -1;
-			var zyShift = chunk.z === 0 ? 0 : chunkzyShift * Math.abs(chunk.z);
-			var yShift = ((Math.abs(chunk.y) + Math.abs(chunk.z)) * chunkYShift + zyShift) * ySgn;
-
-			for(var i = 0, tile_num = 0; i < ChunkLenght; i++)
-			{
-				for(var j = 0; j < (i < ChunkSize ? ChunkSize + i : ChunkLenght - 1 - (i - ChunkSize)); j++, tile_num++)
-				{                                        
-					// <editor-fold desc="Tile creation">
-					var tile = jsonData.chunks[chunk_num].tiles[tile_num];
-					var new_tile = tile.t === 0 ? new PIXI.Sprite(tileTexture) : new PIXI.Sprite(tileWhiteTexture);
-					var shift = i < ChunkSize ? i : ChunkLenght - i - 0.5 + 0.5 * (i - ChunkSize);
-					new_tile.position.x = 400 + (j * HexXStep - shift * HexRowShift + xShift + StageXShift) * HexScale;
-					new_tile.position.y = 200 + (i * HexYStep + yShift) * HexScale;
-
-					new_tile.anchor.x = 0;
-					new_tile.anchor.y = 0;
-					new_tile.scale.x = HexScale;
-					new_tile.scale.y = HexScale;
-					
-					new_tile.hitArea = new PIXI.Polygon([
-						149, 256 - 91,
-						162, 256 - 91,
-						249, 256 - 71,
-						255, 256 - 68,
-						233, 256 - 24,
-						229, 256 - 21,
-						213, 256 - 19,
-						117, 256 - 0,
-						105, 256 - 0,
-						10, 256 - 22,
-						31, 256 - 68,
-						35, 256 - 70
-					]);
-
-					new_tile.setInteractive(true);
-					new_tile.mouseover = new_tile.touchstart = function (interactionData)
-					{
-						this.setTexture(tileWhiteTexture);
-					};
-					new_tile.mouseout = new_tile.touchend = function (interactionData)
-					{
-						this.setTexture(tileTexture);
-					};
-					mapContainer.addChild(new_tile);
-					
-					for(var agent in tile.a)
-					{
-						var new_agent = new PIXI.Sprite(agentTexture);
-						
-						new_agent.position.x = new_tile.position.x
-						new_agent.position.y = new_tile.position.y
-						
-						new_agent.anchor.x = 0;
-						new_agent.anchor.y = 0;
-						new_agent.scale.x = HexScale;
-						new_agent.scale.y = HexScale;
-						
-						agentsContainer.addChild(new_agent);
-					}
-					// </editor-fold>
-				}
-			}
-			// </editor-fold>
-		}
-		//setInterval(function(){socket.send("refresh");}, 1000);
-		*/
 	}
 	else
 	{	
@@ -255,33 +162,83 @@ socket.onmessage = function(event)
  			agentsContainer.removeChild(child);
 		}
 		
-		for(var chunk_num in jsonData.chunks)
+		for(var tileNum in jsonData.map)
 		{
-			for(var tile_num in jsonData.chunks[chunk_num].tiles)
+			var tile = jsonData.map[tileNum];
+			var child = mapContainer.children[tileNum];
+			child.setTexture(tile.t === 0 ? tileTexture : tileWhiteTexture);
+
+			for(var agent in tile.a)
 			{
-				var tile = jsonData.chunks[chunk_num].tiles[tile_num];
-				var child = mapContainer.children[Number(chunk_num * chunkTilesCount) + Number(tile_num)];
-				child.setTexture(tile.t === 0 ? tileTexture : tileWhiteTexture);
-				
-				for(var agent in tile.a)
-				{
-					var new_agent = new PIXI.Sprite(agentTexture);
-					
-					new_agent.position.x = child.position.x
-					new_agent.position.y = child.position.y
-					
-					new_agent.anchor.x = 0;
-					new_agent.anchor.y = 0;
-					new_agent.scale.x = HexScale;
-					new_agent.scale.y = HexScale;
-					
-					agentsContainer.addChild(new_agent);
-				}
+				var new_agent = new PIXI.Sprite(agentTexture);
+
+				new_agent.position.x = child.position.x;
+				new_agent.position.y = child.position.y;
+
+				new_agent.anchor.x = 0;
+				new_agent.anchor.y = 0;
+				new_agent.scale.x = HexScale;
+				new_agent.scale.y = HexScale;
+
+				agentsContainer.addChild(new_agent);
 			}
 		}
 
 	}
 };
+// <editor-fold desc="Map dragging events">
+$(document).mousedown(function(interactionData)
+{
+	xMouseDown = interactionData.pageX;
+	yMouseDown = interactionData.pageY;
+	mouseDownFlag = true;
+});
+$(document).mouseup(function(interactionData)
+{
+	mouseDownFlag = false;
+});
+$(document).mousemove(function(interactionData)
+{
+	if(mouseDownFlag)
+	{
+		for(var child_num in stage.children)
+		{
+			var child = stage.children[child_num];
+
+			var deltaX = xMouseDown - interactionData.pageX;
+			var deltaY = yMouseDown - interactionData.pageY;
+
+			child.position.x -= deltaX;		
+			child.position.y -= deltaY;
+		}
+		xMouseDown = interactionData.pageX;	
+		yMouseDown = interactionData.pageY;
+			
+		pixelCoords[0] -= deltaX;
+		pixelCoords[1] -= deltaY;
+
+		var pixelToHexQ = Math.floor(pixelCoords[0] / (HexXStep * HexScale)); 
+		var pixelToHexR = Math.floor(pixelCoords[1] / (HexYStep * HexScale));
+
+		centralChunkCoords[0] = pixelToHexQ - (pixelToHexR - (pixelToHexR & 1)) / 2;
+		centralChunkCoords[1] = pixelToHexR;
+		centralChunkCoords[2] = - centralChunkCoords[0] - centralChunkCoords[1];
+	}
+});
+setInterval(
+	function()
+	{
+		var clientInfo = {
+			'method' : 'refresh',
+			'coords' : centralChunkCoords,
+			'height' : HexScreenHeight,
+			'width' : HexScreenWidth
+		};
+		socket.send(JSON.stringify(clientInfo));
+	},
+	1000
+);
+// </editor-fold>
 
 function animate() 
 {

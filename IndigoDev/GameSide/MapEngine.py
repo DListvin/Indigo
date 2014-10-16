@@ -5,11 +5,6 @@ from SADCore.Agent import *
 ChunkSize = 16
 ChunkLength = ChunkSize * 2 - 1
 
-class ChunkAxialCoords:
-    def __init__(self, argX, argY):
-        self.x = argX
-        self.y = argY
-
 class Map:
 
     @staticmethod
@@ -39,29 +34,20 @@ class Map:
         self.mapData = {}
         for i in xrange(10):
             for j in xrange(10):
-                #newTile = (seed * (i + 1) / (j + 1) + seed % (j + i + 1)) % 2
+                x = j - (i - (i & 1)) / 2
+                y = -x - i
                 newTile = 1
                 newAgentsList = []
-                newCoords = ChunkAxialCoords(i, j)
+                newCoords = str(x) + " " + str(y)
                 self.mapData[newCoords] = Tile(newTile, newAgentsList)
-        #self.mapData.append(Chunk(random.randrange(1000000), 0, 0, 0))
-        #self.mapData.append(Chunk(random.randrange(1000000), 0, 1, -1))
-        #self.mapData.append(Chunk(random.randrange(1000000), 1, 0, -1))
-        #self.mapData.append(Chunk(random.randrange(1000000), 1, -1, 0))
-        #self.mapData.append(Chunk(random.randrange(1000000), 0, -1, 1))
-        #self.mapData.append(Chunk(random.randrange(1000000), -1, 0, 1))
-        #self.mapData.append(Chunk(random.randrange(1000000), -1, 1, 0))
-        #self.mapData.append(Chunk(random.randrange(1000000), 1, 1, -2))
-        #self.mapData.append(Chunk(random.randrange(1000000), -1, -1, 2))
-        #self.mapData.append(Chunk(random.randrange(1000000), 0, -2, 2))
 
     def sortAgents(self, agentsList):
-        for tile in self.mapData:
+        for tile in self.mapData.values():
             tile.agentsList = []
         for agent in agentsList:
             x = agent.GetPropertyByName("LocationX").Value
             y = agent.GetPropertyByName("LocationY").Value
-            newCoords = ChunkAxialCoords(x, y)
+            newCoords = str(x) + " " + str(y)
             if newCoords in self.mapData:
                 self.mapData[newCoords].agentsList.append(agent)
 

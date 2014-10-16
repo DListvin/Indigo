@@ -1,5 +1,3 @@
-from GameSide.MapEngine import ChunkAxialCoords
-
 def MapToJson(map, x, y, z, height, width):
     """
     Converting map to Json according to client request
@@ -26,7 +24,7 @@ def MapToJson(map, x, y, z, height, width):
             #now converting coords back to access mapData
             xToAdd = qToAdd - (rToAdd - (rToAdd & 1)) / 2
             yToAdd = -x - rToAdd
-            newCoords = ChunkAxialCoords(xToAdd, yToAdd)
+            newCoords = str(xToAdd) + " " + str(yToAdd)
 
             if newCoords in map.mapData:
                 jsonString += TileToJson(map.mapData[newCoords])
