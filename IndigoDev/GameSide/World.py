@@ -40,8 +40,6 @@ class World:
         Here is the one iteration of main loop
         @return: None
         """
-        if not self.agents:
-            print 'World: Nobody here...'
 
         curActions = []
         #Get All Periodicity specified actions(without thinking)
@@ -92,3 +90,9 @@ class World:
         @return:None
         """
         pass
+
+    def __str__(self):
+        if not self.agents:
+            return 'World: Nobody here...'
+        else:
+            return str(self.agents[0])

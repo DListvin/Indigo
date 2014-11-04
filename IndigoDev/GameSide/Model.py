@@ -12,13 +12,15 @@ class ModelState:
     Paused = 3
     Stopping = 4
     Error = -1
+    DebugOutput = -10
+    NoDebugOutput = -11
 
 class ModelMsg:
     Refresh = 0
 
 
 class Model(Thread):
-    def __init__(self, seed, activeQueues, modelRefresh):
+    def __init__(self, seed, activeQueues, modelRefresh = None):
         """
         init function for Model links queue
         @type activeQueues: list
@@ -74,7 +76,8 @@ class Model(Thread):
             if self.state == ModelState.Running:
                 timeStart = time()
                 self.simulatingWorld.MainLoopIteration()
-                self.modelRefresh()
+                if self.modelRefresh:
+                    self.modelRefresh()
                 self.passedModelIterations += 1
                 timeToSleep =self.modelIterationTick - (time() - timeStart)
                 if(timeToSleep < 0.0001):

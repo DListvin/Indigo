@@ -37,6 +37,11 @@ class Property:
                 return ans
         return None
 
+    def __str__(self):
+        chs = self.getAllByType(Characteristic)
+        s = '\n'.join(['Characteristic: Type-'+c.Type+' Name-'+c.Name+' Value-'+str(c.Value) for c in chs])
+        return s
+
 
 class Characteristic(Property):
     """

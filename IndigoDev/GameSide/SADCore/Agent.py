@@ -50,3 +50,10 @@ class Agent:
         for p in self.Properties:
             PropertiesByType.extend(p.getAllByType(type))
         return PropertiesByType
+
+
+    def __str__(self):
+        res = ''
+        for p in self.Properties:
+            res += '\n' + str(p)
+        return res
