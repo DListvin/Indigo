@@ -1,4 +1,3 @@
-__author__ = 'Zurk'
 
 class Property:
     """
@@ -17,11 +16,11 @@ class Property:
         if self.Properties == []:
             if isinstance(self, type):
                 return self
-        allObjectivity = []
+        allProp = []
         for prop in self.Properties:
             if isinstance(prop, type):
-                allObjectivity.append(prop.getAllByType(type))
-        return allObjectivity
+                allProp.append(prop.getAllByType(type))
+        return allProp
 
     def getByName(self, name):
         """
@@ -45,25 +44,27 @@ class Characteristic(Property):
     """
     def __init__(self, name):
         Property.__init__(self, name)
-        self.Type = [] # Variable type of value
-        self.Value = []
+        self.Type = None # Variable type of value
+        self.Value = None
         self.Max = None
         self.Min = None
 
     #arithmetic functions
     def __iadd__(self, other):
+        if not isinstance(other, int):
+            other = other.Value
         self.Value += other
         if not (self.Max is None):
-            self.Value = min(self.max, self.Value)
+            self.Value = min(self.Max, self.Value)
         if not (self.Min is None):
-            self.Value = max(self.min, self.Value)
+            self.Value = max(self.Min, self.Value)
 
     def __isub__(self, other):
         self.Value -= other
         if not (self.Max is None):
-            self.Value = min(self.max, self.Value)
+            self.Value = min(self.Max, self.Value)
         if not (self.Min is None):
-            self.Value = max(self.min, self.Value)
+            self.Value = max(self.Min, self.Value)
 
     def __str__(self):
         return 'Characteristic: Type-'+self.Type+' Name-'+self.Name+' Value-'+str(self.Value)
@@ -97,11 +98,19 @@ class Reactivity(Property):
 
 
 class Periodicity(Property):
-    TimeInterval = []
-    # Peridiosity
-    Action = []
-    #action, which will be repeated
+    def __init__(self, name, action, timeInterval):
+        Property.__init__(self, name)
+        #action, which will be repeated
+        self.Action = action
+        # Peridiosity
+        self.TimeInterval = timeInterval
+        self.curTimerTime = timeInterval
 
+    def Perform(self):
+        self.curTimerTime -= 1
+        if self.curTimerTime == 0:
+            self.Action.Perform()
+            self.curTimerTime = self.TimeInterval
 
 class Feeling(Property):
     Action = []

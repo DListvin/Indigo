@@ -1,0 +1,8 @@
+<Action Name="Death">
+    <Arguments>
+        <Argument Type="Agent" Name ="self"/>
+    </Arguments>
+    <Actions>
+        <DeleteAgent Agent="self"/>
+    </Actions>
+</Action>

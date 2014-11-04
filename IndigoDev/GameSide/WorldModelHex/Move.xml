@@ -6,8 +6,8 @@
             <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
-            <CharacteristicChange PropName="LocationX" Modifier="1"/>
-            <CharacteristicChange PropName="LocationZ" Modifier="-1"/>
+            <CharacteristicChange ChName="self.LocationX" Modifier="1"/>
+            <CharacteristicChange ChName="self.LocationZ" Modifier="-1"/>
         </Actions>
     </Action>
 
@@ -17,8 +17,8 @@
             <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
-            <CharacteristicChange PropName="LocationX" Modifier="1"/>
-            <CharacteristicChange PropName="LocationY" Modifier="-1"/>
+            <CharacteristicChange ChName="self.LocationX" Modifier="1"/>
+            <CharacteristicChange ChName="self.LocationY" Modifier="-1"/>
         </Actions>
     </Action>
 
@@ -28,8 +28,8 @@
             <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
-            <CharacteristicChange PropName="LocationY" Modifier="-1"/>
-            <CharacteristicChange PropName="LocationZ" Modifier="1"/>
+            <CharacteristicChange ChName="self.LocationY" Modifier="-1"/>
+            <CharacteristicChange ChName="self.LocationZ" Modifier="1"/>
         </Actions>
     </Action>
 
@@ -39,8 +39,8 @@
             <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
-            <CharacteristicChange PropName="LocationX" Modifier="-1"/>
-            <CharacteristicChange PropName="LocationZ" Modifier="1"/>
+            <CharacteristicChange ChName="self.LocationX" Modifier="-1"/>
+            <CharacteristicChange ChName="self.LocationZ" Modifier="1"/>
         </Actions>
     </Action>
 
@@ -50,8 +50,8 @@
             <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
-            <CharacteristicChange PropName="LocationX" Modifier="-1"/>
-            <CharacteristicChange PropName="LocationY" Modifier="1"/>
+            <CharacteristicChange ChName="self.LocationX" Modifier="-1"/>
+            <CharacteristicChange ChName="self.LocationY" Modifier="1"/>
         </Actions>
     </Action>
 
@@ -61,8 +61,8 @@
             <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
-            <CharacteristicChange PropName="LocationY" Modifier="1"/>
-            <CharacteristicChange PropName="LocationZ" Modifier="-1"/>
+            <CharacteristicChange ChName="self.LocationY" Modifier="1"/>
+            <CharacteristicChange ChName="self.LocationZ" Modifier="-1"/>
         </Actions>
     </Action>
 </Actions>

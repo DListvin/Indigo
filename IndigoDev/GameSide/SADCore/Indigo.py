@@ -8,12 +8,12 @@ class Indigo(Agent):
     """
     def __init__(self):
         Agent.__init__(self)
-        self.init = False
+        self.go = False
 
     def Think(self):
-        if not self.init:
+        if not self.go:
             self.initSubjectivity()
-            self.init = True
+            self.go = True
             self.steps = 0
 
         if self.steps < 5:
@@ -43,6 +43,12 @@ class Indigo(Agent):
 #            temp = p.getByName('LocationZ')
 #            if not (temp is None):
 #                print(temp)
+            if not (temp is None):
+                print(temp)
+            temp = p.getByName('Satiety')
+            if not (temp is None):
+                print(temp)
+            temp = p.getByName('Health')
         return action
 
     def initSubjectivity(self):

@@ -1,0 +1,17 @@
+<Action Name="Eat">
+    <Arguments>
+        <Argument Type="Agent" Name ="self"/>
+        <Argument Type="Agent" Name ="food"/>
+    </Arguments>
+    <Actions>
+        <Action>
+            <Condition>
+                <HasProperty AgentName = "food" ChName = "Eatable"/>
+            </Condition>
+            <Actions>
+                <CharacteristicChange ChName = "self.Satiety" Modifier = "food.Sustenance"/>
+                <DeleteAgent Agent="food"/>
+            </Actions>
+        </Action>
+    </Actions>
+</Action>

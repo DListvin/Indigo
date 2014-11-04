@@ -1,0 +1,29 @@
+<Action Name = "Starve" Duration = "0">
+    <Arguments>
+        <Argument Type="Agent" Name ="self"/>
+    </Arguments>
+    <Actions>
+        <Action>
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+            </Arguments>
+            <Condition>
+                <Comparison Arg1 = "self.Satiety" Arg2 = "0" Sign = "$dt" />
+            </Condition>
+            <Actions>
+                <CharacteristicChange ChName = "self.Satiety" Modifier = "self.StarveSpeed" />
+            </Actions>
+        </Action>
+        <Action>
+            <Arguments>
+                <Argument Type="Agent" Name ="self"/>
+            </Arguments>
+            <Condition>
+                <Comparison Arg1 = "self.Satiety" Arg2 = "0" Sign = "=" />
+            </Condition>
+            <Actions>
+                <Action Name="DamageFromStarve"/>
+            </Actions>
+        </Action>
+    </Actions>
+</Action>

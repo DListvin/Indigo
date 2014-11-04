@@ -1,0 +1,5 @@
+<Agent Type="Banana">
+    <Properties>
+        <Property Name="Eatable"/>
+    </Properties>
+</Agent>

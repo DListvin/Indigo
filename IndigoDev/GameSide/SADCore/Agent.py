@@ -1,3 +1,6 @@
+from Action import Arguments, Argument
+from Property import Periodicity
+
 class Agent:
     """
     Base Class in SADcore.
@@ -8,6 +11,17 @@ class Agent:
         self.ID = []          #Unique id, primary key
         self.Properties = []  #List of properties
         self.myWorld = []     # world Interface to agent
+
+    def init(self):
+        """
+        Init function for Agent initialization before using in world
+        make some groundwork for using:
+            Configure arguments for periodicity actions performing
+        """
+        periodicityActions = self.GetActionsByType(Periodicity)
+        for prop in periodicityActions:
+            prop.Action.arguments.set("self", self)
+            #TODO:  prop.Action.arguments["self"] = self
 
     def GetPropertyByName(self, name):
         """
@@ -28,11 +42,11 @@ class Agent:
     def GetActionsByType(self, type):
         """
         Get actions By Type of Property like Feeling or Periodicity
+        This properties has Perform function, so it is Actions
         @param type: type of Property
         @return: all found actions
         """
-        result = []
+        PropertiesByType = []
         for p in self.Properties:
-            if isinstance(p, type):
-                result.append(p)
-        return result
+            PropertiesByType.extend(p.getAllByType(type))
+        return PropertiesByType

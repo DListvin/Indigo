@@ -66,7 +66,7 @@ class WorldTemplates:
                break
         else:
             self.properties.append(Property(name))
-            indx = len(self.actions) - 1
+            indx = - 1
 
         for child in root:
             self.properties[indx].Properties = self.parseSubProperties(child)
@@ -81,25 +81,28 @@ class WorldTemplates:
             subProperties.append(getattr(self, 'parse' + child.tag)(child))
         return subProperties
 
-    def parseCharacteristic(self,root):
+    def parseCharacteristic(self, root):
         """
         @rtype: Characteristic
         """
         c = Characteristic(root.attrib['Name'])
-        c.Type = root[0].attrib['Type']
-        try:
-            c.Value = int(root[0].attrib['Default'])
-        except:
+        chValue = root.attrib
+        if len(root):
+            chValue = root[0].attrib
+        if 'Type' in chValue:
+            c.Type = chValue['Type']
+        if 'Default' in chValue:
+            c.Value = int(chValue['Default'])
+        else:
             #TODO: generate warning: no Default value
-            c.Value = None
-        try:
-            c.Min = Property(root[0].attrib['Min'])
-            c.Max = Property(root[0].attrib['Min'])
-        except:
             pass
+        if 'Min' in chValue:
+            c.Min = int(chValue['Min'])
+        if 'Max' in chValue:
+            c.Max = int(chValue['Max'])
         return c
 
-    def parseObjectivity(self,root):
+    def parseObjectivity(self, root):
         """
         @rtype: Objectivity
         """
@@ -108,37 +111,44 @@ class WorldTemplates:
 
     #TODO: code parser for other subproperties
 
+    def getActionByName(self, name):
+        for action in self.actions:
+            if action.name == name:
+               return action
+        action = Action(name)
+        self.actions.append(action)
+        return action
+
     def parseAction(self, root):
         """
         @rtype: Action
         """
         #check that actions has not action with such name
-        name = root.attrib['Name']
-        for indx in range(0, len(self.actions)):
-            if self.actions[indx].name == name:
-               break
+        action = None
+        if 'Name' in root.attrib:
+            action = self.getActionByName(root.attrib['Name'])
         else:
-            self.actions.append(Action())
-            indx = len(self.actions) - 1
-        self.actions[indx].name = name
-        try:
-            self.actions[indx].duration = int(root.attrib['duration'])
-        except:
-            self.actions[indx].duration = 1
+            action = Action()
+            self.actions.append(action)
+        if 'duration' in root.attrib:
+            action.duration = int(root.attrib['duration'])
+        else:
+            action.duration = 1
 
-        switchParam = {
-            'Arguments': [],
-            'Condition': Arguments(),
-            'Actions': []
-        }
-        for child in root:
-            switchParam[child.tag] = getattr(self, 'parse' + child.tag)(child)
+        if len(root):
+            switchParam = {
+                'Arguments': Arguments(),
+                'Condition': None,
+                'Actions': []
+            }
+            for child in root:
+                switchParam[child.tag] = getattr(self, 'parse' + child.tag)(child)
 
-        self.actions[indx].arguments = switchParam['Arguments']
-        self.actions[indx].condition = switchParam['Condition']
-        self.actions[indx].actions =  switchParam['Actions']
+            action.arguments = switchParam['Arguments']
+            action.condition = switchParam['Condition']
+            action.actions = switchParam['Actions']
 
-        return self.actions[indx]
+        return action
 
     def parseArguments(self, root):
         """
@@ -149,7 +159,7 @@ class WorldTemplates:
             arguments.append(self.parseArgument(child))
         return arguments
 
-    def parseArgument(self,root):
+    def parseArgument(self, root):
         """
         @rtype: Argument
         """
@@ -160,13 +170,13 @@ class WorldTemplates:
             pass
         return argument
 
-    def parseActions(self,root):
+    def parseActions(self, root):
         actions = []
         for child in root:
             actions.append(getattr(self, 'parse' + child.tag)(child))
         return actions
 
-    def parseCondition(self,root):
+    def parseCondition(self, root):
         """
         @rtype: Condition
         """
@@ -186,34 +196,53 @@ class WorldTemplates:
         """
         signs = {
             '$lt': '<',
+            '$let': '<',
             '$dt': '>',
             '=':   '=',
             '!=': '!='
         }
         c = Comparison()
         c.CompType = signs[root.attrib['Sign']]
-        arg = Argument(root.attrib['Arg1'], [],[])
+        arg = Argument(root.attrib['Arg1'], None, 'Characteristic')
         c.arguments.append(arg)
         self.condArgs.append(arg)
         try:
             Arg2Value = int(root.attrib['Arg2'])
-            arg = Argument('const', Arg2Value, 'int')
+            arg = Argument(None, Arg2Value, 'const')
         except:
-            Arg2Name = root.attrib['Arg2']
-            arg = Argument(Arg2Name, [],[])
+            arg = Argument(root.attrib['Arg2'], None, 'Characteristic')
             self.condArgs.append(arg)
         c.arguments.append(arg)
         return c
 
     #TODO: here is ambiguity do not know from which agent take property
-    def parseCharacteristicChange(self,root):
+    def parseCharacteristicChange(self, root):
         """
         @rtype: CharacteristicChange
         """
         c = CharacteristicChange()
-        c.arguments.append(Argument([], root.attrib['PropName'], 'Characteristic'))
-        c.arguments.append(Argument('Modifier', int(root.attrib['Modifier']), 'int'))
+        c.ChName = root.attrib['ChName']
+        modifier = root.attrib['Modifier']
+        try:
+            modifier = int(modifier)
+        except:
+            pass
+        c.Modifier = modifier
         return c
+
+    def parseDeleteAgent(self, root):
+        return DeleteAgent(root.attrib['Agent'])
+
+    def parseHasProperty(self, root):
+        hp = HaveProperty()
+        hp.arguments.append(Argument('AgentName', root.attrib['AgentName'], 'Agent'))
+        hp.arguments.append(Argument('ChName', root.attrib['ChName'], 'Property'))
+        return hp
+
+    def parsePeriodicity(self, root):
+        t = "TimeInterval" in root and 1 or int(root.attrib["TimeInterval"])
+        return Periodicity(None, self.getActionByName(root.attrib['Action']), t)
+
 
     def CreateAgent(self, type):
         """
@@ -225,7 +254,10 @@ class WorldTemplates:
         """
         for agent in self.agents:
             if agent.Type == type:
-                return deepcopy(agent)
+                newAgent = deepcopy(agent)
+                newAgent.init()
+                return newAgent
+
         raise Exception('ParseModelXML.CreateAgent: No such agent type')
 
     def CreateAction(self, name):

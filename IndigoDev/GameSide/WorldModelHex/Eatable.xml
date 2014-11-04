@@ -1,0 +1,5 @@
+<Property Name="Eatable">
+    <Properties>
+        <Characteristic Name="Sustenance" Type="int" Min ="1" Max = "100" Default = "50"/>
+    </Properties>
+</Property>

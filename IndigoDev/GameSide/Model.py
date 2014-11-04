@@ -2,6 +2,7 @@ from threading import Thread
 from multiprocessing import Pipe
 from time import sleep, time
 from World import *
+import sys
 
 
 class ModelState:

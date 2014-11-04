@@ -1,11 +1,13 @@
 __author__ = 'Zurk'
 from Condition import Condition
+from Property import Characteristic
 
 class Arguments(list):
     """
     Special list for arguments
     Has specialized functions to access argument or its value
     """
+
     def set(self, name, value):
         for arg in self:
             if arg.name == name:
@@ -17,9 +19,19 @@ class Arguments(list):
 
     def getValue(self, name):
         try:
-            return self.getArgument(name).value
+            nameParse = name.split('.', 1)
+            if len(nameParse) == 1:
+                arg = self.getArgument(name)
+                if arg.type == 'Characteristic':
+                    argParse = arg.split('.', 1)
+                    return self.getArgument(argParse[0]).value.GetPropertyByName(argParse[1])
+                else:
+                    return arg.value
+            else:
+                argVal = self.getArgument(nameParse[0]).value
+                return argVal.GetPropertyByName(nameParse[1]).Value
         except:
-            raise Exception('Arguments.getValue: No such argument name')
+            raise Exception('Arguments.getValue: No such argument name {0}'.format(name))
 
     def getValueByType(self, type):
         try:
@@ -81,10 +93,10 @@ class Action:
     """
     class of Action
     """
-    def __init__(self):
-        self.name = []
+    def __init__(self, name=None):
+        self.name = name
         #Action name
-        self.duration = []
+        self.duration = 1
         #How many turns it take
         self.condition = Condition()
         #action applicability condition
@@ -102,14 +114,14 @@ class Action:
             if not self.condition.Calculate():
                 return
         for action in self.actions:
-            if isinstance(action, CharacteristicChange):
-                agent = self.arguments.getValueByType('Agent')
-                action.arguments.append(Argument('Agent', agent, 'Agent'))
+            if isinstance(action, CharacteristicChange) or isinstance(action, DeleteAgent):
+                action.arguments = self.arguments
             else:
                 for arg in action.arguments:
                     action.arguments.set(arg.name, self.arguments.getValue(arg.name))
-                for arg in action.condition.arguments:
-                    action.condition.arguments.set(arg.name, self.arguments.getValue(arg.name))
+                if action.condition:
+                    for arg in action.condition.arguments:
+                        action.condition.arguments.set(arg.name, self.arguments.getValue(arg.name))
             action.Perform()
 
 
@@ -120,12 +132,22 @@ class CharacteristicChange(Action):
     """
     def __init__(self):
         Action.__init__(self)
+        self.ChName = None
+        self.Modifier = None
 
     def Perform(self):
         # it must be checked. that it all is links and += will works
-        agent = self.arguments.getValueByType('Agent')
-        ch = agent.GetPropertyByName(self.arguments.getValueByType('Characteristic'))
-        ch += self.arguments.getValueByType('int')
+
+        argParse = self.ChName.split(".", 1)
+        agent = self.arguments.getValue(argParse[0])
+        ch = agent.GetPropertyByName(argParse[1])
+        if type(self.Modifier) is int:
+            ch += self.Modifier
+        else:
+            modParse = self.Modifier.split(".", 1)
+            ch += self.arguments.getValue(modParse[0]).GetPropertyByName(modParse[1])
+
+
 
 
 class CharacteristicSet(Action):
@@ -142,8 +164,12 @@ class AddAgent(Action):
 
 
 class DeleteAgent(Action):
+    def __init__(self, agentName):
+        Action.__init__(self)
+        self.agentName = agentName
     def Perform(self):
-        pass
+        agent = self.arguments.getValue(self.agentName)
+        agent.myWorld.DeleteAgent(agent)
 
 
 class AddToMemory(Action):

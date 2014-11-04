@@ -34,9 +34,9 @@ class TestUIShell:
         @return: no return
         """
         TestUIShell.model.start()
+        string = '-start'
         while TestUIShell.isRunning:
             try:
-                string = raw_input("Command me!\n")
                 if string == '-start':
                     broadcast_event(ModelState.Running)
                 if string == '-stop':
@@ -44,12 +44,13 @@ class TestUIShell:
                     TestUIShell.isRunning = False
                 if string == '-pause':
                     broadcast_event(ModelState.Paused)
+                string = raw_input("Command me!\n")
             except:
                 pass
 
 
 if(__name__ == '__main__'):
     #here is a entry point for Text User Interface
-    Model = Model(213,active_queues)
+    Model = Model(213, active_queues)
     TestUIShell.model = Model
     TestUIShell.run()
