@@ -44,6 +44,7 @@ class World:
         curActions = []
         #Get All Periodicity specified actions(without thinking)
         for agent in self.agents:
+            agent['qq']
             curActions.extend(agent.GetActionsByType(Periodicity))
 
         #Get All feeling specified actions
@@ -58,7 +59,7 @@ class World:
         #Execute all actions in list. Order is important!
         for action in curActions:
             if action:
-                action.Perform()
+                action()
 
         for mod in self.modifiers:
             mod()

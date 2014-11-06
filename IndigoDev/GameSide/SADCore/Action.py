@@ -22,11 +22,7 @@ class Arguments(list):
             nameParse = name.split('.', 1)
             if len(nameParse) == 1:
                 arg = self.getArgument(name)
-                if arg.type == 'Characteristic':
-                    argParse = arg.split('.', 1)
-                    return self.getArgument(argParse[0]).value.GetPropertyByName(argParse[1])
-                else:
-                    return arg.value
+                return arg.value
             else:
                 argVal = self.getArgument(nameParse[0]).value
                 return argVal.GetPropertyByName(nameParse[1]).Value
@@ -105,6 +101,9 @@ class Action:
         self.arguments = Arguments()
         #Arguments list of arguments
 
+    def __call__(self):
+        self.Perform()
+
     def Perform(self):
         """
         Main Action function
@@ -114,15 +113,11 @@ class Action:
             if not self.condition.Calculate():
                 return
         for action in self.actions:
-            if isinstance(action, CharacteristicChange) or isinstance(action, DeleteAgent):
+                #pass arguments to next action
                 action.arguments = self.arguments
-            else:
-                for arg in action.arguments:
-                    action.arguments.set(arg.name, self.arguments.getValue(arg.name))
                 if action.condition:
-                    for arg in action.condition.arguments:
-                        action.condition.arguments.set(arg.name, self.arguments.getValue(arg.name))
-            action.Perform()
+                    action.condition.arguments = self.arguments
+                action()
 
 
 #TODO: must be recode all to Arguments no characteristic or delta
@@ -139,8 +134,7 @@ class CharacteristicChange(Action):
         # it must be checked. that it all is links and += will works
 
         argParse = self.ChName.split(".", 1)
-        agent = self.arguments.getValue(argParse[0])
-        ch = agent.GetPropertyByName(argParse[1])
+        ch = self.arguments.getValue(argParse[0]).GetPropertyByName(argParse[1])
         if type(self.Modifier) is int:
             ch += self.Modifier
         else:

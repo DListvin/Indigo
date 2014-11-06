@@ -71,6 +71,18 @@ class Characteristic(Property):
         if not (self.Min is None):
             self.Value = max(self.Min, self.Value)
 
+    def __eq__(self, other):
+        return self.Value == other
+
+    def __ne__(self, other):
+        return self.Value != other
+
+    def __gt__(self, other):
+        return self.Value > other
+
+    def __lt__(self, other):
+        return self.Value < other
+
     def __str__(self):
         return 'Characteristic: Type-'+self.Type+' Name-'+self.Name+' Value-'+str(self.Value)
 
@@ -111,10 +123,13 @@ class Periodicity(Property):
         self.TimeInterval = timeInterval
         self.curTimerTime = timeInterval
 
+    def __call__(self):
+        self.Perform()
+
     def Perform(self):
         self.curTimerTime -= 1
         if self.curTimerTime == 0:
-            self.Action.Perform()
+            self.Action()
             self.curTimerTime = self.TimeInterval
 
 class Feeling(Property):

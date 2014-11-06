@@ -9,7 +9,7 @@ class Agent:
     def __init__(self):
         self.Type = []        #Name of type (Man, dog, rain, axe...)
         self.ID = []          #Unique id, primary key
-        self.Properties = []  #List of properties
+        self.Properties = []  #Dict of properties
         self.myWorld = []     # world Interface to agent
 
     def init(self):
@@ -38,6 +38,9 @@ class Agent:
                 return ch
                 #may be here we must raise exception
         return None
+
+    def __getitem__(self, item):
+        return self.GetPropertyByName(item)
 
     def GetActionsByType(self, type):
         """

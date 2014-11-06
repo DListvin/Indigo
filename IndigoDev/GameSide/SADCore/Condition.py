@@ -12,8 +12,9 @@ class Condition:
 
     def Calculate(self):
         res = True
-        for i in self.Conditions:
-            if not i.Calculate():
+        for c in self.Conditions:
+            c.arguments = self.arguments
+            if not c.Calculate():
                 res = False
         return res
 
@@ -26,13 +27,22 @@ class HaveProperty(Condition):
 class Comparison(Condition):
     def __init__(self):
         Condition.__init__(self)
-        self.CompType = []
+        self.CompType = None
+        self.arg1 = None
+        self.arg2 = None
 
     def Calculate(self):
+        arg1Parse = self.arg1.split(".", 1)
+        ch = self.arguments.getValue(arg1Parse[0]).GetPropertyByName(arg1Parse[1])
+        arg2 = self.arg2
+        if not type(self.arg2) is int:
+            arg2Parse = arg2.split('.', 1)
+            arg2 = self.arguments.getValue(arg2Parse[0]).GetPropertyByName(arg2Parse[1])
+
         signs = {
-            '<': self.arguments[0] < self.arguments[1],
-            '>': self.arguments[0] > self.arguments[1],
-            '=': self.arguments[0] == self.arguments[1],
-            '!=': self.arguments[0] != self.arguments[1]
+            '<': ch < arg2,
+            '>': ch > arg2,
+            '=': ch == arg2,
+            '!=': ch != arg2
         }
         return signs[self.CompType]

@@ -4,9 +4,6 @@
     </Arguments>
     <Actions>
         <Action>
-            <Arguments>
-                <Argument Type="Agent" Name ="self"/>
-            </Arguments>
             <Condition>
                 <Comparison Arg1 = "self.Health" Arg2 = "self.StarveDamage" Sign = "$dt" />
             </Condition>
@@ -15,9 +12,6 @@
             </Actions>
         </Action>
         <Action>
-            <Arguments>
-                <Argument Type="Agent" Name ="self"/>
-            </Arguments>
             <Condition>
                 <Comparison Arg1 = "self.Health" Arg2 = "1" Sign = "$lt" />
             </Condition>

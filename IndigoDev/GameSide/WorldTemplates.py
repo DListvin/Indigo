@@ -181,11 +181,8 @@ class WorldTemplates:
         @rtype: Condition
         """
         condition = Condition()
-        self.condArgs = Arguments()
         for child in root:
             condition.Conditions.append(getattr(self, 'parse' + child.tag)(child))
-        condition.arguments = self.condArgs
-        self.condArgs = Arguments()
         return condition
 
     #TODO: code parser for all elementary actions
@@ -196,23 +193,19 @@ class WorldTemplates:
         """
         signs = {
             '$lt': '<',
-            '$let': '<',
+            '$let': '<=',
             '$dt': '>',
             '=':   '=',
             '!=': '!='
         }
         c = Comparison()
         c.CompType = signs[root.attrib['Sign']]
-        arg = Argument(root.attrib['Arg1'], None, 'Characteristic')
-        c.arguments.append(arg)
-        self.condArgs.append(arg)
+        c.arg1 = root.attrib['Arg1']
+        c.arg2 = root.attrib['Arg2']
         try:
-            Arg2Value = int(root.attrib['Arg2'])
-            arg = Argument(None, Arg2Value, 'const')
+            c.arg2 = int(c.arg2)
         except:
-            arg = Argument(root.attrib['Arg2'], None, 'Characteristic')
-            self.condArgs.append(arg)
-        c.arguments.append(arg)
+            pass
         return c
 
     #TODO: here is ambiguity do not know from which agent take property
@@ -222,12 +215,11 @@ class WorldTemplates:
         """
         c = CharacteristicChange()
         c.ChName = root.attrib['ChName']
-        modifier = root.attrib['Modifier']
+        c.Modifier = root.attrib['Modifier']
         try:
-            modifier = int(modifier)
+            c.Modifier = int(c.Modifier)
         except:
             pass
-        c.Modifier = modifier
         return c
 
     def parseDeleteAgent(self, root):
@@ -235,8 +227,9 @@ class WorldTemplates:
 
     def parseHasProperty(self, root):
         hp = HaveProperty()
-        hp.arguments.append(Argument('AgentName', root.attrib['AgentName'], 'Agent'))
-        hp.arguments.append(Argument('ChName', root.attrib['ChName'], 'Property'))
+        #TODO: rewrite
+        #hp.arguments.append(Argument('AgentName', root.attrib['AgentName'], 'Agent'))
+        #hp.arguments.append(Argument('ChName', root.attrib['ChName'], 'Property'))
         return hp
 
     def parsePeriodicity(self, root):
