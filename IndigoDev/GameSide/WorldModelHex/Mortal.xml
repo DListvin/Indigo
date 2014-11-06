@@ -1,7 +1,5 @@
 <Property Name="Mortal">
-    <Properties>
-        <Characteristic Name = "Health" Type="int" Min ="0" Max = "100" Default="3"/>
-        <Objectivity Action="Damage"/>
-        <Objectivity Action="Death"/>
-    </Properties>
+    <Characteristic Name = "Health" Type="int" Min ="0" Max = "100" Default="3"/>
+    <Objectivity Action="Damage"/>
+    <Objectivity Action="Death"/>
 </Property>

@@ -1,10 +1,8 @@
 <!-- Test world model Eating property description -->
 <Property Name = "Eating">
-    <SubProperties>
-        <Characteristic Name = "Satiety" Type="int" Min ="0" Max = "100" Default = "5"/>
-        <Characteristic Name="StarveSpeed" Type="int" Min ="-3" Max = "-1" Default = "-1"/>
-        <Characteristic Name="StarveDamage" Type="int" Min ="-3" Max = "-1" Default = "-1"/>
-        <Objectivity Action="Eat"/>
-        <Periodicity Action="Starve" TimeInterval = "1"/>
-    </SubProperties>
+    <Characteristic Name = "Satiety" Type="int" Min ="0" Max = "100" Default = "5"/>
+    <Characteristic Name="StarveSpeed" Type="int" Min ="-3" Max = "-1" Default = "-1"/>
+    <Characteristic Name="StarveDamage" Type="int" Min ="-3" Max = "-1" Default = "-1"/>
+    <Objectivity Action="Eat"/>
+    <Periodicity Action="Starve" TimeInterval = "1"/>
 </Property>

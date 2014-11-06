@@ -42,14 +42,9 @@ class WorldTemplates:
             a = Agent()
         a.Type = root.attrib['Type']
         for child in root:
-            a.Properties = self.parseProperties(child)
+            a.Properties.update(self.parseProperty(child))
         self.agents[a.Type] = a
 
-    def parseProperties(self, root):
-        properties = dict()
-        for child in root:
-            properties.update(self.parseProperty(child))
-        return properties
 
     def parseProperty(self, root):
         """
@@ -64,17 +59,8 @@ class WorldTemplates:
             prop = self.properties[name] = Property(name)
 
         for child in root:
-            prop.Properties = self.parseSubProperties(child)
+            prop.Properties.update(getattr(self, 'parse' + child.tag)(child))
         return {name: prop}
-
-    def parseSubProperties(self, root):
-        """
-        @rtype: Property
-        """
-        subProperties = dict()
-        for child in root:
-            subProperties.update(getattr(self, 'parse' + child.tag)(child))
-        return subProperties
 
     def parseCharacteristic(self, root):
         """

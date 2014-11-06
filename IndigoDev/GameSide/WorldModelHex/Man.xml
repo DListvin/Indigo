@@ -1,8 +1,6 @@
 <!-- Test world model Man agent that can move description -->
 <Agent Type="MovingMan" intellectual="yes">
-    <Properties>
-        <Property Name="Mortal"/>
-        <Property Name="Eating"/>
-        <Property Name="Moving"/>
-    </Properties>
+    <Property Name="Mortal"/>
+    <Property Name="Eating"/>
+    <Property Name="Moving"/>
 </Agent>
