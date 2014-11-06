@@ -7,10 +7,10 @@ class Agent:
     Everything is agents agents are everything.
     """
     def __init__(self):
-        self.Type = []        #Name of type (Man, dog, rain, axe...)
-        self.ID = []          #Unique id, primary key
-        self.Properties = []  #Dict of properties
-        self.myWorld = []     # world Interface to agent
+        self.Type = []            #Name of type (Man, dog, rain, axe...)
+        self.ID = []              #Unique id, primary key
+        self.Properties = dict()  #Dict of properties
+        self.myWorld = []         # world Interface to agent
 
     def init(self):
         """
@@ -18,10 +18,11 @@ class Agent:
         make some groundwork for using:
             Configure arguments for periodicity actions performing
         """
-        periodicityActions = self.GetActionsByType(Periodicity)
+        periodicityActions = self.GetPropertiesByType(Periodicity)
         for prop in periodicityActions:
-            prop.Action.arguments.set("self", self)
+            prop.Action.arguments["self"] = self
             #TODO:  prop.Action.arguments["self"] = self
+        return self
 
     def GetPropertyByName(self, name):
         """
@@ -32,7 +33,7 @@ class Agent:
         @rtype:Property
         """
         #TODO FIX Bug with "middle" characteristic search
-        for prop in self.Properties:
+        for prop in self.Properties.itervalues():
             ch = prop.getByName(name)
             if not (ch is None):
                 return ch
@@ -42,7 +43,7 @@ class Agent:
     def __getitem__(self, item):
         return self.GetPropertyByName(item)
 
-    def GetActionsByType(self, type):
+    def GetPropertiesByType(self, type):
         """
         Get actions By Type of Property like Feeling or Periodicity
         This properties has Perform function, so it is Actions
@@ -50,13 +51,13 @@ class Agent:
         @return: all found actions
         """
         PropertiesByType = []
-        for p in self.Properties:
+        for p in self.Properties.itervalues():
             PropertiesByType.extend(p.getAllByType(type))
         return PropertiesByType
 
 
     def __str__(self):
         res = ''
-        for p in self.Properties:
-            res += '\n' + str(p)
+        for key in self.Properties:
+            res += '\n' + str(self.Properties[key])
         return res

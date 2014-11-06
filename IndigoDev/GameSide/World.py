@@ -45,11 +45,11 @@ class World:
         #Get All Periodicity specified actions(without thinking)
         for agent in self.agents:
             agent['qq']
-            curActions.extend(agent.GetActionsByType(Periodicity))
+            curActions.extend(agent.GetPropertiesByType(Periodicity))
 
         #Get All feeling specified actions
         for agent in self.agents:
-            curActions.extend(agent.GetActionsByType(Feeling))
+            curActions.extend(agent.GetPropertiesByType(Feeling))
 
         #Get All thinking specified actions
         for agent in self.agents:

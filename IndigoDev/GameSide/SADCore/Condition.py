@@ -33,11 +33,11 @@ class Comparison(Condition):
 
     def Calculate(self):
         arg1Parse = self.arg1.split(".", 1)
-        ch = self.arguments.getValue(arg1Parse[0]).GetPropertyByName(arg1Parse[1])
+        ch = self.arguments[arg1Parse[0]][arg1Parse[1]]
         arg2 = self.arg2
         if not type(self.arg2) is int:
             arg2Parse = arg2.split('.', 1)
-            arg2 = self.arguments.getValue(arg2Parse[0]).GetPropertyByName(arg2Parse[1])
+            arg2 = self.arguments[arg2Parse[0]][arg2Parse[1]]
 
         signs = {
             '<': ch < arg2,

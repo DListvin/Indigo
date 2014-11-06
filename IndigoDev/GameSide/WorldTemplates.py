@@ -15,8 +15,8 @@ class WorldTemplates:
     """
     def __init__(self):
         self.actions = []
-        self.agents = []
-        self.properties = []
+        self.agents = dict()
+        self.properties = dict()
 
     def parseWorldFromXML(self, folderPath):
         """
@@ -36,23 +36,19 @@ class WorldTemplates:
         @rtype: Agent
         """
         #TODO: refactor with key in d construction
-        try:
-            intellectual = root.attrib['intellectual'] == 'yes'
-        except:
-            intellectual = False
-        if intellectual:
+        if 'intellectual' in root.attrib and root.attrib['intellectual'] == 'yes':
             a = Indigo()
         else:
             a = Agent()
         a.Type = root.attrib['Type']
         for child in root:
             a.Properties = self.parseProperties(child)
-        self.agents.append(a)
+        self.agents[a.Type] = a
 
     def parseProperties(self, root):
-        properties = []
+        properties = dict()
         for child in root:
-            properties.append(self.parseProperty(child))
+            properties.update(self.parseProperty(child))
         return properties
 
     def parseProperty(self, root):
@@ -61,24 +57,23 @@ class WorldTemplates:
         """
         #check that properties has not property with such name
         name = root.attrib['Name']
-        for indx in range(0, len(self.properties)):
-            if self.properties[indx].Name == name:
-               break
+        prop = None
+        if name in self.properties:
+            prop = self.properties[name]
         else:
-            self.properties.append(Property(name))
-            indx = - 1
+            prop = self.properties[name] = Property(name)
 
         for child in root:
-            self.properties[indx].Properties = self.parseSubProperties(child)
-        return self.properties[indx]
+            prop.Properties = self.parseSubProperties(child)
+        return {name: prop}
 
     def parseSubProperties(self, root):
         """
         @rtype: Property
         """
-        subProperties = []
+        subProperties = dict()
         for child in root:
-            subProperties.append(getattr(self, 'parse' + child.tag)(child))
+            subProperties.update(getattr(self, 'parse' + child.tag)(child))
         return subProperties
 
     def parseCharacteristic(self, root):
@@ -100,14 +95,14 @@ class WorldTemplates:
             c.Min = int(chValue['Min'])
         if 'Max' in chValue:
             c.Max = int(chValue['Max'])
-        return c
+        return {c.Name: c}
 
     def parseObjectivity(self, root):
         """
         @rtype: Objectivity
         """
-        obj = Objectivity([], root.attrib['Action'])
-        return obj
+        obj = Objectivity('Objectivity' + root.attrib['Action'], root.attrib['Action'])
+        return {obj.Name: obj}
 
     #TODO: code parser for other subproperties
 
@@ -156,19 +151,19 @@ class WorldTemplates:
         """
         arguments = Arguments()
         for child in root:
-            arguments.append(self.parseArgument(child))
+            arguments.update(self.parseArgument(child))
         return arguments
 
     def parseArgument(self, root):
         """
         @rtype: Argument
         """
-        argument = Argument(root.attrib['Name'], [], root.attrib['Type'])
+        arg = Argument(root.attrib['Name'], [], root.attrib['Type'])
         try:
-            argument.value = root.attrib['Value']
+            arg.value = root.attrib['Value']
         except:
             pass
-        return argument
+        return {arg.name: arg}
 
     def parseActions(self, root):
         actions = []
@@ -234,7 +229,8 @@ class WorldTemplates:
 
     def parsePeriodicity(self, root):
         t = "TimeInterval" in root and 1 or int(root.attrib["TimeInterval"])
-        return Periodicity(None, self.getActionByName(root.attrib['Action']), t)
+        p = Periodicity(None, self.getActionByName(root.attrib['Action']), t)
+        return {p.Name: p}
 
 
     def CreateAgent(self, type):
@@ -245,13 +241,7 @@ class WorldTemplates:
         @return: agent
         @rtype:Agent
         """
-        for agent in self.agents:
-            if agent.Type == type:
-                newAgent = deepcopy(agent)
-                newAgent.init()
-                return newAgent
-
-        raise Exception('ParseModelXML.CreateAgent: No such agent type')
+        return deepcopy(self.agents[type]).init()
 
     def CreateAction(self, name):
         """
@@ -265,9 +255,3 @@ class WorldTemplates:
             if action.name == name:
                 return deepcopy(action)
         raise Exception('ParseModelXML.CreateAction: No action with such name')
-
-#    def CreateAgentFromTemplate(self, agent):
-#        return deepcopy(agent)
-#
-#    def CreateActionFromTemplate(self, action):
-#        return deepcopy(action)

@@ -18,16 +18,16 @@ class Indigo(Agent):
 
         if self.steps < 5:
             action = self.myWorld.getAction('MoveUpRight')
-            action.arguments.set('self', self)
+            action.arguments['self'] = self
         elif self.steps < 10:
             action = self.myWorld.getAction('MoveRight')
-            action.arguments.set('self', self)
+            action.arguments['self'] = self
         elif self.steps < 15:
             action = self.myWorld.getAction('MoveDownLeft')
-            action.arguments.set('self', self)
+            action.arguments['self'] = self
         elif self.steps < 20:
             action = self.myWorld.getAction('MoveLeft')
-            action.arguments.set('self', self)
+            action.arguments['self'] = self
         else:
             self.steps = 0
             action = None
@@ -38,7 +38,7 @@ class Indigo(Agent):
     def initSubjectivity(self):
         self.posibleActions = []
         for prop in self.Properties:
-            self.posibleActions += prop.getAllByType(Objectivity)
+            self.posibleActions += self.Properties[prop].getAllByType(Objectivity)
 
     def ToJson(self):
         if self.Type == "MovingMan":

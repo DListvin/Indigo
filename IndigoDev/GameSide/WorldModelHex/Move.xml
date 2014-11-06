@@ -3,7 +3,6 @@
     <Action Name="MoveUpRight">
         <Arguments>
             <Argument Type="Agent" Name ="self"/>
-            <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
             <CharacteristicChange ChName="self.LocationX" Modifier="1"/>
@@ -14,7 +13,6 @@
     <Action Name="MoveRight">
         <Arguments>
             <Argument Type="Agent" Name ="self"/>
-            <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
             <CharacteristicChange ChName="self.LocationX" Modifier="1"/>
@@ -25,7 +23,6 @@
     <Action Name="MoveDownRight">
         <Arguments>
             <Argument Type="Agent" Name ="self"/>
-            <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
             <CharacteristicChange ChName="self.LocationY" Modifier="-1"/>
@@ -36,7 +33,6 @@
     <Action Name="MoveDownLeft">
         <Arguments>
             <Argument Type="Agent" Name ="self"/>
-            <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
             <CharacteristicChange ChName="self.LocationX" Modifier="-1"/>
@@ -47,7 +43,6 @@
     <Action Name="MoveLeft">
         <Arguments>
             <Argument Type="Agent" Name ="self"/>
-            <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
             <CharacteristicChange ChName="self.LocationX" Modifier="-1"/>
@@ -58,7 +53,6 @@
     <Action Name="MoveUpLeft">
         <Arguments>
             <Argument Type="Agent" Name ="self"/>
-            <Argument Type="int" Name="val"/>
         </Arguments>
         <Actions>
             <CharacteristicChange ChName="self.LocationY" Modifier="1"/>

@@ -4,38 +4,41 @@ class Property:
     Base Property class
     """
     def __init__(self, name):
-        self.Name = name
-
-    Name = [] #Unique name
-    Properties = [] #One or many subproperties or properties
+        self.Name = name #Unique name
+        self.Properties = dict() #One or many subproperties or properties
 
     def getAllByType(self, type):
         """
         get all properties by type
         """
-        if self.Properties == []:
+        if not self.Properties:
             if isinstance(self, type):
                 return self
         allProp = []
-        for prop in self.Properties:
-            if isinstance(prop, type):
-                allProp.append(prop.getAllByType(type))
+        for key in self.Properties:
+            if isinstance(self.Properties[key], type):
+                allProp.append(self.Properties[key].getAllByType(type))
         return allProp
 
     def getByName(self, name):
         """
         get first property by name
         """
-        if self.Properties == []:
+        if not self.Properties:
             if self.Name == name:
                 return self
             else:
                 return None
-        for prop in self.Properties:
-            ans = prop.getByName(name)
-            if not (ans is None):
+        if name in self.Properties:
+            return self.Properties[name]
+        for prop in self.Properties.itervalues():
+            ans = prop[name]
+            if not ans is None:
                 return ans
         return None
+
+    def __getitem__(self, item):
+        return self.getByName(item)
 
     def __str__(self):
         chs = self.getAllByType(Characteristic)
